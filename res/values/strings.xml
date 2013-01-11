@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LearnIt</string>
+    <string name="learn_words_frag_title">Learn Words</string>
+    <string name="add_words_frag_title">Add Words</string>
+    <string name="dictionary_frag_title">Dictionary</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_export">Export dictionary</string>
+    <string name="menu_import">Import dictionary</string>
+    <string name="add_word_hint">Please write word here..</string>
+    <string name="add_translation_hint">Please write translation here..</string>
+    <string name="add_word_button_text">Add</string>
+    <string name="toast_notif_text">Starting Notification Timer</string>
+
+    <!--Dialog strings-->
+    <string name="dialog_empty_title">Oops..</string>
+    <string name="dialog_empty_text">One of the fields is empty. Please fill it.</string>
+    <string name="dialog_added_title">Done!</string>
+    <string name="dialog_added_text">The word was added to database successfully.</string>
+    <string name="dialog_updated_title">Updated</string>
+    <string name="dialog_updated_text">New translation added to existing word.</string>
+    <string name="dialog_exists_title">Already there!</string>
+    <string name="dialog_exists_text">The word already has this translation!</string>
+    <string name="dialog_format_title">Oops!</string>
+    <string name="dialog_format_text">Wrong format.\n Format `{article} {word}` expected.</string>
+    <string name="dialog_article_title">Oops!</string>
+    <string name="dialog_article_text">Only articles `der`,`die` and `das` are permited.</string>
+    <string name="dialog_wrong_guess_title">Nope</string>
+    <string name="dialog_wrong_guess_message">This one is wrong, please try again!</string>
+    <string name="notif_text">Please click to translate the word.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!--Pref Strings-->
+    <string name="pref_reminder_freq">Reminder frequency</string>
+    <string name="pref_language_to_learn">Language to learn</string>
+    <string name="pref_time_to_start">Time to start notifications</string>
+
+    <string name="checkbox1_title">CheckBox 1</string>
+    <string name="checkbox1_summary">Summary of CheckBox 1</string>
+    <string name="edittext1_title">EditText 1</string>
+    <string name="edittext1_summary">Summary of EditText 1</string>
+    <string name="list1_title">List 1</string>
+    <string name="list1_summary">Summary of List 1</string>
+    <string name="db_exported">Dictionary was exported to \n%s</string>
+
+    <string-array name="time_entries">
+        <item>Hour</item>
+        <item>Two Hours</item>
+        <item>Four Hours</item>
+        <item>Half-day</item>
+        <item>Day</item>
+    </string-array>
+    <string-array name="time_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>German</item>
+        <item>Spanish</item>
+        <item>Italian</item>
+        <item>Russian</item>
+    </string-array>
+
+</resources>

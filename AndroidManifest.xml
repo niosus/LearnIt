@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.learnit.LearnIt"
+          android:versionCode="1"
+          android:versionName="1.0">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-sdk
+            android:minSdkVersion="14"
+            android:targetSdkVersion="16"/>
+
+    <application
+            android:allowBackup="true"
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name="com.learnit.LearnIt.MainActivity"
+                android:label="@string/app_name"
+                android:launchMode="standard"
+                android:multiprocess="true"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Holo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name="com.learnit.LearnIt.HomeworkActivity"
+                android:launchMode="singleInstance"
+                android:multiprocess="true"
+                android:theme="@android:style/Theme.Holo.DialogWhenLarge">
+        </activity>
+
+        <service android:name="com.learnit.LearnIt.MyAlarmService"/>
+
+        <activity
+                android:name="com.learnit.LearnIt.PrefActivity"
+                android:label="@string/app_name">
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/relative_layout_dict"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+    <EditText
+            android:id="@+id/edv_search_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_word_hint"
+            android:inputType="text"
+            android:paddingRight="20dp"/>
+    <ListView
+            android:id="@+id/list_of_words"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edv_search_word">
+    </ListView>
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+            android:key="notification_enabled"
+            android:summary="Enable notifications"
+            android:title="Notifications">
+    </CheckBoxPreference>
+
+    <ListPreference
+            android:key="notification_frequency"
+            android:summary=""
+            android:title="@string/pref_reminder_freq"
+            android:entries="@array/time_entries"
+            android:entryValues="@array/time_entry_values"/>
+
+    <!--<ListPreference-->
+            <!--android:key="pref_language_to"-->
+            <!--android:summary=""-->
+            <!--android:title="@string/pref_language_to_learn"-->
+            <!--android:entries="@array/languages"-->
+            <!--android:entryValues="@array/languages"/>-->
+
+    <com.learnit.LearnIt.TimePreference
+            android:key="time_to_start"
+            android:title="@string/pref_time_to_start"/>
+
+
+</PreferenceScreen>

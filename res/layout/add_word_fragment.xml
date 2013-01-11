@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+    <EditText
+            android:id="@+id/edv_add_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_word_hint"/>
+
+    <EditText
+            android:id="@+id/edv_add_translation"
+            android:layout_below="@id/edv_add_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_translation_hint"/>
+    <Button
+            android:id="@+id/btn_add_word"
+            android:layout_below="@id/edv_add_translation"
+            android:layout_alignRight="@id/edv_add_translation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_word_button_text"/>
+
+</RelativeLayout>
