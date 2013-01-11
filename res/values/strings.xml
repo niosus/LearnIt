@@ -46,6 +46,10 @@
     <string name="list1_summary">Summary of List 1</string>
     <string name="db_exported">Dictionary was exported to \n%s</string>
 
+    <!--context menu strings-->
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
+
     <string-array name="time_entries">
         <item>Hour</item>
         <item>Two Hours</item>

@@ -6,9 +6,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -22,6 +20,14 @@ public class DictFragment extends Fragment {
     View v;
 
     public DictFragment() {
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class DictFragment extends Fragment {
             }
         });
         final ListView listView = (ListView) v.findViewById(R.id.list_of_words);
+        registerForContextMenu(listView);
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -90,8 +97,23 @@ public class DictFragment extends Fragment {
                 args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
                 frag.setArguments(args);
                 frag.show(getFragmentManager(), "show_word_fragment_dialog");
+
             }
         });
+//        MyOnItemLongClickListener myOnItemLongClickListener = new MyOnItemLongClickListener();
+//        listView.setOnItemLongClickListener(myOnItemLongClickListener);
         return v;
     }
+
+
+
+//    protected class MyOnItemLongClickListener implements AdapterView.OnItemLongClickListener
+//    {
+//        @Override
+//        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+//        {
+//
+//            return true;
+//        }
+//    }
 }
