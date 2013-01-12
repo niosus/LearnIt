@@ -39,6 +39,8 @@ public class AddWordFragment extends Fragment {
         btnAddWord.setOnClickListener(myBtnOnClickListener);
         editWord = (EditText) v.findViewById(R.id.edv_add_word);
         editTranslation = (EditText) v.findViewById(R.id.edv_add_translation);
+        btnAddWord.setMinimumHeight(2 * editWord.getHeight());
+        btnAddWord.setMinimumWidth(btnAddWord.getHeight());
         return v;
     }
 

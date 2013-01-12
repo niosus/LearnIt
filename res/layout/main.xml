@@ -3,6 +3,7 @@
                                    android:id="@+id/pager"
                                    android:layout_width="match_parent"
                                    android:layout_height="match_parent"
+                                   android:background="@android:color/background_dark"
                                    tools:context=".MainActivity">
 
     <!--
@@ -15,9 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:background="#33b5e5"
+            android:background="@android:color/background_dark"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:textColor="#fff"/>
+            android:textColor="@android:color/holo_blue_light"/>
 
 </android.support.v4.view.ViewPager>

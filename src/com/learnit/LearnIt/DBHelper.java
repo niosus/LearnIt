@@ -56,6 +56,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TRANSLATION_COLUMN_NAME + " text" + ");");
     }
 
+    public boolean deleteWord(String word)
+    {
+        db = this.getWritableDatabase();
+        db.delete(DB_NAME,WORD_COLUMN_NAME + "='" + word + "'", null);
+        return true;
+    }
+
     public long getDBSize() {
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DB_NAME, null);

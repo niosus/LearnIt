@@ -29,6 +29,8 @@
     <string name="dialog_article_text">Only articles `der`,`die` and `das` are permited.</string>
     <string name="dialog_wrong_guess_title">Nope</string>
     <string name="dialog_wrong_guess_message">This one is wrong, please try again!</string>
+    <string name="dialog_word_deleted_title">Done</string>
+    <string name="dialog_word_deleted_message">The word \"%s\" was successfully deleted.</string>
     <string name="notif_text">Please click to translate the word.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -37,6 +39,7 @@
     <string name="pref_reminder_freq">Reminder frequency</string>
     <string name="pref_language_to_learn">Language to learn</string>
     <string name="pref_time_to_start">Time to start notifications</string>
+    <string name="clear">Clear</string>
 
     <string name="checkbox1_title">CheckBox 1</string>
     <string name="checkbox1_summary">Summary of CheckBox 1</string>

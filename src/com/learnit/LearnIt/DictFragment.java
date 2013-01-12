@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class DictFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
     private DBHelper dbHelper;
+    private EditText edtWord;
 
 
     View v;
@@ -28,6 +29,29 @@ public class DictFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        // Handle item selection
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        View v = info.targetView;
+        String queryWord = ((TextView) v).getText().toString();
+        Log.d(LOG_TAG,"item selected = " + queryWord);
+        switch (item.getItemId()) {
+            case R.id.context_menu_delete:
+                if (dbHelper.deleteWord(queryWord))
+                {
+                    showDialog(queryWord,null,MyDialogFragment.DIALOG_WORD_DELETED);
+                    edtWord.setText("");
+                }
+                return true;
+            case R.id.context_menu_edit:
+                return true;
+            default:
+                Log.d(LOG_TAG,"none selected");
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -58,11 +82,23 @@ public class DictFragment extends Fragment {
         return strings.get(0);
     }
 
+    public void showDialog(String queryWord, String translation, int dialogType)
+    {
+        MyDialogFragment frag = new MyDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(MyDialogFragment.ID_TAG, dialogType);
+        args.putString(MyDialogFragment.WORD_TAG, queryWord);
+        args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+        frag.setArguments(args);
+        frag.show(getFragmentManager(), "show_word_fragment_dialog");
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.dict_fragment, container, false);
 
-        final EditText edtWord = (EditText) v.findViewById(R.id.edv_search_word);
+        edtWord = (EditText) v.findViewById(R.id.edv_search_word);
+        edtWord.clearFocus();
         edtWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -90,30 +126,10 @@ public class DictFragment extends Fragment {
                 Log.d(LOG_TAG, queryWord);
                 edtWord.setText(queryWord);
                 String translation = getTranslations(queryWord);
-                MyDialogFragment frag = new MyDialogFragment();
-                Bundle args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_SHOW_WORD);
-                args.putString(MyDialogFragment.WORD_TAG, queryWord);
-                args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "show_word_fragment_dialog");
-
+                showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
             }
         });
-//        MyOnItemLongClickListener myOnItemLongClickListener = new MyOnItemLongClickListener();
-//        listView.setOnItemLongClickListener(myOnItemLongClickListener);
+
         return v;
     }
-
-
-
-//    protected class MyOnItemLongClickListener implements AdapterView.OnItemLongClickListener
-//    {
-//        @Override
-//        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-//        {
-//
-//            return true;
-//        }
-//    }
 }

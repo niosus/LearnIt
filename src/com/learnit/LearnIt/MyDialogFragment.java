@@ -20,15 +20,18 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_FORMAT = 5;
     public static final int DIALOG_WRONG_ARTICLE = 6;
     public static final int DIALOG_WRONG_GUESS = 7;
+    public static final int DIALOG_WORD_DELETED = 8;
+    public static final int DIALOG_UPDATE_WORD = 9;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int id = getArguments().getInt(ID_TAG);
+        String word = "";
         switch (id)
         {
             case DIALOG_SHOW_WORD:
-                String word = getArguments().getString(WORD_TAG);
+                word = getArguments().getString(WORD_TAG);
                 String translation = getArguments().getString(TRANSLATION_TAG);
                 builder.setTitle(word)
                         .setMessage(translation)
@@ -68,6 +71,12 @@ public class MyDialogFragment extends DialogFragment {
             case DIALOG_WRONG_GUESS:
                 builder.setMessage(R.string.dialog_wrong_guess_message).setTitle(
                         R.string.dialog_wrong_guess_title);
+                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                return builder.create();
+            case DIALOG_WORD_DELETED:
+                word = getArguments().getString(WORD_TAG);
+                builder.setMessage(String.format(this.getString(R.string.dialog_word_deleted_message), word)).setTitle(
+                        R.string.dialog_word_deleted_title);
                 builder.setNeutralButton(R.string.ok, myDialogClickListener);
                 return builder.create();
         }
