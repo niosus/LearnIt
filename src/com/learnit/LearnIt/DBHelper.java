@@ -17,7 +17,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class DBHelper extends SQLiteOpenHelper {
     final String LOG_TAG = "my_logs";
@@ -68,6 +67,12 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from " + DB_NAME, null);
         long count = cursor.getCount();
         return count;
+    }
+
+    public Cursor getRandRow()
+    {
+        db = this.getReadableDatabase();
+        return db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
     }
 
     boolean checkArticle(String article) {
@@ -188,33 +193,51 @@ public class DBHelper extends SQLiteOpenHelper {
         {
             return null;
         }
-        Random rand = new Random();
-        long randId;
+        String word = null;
+        String article = null;
+        Cursor c;
+        int id = 0;
         do {
-            randId = Math.abs(rand.nextLong()) % maxId + 1;
-            Log.d(LOG_TAG, "generated randid "+randId+" is in " + ids );
+            c = getRandRow();
+            if (c.moveToFirst()) {
+                int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+                int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+                int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
+                word = (c.getString(wordColIndex));
+                article = (c.getString(articleColIndex));
+                id = (c.getInt(idColIndex));
+                Log.d(LOG_TAG, "randWord = " + article + " " + word);
+                c.close();
+            } else {
+                Log.d(LOG_TAG, "0 rows");
+                return null;
+            }
         }
-        while (idInArray(randId,ids));
-        db = this.getReadableDatabase();
-        Log.d(LOG_TAG, "maxId = " + maxId + "rand id = " + randId);
-        Cursor c = db.query(DB_NAME,
-                new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
-                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
-                ID_COLUMN_NAME + " like " + "'" + randId + "'", null, null,
-                null, null);
-        if (c.moveToFirst()) {
-            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
-            String word = (c.getString(wordColIndex));
-            String article = (c.getString(articleColIndex));
-            ArticleWordIdStruct result = new ArticleWordIdStruct(article, word, randId);
-            Log.d(LOG_TAG, "randWord = " + article + " " + word);
-            c.close();
-            return result;
-        } else {
-            Log.d(LOG_TAG, "0 rows");
-            return null;
+        while (idInArray(id,ids));
+        ArticleWordIdStruct result = new ArticleWordIdStruct(article, word, id);
+        return result;
+    }
+
+    public String getRandomTranslation(String testWord) {
+        maxId = getDBSize();
+        String word = null;
+        String trans = null;
+        do {
+            Cursor c = getRandRow();
+            if (c.moveToFirst()) {
+                int transColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
+                int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+                word = (c.getString(wordColIndex));
+                trans = (c.getString(transColIndex));
+                Log.d(LOG_TAG, "randTrans = " + trans);
+                c.close();
+            } else {
+                Log.d(LOG_TAG, "0 rows in rand trans for word " + testWord);
+                return null;
+            }
         }
+        while (testWord.equals(word));
+        return trans;
     }
 
     public boolean exportDB()
@@ -289,34 +312,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public String getRandomTranslation(String testWord) {
-        maxId = getDBSize();
-        Random rand = new Random();
-        long randId = Math.abs(rand.nextLong()) % maxId + 1;
-        db = this.getReadableDatabase();
-        Cursor c = db.query(DB_NAME,
-                new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
-                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
-                ID_COLUMN_NAME + " like " + "'" + randId + "'", null, null,
-                null, null);
-        if (c.moveToFirst()) {
-            int transColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
-            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-            String word = (c.getString(wordColIndex));
-            String trans = (c.getString(transColIndex));
-            Log.d(LOG_TAG, "randTrans = " + trans);
-            c.close();
-            //in case the out word is the same as query
-            if (testWord.equals(word))
-            {
-                return getRandomTranslation(word);
-            }
-            return trans;
-        } else {
-            Log.d(LOG_TAG, "0 rows");
-            return null;
-        }
-    }
+
 
     public ArrayList<String> getTranslations(String word) {
         db = this.getReadableDatabase();

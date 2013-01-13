@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class MyAlarmService extends Service {
     private static final int idModificator = 1552235; // some number
     public static DBHelper dbHelper;
     private final int numOfNotif = 5;
+    private final String LOG_TAG = "my_logs";
 
     @Override
     public void onCreate() {
@@ -70,6 +72,7 @@ public class MyAlarmService extends Service {
             {
                 result.add(new Pair<String, String>(struct.article, struct.word));
                 ids.add(struct.id);
+                Log.d(LOG_TAG,"current ids " + ids);
             }
             else
             {
