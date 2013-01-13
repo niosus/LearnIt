@@ -114,6 +114,7 @@ public class DictFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
             }
+
         });
         final ListView listView = (ListView) v.findViewById(R.id.list_of_words);
         registerForContextMenu(listView);
