@@ -122,7 +122,7 @@ public class DictFragment extends Fragment {
                 {
                     btnClear.setVisibility(View.VISIBLE);
                 }
-                else
+                if (s.length()==0)
                 {
                     btnClear.setVisibility(View.INVISIBLE);
                 }

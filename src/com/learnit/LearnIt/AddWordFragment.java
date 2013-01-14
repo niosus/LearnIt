@@ -69,11 +69,10 @@ public class AddWordFragment extends Fragment {
                 {
                     btn_clear_word.setVisibility(View.VISIBLE);
                 }
-                else
+                if (editable.length()==0)
                 {
                     btn_clear_word.setVisibility(View.INVISIBLE);
                 }
-
             }
         });
         editTranslation.addTextChangedListener(new TextWatcher() {
@@ -93,7 +92,7 @@ public class AddWordFragment extends Fragment {
                 {
                     btn_clear_trans.setVisibility(View.VISIBLE);
                 }
-                else
+                if (editable.length()==0)
                 {
                     btn_clear_trans.setVisibility(View.INVISIBLE);
                 }

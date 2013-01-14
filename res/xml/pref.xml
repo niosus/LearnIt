@@ -14,12 +14,6 @@
             android:entries="@array/time_entries"
             android:entryValues="@array/time_entry_values"/>
 
-    <!--<ListPreference-->
-            <!--android:key="pref_language_to"-->
-            <!--android:summary=""-->
-            <!--android:title="@string/pref_language_to_learn"-->
-            <!--android:entries="@array/languages"-->
-            <!--android:entryValues="@array/languages"/>-->
 
     <com.learnit.LearnIt.TimePreference
             android:key="time_to_start"

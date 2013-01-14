@@ -144,9 +144,10 @@ public class MainActivity extends FragmentActivity {
             case R.id.menu_export:
                 Log.d(LOG_TAG, "export DB");
                 dbHelper.exportDB();
-            case R.id.menu_import:
-                Log.d(LOG_TAG, "import DB");
-                dbHelper.importDB();
+                return true;
+//            case R.id.menu_import:
+//                Log.d(LOG_TAG, "import DB");
+//                dbHelper.importDB();
             default:
                 return super.onOptionsItemSelected(item);
         }

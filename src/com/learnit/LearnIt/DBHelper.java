@@ -384,7 +384,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
-                null, null);
+                null, WORD_COLUMN_NAME);
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
             do {
