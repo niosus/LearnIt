@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <resources>
 
     <string name="app_name">LearnIt</string>
@@ -9,10 +13,10 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_export">Export dictionary</string>
     <string name="menu_import">Import dictionary</string>
-    <string name="add_word_hint">Word</string>
+    <string name="add_word_hint">Input word</string>
     <string name="edit_dialog_title">Editing...</string>
     <string name="search_word_hint">Start typing to search</string>
-    <string name="add_translation_hint">Translation</string>
+    <string name="add_translation_hint">Input translation</string>
     <string name="add_word_button_text">Add</string>
     <string name="toast_notif_text">Starting Notification Timer</string>
 
@@ -22,7 +26,7 @@
     <string name="dialog_added_title">Done!</string>
     <string name="dialog_added_text">The word was added to database successfully.</string>
     <string name="dialog_updated_title">Updated</string>
-    <string name="dialog_updated_text">New translation added to existing word.</string>
+    <string name="dialog_updated_text">New translation added</string>
     <string name="dialog_exists_title">Already there!</string>
     <string name="dialog_exists_text">The word already has this translation!</string>
     <string name="dialog_format_title">Oops!</string>
@@ -35,6 +39,7 @@
     <string name="dialog_word_deleted_message">The word \"%s\" was successfully deleted.</string>
     <string name="notif_text">Please click to translate the word.</string>
     <string name="ok">OK</string>
+    <string name="update">Update</string>
     <string name="cancel">Cancel</string>
 
     <!--Pref Strings-->
@@ -54,6 +59,8 @@
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_delete">Delete</string>
+
+    <string name="notification_group">Notification settings</string>
 
     <string-array name="time_entries">
         <item>Hour</item>

@@ -1,7 +1,21 @@
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +34,9 @@ public class MyCustomEditDialog extends DialogFragment {
     EditText edtTrans;
     String oldWord;
     int currentId=-1;
+
+    private ImageButton btnClearWord;
+    private ImageButton btnClearTrans;
 
     DBHelper dbHelper;
 
@@ -47,10 +64,11 @@ public class MyCustomEditDialog extends DialogFragment {
                 View v = inflater.inflate(R.layout.edit_word_dialog, container, false);
                 edtWord = (EditText) v.findViewById(R.id.edtWord);
                 edtWord.setText(oldWord);
+
                 edtTrans = (EditText) v.findViewById(R.id.edtTrans);
                 edtTrans.setText(translation);
-                ImageButton btnClearWord = (ImageButton) v.findViewById(R.id.btn_add_word_clear);
-                ImageButton btnClearTrans = (ImageButton) v.findViewById(R.id.btn_add_trans_clear);
+                btnClearWord = (ImageButton) v.findViewById(R.id.btn_add_word_clear);
+                btnClearTrans = (ImageButton) v.findViewById(R.id.btn_add_trans_clear);
                 Button btnOk = (Button) v.findViewById(R.id.btn_ok);
                 Button btnCancel = (Button) v.findViewById(R.id.btn_cancel);
                 MyBtnTouchListener myBtnTouchListener = new MyBtnTouchListener();
@@ -58,6 +76,53 @@ public class MyCustomEditDialog extends DialogFragment {
                 btnClearWord.setOnClickListener(myBtnTouchListener);
                 btnCancel.setOnClickListener(myBtnTouchListener);
                 btnOk.setOnClickListener(myBtnTouchListener);
+
+                edtWord.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        if (editable.toString()!=null && editable.toString()!="")
+                        {
+                            btnClearWord.setVisibility(View.VISIBLE);
+                        }
+                        if (editable.length()==0)
+                        {
+                            btnClearWord.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+                edtTrans.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        if (editable.toString()!=null && editable.toString()!="")
+                        {
+                            btnClearTrans.setVisibility(View.VISIBLE);
+                        }
+                        if (editable.length()==0)
+                        {
+                            btnClearTrans.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
                 return v;
             }
         }
@@ -77,20 +142,81 @@ public class MyCustomEditDialog extends DialogFragment {
             {
                 case R.id.btn_add_trans_clear:
                     edtTrans.setText("");
+                    v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btn_add_word_clear:
                     edtWord.setText("");
+                    v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btn_ok:
                     Log.d(LOG_TAG,"update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                    dbHelper.deleteWord(oldWord);
-                    dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                    showDialog(null,null,MyDialogFragment.DIALOG_WORD_UPDATED);
-                    dismiss();
+                    if (dbHelper.checkEmptyString(edtWord.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT
+                        || dbHelper.checkEmptyString(edtTrans.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT)
+                    {
+                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+                    }
+                    else
+                    {
+                        dbHelper.deleteWord(oldWord);
+                        int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+                        showMessage(exitCode);
+                    }
                     break;
                 case R.id.btn_cancel:
                     dismiss();
             }
+        }
+    }
+
+    private void showMessage(int exitCode)
+    {
+        MyDialogFragment frag;
+        Bundle args;
+        switch (exitCode) {
+            case DBHelper.EXIT_CODE_OK:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "word_added");
+                dismiss();
+                break;
+            case DBHelper.EXIT_CODE_WORD_UPDATED:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "word_updated");
+                dismiss();
+                break;
+            case DBHelper.EXIT_CODE_EMPTY_INPUT:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "word_empty");
+                break;
+            case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "word_exists");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "wrong_article");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_FORMAT:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "wrong_format");
+                break;
         }
     }
 

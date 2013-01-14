@@ -1,3 +1,11 @@
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.content.ContentValues;
@@ -81,6 +89,16 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+    public int checkEmptyString(String str)
+    {
+        if ("".equals(str))
+        {
+            return EXIT_CODE_EMPTY_INPUT;
+        }
+        else
+            return EXIT_CODE_OK;
     }
 
     public int writeToDB(String word, String translation) {
@@ -316,7 +334,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String getTranslation(String word) {
         db = this.getReadableDatabase();
-        ArrayList<String> listItems = new ArrayList<String>();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
@@ -338,7 +355,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int getId(String word) {
         db = this.getReadableDatabase();
-        ArrayList<String> listItems = new ArrayList<String>();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
@@ -356,25 +372,6 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d(LOG_TAG, "0 rows");
         c.close();
         return 0;
-    }
-
-    public boolean updateWord(int id, String word, String trans)
-    {
-        try
-        {
-            db = this.getWritableDatabase();
-            ContentValues args = new ContentValues();
-            args.put(WORD_COLUMN_NAME,word);
-            args.put(TRANSLATION_COLUMN_NAME,trans);
-            args.put(ID_COLUMN_NAME,id);
-            db.update(DB_NAME,args,ID_COLUMN_NAME + "=" + id,null);
-            return true;
-        }
-        catch (Exception e)
-        {
-            Log.d(LOG_TAG,e.getMessage());
-            return false;
-        }
     }
 
     public ArrayList<String> getWords(String word) {

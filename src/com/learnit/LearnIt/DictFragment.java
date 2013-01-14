@@ -1,3 +1,11 @@
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.Activity;
@@ -17,6 +25,8 @@ public class DictFragment extends Fragment {
     private DBHelper dbHelper;
     private EditText edtWord;
     private ImageButton btnClear;
+
+    ActionMode mActionMode=null;
 
 
     View v;
@@ -84,6 +94,8 @@ public class DictFragment extends Fragment {
         return null;
     }
 
+
+
     public void showDialog(String queryWord, String translation, int dialogType)
     {
         if (dialogType == MyDialogFragment.DIALOG_EDIT_WORD)
@@ -144,7 +156,20 @@ public class DictFragment extends Fragment {
         btnClear.setOnClickListener(touchListener);
         btnClear.setVisibility(View.INVISIBLE);
         final ListView listView = (ListView) v.findViewById(R.id.list_of_words);
-        registerForContextMenu(listView);
+//        registerForContextMenu(listView);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            // Called when the user long-clicks on someView
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                                           long id) {
+                if (mActionMode != null) {
+                    return false;
+                }
+                ListActionMode mActionModeCallback = new ListActionMode(view);
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                view.setSelected(true);
+                return true;
+            }
+        });
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -173,6 +198,61 @@ public class DictFragment extends Fragment {
                     break;
 
             }
+        }
+    }
+
+
+    private class ListActionMode implements ActionMode.Callback
+    {
+        private View v;
+
+        public ListActionMode(View view) {
+            v = view;
+        }
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.context_menu, menu);
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            String queryWord = ((TextView)v).getText().toString();
+            Log.d(LOG_TAG,"item selected = " + queryWord);
+            switch (item.getItemId()) {
+                case R.id.context_menu_edit:
+                    showDialog(queryWord,null,MyDialogFragment.DIALOG_EDIT_WORD);
+                    edtWord.setText("");
+                    mode.finish(); // Action picked, so close the CAB
+                    return true;
+                case R.id.context_menu_delete:
+                    if (dbHelper.deleteWord(queryWord))
+                    {
+                        showDialog(queryWord,null,MyDialogFragment.DIALOG_WORD_DELETED);
+                        edtWord.setText("");
+                    }
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
         }
     }
 }

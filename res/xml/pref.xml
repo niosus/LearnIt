@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/notification_group">
+        <CheckBoxPreference
+                android:key="notification_enabled"
+                android:summary="Enable notifications"
+                android:title="Notifications">
+        </CheckBoxPreference>
 
-    <CheckBoxPreference
-            android:key="notification_enabled"
-            android:summary="Enable notifications"
-            android:title="Notifications">
-    </CheckBoxPreference>
-
-    <ListPreference
-            android:key="notification_frequency"
-            android:summary=""
-            android:title="@string/pref_reminder_freq"
-            android:entries="@array/time_entries"
-            android:entryValues="@array/time_entry_values"/>
+        <ListPreference
+                android:key="notification_frequency"
+                android:summary=""
+                android:title="@string/pref_reminder_freq"
+                android:entries="@array/time_entries"
+                android:entryValues="@array/time_entry_values"/>
 
 
-    <com.learnit.LearnIt.TimePreference
-            android:key="time_to_start"
-            android:title="@string/pref_time_to_start"/>
+        <com.learnit.LearnIt.TimePreference
+                android:key="time_to_start"
+                android:title="@string/pref_time_to_start"/>
 
+    </PreferenceCategory>
 
 </PreferenceScreen>

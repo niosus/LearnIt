@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -11,9 +19,8 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_dialog_title"
             android:textSize="30dp"
-            android:textColor="@android:color/holo_blue_dark"
-        />
-    <LinearLayout
+            android:textColor="@android:color/holo_blue_dark"/>
+    <RelativeLayout
                   android:id="@+id/linearLayWord"
                   android:orientation="horizontal"
                   android:layout_below="@id/txtViewEditDialog"
@@ -21,22 +28,22 @@
                   android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtWord"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/add_word_hint"
                 />
         <ImageButton
                 android:id="@+id/btn_add_word_clear"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:src="@drawable/ic_stat_clear"
+                android:layout_alignRight="@id/edtWord"
                 android:contentDescription="@string/clear"
+                android:padding="5dp"
                 android:background="@android:color/background_dark"/>
 
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
             android:id="@+id/linearLayTrans"
             android:layout_below="@id/linearLayWord"
             android:orientation="horizontal"
@@ -44,20 +51,20 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtTrans"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/add_translation_hint"/>
         <ImageButton
                 android:id="@+id/btn_add_trans_clear"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:src="@drawable/ic_stat_clear"
+                android:layout_alignRight="@id/edtTrans"
                 android:contentDescription="@string/clear"
+                android:padding="5dp"
                 android:background="@android:color/background_dark"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_below="@id/linearLayTrans"
         android:layout_width="match_parent"
@@ -77,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@android:color/background_light"
-                android:text="@string/ok"
+                android:text="@string/update"
                 android:background="@android:color/background_dark"/>
         </LinearLayout>
 </RelativeLayout>
