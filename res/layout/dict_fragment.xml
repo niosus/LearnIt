@@ -7,7 +7,7 @@
             android:id="@+id/edv_search_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/add_word_hint"
+            android:hint="@string/search_word_hint"
             android:inputType="text"
             android:paddingRight="20dp"/>
     <ListView

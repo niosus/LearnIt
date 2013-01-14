@@ -11,6 +11,7 @@ public class MyDialogFragment extends DialogFragment {
     public static final String ID_TAG = "id";
     public static final String WORD_TAG = "word";
     public static final String TRANSLATION_TAG = "translation";
+    public final String LOG_TAG = "my_logs";
 
     public static final int DIALOG_SHOW_WORD = 0;
     public static final int DIALOG_EMPTY = 1;
@@ -21,7 +22,7 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_ARTICLE = 6;
     public static final int DIALOG_WRONG_GUESS = 7;
     public static final int DIALOG_WORD_DELETED = 8;
-    public static final int DIALOG_UPDATE_WORD = 9;
+    public static final int DIALOG_EDIT_WORD = 9;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class MyDialogFragment extends DialogFragment {
                         R.string.dialog_word_deleted_title);
                 builder.setNeutralButton(R.string.ok, myDialogClickListener);
                 return builder.create();
+
         }
         return null;
     }

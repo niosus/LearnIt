@@ -9,8 +9,10 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_export">Export dictionary</string>
     <string name="menu_import">Import dictionary</string>
-    <string name="add_word_hint">Please write word here..</string>
-    <string name="add_translation_hint">Please write translation here..</string>
+    <string name="add_word_hint">Word</string>
+    <string name="edit_dialog_title">Editing...</string>
+    <string name="search_word_hint">Start typing to search</string>
+    <string name="add_translation_hint">Translation</string>
     <string name="add_word_button_text">Add</string>
     <string name="toast_notif_text">Starting Notification Timer</string>
 

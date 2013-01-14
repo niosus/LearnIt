@@ -38,6 +38,7 @@ public class DictFragment extends Fragment {
         View v = info.targetView;
         String queryWord = ((TextView) v).getText().toString();
         Log.d(LOG_TAG,"item selected = " + queryWord);
+        //TODO: change null to normal translation! either here or in the dialog
         switch (item.getItemId()) {
             case R.id.context_menu_delete:
                 if (dbHelper.deleteWord(queryWord))
@@ -47,6 +48,7 @@ public class DictFragment extends Fragment {
                 }
                 return true;
             case R.id.context_menu_edit:
+                showDialog(queryWord,null,MyDialogFragment.DIALOG_EDIT_WORD);
                 return true;
             default:
                 Log.d(LOG_TAG,"none selected");
@@ -73,24 +75,37 @@ public class DictFragment extends Fragment {
                 .setAdapter(adapter);
     }
 
-    public String getTranslations(String word) {
-        ArrayList<String> strings = new ArrayList<String>();
+    public String getTranslation(String word) {
+//        ArrayList<String> strings = new ArrayList<String>();
         if (word != null && !word.isEmpty()) {
             Log.d(LOG_TAG, String.format("search word-%s", word));
-            strings=dbHelper.getTranslations(word);
+            return dbHelper.getTranslation(word);
         }
-        return strings.get(0);
+        return null;
     }
 
     public void showDialog(String queryWord, String translation, int dialogType)
     {
-        MyDialogFragment frag = new MyDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(MyDialogFragment.ID_TAG, dialogType);
-        args.putString(MyDialogFragment.WORD_TAG, queryWord);
-        args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-        frag.setArguments(args);
-        frag.show(getFragmentManager(), "show_word_fragment_dialog");
+        if (dialogType == MyDialogFragment.DIALOG_EDIT_WORD)
+        {
+            MyCustomEditDialog frag = new MyCustomEditDialog();
+            Bundle args = new Bundle();
+            args.putInt(MyDialogFragment.ID_TAG, dialogType);
+            args.putString(MyDialogFragment.WORD_TAG, queryWord);
+            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+            frag.setArguments(args);
+            frag.show(getFragmentManager(), "show_edit_word_fragment_dialog");
+        }
+        else
+        {
+            MyDialogFragment frag = new MyDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(MyDialogFragment.ID_TAG, dialogType);
+            args.putString(MyDialogFragment.WORD_TAG, queryWord);
+            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+            frag.setArguments(args);
+            frag.show(getFragmentManager(), "show_word_fragment_dialog");
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,7 +141,7 @@ public class DictFragment extends Fragment {
                 String queryWord = ((TextView) view).getText().toString();
                 Log.d(LOG_TAG, queryWord);
                 edtWord.setText(queryWord);
-                String translation = getTranslations(queryWord);
+                String translation = getTranslation(queryWord);
                 showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
             }
         });

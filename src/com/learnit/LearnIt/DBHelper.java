@@ -314,7 +314,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<String> getTranslations(String word) {
+    public String getTranslation(String word) {
         db = this.getReadableDatabase();
         ArrayList<String> listItems = new ArrayList<String>();
         Cursor c = db.query(DB_NAME,
@@ -324,13 +324,57 @@ public class DBHelper extends SQLiteOpenHelper {
                 null, null);
         if (c.moveToFirst()) {
             int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
-            do {
-                listItems.add(c.getString(translationColIndex));
-            } while (c.moveToNext());
+            String trans = c.getString(translationColIndex);
+            if (trans!=null)
+            {
+                c.close();
+                return trans;
+            }
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        return listItems;
+        return null;
+    }
+
+    public int getId(String word) {
+        db = this.getReadableDatabase();
+        ArrayList<String> listItems = new ArrayList<String>();
+        Cursor c = db.query(DB_NAME,
+                new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
+                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
+                WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
+                null, null);
+        if (c.moveToFirst()) {
+            int idColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
+            int id = c.getInt(idColIndex);
+            if (id!=0)
+            {
+                c.close();
+                return id;
+            }
+        } else
+            Log.d(LOG_TAG, "0 rows");
+        c.close();
+        return 0;
+    }
+
+    public boolean updateWord(int id, String word, String trans)
+    {
+        try
+        {
+            db = this.getWritableDatabase();
+            ContentValues args = new ContentValues();
+            args.put(WORD_COLUMN_NAME,word);
+            args.put(TRANSLATION_COLUMN_NAME,trans);
+            args.put(ID_COLUMN_NAME,id);
+            db.update(DB_NAME,args,ID_COLUMN_NAME + "=" + id,null);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.d(LOG_TAG,e.getMessage());
+            return false;
+        }
     }
 
     public ArrayList<String> getWords(String word) {

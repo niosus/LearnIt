@@ -44,8 +44,7 @@ public class HomeworkActivity extends FragmentActivity{
             }
             else
             {
-                dbHelper.getTranslations(queryWord);
-                ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslations(queryWord).get(0));
+                ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslation(queryWord));
             }
         }
     }
