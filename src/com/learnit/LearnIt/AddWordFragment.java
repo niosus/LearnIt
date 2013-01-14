@@ -3,6 +3,8 @@ package com.learnit.LearnIt;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class AddWordFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
@@ -17,6 +20,9 @@ public class AddWordFragment extends Fragment {
     private EditText editWord;
     private EditText editTranslation;
     private DBHelper dbHelper;
+
+    private ImageButton btn_clear_word;
+    private ImageButton btn_clear_trans;
 
     private final int SUCCESS=0;
     private final int WORD_IS_NULL=-1;
@@ -35,12 +41,65 @@ public class AddWordFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.add_word_fragment, container, false);
         Button btnAddWord = (Button) v.findViewById(R.id.btn_add_word);
+        btn_clear_trans = (ImageButton) v.findViewById(R.id.btn_add_trans_clear);
+        btn_clear_word = (ImageButton) v.findViewById(R.id.btn_add_word_clear);
         final MyBtnOnClickListener myBtnOnClickListener = new MyBtnOnClickListener();
         btnAddWord.setOnClickListener(myBtnOnClickListener);
+        btn_clear_trans.setOnClickListener(myBtnOnClickListener);
+        btn_clear_word.setOnClickListener(myBtnOnClickListener);
+        btn_clear_trans.setVisibility(View.INVISIBLE);
+        btn_clear_word.setVisibility(View.INVISIBLE);
         editWord = (EditText) v.findViewById(R.id.edv_add_word);
         editTranslation = (EditText) v.findViewById(R.id.edv_add_translation);
-        btnAddWord.setMinimumHeight(2 * editWord.getHeight());
-        btnAddWord.setMinimumWidth(btnAddWord.getHeight());
+
+        editWord.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString()!=null && editable.toString()!="")
+                {
+                    btn_clear_word.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    btn_clear_word.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+        editTranslation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString()!=null && editable.toString()!="")
+                {
+                    btn_clear_trans.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    btn_clear_trans.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
         return v;
     }
 
@@ -109,8 +168,20 @@ public class AddWordFragment extends Fragment {
     private class MyBtnOnClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-//            fragmentEventListener.addWordToDB(word, translation);
-              addWordToDB(editWord.getText().toString(),editTranslation.getText().toString());
+            switch (v.getId())
+            {
+                case R.id.btn_add_word:
+                    addWordToDB(editWord.getText().toString(),editTranslation.getText().toString());
+                    break;
+                case R.id.btn_add_trans_clear:
+                    editTranslation.setText("");
+                    v.setVisibility(View.INVISIBLE);
+                    break;
+                case R.id.btn_add_word_clear:
+                    editWord.setText("");
+                    v.setVisibility(View.INVISIBLE);
+                    break;
+            }
         }
 
     }

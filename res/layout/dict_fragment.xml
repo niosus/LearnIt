@@ -3,18 +3,33 @@
                 android:background="@android:color/background_dark"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-    <EditText
-            android:id="@+id/edv_search_word"
+    <LinearLayout
+            android:id="@+id/linearLayDict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_word_hint"
-            android:inputType="text"
-            android:paddingRight="20dp"/>
+        >
+        <EditText
+                android:id="@+id/edv_search_word"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:hint="@string/search_word_hint"
+                android:inputType="text"
+                android:paddingRight="20dp"/>
+        <ImageButton
+                android:id="@+id/btn_search_clear"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_clear"
+                android:contentDescription="@string/clear"
+                android:background="@android:color/background_dark" />
+        </LinearLayout>
     <ListView
             android:id="@+id/list_of_words"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edv_search_word">
+            android:layout_below="@id/linearLayDict">
     </ListView>
 
 </RelativeLayout>

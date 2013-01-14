@@ -16,6 +16,7 @@ public class DictFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
     private DBHelper dbHelper;
     private EditText edtWord;
+    private ImageButton btnClear;
 
 
     View v;
@@ -38,7 +39,6 @@ public class DictFragment extends Fragment {
         View v = info.targetView;
         String queryWord = ((TextView) v).getText().toString();
         Log.d(LOG_TAG,"item selected = " + queryWord);
-        //TODO: change null to normal translation! either here or in the dialog
         switch (item.getItemId()) {
             case R.id.context_menu_delete:
                 if (dbHelper.deleteWord(queryWord))
@@ -49,6 +49,7 @@ public class DictFragment extends Fragment {
                 return true;
             case R.id.context_menu_edit:
                 showDialog(queryWord,null,MyDialogFragment.DIALOG_EDIT_WORD);
+                edtWord.setText("");
                 return true;
             default:
                 Log.d(LOG_TAG,"none selected");
@@ -76,7 +77,6 @@ public class DictFragment extends Fragment {
     }
 
     public String getTranslation(String word) {
-//        ArrayList<String> strings = new ArrayList<String>();
         if (word != null && !word.isEmpty()) {
             Log.d(LOG_TAG, String.format("search word-%s", word));
             return dbHelper.getTranslation(word);
@@ -118,6 +118,14 @@ public class DictFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 getWordsByPattern(s.toString());
+                if (s.toString()!="" && s.toString()!=null)
+                {
+                    btnClear.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    btnClear.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -131,6 +139,10 @@ public class DictFragment extends Fragment {
             }
 
         });
+        btnClear = (ImageButton) v.findViewById(R.id.btn_search_clear);
+        MyBtnTouchListener touchListener = new MyBtnTouchListener();
+        btnClear.setOnClickListener(touchListener);
+        btnClear.setVisibility(View.INVISIBLE);
         final ListView listView = (ListView) v.findViewById(R.id.list_of_words);
         registerForContextMenu(listView);
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -147,5 +159,20 @@ public class DictFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private class MyBtnTouchListener implements View.OnClickListener
+    {
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.btn_search_clear:
+                    edtWord.setText("");
+                    btnClear.setVisibility(View.INVISIBLE);
+                    break;
+
+            }
+        }
     }
 }

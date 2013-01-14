@@ -85,11 +85,23 @@ public class MyCustomEditDialog extends DialogFragment {
                     Log.d(LOG_TAG,"update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
                     dbHelper.deleteWord(oldWord);
                     dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+                    showDialog(null,null,MyDialogFragment.DIALOG_WORD_UPDATED);
                     dismiss();
                     break;
                 case R.id.btn_cancel:
                     dismiss();
             }
         }
+    }
+
+    public void showDialog(String queryWord, String translation, int dialogType)
+    {
+            MyDialogFragment frag = new MyDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(MyDialogFragment.ID_TAG, dialogType);
+            args.putString(MyDialogFragment.WORD_TAG, queryWord);
+            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+            frag.setArguments(args);
+            frag.show(getFragmentManager(), "show_word_fragment_dialog");
     }
 }
