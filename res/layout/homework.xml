@@ -6,29 +6,31 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
             android:id="@+id/word_to_ask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             android:text="Large Text"
-            android:gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
             android:textAppearance="@android:style/TextAppearance.Large"
-            android:textSize="50sp"/>
+            android:textSize="50dp"/>
 
     <LinearLayout
             android:gravity="bottom|center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/word_to_ask"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:paddingTop="100dp">
+            android:layout_weight="2">
 
         <LinearLayout
                 android:id="@+id/first_button_layout"
@@ -64,4 +66,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

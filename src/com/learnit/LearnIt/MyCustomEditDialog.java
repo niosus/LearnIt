@@ -10,6 +10,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.os.Bundle;
@@ -48,6 +52,22 @@ public class MyCustomEditDialog extends DialogFragment {
         setStyle(STYLE_NO_TITLE,0);
     }
 
+    private String stripWordFromArticle(String str)
+    {
+        String[] tempArray = str.split(" ");
+        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
+        switch (tempArray.length)
+        {
+            case 1:
+                return str;
+            case 2:
+                return tempArray[1];
+            default:
+                return null;
+        }
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                           Bundle savedInstanceState)
@@ -56,7 +76,8 @@ public class MyCustomEditDialog extends DialogFragment {
         try{
             int id = getArguments().getInt(ID_TAG);
             oldWord= getArguments().getString(WORD_TAG);
-            String translation = dbHelper.getTranslation(oldWord);
+            String oldStrippedWord =  stripWordFromArticle(oldWord);
+            String translation = dbHelper.getTranslation(oldStrippedWord);
             currentId = dbHelper.getId(oldWord);
             Log.d(LOG_TAG,"got edit word - " + oldWord + " trans - " + translation + " id = " + id);
             if (id==DIALOG_EDIT_WORD)
@@ -178,7 +199,7 @@ public class MyCustomEditDialog extends DialogFragment {
                 args = new Bundle();
                 args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
                 frag.setArguments(args);
-                frag.show(getFragmentManager(), "word_added");
+                frag.show(getFragmentManager(), "word_updated");
                 dismiss();
                 break;
             case DBHelper.EXIT_CODE_WORD_UPDATED:
@@ -218,16 +239,5 @@ public class MyCustomEditDialog extends DialogFragment {
                 frag.show(getFragmentManager(), "wrong_format");
                 break;
         }
-    }
-
-    public void showDialog(String queryWord, String translation, int dialogType)
-    {
-            MyDialogFragment frag = new MyDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt(MyDialogFragment.ID_TAG, dialogType);
-            args.putString(MyDialogFragment.WORD_TAG, queryWord);
-            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-            frag.setArguments(args);
-            frag.show(getFragmentManager(), "show_word_fragment_dialog");
     }
 }

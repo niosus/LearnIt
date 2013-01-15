@@ -6,6 +6,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.content.ContentValues;
@@ -70,17 +74,31 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public long getDBSize() {
+    public long getDBSize(boolean noun) {
         db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + DB_NAME, null);
-        long count = cursor.getCount();
-        return count;
+        Cursor cursor;
+        if (noun)
+        {
+            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null", null);
+        }
+        else
+        {
+            cursor = db.rawQuery("select * from " + DB_NAME, null);
+        }
+        return cursor.getCount();
     }
 
-    public Cursor getRandRow()
+    public Cursor getRandRow(boolean noun)
     {
         db = this.getReadableDatabase();
-        return db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
+        if (!noun)
+        {
+            return db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
+        }
+        else
+        {
+            return db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
+        }
     }
 
     boolean checkArticle(String article) {
@@ -103,6 +121,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int writeToDB(String word, String translation) {
         try {
+            word=word.toLowerCase();
+            translation = translation.toLowerCase();
             List<String> wordsList = Arrays.asList(word.split(" "));
             ContentValues cv = new ContentValues();
             switch (wordsList.size()) {
@@ -119,7 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         return EXIT_CODE_EMPTY_INPUT;
                     }
                     cv.put(WORD_COLUMN_NAME, word);
-                    cv.put(ARTICLE_COLUMN_NAME, "");
+                    cv.put(ARTICLE_COLUMN_NAME, (String)null);
                     break;
                 case 0:
                     return EXIT_CODE_EMPTY_INPUT;
@@ -206,7 +226,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArticleWordIdStruct getRandomWord(ArrayList<Long> ids, long maxId) {
+    public ArticleWordIdStruct getRandomWord(ArrayList<Long> ids, boolean noun) {
+        maxId = getDBSize(noun);
         if (ids.size()>=maxId)
         {
             return null;
@@ -216,7 +237,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor c;
         int id = 0;
         do {
-            c = getRandRow();
+            c = getRandRow(noun);
             if (c.moveToFirst()) {
                 int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
                 int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
@@ -232,16 +253,29 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         while (idInArray(id,ids));
+        if (noun)
+        {
+            word=capitalize(word);
+        }
         ArticleWordIdStruct result = new ArticleWordIdStruct(article, word, id);
         return result;
     }
 
+    private String capitalize(String str)
+    {
+        if (str.length()>0)
+            return str.substring(0, 1).toUpperCase() + str.substring(1);
+        else
+            return null;
+    }
+
     public String getRandomTranslation(String testWord) {
-        maxId = getDBSize();
+//        maxId = getDBSize(false);
+        testWord=testWord.toLowerCase();
         String word = null;
         String trans = null;
         do {
-            Cursor c = getRandRow();
+            Cursor c = getRandRow(false);
             if (c.moveToFirst()) {
                 int transColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
                 int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
@@ -333,6 +367,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public String getTranslation(String word) {
+        word=word.toLowerCase();
         db = this.getReadableDatabase();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
@@ -354,6 +389,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int getId(String word) {
+        word=word.toLowerCase();
         db = this.getReadableDatabase();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
@@ -375,6 +411,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> getWords(String word) {
+        word=word.toLowerCase();
         db = this.getWritableDatabase();
         ArrayList<String> listItems = new ArrayList<String>();
         Cursor c = db.query(DB_NAME,
@@ -382,10 +419,18 @@ public class DBHelper extends SQLiteOpenHelper {
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
                 null, WORD_COLUMN_NAME);
+        String tempWord;
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
             do {
-                listItems.add(c.getString(wordColIndex));
+                tempWord = c.getString(wordColIndex);
+                if (null!=(c.getString(articleColIndex)))
+                {
+                    tempWord = capitalize(tempWord);
+                    tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
+                }
+                listItems.add(tempWord);
             } while (c.moveToNext());
         } else
             Log.d(LOG_TAG, "0 rows");

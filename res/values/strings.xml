@@ -3,6 +3,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <resources>
 
     <string name="app_name">LearnIt</string>
@@ -75,6 +79,12 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="german_articles">
+        <item>der</item>
+        <item>die</item>
+        <item>das</item>
     </string-array>
 
     <string-array name="languages">

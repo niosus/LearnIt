@@ -3,6 +3,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/notification_group">
@@ -23,6 +27,7 @@
         <com.learnit.LearnIt.TimePreference
                 android:key="time_to_start"
                 android:title="@string/pref_time_to_start"/>
+
 
     </PreferenceCategory>
 

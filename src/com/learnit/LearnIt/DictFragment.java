@@ -6,6 +6,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.Activity;
@@ -32,39 +36,6 @@ public class DictFragment extends Fragment {
     View v;
 
     public DictFragment() {
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        // Handle item selection
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        View v = info.targetView;
-        String queryWord = ((TextView) v).getText().toString();
-        Log.d(LOG_TAG,"item selected = " + queryWord);
-        switch (item.getItemId()) {
-            case R.id.context_menu_delete:
-                if (dbHelper.deleteWord(queryWord))
-                {
-                    showDialog(queryWord,null,MyDialogFragment.DIALOG_WORD_DELETED);
-                    edtWord.setText("");
-                }
-                return true;
-            case R.id.context_menu_edit:
-                showDialog(queryWord,null,MyDialogFragment.DIALOG_EDIT_WORD);
-                edtWord.setText("");
-                return true;
-            default:
-                Log.d(LOG_TAG,"none selected");
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -120,6 +91,21 @@ public class DictFragment extends Fragment {
         }
     }
 
+    private String stripWordFromArticle(String str)
+    {
+        String[] tempArray = str.split(" ");
+        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
+        switch (tempArray.length)
+        {
+            case 1:
+                return str;
+            case 2:
+                return tempArray[1];
+            default:
+                return null;
+        }
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.dict_fragment, container, false);
@@ -156,7 +142,6 @@ public class DictFragment extends Fragment {
         btnClear.setOnClickListener(touchListener);
         btnClear.setVisibility(View.INVISIBLE);
         final ListView listView = (ListView) v.findViewById(R.id.list_of_words);
-//        registerForContextMenu(listView);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             // Called when the user long-clicks on someView
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
@@ -176,9 +161,10 @@ public class DictFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 String queryWord = ((TextView) view).getText().toString();
+                String tempStrippedWord = stripWordFromArticle(queryWord);
                 Log.d(LOG_TAG, queryWord);
-                edtWord.setText(queryWord);
-                String translation = getTranslation(queryWord);
+                edtWord.setText(tempStrippedWord);
+                String translation = getTranslation(tempStrippedWord);
                 showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
             }
         });
