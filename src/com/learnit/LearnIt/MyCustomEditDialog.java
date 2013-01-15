@@ -14,6 +14,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.os.Bundle;
@@ -178,7 +182,8 @@ public class MyCustomEditDialog extends DialogFragment {
                     }
                     else
                     {
-                        dbHelper.deleteWord(oldWord);
+                        String tempWord = stripWordFromArticle(oldWord);
+                        dbHelper.deleteWord(tempWord);
                         int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
                         showMessage(exitCode);
                     }
