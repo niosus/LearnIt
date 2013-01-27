@@ -10,6 +10,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.NotificationManager;
@@ -23,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HomeworkActivity extends FragmentActivity{
@@ -48,11 +53,19 @@ public class HomeworkActivity extends FragmentActivity{
 
     private void setBtnTexts(int correctId)
     {
+        ArrayList<String> usedWords = new ArrayList<String>();
+        usedWords.add(queryWord);
+        String temp;
         for (int i = 0; i<btnIds.length; ++i)
         {
             if (correctId!=i)
             {
-                ((Button) findViewById(btnIds[i])).setText(dbHelper.getRandomTranslation(queryWord));
+                temp = dbHelper.getRandomTranslation(usedWords);
+                if (null==temp)
+                {
+                    break;
+                }
+                ((Button) findViewById(btnIds[i])).setText(temp);
             }
             else
             {

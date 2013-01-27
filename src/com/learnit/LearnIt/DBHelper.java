@@ -14,6 +14,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.content.ContentValues;
@@ -275,9 +279,12 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
     }
 
-    public String getRandomTranslation(String testWord) {
-//        maxId = getDBSize(false);
-        testWord=testWord.toLowerCase();
+    public String getRandomTranslation(ArrayList<String> testWord) {
+        long size = this.getDBSize(false);
+        if (size<=testWord.size())
+        {
+            return null;
+        }
         String word = null;
         String trans = null;
         do {
@@ -294,7 +301,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 return null;
             }
         }
-        while (testWord.equals(word));
+        while (testWord.contains(word));
         return trans;
     }
 

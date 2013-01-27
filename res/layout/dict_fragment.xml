@@ -6,9 +6,9 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/relative_layout_dict"
-                android:background="@android:color/background_dark"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
     <RelativeLayout

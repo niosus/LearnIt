@@ -6,13 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
 package com.learnit.LearnIt;
 
@@ -28,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HomeworkArticleActivity extends FragmentActivity{
@@ -50,32 +44,36 @@ public class HomeworkArticleActivity extends FragmentActivity{
         dbHelper = new DBHelper(this);
     }
 
-    private String getRandArticle(String correctArt)
+    private String getRandArticle(ArrayList<String> array)
     {
         Resources res = getResources();
+        ArrayList<String> tempArray = new ArrayList<String>();
         String[] articles = res.getStringArray(R.array.german_articles);
-        Log.d(LOG_TAG,"articles are " + articles);
+        Log.d(LOG_TAG,"articles are " + articles.toString());
         Random rand = new Random();
         int length = articles.length;
         int randId;
-        do {
-             randId = rand.nextInt(length);
+        do
+        {
+            randId = rand.nextInt(length);
         }
-        while (correctArt.equals(articles[randId]));
+        while (array.contains(articles[randId]));
         return articles[randId];
     }
 
     private void setBtnTexts(int correctId)
     {
+        ((Button) findViewById(btnIds[correctId])).setText(article);
+        ArrayList<String> array = new ArrayList<String>();
+        array.add(article);
+        String tempArticle;
         for (int i = 0; i<btnIds.length; ++i)
         {
-            if (correctId==i)
+            if (correctId!=i)
             {
-                ((Button) findViewById(btnIds[i])).setText(article);
-            }
-            else
-            {
-                ((Button) findViewById(btnIds[i])).setText(getRandArticle(article));
+                tempArticle = getRandArticle(array);
+                ((Button) findViewById(btnIds[i])).setText(tempArticle);
+                array.add(tempArticle);
             }
         }
     }
