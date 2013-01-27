@@ -7,6 +7,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <resources>
 
     <string name="app_name">LearnIt</string>
@@ -22,7 +26,11 @@
     <string name="search_word_hint">Start typing to search</string>
     <string name="add_translation_hint">Input translation</string>
     <string name="add_word_button_text">Add</string>
-    <string name="toast_notif_text">Starting Notification Timer</string>
+
+    <!--toast texts-->
+    <string name="toast_notif_start_text">Notification timer started</string>
+    <string name="toast_notif_stop_text">Notification timer stopped</string>
+    <string name="toast_notif_update_text">Notification timer updated</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Oops..</string>

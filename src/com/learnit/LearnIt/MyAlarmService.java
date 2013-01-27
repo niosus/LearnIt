@@ -10,6 +10,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.Notification;
@@ -36,8 +40,6 @@ public class MyAlarmService extends Service {
 
     @Override
     public void onCreate() {
-//        Toast.makeText(this, "MyAlarmService.onCreate()", Toast.LENGTH_LONG)
-//                .show();
         Log.d(LOG_TAG,"created Alarm");
         dbHelper = new DBHelper(this);
     }
@@ -55,6 +57,7 @@ public class MyAlarmService extends Service {
     public void stop() {
         super.stopSelf();
     }
+
 
     @Override
     public void onStart(Intent intent, int startId) {
