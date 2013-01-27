@@ -6,6 +6,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/relative_layout_dict"
@@ -31,7 +35,7 @@
                 android:src="@drawable/ic_stat_clear"
                 android:padding="5dp"
                 android:contentDescription="@string/clear"
-                android:background="@android:color/background_dark" />
+                android:background="@android:color/transparent" />
         </RelativeLayout>
     <ListView
             android:id="@+id/list_of_words"

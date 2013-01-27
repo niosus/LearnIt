@@ -6,6 +6,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -20,6 +24,12 @@
             android:orderInCategory="100"
             android:showAsAction="never"
             android:title="@string/menu_settings"/>
+
+    <item
+            android:id="@+id/menu_show_all_words"
+            android:orderInCategory="100"
+            android:showAsAction="never"
+            android:title="@string/menu_show_all_words"/>
 
 
 </menu>

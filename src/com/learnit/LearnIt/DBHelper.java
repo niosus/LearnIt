@@ -18,6 +18,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.content.ContentValues;
@@ -432,6 +436,29 @@ public class DBHelper extends SQLiteOpenHelper {
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
                 null, WORD_COLUMN_NAME);
+        String tempWord;
+        if (c.moveToFirst()) {
+            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+            do {
+                tempWord = c.getString(wordColIndex);
+                if (null!=(c.getString(articleColIndex)))
+                {
+                    tempWord = capitalize(tempWord);
+                    tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
+                }
+                listItems.add(tempWord);
+            } while (c.moveToNext());
+        } else
+            Log.d(LOG_TAG, "0 rows");
+        c.close();
+        return listItems;
+    }
+
+    public ArrayList<String> getAllWords() {
+        db = this.getReadableDatabase();
+        ArrayList<String> listItems = new ArrayList<String>();
+        Cursor c = db.rawQuery("SELECT * FROM " + DB_NAME + " ORDER BY "+ WORD_COLUMN_NAME, null);
         String tempWord;
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);

@@ -6,10 +6,15 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -31,6 +36,7 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_GUESS = 7;
     public static final int DIALOG_WORD_DELETED = 8;
     public static final int DIALOG_EDIT_WORD = 9;
+    public static final int DIALOG_PROGRESS = 10;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -84,14 +90,27 @@ public class MyDialogFragment extends DialogFragment {
                 return builder.create();
             case DIALOG_WORD_DELETED:
                 word = getArguments().getString(WORD_TAG);
-                builder.setMessage(String.format(this.getString(R.string.dialog_word_deleted_message), word)).setTitle(
-                        R.string.dialog_word_deleted_title);
+                builder.setMessage(String.format(this.getString(R.string.dialog_progress_message), word)).setTitle(
+                        R.string.dialog_progress_title);
                 builder.setNeutralButton(R.string.ok, myDialogClickListener);
                 return builder.create();
+            case DIALOG_PROGRESS:
+                ProgressDialog progDialog = new ProgressDialog(getActivity());
+                progDialog.setMessage(this.getString(R.string.dialog_progress_message));
+                progDialog.setTitle(R.string.dialog_progress_title);
+                progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progDialog.setOnCancelListener(myOnCancelListener);
+                return progDialog;
 
         }
         return null;
     }
+    DialogInterface.OnCancelListener myOnCancelListener = new DialogInterface.OnCancelListener() {
+        @Override
+        public void onCancel(DialogInterface dialogInterface) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    };
 
     OnClickListener myDialogClickListener = new OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {

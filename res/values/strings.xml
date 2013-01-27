@@ -11,6 +11,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <resources>
 
     <string name="app_name">LearnIt</string>
@@ -18,9 +22,6 @@
     <string name="add_words_frag_title">Add Words</string>
     <string name="dictionary_frag_title">Dictionary</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_export">Export dictionary</string>
-    <string name="menu_import">Import dictionary</string>
     <string name="add_word_hint">Input word</string>
     <string name="edit_dialog_title">Editing...</string>
     <string name="search_word_hint">Start typing to search</string>
@@ -49,6 +50,8 @@
     <string name="dialog_wrong_guess_message">This one is wrong, please try again!</string>
     <string name="dialog_word_deleted_title">Done</string>
     <string name="dialog_word_deleted_message">The word \"%s\" was successfully deleted.</string>
+    <string name="dialog_progress_title">Working...</string>
+    <string name="dialog_progress_message">Please wait while the words are fetched from the dictionary.</string>
     <string name="notif_text">Please click to translate the word.</string>
     <string name="ok">OK</string>
     <string name="update">Update</string>
@@ -71,6 +74,12 @@
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_delete">Delete</string>
+
+    <!--menu strings-->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_export">Export dictionary</string>
+    <string name="menu_import">Import dictionary</string>
+    <string name="menu_show_all_words">Show all words</string>
 
     <string name="notification_group">Notification settings</string>
 

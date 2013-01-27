@@ -6,13 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
 package com.learnit.LearnIt;
 
@@ -26,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -40,6 +34,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(
                 getSupportFragmentManager());
@@ -61,6 +56,12 @@ public class MainActivity extends FragmentActivity {
         Log.d(LOG_TAG,"start activity called");
     }
 
+    private void startShowWordsActivity() {
+        Intent intent = new Intent(this, ShowAllWordsActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG,"start activity called");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -77,6 +78,10 @@ public class MainActivity extends FragmentActivity {
 //            case R.id.menu_import:
 //                Log.d(LOG_TAG, "import DB");
 //                dbHelper.importDB();
+            case R.id.menu_show_all_words:
+                Log.d(LOG_TAG, "show all words");
+                startShowWordsActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

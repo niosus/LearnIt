@@ -18,6 +18,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.os.Bundle;
@@ -35,7 +39,6 @@ import android.widget.ImageButton;
 public class MyCustomEditDialog extends DialogFragment {
     public static final String ID_TAG = "id";
     public static final String WORD_TAG = "word";
-    public static final String TRANSLATION_TAG = "translation";
     public final String LOG_TAG = "my_logs";
     public static final int DIALOG_EDIT_WORD = 9;
     EditText edtWord;
