@@ -7,7 +7,51 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <resources>
-    <string name="pref_notif_active">notification_enabled</string>
-    <string name="notification_frequency">notification_frequency</string>
+    <string name="key_pref_notif_active">notification_enabled</string>
+    <string name="key_notification_frequency">notification_frequency</string>
+    <string name="key_way_to_learn">way_to_learn</string>
+    <string name="key_num_of_words">num_of_words</string>
+    <string name="key_language">language_to_learn</string>
+
+    <string-array name="values_freq">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="array_num_of_notif">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="values_languages">
+        <item>1</item>
+    </string-array>
+
+    <string-array name="values_way_to_learn">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="german_articles">
+        <item>der</item>
+        <item>die</item>
+        <item>das</item>
+    </string-array>
 </resources>

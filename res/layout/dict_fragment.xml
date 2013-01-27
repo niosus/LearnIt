@@ -10,6 +10,10 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/relative_layout_dict"
@@ -26,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/search_word_hint"
                 android:inputType="text"
+                android:drawableLeft="@android:drawable/ic_menu_search"
                 android:paddingRight="20dp"/>
         <ImageButton
                 android:id="@+id/btn_search_clear"

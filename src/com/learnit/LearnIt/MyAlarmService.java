@@ -14,6 +14,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.Notification;
@@ -22,7 +26,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -32,15 +38,26 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MyAlarmService extends Service {
-
+    private final String NONE_STR = "-1";
+    private final int NONE = -1;
     private static final int idModificator = 1552235; // some number
     public static DBHelper dbHelper;
-    private final int numOfNotif = 5;
+    private int numOfNotif = 5;
+    private int mode;
     private final String LOG_TAG = "my_logs";
 
     @Override
     public void onCreate() {
         Log.d(LOG_TAG,"created Alarm");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String strNumOfNotif = sp.getString(getString(R.string.key_num_of_words), NONE_STR);
+        numOfNotif = Integer.parseInt(strNumOfNotif);
+        String strMode = sp.getString(getString(R.string.key_way_to_learn),NONE_STR);
+        mode = Integer.parseInt(strMode);
+        if (-1==numOfNotif)
+        {
+            numOfNotif=5;
+        }
         dbHelper = new DBHelper(this);
     }
 
@@ -62,7 +79,20 @@ public class MyAlarmService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         Random rand = new Random();
-        boolean isNoun = rand.nextBoolean();
+        boolean isNoun;
+        switch (mode)
+        {
+            case 1:
+                isNoun = false;
+                break;
+            case 2:
+                isNoun = true;
+                break;
+            case 3:
+                isNoun = rand.nextBoolean();
+                break;
+            default:isNoun=false;
+        }
         ArrayList<Pair<String, String> > randWords = getRandWordsFromDB(isNoun);
         for (int i = randWords.size(); i>0; --i)
         {
@@ -115,19 +145,34 @@ public class MyAlarmService extends Service {
                 this).setContentTitle(word).setContentText(getString(R.string.notif_text));
         switch (wordNum) {
             case 1:
-                mBuilder.setSmallIcon(R.drawable.ic_stat_word_one);
+                mBuilder.setSmallIcon(R.drawable.ic_stat_one);
                 break;
             case 2:
-                mBuilder.setSmallIcon(R.drawable.ic_stat_word_two);
+                mBuilder.setSmallIcon(R.drawable.ic_stat_two);
                 break;
             case 3:
-                mBuilder.setSmallIcon(R.drawable.ic_stat_word_three);
+                mBuilder.setSmallIcon(R.drawable.ic_stat_three);
                 break;
             case 4:
-                mBuilder.setSmallIcon(R.drawable.ic_stat_word_four);
+                mBuilder.setSmallIcon(R.drawable.ic_stat_four);
                 break;
             case 5:
-                mBuilder.setSmallIcon(R.drawable.ic_stat_word_five);
+                mBuilder.setSmallIcon(R.drawable.ic_stat_five);
+                break;
+            case 6:
+                mBuilder.setSmallIcon(R.drawable.ic_stat_six);
+                break;
+            case 7:
+                mBuilder.setSmallIcon(R.drawable.ic_stat_seven);
+                break;
+            case 8:
+                mBuilder.setSmallIcon(R.drawable.ic_stat_eight);
+                break;
+            case 9:
+                mBuilder.setSmallIcon(R.drawable.ic_stat_nine);
+                break;
+            case 10:
+                mBuilder.setSmallIcon(R.drawable.ic_stat_ten);
                 break;
 
         }

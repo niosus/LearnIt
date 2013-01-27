@@ -10,6 +10,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.AlarmManager;
@@ -34,7 +38,10 @@ public class PrefActivity extends PreferenceActivity {
 
     public static class PrefsFragment1 extends PreferenceFragment {
         private final String LOG_TAG = "my_logs";
-        ListPreference listPrefTimes;
+        ListPreference lstNotifFreq;
+        ListPreference lstWayToLearn;
+        ListPreference lstNumOfWords;
+        ListPreference lstLanguageToLearn;
         CheckBoxPreference checkBoxPreference;
         TimePreference timePreference;
         boolean changed = false;
@@ -44,15 +51,35 @@ public class PrefActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.pref);
-            listPrefTimes = (ListPreference) findPreference(getString(R.string.notification_frequency));
-            listPrefTimes.setOnPreferenceChangeListener(listener);
+            lstNotifFreq = (ListPreference) findPreference(getString(R.string.key_notification_frequency));
+            lstNotifFreq.setOnPreferenceChangeListener(listener);
 
-            checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.pref_notif_active));
+            lstLanguageToLearn = (ListPreference) findPreference(getString(R.string.key_language));
+            lstLanguageToLearn.setOnPreferenceChangeListener(listener);
+
+            lstWayToLearn = (ListPreference) findPreference(getString(R.string.key_way_to_learn));
+            lstWayToLearn.setOnPreferenceChangeListener(listener);
+
+            lstNumOfWords = (ListPreference) findPreference(getString(R.string.key_num_of_words));
+            lstNumOfWords.setOnPreferenceChangeListener(listener);
+
+            checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
             checkBoxPreference.setOnPreferenceChangeListener(listener);
             timePreference = (TimePreference) findPreference("time_to_start");
 
-            if (listPrefTimes.getEntry()!=null)
-                listPrefTimes.setSummary(listPrefTimes.getEntry().toString());
+            updateAllSummaries();
+        }
+
+        void updateAllSummaries()
+        {
+            if (lstNotifFreq.getEntry()!=null)
+                lstNotifFreq.setSummary(lstNotifFreq.getEntry().toString());
+            if (lstLanguageToLearn.getEntry()!=null)
+                lstLanguageToLearn.setSummary(lstLanguageToLearn.getEntry().toString());
+            if (lstWayToLearn.getEntry()!=null)
+                lstWayToLearn.setSummary(lstWayToLearn.getEntry().toString());
+            if (lstNumOfWords.getEntry()!=null)
+                lstNumOfWords.setSummary(lstNumOfWords.getEntry().toString());
         }
 
         @Override
@@ -72,7 +99,8 @@ public class PrefActivity extends PreferenceActivity {
         void updateEnabled()
         {
             boolean enabled = checkBoxPreference.isChecked();
-            listPrefTimes.setEnabled(enabled);
+            lstNotifFreq.setEnabled(enabled);
+            lstNumOfWords.setEnabled(enabled);
             timePreference.setEnabled(enabled);
         }
 
@@ -81,8 +109,8 @@ public class PrefActivity extends PreferenceActivity {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
             if (changed)
             {
-                boolean notif_enabled = sp.getBoolean(getString(R.string.pref_notif_active), false);
-                String frequency_id = sp.getString(getString(R.string.notification_frequency), "-1");
+                boolean notif_enabled = sp.getBoolean(getString(R.string.key_pref_notif_active), false);
+                String frequency_id = sp.getString(getString(R.string.key_notification_frequency), "-1");
                 if (notif_enabled) {
                     startNotificationTimer(getFreqFromId(frequency_id));
                 } else if (!notif_enabled) {
@@ -151,19 +179,42 @@ public class PrefActivity extends PreferenceActivity {
             public boolean onPreferenceChange(Preference pref, Object newValue) {
                 if (pref instanceof CheckBoxPreference)
                 {
-                   if (pref.getKey().toString()==getString(R.string.pref_notif_active))
+                   if (pref.getKey().toString()==getString(R.string.key_pref_notif_active))
                    {
-                       listPrefTimes.setEnabled((Boolean) newValue);
+                       lstNotifFreq.setEnabled((Boolean) newValue);
                        timePreference.setEnabled(((Boolean) newValue));
+                       lstNumOfWords.setEnabled((Boolean) newValue);
                        changed=true;
                        return true;
                    }
                 }
                 else if (pref instanceof ListPreference) {
-                    if (pref.getKey().toString()==getString(R.string.notification_frequency))
+                    if (pref.getKey().toString()==getString(R.string.key_notification_frequency))
                     {
-                        listPrefTimes = (ListPreference) pref;
-                        pref.setSummary(listPrefTimes.getEntries()[listPrefTimes.findIndexOfValue(newValue.toString())]);
+                        lstNotifFreq = (ListPreference) pref;
+                        pref.setSummary(lstNotifFreq.getEntries()[lstNotifFreq.findIndexOfValue(newValue.toString())]);
+                        changed = true;
+                        updated = true;
+                        return true;
+                    }
+                    else if (pref.getKey().toString()==getString(R.string.key_num_of_words))
+                    {
+                        lstNumOfWords = (ListPreference) pref;
+                        pref.setSummary(lstNumOfWords.getEntries()[lstNumOfWords.findIndexOfValue(newValue.toString())]);
+                        changed = true;
+                        updated = true;
+                        return true;
+                    }
+                    else if (pref.getKey().toString()==getString(R.string.key_language))
+                    {
+                        lstLanguageToLearn = (ListPreference) pref;
+                        pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
+                        return true;
+                    }
+                    else if (pref.getKey().toString()==getString(R.string.key_way_to_learn))
+                    {
+                        lstWayToLearn = (ListPreference) pref;
+                        pref.setSummary(lstWayToLearn.getEntries()[lstWayToLearn.findIndexOfValue(newValue.toString())]);
                         changed = true;
                         updated = true;
                         return true;

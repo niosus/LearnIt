@@ -11,27 +11,57 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="@string/main_group">
+        <ListPreference
+                android:key="@string/key_language"
+                android:summary=""
+                android:title="@string/pref_language_to_learn"
+                android:entries="@array/languages"
+                android:defaultValue="1"
+                android:entryValues="@array/languages"/>
+
+        <ListPreference
+                android:key="@string/key_way_to_learn"
+                android:summary=""
+                android:title="@string/pref_way_to_learn"
+                android:defaultValue="1"
+                android:entries="@array/entries_way_to_learn"
+                android:entryValues="@array/values_way_to_learn"/>
+
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/notification_group">
         <CheckBoxPreference
-                android:key="@string/pref_notif_active"
+                android:key="@string/key_pref_notif_active"
                 android:summary="Enable notifications"
                 android:title="Notifications">
         </CheckBoxPreference>
 
         <ListPreference
-                android:key="@string/notification_frequency"
+                android:key="@string/key_notification_frequency"
                 android:summary=""
                 android:title="@string/pref_reminder_freq"
+                android:defaultValue="5"
                 android:entries="@array/time_entries"
-                android:entryValues="@array/time_entry_values"/>
+                android:entryValues="@array/values_freq"/>
 
+        <ListPreference
+                android:key="@string/key_num_of_words"
+                android:defaultValue="5"
+                android:summary=""
+                android:title="@string/pref_num_of_words"
+                android:entries="@array/array_num_of_notif"
+                android:entryValues="@array/array_num_of_notif"/>
 
         <com.learnit.LearnIt.TimePreference
                 android:key="time_to_start"
                 android:title="@string/pref_time_to_start"/>
-
 
     </PreferenceCategory>
 

@@ -7,13 +7,7 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
 
 <resources>
 
@@ -56,12 +50,16 @@
     <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
 
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Reminder frequency</string>
     <string name="pref_language_to_learn">Language to learn</string>
     <string name="pref_time_to_start">Time to start notifications</string>
-    <string name="clear">Clear</string>
+    <string name="pref_num_of_words">Number of words in session</string>
+    <string name="pref_way_to_learn">Way to learn words</string>
+
 
     <string name="checkbox1_title">CheckBox 1</string>
     <string name="checkbox1_summary">Summary of CheckBox 1</string>
@@ -81,7 +79,9 @@
     <string name="menu_import">Import dictionary</string>
     <string name="menu_show_all_words">Show all words</string>
 
+    <!--prefs categories-->
     <string name="notification_group">Notification settings</string>
+    <string name="main_group">Main settings</string>
 
     <string-array name="time_entries">
         <item>Hour</item>
@@ -90,26 +90,15 @@
         <item>Half-day</item>
         <item>Day</item>
     </string-array>
-    <string-array name="time_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
-
-    <string-array name="german_articles">
-        <item>der</item>
-        <item>die</item>
-        <item>das</item>
-    </string-array>
 
     <string-array name="languages">
-        <item>English</item>
         <item>German</item>
-        <item>Spanish</item>
-        <item>Italian</item>
-        <item>Russian</item>
+    </string-array>
+
+    <string-array name="entries_way_to_learn">
+        <item>Translation only</item>
+        <item>Articles only</item>
+        <item>Mixed</item>
     </string-array>
 
 </resources>

@@ -6,6 +6,10 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+/*
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ */
+
 package com.learnit.LearnIt;
 
 import android.app.Activity;
@@ -14,11 +18,8 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -32,6 +33,8 @@ public class AddWordFragment extends Fragment {
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
 
+    MenuItem saveItem;
+
     private final int SUCCESS=0;
     private final int WORD_IS_NULL=-1;
     private final int WORD_IS_EMPTY=-2;
@@ -44,15 +47,57 @@ public class AddWordFragment extends Fragment {
 
     }
 
+    public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    public void onResume() {
+        super.onResume();
+        if (null!=saveItem)
+        {
+            if (null!=editTranslation && null!=editWord)
+            {
+                if (editWord.length()>0 && editTranslation.length()>0)
+                {
+                    saveItem.setVisible(true);
+                }
+                else
+                {
+                    saveItem.setVisible(false);
+                }
+            }
+            else
+            {
+                saveItem.setVisible(false);
+            }
+        }
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actions_add_words, menu);
+        saveItem = menu.findItem(R.id.save_item);
+        saveItem.setVisible(false);
+        saveItem.setOnMenuItemClickListener(myOnMenuClickListener);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    MenuItem.OnMenuItemClickListener myOnMenuClickListener = new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            addWordToDB(editWord.getText().toString(),editTranslation.getText().toString());
+            Log.d(LOG_TAG,"testing yahoo!!!");
+            return false;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.add_word_fragment, container, false);
-        Button btnAddWord = (Button) v.findViewById(R.id.btn_add_word);
         btn_clear_trans = (ImageButton) v.findViewById(R.id.btn_add_trans_clear);
         btn_clear_word = (ImageButton) v.findViewById(R.id.btn_add_word_clear);
         final MyBtnOnClickListener myBtnOnClickListener = new MyBtnOnClickListener();
-        btnAddWord.setOnClickListener(myBtnOnClickListener);
         btn_clear_trans.setOnClickListener(myBtnOnClickListener);
         btn_clear_word.setOnClickListener(myBtnOnClickListener);
         btn_clear_trans.setVisibility(View.INVISIBLE);
@@ -79,6 +124,7 @@ public class AddWordFragment extends Fragment {
                 }
                 if (editable.length()==0)
                 {
+                    saveItem.setVisible(false);
                     btn_clear_word.setVisibility(View.INVISIBLE);
                 }
             }
@@ -99,9 +145,14 @@ public class AddWordFragment extends Fragment {
                 if (editable.toString()!=null && editable.toString()!="")
                 {
                     btn_clear_trans.setVisibility(View.VISIBLE);
+                    if (editable.length()>0)
+                    {
+                        saveItem.setVisible(true);
+                    }
                 }
                 if (editable.length()==0)
                 {
+                    saveItem.setVisible(false);
                     btn_clear_trans.setVisibility(View.INVISIBLE);
                 }
 
@@ -182,9 +233,6 @@ public class AddWordFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId())
             {
-                case R.id.btn_add_word:
-                    addWordToDB(editWord.getText().toString(),editTranslation.getText().toString());
-                    break;
                 case R.id.btn_add_trans_clear:
                     editTranslation.setText("");
                     v.setVisibility(View.INVISIBLE);
