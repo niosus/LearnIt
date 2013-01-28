@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+
+
+<resources>
+
+    <string name="app_name">LearnIt</string>
+    <string name="learn_words_frag_title">Учить слова</string>
+    <string name="add_words_frag_title">Добавить</string>
+    <string name="dictionary_frag_title">Мой словарь</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_word_hint">Введите слово...</string>
+    <string name="edit_dialog_title">Редактируем...</string>
+    <string name="search_word_hint">Поиск...</string>
+    <string name="add_translation_hint">Введите перевод...</string>
+
+    <!--toast texts-->
+    <string name="toast_notif_start_text">Таймер запущен</string>
+    <string name="toast_notif_stop_text">Таймер остановлен</string>
+    <string name="toast_notif_update_text">Таймер обновлен</string>
+
+    <!--Dialog strings-->
+    <string name="dialog_empty_title">Ой...</string>
+    <string name="dialog_empty_text">Одно из полей не заполнено. Пожалуйста, заполните его.</string>
+    <string name="dialog_added_title">Готово!</string>
+    <string name="dialog_added_text">Слово успешно добавлено</string>
+    <string name="dialog_updated_title">Слово обновлено!</string>
+    <string name="dialog_updated_text">Новый перевод добавлен к существующему слову</string>
+    <string name="dialog_exists_title">Уже есть!</string>
+    <string name="dialog_exists_text">В словаре уже есть слово с таким переводом</string>
+    <string name="dialog_format_title">Ой!</string>
+    <string name="dialog_format_text">Неправильный формат воода</string>
+    <string name="dialog_article_title">Ой!</string>
+    <string name="dialog_article_text">Только артикли разрешены</string>
+    <string name="dialog_wrong_guess_title">Не-а</string>
+    <string name="dialog_wrong_guess_message">Неправильно, попробуйте еще</string>
+    <string name="dialog_word_deleted_title">Готово!</string>
+    <string name="dialog_word_deleted_message">Слово \"%s\" успешно удалено</string>
+    <string name="dialog_progress_title">Работаем...</string>
+    <string name="dialog_progress_message">Пожалуйста подождите пока мы достаем слова из словаря</string>
+    <string name="notif_text">Клацните, чтобы перевести слово</string>
+    <string name="ok">OK</string>
+    <string name="update">Обновить</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="clear">Очистить</string>
+
+    <!--Pref Strings-->
+    <string name="pref_reminder_freq">Частота напоминаний</string>
+    <string name="pref_language_to_learn">Изучаемый язык</string>
+    <string name="pref_time_to_start">Когда начать показывать напоминания?</string>
+    <string name="pref_num_of_words">Слов в сессии</string>
+    <string name="pref_way_to_learn">Метод изучения</string>
+
+
+    <string name="checkbox1_title">CheckBox 1</string>
+    <string name="checkbox1_summary">Summary of CheckBox 1</string>
+    <string name="edittext1_title">EditText 1</string>
+    <string name="edittext1_summary">Summary of EditText 1</string>
+    <string name="list1_title">List 1</string>
+    <string name="list1_summary">Summary of List 1</string>
+    <string name="db_exported">Словарь успешно сохранен в \n%s</string>
+
+    <!--context menu strings-->
+    <string name="context_menu_edit">Редактировать</string>
+    <string name="context_menu_delete">Удалить</string>
+
+    <!--menu strings-->
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_export">Экспорт словаря</string>
+    <string name="menu_import">Импорт словаря</string>
+    <string name="menu_show_all_words">Показать все слова</string>
+
+    <!--prefs categories-->
+    <string name="notification_group">Настройки уведомлений</string>
+    <string name="main_group">Основные настройки</string>
+
+    <string-array name="time_entries">
+        <item>Час</item>
+        <item>Два часа</item>
+        <item>Три часа</item>
+        <item>Пол дня</item>
+        <item>День</item>
+    </string-array>
+
+    <string-array name="entries_languages">
+        <item>Немецкий</item>
+    </string-array>
+
+    <string-array name="entries_way_to_learn">
+        <item>Только перевод</item>
+        <item>Только артикли</item>
+        <item>Смешанный</item>
+    </string-array>
+
+</resources>

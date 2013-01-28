@@ -22,9 +22,9 @@
                 android:key="@string/key_language"
                 android:summary=""
                 android:title="@string/pref_language_to_learn"
-                android:entries="@array/languages"
+                android:entries="@array/entries_languages"
                 android:defaultValue="1"
-                android:entryValues="@array/languages"/>
+                android:entryValues="@array/values_languages"/>
 
         <ListPreference
                 android:key="@string/key_way_to_learn"

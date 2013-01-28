@@ -91,7 +91,7 @@
         <item>Day</item>
     </string-array>
 
-    <string-array name="languages">
+    <string-array name="entries_languages">
         <item>German</item>
     </string-array>
 
