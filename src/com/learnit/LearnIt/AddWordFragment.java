@@ -38,15 +38,12 @@ public class AddWordFragment extends Fragment {
     private DBHelper dbHelper;
     GetDictTask task;
     StarDict dict;
+    String selectedLanguage;
 
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
 
     MenuItem saveItem;
-
-    private final int SUCCESS=0;
-    private final int WORD_IS_NULL=-1;
-    private final int WORD_IS_EMPTY=-2;
 
     private final int ASYNC_TASK_LOAD_DICTIONARY = 2;
     private final int ASYNC_TASK_FIND_WORD = 1;
@@ -55,6 +52,8 @@ public class AddWordFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
         dbHelper = new DBHelper(this.getActivity());
 
     }
@@ -68,7 +67,7 @@ public class AddWordFragment extends Fragment {
     {
         File sd = Environment.getExternalStorageDirectory();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
+        selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages);
         String allLanguages = Arrays.toString(languages);
@@ -85,8 +84,14 @@ public class AddWordFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        task = new GetDictTask();
-        task.execute(ASYNC_TASK_LOAD_DICTIONARY);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String newSelectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
+        if (null==dict || selectedLanguage!=newSelectedLanguage)
+        {
+            dict=null;
+            task = new GetDictTask();
+            task.execute(ASYNC_TASK_LOAD_DICTIONARY);
+        }
         if (null!=saveItem)
         {
             if (null!=editTranslation && null!=editWord)
@@ -369,7 +374,7 @@ public class AddWordFragment extends Fragment {
 
     private String stripFromArticle(String str)
     {
-        String[] tempArray = str.split("\\s");
+        String[] tempArray = str.split("\\s*(,|;)\\s*");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
         if (tempArray.length==1)
         {
@@ -421,7 +426,7 @@ public class AddWordFragment extends Fragment {
 
 
         @Override
-        protected ArrayList<String> doInBackground(Integer... action) {
+        protected synchronized ArrayList<String> doInBackground(Integer... action) {
             try {
                 if (action[0]==ASYNC_TASK_FIND_WORD)
                     {
@@ -440,7 +445,13 @@ public class AddWordFragment extends Fragment {
                 }
                 else if (action[0]==ASYNC_TASK_LOAD_DICTIONARY)
                 {
-                    getDict();
+                    try {
+                        getDict();
+                    }
+                    catch (OutOfMemoryError e)
+                    {
+                        Log.d(LOG_TAG,"ERROR"+e.getStackTrace().toString());
+                    }
                 }
             }
             catch (Exception e)
