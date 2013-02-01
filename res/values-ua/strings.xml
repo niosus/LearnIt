@@ -78,6 +78,21 @@
     <string name="notification_group">Налаштування нагадувань</string>
     <string name="main_group">Основні налаштування</string>
 
+    <!--instructions-->
+    <string name="instructions">
+        Привіт всім! Це неподобство - замість красивих інструкцій. Скоро буде красивіше. \n\n
+        ВАЖЛИВО!!! \n\n
+        ТРЕБА ВИБРАТИ В НАСТРОЙКАХ МОВУ, ЩОБ ЗАКРИТИ ЦЕ! \n\n
+        Нові фішки: \n
+        --Коли додаєте нові слова, як тільки клацнете на поле перекладу - повинні зявитися варіанти перекладу, якщо словник підключено. клацніть на них. \n\n
+        Changelog: \n
+        --додав Stardict словники \n
+        --словники класти сюди (мову змінити на потрібну): \n/phone_memory/LearnIt/en-ru/dict.*  \n
+        --поки що їх можна знайти в моєму Google Drive\n
+        --багато багфіксів \n
+    </string>
+    <string name="instr_go_to_settings">Налаштування</string>
+
     <string-array name="time_entries">
         <item>Година</item>
         <item>Дві години</item>

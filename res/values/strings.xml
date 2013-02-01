@@ -84,6 +84,22 @@
     <string name="notification_group">Notification settings</string>
     <string name="main_group">Main settings</string>
 
+    <!--instructions-->
+    <string name="instructions">
+        Hi all! This is an ugly pre-version of instructions activity! \n\n
+        IMPORTANT!!! \n\n
+        YOU HAVE TO SET LANGUAGE IN SETTINGS TO PROCCEED! \n\n
+        New Features: \n
+        --When in ADD_WORDS the dict will help you translating the word you provided if dictionary exists \n\n
+
+        Changelog: \n
+           --Added Stardict support \n
+           --Your dictionaries should be put as follows (choose appropriate languages): \n/phone_memory/LearnIt/en-ru/dict.*  \n
+           --You can find dictionaries in my Google Drive for now \n
+           --fixed lots of bugs \n
+    </string>
+    <string name="instr_go_to_settings">Settings</string>
+
     <string-array name="time_entries">
         <item>Hour</item>
         <item>Two Hours</item>

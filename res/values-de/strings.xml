@@ -79,6 +79,21 @@
     <string name="notification_group">Benachrichtigungen Einstellungen</string>
     <string name="main_group">Haupteinstellungen</string>
 
+    <!--instructions-->
+    <string name="instructions">
+        Hallo Zusammen! Das ist ein markup von Instructions Activity \n\n
+        Wichtig!!! \n\n
+        Sie müssen Sprache wählen in Einstellungen Menu \n\n
+        New Features: \n
+        --When in ADD_WORDS the dict will help you translating the word you provided if dictionary exists \n\n
+        Changelog: \n
+        --Man kann jetzt StarDict nutzen \n
+        --Deinen Wörterbucücher sollen sich hier finden : \n/phone_memory/LearnIt/en-ru/dict.*  \n
+        --Sie können die Wörterbücher in meinen Google Drive finden \n
+        --bug fixes \n
+    </string>
+    <string name="instr_go_to_settings">Einstellundgen</string>
+
     <string-array name="time_entries">
         <item>Stunde</item>
         <item>Zwei Stunden</item>

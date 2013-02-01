@@ -61,6 +61,11 @@
                   android:label="@string/app_name"
                 android:theme="@android:style/Theme.Holo">
         </activity>
+        <activity android:name=".InstructionsActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Holo">
+        </activity>
     </application>
 
 </manifest>

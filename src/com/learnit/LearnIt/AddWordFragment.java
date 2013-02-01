@@ -10,9 +10,12 @@
 package com.learnit.LearnIt;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +26,8 @@ import android.widget.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +47,9 @@ public class AddWordFragment extends Fragment {
     private final int SUCCESS=0;
     private final int WORD_IS_NULL=-1;
     private final int WORD_IS_EMPTY=-2;
+
+    private final int ASYNC_TASK_LOAD_DICTIONARY = 2;
+    private final int ASYNC_TASK_FIND_WORD = 1;
     View v;
 
     @Override
@@ -52,17 +60,33 @@ public class AddWordFragment extends Fragment {
     }
 
     public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        File sd = Environment.getExternalStorageDirectory();
-        sd = new File(sd, "LearnIt");
-        sd = new File(sd, "de-ru");
-        sd = new File(sd, "Lingvo-Universal.ifo");
-        dict = new StarDict(sd.getPath());
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    private void getDict()
+    {
+        File sd = Environment.getExternalStorageDirectory();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
+        Resources res = getResources();
+        String[] languages = res.getStringArray(R.array.values_languages);
+        String allLanguages = Arrays.toString(languages);
+        String currentLanguage = Locale.getDefault().getLanguage();
+        Log.d(LOG_TAG,"possible languages = " + allLanguages);
+        if (allLanguages.contains(selectedLanguage))
+        {
+            sd = new File(sd, "LearnIt");
+            sd = new File(sd, selectedLanguage+"-"+currentLanguage);
+            sd = new File(sd, "dict.ifo");
+            dict = new StarDict(sd.getPath());
+        }
     }
 
     public void onResume() {
         super.onResume();
+        task = new GetDictTask();
+        task.execute(ASYNC_TASK_LOAD_DICTIONARY);
         if (null!=saveItem)
         {
             if (null!=editTranslation && null!=editWord)
@@ -117,7 +141,7 @@ public class AddWordFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     task = new GetDictTask();
-                    task.execute();
+                    task.execute(ASYNC_TASK_FIND_WORD);
                 }
             }
         });
@@ -209,7 +233,7 @@ public class AddWordFragment extends Fragment {
 
     private  ArrayList<String> parseDictOutput(String str) {
         ArrayList<String> tagValues = new ArrayList<String>();
-        String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)";
+        String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)";
         String selectDtrn = "<dtrn>(.+?)</dtrn>";
         Pattern p = Pattern.compile(deleteCo);
         Matcher matcher = p.matcher(str);
@@ -389,7 +413,7 @@ public class AddWordFragment extends Fragment {
 
     }
 
-    class GetDictTask extends AsyncTask<Void, Void, ArrayList<String> > {
+    class GetDictTask extends AsyncTask<Integer, Void, ArrayList<String> > {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -397,19 +421,26 @@ public class AddWordFragment extends Fragment {
 
 
         @Override
-        protected ArrayList<String> doInBackground(Void... word) {
+        protected ArrayList<String> doInBackground(Integer... action) {
             try {
-                String tempWord = editWord.getText().toString();
-                Log.d(LOG_TAG,"temp word is " + tempWord);
-                if (null!=tempWord)
-                {
-                    String newWord = stripFromArticle(tempWord);
-                    ArrayList<String> items = parseDictOutput(dict.lookupWord(newWord));
-                    return items;
+                if (action[0]==ASYNC_TASK_FIND_WORD)
+                    {
+                    String tempWord = editWord.getText().toString();
+                    Log.d(LOG_TAG,"temp word is " + tempWord);
+                    if (null!=tempWord)
+                    {
+                        String newWord = stripFromArticle(tempWord);
+                        ArrayList<String> items = parseDictOutput(dict.lookupWord(newWord));
+                        return items;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
+                else if (action[0]==ASYNC_TASK_LOAD_DICTIONARY)
                 {
-                    return null;
+                    getDict();
                 }
             }
             catch (Exception e)

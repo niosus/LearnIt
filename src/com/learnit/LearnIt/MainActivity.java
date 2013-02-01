@@ -11,7 +11,10 @@
 package com.learnit.LearnIt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +24,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+
+import java.util.Arrays;
 
 public class MainActivity extends FragmentActivity {
 
@@ -36,7 +41,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(
                 getSupportFragmentManager());
 
@@ -45,11 +49,19 @@ public class MainActivity extends FragmentActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
     protected void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String selectedLanguage = sp.getString(getString(R.string.key_language), "NONE");
+        Log.d(LOG_TAG,"selected language = " + selectedLanguage);
+        Resources res = getResources();
+        String[] languages = res.getStringArray(R.array.values_languages);
+        String allLanguages = Arrays.toString(languages);
+        Log.d(LOG_TAG,"possible languages = " + allLanguages);
+        if (!allLanguages.contains(selectedLanguage))
+        {
+            startShowInstructionsActivity();
+        }
         super.onResume();
     }
-
-
-
 
     private void startSettingsActivity() {
         Intent intent = new Intent(this, PrefActivity.class);
@@ -61,6 +73,12 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(this, ShowAllWordsActivity.class);
         startActivity(intent);
         Log.d(LOG_TAG,"start activity called");
+    }
+
+    private void startShowInstructionsActivity() {
+        Intent intent = new Intent(this, InstructionsActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG,"start activity instructions");
     }
 
     @Override
