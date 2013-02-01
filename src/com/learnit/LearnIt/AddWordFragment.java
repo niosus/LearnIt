@@ -237,25 +237,43 @@ public class AddWordFragment extends Fragment {
 
 
     private  ArrayList<String> parseDictOutput(String str) {
+        Log.d(LOG_TAG,"input = " + str);
         ArrayList<String> tagValues = new ArrayList<String>();
-        String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)";
-        String selectDtrn = "<dtrn>(.+?)</dtrn>";
-        Pattern p = Pattern.compile(deleteCo);
-        Matcher matcher = p.matcher(str);
-        while (matcher.find()) {
-            str = matcher.replaceAll("");
+        if (str.contains("<dtrn>"))
+        {
+
+            String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)";
+            String selectDtrn = "<dtrn>(.+?)</dtrn>";
+//            String selectDtrn = ".*";
+            Pattern p = Pattern.compile(deleteCo);
+            Matcher matcher = p.matcher(str);
+            while (matcher.find()) {
+                str = matcher.replaceAll("");
+                matcher = p.matcher(str);
+            }
+            p = Pattern.compile(selectDtrn);
             matcher = p.matcher(str);
+            while (matcher.find()) {
+                String[] temp = matcher.group(1).split("\\s*(,|;)\\s*");
+                for (String s:temp)
+                {
+                    tagValues.add(s);
+                }
+            }
+            return tagValues;
         }
-        p = Pattern.compile(selectDtrn);
-        matcher = p.matcher(str);
-        while (matcher.find()) {
-            String[] temp = matcher.group(1).split("\\s*,\\s*|\\s*;\\s*");
+        else
+        {
+            String[] temp = str.split("\\s*(\\n|,)\\s*");
             for (String s:temp)
             {
-                tagValues.add(s);
+                if (!s.equals(temp[0]))
+                {
+                    tagValues.add(s);
+                }
             }
+            return tagValues;
         }
-        return tagValues;
     }
 
     private void showMessage(int exitCode)
@@ -374,7 +392,7 @@ public class AddWordFragment extends Fragment {
 
     private String stripFromArticle(String str)
     {
-        String[] tempArray = str.split("\\s*(,|;)\\s*");
+        String[] tempArray = str.split("\\s");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
         if (tempArray.length==1)
         {
@@ -450,6 +468,7 @@ public class AddWordFragment extends Fragment {
                     }
                     catch (OutOfMemoryError e)
                     {
+                        dict=null;
                         Log.d(LOG_TAG,"ERROR"+e.getStackTrace().toString());
                     }
                 }
