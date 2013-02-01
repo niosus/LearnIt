@@ -9,11 +9,12 @@
 
 
 
+
 <resources>
 
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Learn Words</string>
-    <string name="add_words_frag_title">Add Words</string>
+    <string name="add_words_frag_title">Add New Words</string>
     <string name="dictionary_frag_title">Dictionary</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_word_hint">Input word</string>
@@ -93,6 +94,7 @@
 
     <string-array name="entries_languages">
         <item>German</item>
+        <item>English</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

@@ -6,14 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
 package com.learnit.LearnIt;
 
 import android.app.Activity;
@@ -95,19 +87,49 @@ public class DictFragment extends Fragment {
         }
     }
 
-    private String stripWordFromArticle(String str)
-    {
-        String[] tempArray = str.split(" ");
-        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-        switch (tempArray.length)
-        {
-            case 1:
-                return str;
-            case 2:
-                return tempArray[1];
-            default:
-                return null;
+    boolean isArticle(String article) {
+        String articles = getString(R.string.articles_de);
+        if (articles.contains(article.toLowerCase())) {
+            return true;
         }
+        return false;
+    }
+
+    boolean isPrefix(String word) {
+        String prefix = this.getString(R.string.help_words_de);
+        if (prefix.contains(word.toLowerCase())) {
+            return true;
+        }
+        return false;
+    }
+
+    private String cutAwayFirstWord(String input)
+    {
+        return input.split(" ", 2)[1];
+    }
+
+
+    private String stripFromArticle(String str)
+    {
+        String[] tempArray = str.split("\\s");
+        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
+        if (tempArray.length==1)
+        {
+            return str;
+        }
+        else if (tempArray.length>1)
+        {
+            if (isArticle(tempArray[0]))
+            {
+                return cutAwayFirstWord(str);
+            }
+            else if (isPrefix(tempArray[0]))
+            {
+                return cutAwayFirstWord(str);
+            }
+            return str;
+        }
+        else return null;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -165,7 +187,7 @@ public class DictFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 String queryWord = ((TextView) view).getText().toString();
-                String tempStrippedWord = stripWordFromArticle(queryWord);
+                String tempStrippedWord = stripFromArticle(queryWord);
                 Log.d(LOG_TAG, queryWord);
                 edtWord.setText(tempStrippedWord);
                 String translation = getTranslation(tempStrippedWord);
@@ -227,7 +249,7 @@ public class DictFragment extends Fragment {
                     mode.finish(); // Action picked, so close the CAB
                     return true;
                 case R.id.context_menu_delete:
-                    if (dbHelper.deleteWord(stripWordFromArticle(queryWord)))
+                    if (dbHelper.deleteWord(stripFromArticle(queryWord)))
                     {
                         showDialog(queryWord,null,MyDialogFragment.DIALOG_WORD_DELETED);
                         edtWord.setText("");

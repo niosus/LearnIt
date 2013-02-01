@@ -7,6 +7,7 @@
  */
 
 
+
 package com.learnit.LearnIt;
 
 import android.app.NotificationManager;
@@ -48,17 +49,18 @@ public class HomeworkArticleActivity extends FragmentActivity{
     {
         Resources res = getResources();
         ArrayList<String> tempArray = new ArrayList<String>();
-        String[] articles = res.getStringArray(R.array.german_articles);
+        String articles = res.getString(R.string.articles_de);
         Log.d(LOG_TAG,"articles are " + articles.toString());
         Random rand = new Random();
-        int length = articles.length;
+        String articleArray[] = articles.split(" ");
+        int length = articleArray.length;
         int randId;
         do
         {
             randId = rand.nextInt(length);
         }
-        while (array.contains(articles[randId]));
-        return articles[randId];
+        while (array.contains(articleArray[randId]));
+        return articleArray[randId];
     }
 
     private void setBtnTexts(int correctId)

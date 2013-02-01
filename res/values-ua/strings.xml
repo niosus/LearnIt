@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+
+
+
+<resources>
+
+    <string name="app_name">LearnIt</string>
+    <string name="learn_words_frag_title">Вчити</string>
+    <string name="add_words_frag_title">Додати нові слова</string>
+    <string name="dictionary_frag_title">Мій словник</string>
+    <string name="add_word_hint">Слово</string>
+    <string name="edit_dialog_title">Редагуємо</string>
+    <string name="search_word_hint">Пошук</string>
+    <string name="add_translation_hint">Переклад</string>
+
+    <!--toast texts-->
+    <string name="toast_notif_start_text">Таймер запущено</string>
+    <string name="toast_notif_stop_text">Таймер зупинено</string>
+    <string name="toast_notif_update_text">Таймер оновлено</string>
+
+    <!--Dialog strings-->
+    <string name="dialog_empty_title">Ой лишенько!</string>
+    <string name="dialog_empty_text">Принаймні одне поле порожнє. Виправте будь ласка.</string>
+    <string name="dialog_added_title">Готово!</string>
+    <string name="dialog_added_text">Слово успішно додано!</string>
+    <string name="dialog_updated_title">Слово оновлено!</string>
+    <string name="dialog_updated_text">Новий переклад додано до існуючого слова</string>
+    <string name="dialog_exists_title">Вже тут!</string>
+    <string name="dialog_exists_text">В словнику вже існує слово з таким перекладом</string>
+    <string name="dialog_format_title">Ой лишенько!</string>
+    <string name="dialog_format_text">Неправильний формат</string>
+    <string name="dialog_article_title">Ой лишенько!</string>
+    <string name="dialog_article_text">Тількі артіклі можуть бути першим словом</string>
+    <string name="dialog_wrong_guess_title">Не вгадали</string>
+    <string name="dialog_wrong_guess_message">Спробуйте ще?</string>
+    <string name="dialog_word_deleted_title">Готово!</string>
+    <string name="dialog_word_deleted_message">Слово \"%s\" успішно видалено</string>
+    <string name="dialog_progress_title">Працюємо</string>
+    <string name="dialog_progress_message">Витягуємо слова зі словника</string>
+    <string name="notif_text">Клацніть щоб перекласти</string>
+    <string name="ok">OK</string>
+    <string name="update">Оновити</string>
+    <string name="cancel">Відміна</string>
+    <string name="save">Зберегти</string>
+    <string name="clear">Скинути</string>
+
+
+    <!--Pref Strings-->
+    <string name="pref_reminder_freq">Частота нагадувань</string>
+    <string name="pref_language_to_learn">Яку мову вчимо</string>
+    <string name="pref_time_to_start">Коли почати показувати нагадування?</string>
+    <string name="pref_num_of_words">Слів у сесії</string>
+    <string name="pref_way_to_learn">Метод вивчення</string>
+
+
+
+    <string name="db_exported">Словник успішно збережено в \n%s</string>
+
+    <!--context menu strings-->
+    <string name="context_menu_edit">Редагувати</string>
+    <string name="context_menu_delete">Видалити</string>
+
+    <!--menu strings-->
+    <string name="menu_settings">Налаштування</string>
+    <string name="menu_export">Експорт словнику</string>
+    <string name="menu_import">Імпорт словнику</string>
+    <string name="menu_show_all_words">Показати всі слова</string>
+
+    <!--prefs categories-->
+    <string name="notification_group">Налаштування нагадувань</string>
+    <string name="main_group">Основні налаштування</string>
+
+    <string-array name="time_entries">
+        <item>Година</item>
+        <item>Дві години</item>
+        <item>Три години</item>
+        <item>Пів дня</item>
+        <item>День</item>
+    </string-array>
+
+    <string-array name="entries_languages">
+        <item>Німецька</item>
+        <item>Англійська</item>
+    </string-array>
+
+    <string-array name="entries_way_to_learn">
+        <item>Лише переклад</item>
+        <item>Лише артіклі</item>
+        <item>Змішаний</item>
+    </string-array>
+
+</resources>

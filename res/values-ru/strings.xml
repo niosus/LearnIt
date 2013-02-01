@@ -9,17 +9,18 @@
 
 
 
+
 <resources>
 
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Учить слова</string>
-    <string name="add_words_frag_title">Добавить</string>
+    <string name="add_words_frag_title">Добавить новые слова</string>
     <string name="dictionary_frag_title">Мой словарь</string>
     <string name="hello_world">Hello world!</string>
-    <string name="add_word_hint">Введите слово...</string>
-    <string name="edit_dialog_title">Редактируем...</string>
-    <string name="search_word_hint">Поиск...</string>
-    <string name="add_translation_hint">Введите перевод...</string>
+    <string name="add_word_hint">Введите слово</string>
+    <string name="edit_dialog_title">Редактируем</string>
+    <string name="search_word_hint">Поиск</string>
+    <string name="add_translation_hint">Введите перевод</string>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Таймер запущен</string>
@@ -92,6 +93,7 @@
 
     <string-array name="entries_languages">
         <item>Немецкий</item>
+        <item>Английский</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

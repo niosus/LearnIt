@@ -6,22 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
 package com.learnit.LearnIt;
 
 import android.content.ContentValues;
@@ -42,12 +26,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper{
+    final static int DB_VERSION = 1;
     final String LOG_TAG = "my_logs";
     final static String DB_NAME = "myDB";
     final String WORD_COLUMN_NAME = "word";
     final String ID_COLUMN_NAME = "id";
     final String ARTICLE_COLUMN_NAME = "article";
+    final String WEIGHT_COLUMN_NAME = "weight";
+    final String PREFIX_COLUMN_NAME = "prefix";
     final String TRANSLATION_COLUMN_NAME = "translation";
 
     public static final int EXIT_CODE_EMPTY_INPUT = -10;
@@ -57,8 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int EXIT_CODE_WRONG_ARTICLE = -12;
     public static final int EXIT_CODE_WRONG_FORMAT = -13;
 
-    private final String[] articles = new String[]{"der", "die", "das"};
-
     long maxId = 0;
 
     private Context mContext;
@@ -66,17 +51,20 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
     public DBHelper(Context context) {
-        super(context, DB_NAME, null, 1);
+        super(context, DB_NAME, null, DB_VERSION);
         mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(LOG_TAG, "--- onCreate database ---");
-        db.execSQL("CREATE TABLE " + DB_NAME + " (" + ID_COLUMN_NAME
-                + " integer primary key autoincrement," + ARTICLE_COLUMN_NAME
-                + " text," + WORD_COLUMN_NAME + " text,"
-                + TRANSLATION_COLUMN_NAME + " text" + ");");
+        db.execSQL("CREATE TABLE " + DB_NAME + " ("
+                + ID_COLUMN_NAME + " integer primary key autoincrement,"
+                + ARTICLE_COLUMN_NAME + " text,"
+                + WORD_COLUMN_NAME + " text,"
+                + TRANSLATION_COLUMN_NAME + " text,"
+                + WEIGHT_COLUMN_NAME + " integer,"
+                + PREFIX_COLUMN_NAME + " text"+ ");");
     }
 
     public boolean deleteWord(String word)
@@ -115,9 +103,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    boolean checkArticle(String article) {
-        List<String> articlesList = Arrays.asList(articles);
-        if (articlesList.contains(article.toLowerCase())) {
+    boolean isArticle(String article) {
+        String articles = this.mContext.getString(R.string.articles_de);
+        if (articles.contains(article.toLowerCase())) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean isPrefix(String word) {
+        String prefix = this.mContext.getString(R.string.help_words_de);
+        if (prefix.contains(word.toLowerCase())) {
             return true;
         }
         return false;
@@ -133,32 +129,51 @@ public class DBHelper extends SQLiteOpenHelper {
             return EXIT_CODE_OK;
     }
 
+    private String cutAwayFirstWord(String input)
+    {
+        return input.split(" ", 2)[1];
+    }
+
+
+
     public int writeToDB(String word, String translation) {
         try {
+            int startWeight=10;
             word=word.toLowerCase();
             translation = translation.toLowerCase();
             List<String> wordsList = Arrays.asList(word.split(" "));
             ContentValues cv = new ContentValues();
             switch (wordsList.size()) {
-                case 2:
-                    if (checkArticle(wordsList.get(0))) {
-                        cv.put(WORD_COLUMN_NAME, wordsList.get(1));
-                        cv.put(ARTICLE_COLUMN_NAME, wordsList.get(0));
-                    } else {
-                        return EXIT_CODE_WRONG_ARTICLE;
-                    }
-                    break;
+                case 0:
+                    return EXIT_CODE_EMPTY_INPUT;
                 case 1:
                     if (word.isEmpty()) {
                         return EXIT_CODE_EMPTY_INPUT;
                     }
                     cv.put(WORD_COLUMN_NAME, word);
                     cv.put(ARTICLE_COLUMN_NAME, (String)null);
+                    cv.put(PREFIX_COLUMN_NAME, (String)null);
                     break;
-                case 0:
-                    return EXIT_CODE_EMPTY_INPUT;
                 default:
-                    return EXIT_CODE_WRONG_FORMAT;
+                    if (isArticle(wordsList.get(0))) {
+                        cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
+                        cv.put(ARTICLE_COLUMN_NAME, wordsList.get(0));
+                        cv.put(PREFIX_COLUMN_NAME, (String)null);
+                    }
+                    else
+                    if (isPrefix(wordsList.get(0)))
+                    {
+                        cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
+                        cv.put(ARTICLE_COLUMN_NAME, (String)null);
+                        cv.put(PREFIX_COLUMN_NAME, wordsList.get(0));
+                    }
+                    else
+                    {
+                        cv.put(WORD_COLUMN_NAME, word);
+                        cv.put(ARTICLE_COLUMN_NAME, (String)null);
+                        cv.put(PREFIX_COLUMN_NAME, (String)null);
+                    }
+                    break;
             }
             long key = -1;
             boolean updatedFlag = false;
@@ -204,6 +219,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
             cv.put(TRANSLATION_COLUMN_NAME, translation);
+            cv.put(WEIGHT_COLUMN_NAME,startWeight);
             if (!updatedFlag) {
                 long rowID = db.insert(DB_NAME, null, cv);
                 Log.d(LOG_TAG, "row inserted, ID = " + rowID + " rows total = "
@@ -226,11 +242,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    private boolean idInArray(long id,  List<Long> array)
+    private boolean wordInArray(String word,  List<String> array)
     {
-        for (long a:array)
+        for (String a:array)
         {
-            if (id==a)
+            if (word.toLowerCase().equals(a.toLowerCase()))
             {
                 return true;
             }
@@ -240,13 +256,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArticleWordIdStruct getRandomWord(ArrayList<Long> ids, boolean noun) {
+    public ArticleWordIdStruct getRandomWord(ArrayList<String> usedWords, boolean noun) {
         maxId = getDBSize(noun);
-        if (ids.size()>=maxId)
+        if (usedWords.size()>=maxId)
         {
             return null;
         }
         String word = null;
+        String prefix = null;
         String article = null;
         Cursor c;
         int id = 0;
@@ -256,22 +273,26 @@ public class DBHelper extends SQLiteOpenHelper {
                 int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
                 int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
                 int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
+                int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
                 word = (c.getString(wordColIndex));
                 article = (c.getString(articleColIndex));
                 id = (c.getInt(idColIndex));
+                prefix = (c.getString(prefixColIndex));
                 Log.d(LOG_TAG, "randWord = " + article + " " + word);
                 c.close();
             } else {
                 Log.d(LOG_TAG, "0 rows");
                 return null;
             }
+            Log.d(LOG_TAG, "word " + word + " is in array " + usedWords.toString() + " = " + wordInArray(word,usedWords));
         }
-        while (idInArray(id,ids));
+        while (wordInArray(word,usedWords));
         if (noun)
         {
+            //TODO only in German
             word=capitalize(word);
         }
-        ArticleWordIdStruct result = new ArticleWordIdStruct(article, word, id);
+        ArticleWordIdStruct result = new ArticleWordIdStruct(article, prefix, word, id);
         return result;
     }
 
@@ -283,38 +304,13 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
     }
 
-    public String getRandomTranslation(ArrayList<String> testWord) {
-        long size = this.getDBSize(false);
-        if (size<=testWord.size())
-        {
-            return null;
-        }
-        String word = null;
-        String trans = null;
-        do {
-            Cursor c = getRandRow(false);
-            if (c.moveToFirst()) {
-                int transColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
-                int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-                word = (c.getString(wordColIndex));
-                trans = (c.getString(transColIndex));
-                Log.d(LOG_TAG, "randTrans = " + trans);
-                c.close();
-            } else {
-                Log.d(LOG_TAG, "0 rows in rand trans for word " + testWord);
-                return null;
-            }
-        }
-        while (testWord.contains(word));
-        return trans;
-    }
-
     public boolean exportDB()
     {
         try {
             File sd = Environment.getExternalStorageDirectory();
             sd = new File(sd, "LearnIt");
             sd.mkdirs();
+            Log.d(LOG_TAG,"searching file in " + sd.getPath());
             if (sd.canWrite()) {
                 String backupDBPath = "DB_Backup.db";
                 File currentDB = mContext.getDatabasePath(DBHelper.DB_NAME);
@@ -387,8 +383,7 @@ public class DBHelper extends SQLiteOpenHelper {
         word=word.toLowerCase();
         db = this.getReadableDatabase();
         Cursor c = db.query(DB_NAME,
-                new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
-                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
+                new String[]{TRANSLATION_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
                 null, null);
         if (c.moveToFirst()) {
@@ -409,12 +404,11 @@ public class DBHelper extends SQLiteOpenHelper {
         word=word.toLowerCase();
         db = this.getReadableDatabase();
         Cursor c = db.query(DB_NAME,
-                new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
-                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
+                new String[]{ID_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
                 null, null);
         if (c.moveToFirst()) {
-            int idColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
+            int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
             int id = c.getInt(idColIndex);
             if (id!=0)
             {
@@ -433,19 +427,25 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<String> listItems = new ArrayList<String>();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
-                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
+                        WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME,
+                        PREFIX_COLUMN_NAME, WEIGHT_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
                 null, WORD_COLUMN_NAME);
         String tempWord;
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
             int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
             do {
                 tempWord = c.getString(wordColIndex);
                 if (null!=(c.getString(articleColIndex)))
                 {
                     tempWord = capitalize(tempWord);
                     tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
+                }
+                if (null!=(c.getString(prefixColIndex)))
+                {
+                    tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
                 }
                 listItems.add(tempWord);
             } while (c.moveToNext());
@@ -463,12 +463,18 @@ public class DBHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
             int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
             do {
                 tempWord = c.getString(wordColIndex);
                 if (null!=(c.getString(articleColIndex)))
                 {
+                    //TODO capitalize only in German
                     tempWord = capitalize(tempWord);
                     tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
+                }
+                if (null!=(c.getString(prefixColIndex)))
+                {
+                    tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
                 }
                 listItems.add(tempWord);
             } while (c.moveToNext());
@@ -480,6 +486,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }

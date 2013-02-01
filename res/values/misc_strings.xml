@@ -7,9 +7,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
 
 <resources>
     <string name="key_pref_notif_active">notification_enabled</string>
@@ -40,7 +37,8 @@
     </string-array>
 
     <string-array name="values_languages">
-        <item>1</item>
+        <item>de</item>
+        <item>en</item>
     </string-array>
 
     <string-array name="values_way_to_learn">
@@ -49,9 +47,6 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="german_articles">
-        <item>der</item>
-        <item>die</item>
-        <item>das</item>
-    </string-array>
+    <string name="articles_de">der die das</string>
+    <string name="help_words_de">sich</string>
 </resources>

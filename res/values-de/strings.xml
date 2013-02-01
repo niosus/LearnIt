@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+
+
+
+
+<resources>
+
+    <string name="app_name">LearnIt</string>
+    <string name="learn_words_frag_title">Lernen</string>
+    <string name="add_words_frag_title">Neue Wörter anpassen</string>
+    <string name="dictionary_frag_title">Mein Wörterbuch</string>
+    <string name="add_word_hint">Wort</string>
+    <string name="edit_dialog_title">Bearbeiten</string>
+    <string name="search_word_hint">Suchen</string>
+    <string name="add_translation_hint">Übersetzen</string>
+
+    <!--toast texts-->
+    <string name="toast_notif_start_text">Zeitgeber gestartet</string>
+    <string name="toast_notif_stop_text">Zeitgeber gestoppt</string>
+    <string name="toast_notif_update_text">Zeitgeber aktualisiert</string>
+
+    <!--Dialog strings-->
+    <string name="dialog_empty_title">Hoppla!</string>
+    <string name="dialog_empty_text">Mindestens ein Eingabefeld ist leer.\nBitte korrigieren Sie es.</string>
+    <string name="dialog_added_title">Bereit!</string>
+    <string name="dialog_added_text">Wort erfolgreich hinzugefügt</string>
+    <string name="dialog_updated_title">Wort aktualiziert!</string>
+    <string name="dialog_updated_text">Neue Übersetzung hinzugefügt</string>
+    <string name="dialog_exists_title">Schon hier!</string>
+    <string name="dialog_exists_text">Dieses Wort ist schon in den Wörterbuch</string>
+    <string name="dialog_format_title">Hoppla!</string>
+    <string name="dialog_format_text">Invalid format</string>
+    <string name="dialog_article_title">Hoppla!</string>
+    <string name="dialog_article_text">Тількі артіклі можуть бути першим словом</string>
+    <string name="dialog_wrong_guess_title">Nee</string>
+    <string name="dialog_wrong_guess_message">Versuchen Sie es nochmal!</string>
+    <string name="dialog_word_deleted_title">Bereit!</string>
+    <string name="dialog_word_deleted_message">Das Wort \"%s\" ist erfolgreich gelöscht</string>
+    <string name="dialog_progress_title">Im Gange</string>
+    <string name="dialog_progress_message">Erhalten Worte aus dem Wörterbuch</string>
+    <string name="notif_text">Klicken, um zu übersetzen</string>
+    <string name="ok">OK</string>
+    <string name="update">Aktualisieren</string>
+    <string name="cancel">Stornieren</string>
+    <string name="save">Speichern</string>
+    <string name="clear">Löschen</string>
+
+
+    <!--Pref Strings-->
+    <string name="pref_reminder_freq">Häufigkeit der Benachrichtigungen</string>
+    <string name="pref_language_to_learn">Sprache zu lernen</string>
+    <string name="pref_time_to_start">Wenn die Benachrichtigungen zeigen zu anfangen</string>
+    <string name="pref_num_of_words">Worte in der Sitzung</string>
+    <string name="pref_way_to_learn">Methode</string>
+
+
+
+    <string name="db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
+
+    <!--context menu strings-->
+    <string name="context_menu_edit">Bearbeiten</string>
+    <string name="context_menu_delete">Löschen</string>
+
+    <!--menu strings-->
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_export">Wörterbuch exportieren</string>
+    <string name="menu_import">Wörterbuch importieren</string>
+    <string name="menu_show_all_words">Alle Wörter zeigen</string>
+
+    <!--prefs categories-->
+    <string name="notification_group">Benachrichtigungen Einstellungen</string>
+    <string name="main_group">Haupteinstellungen</string>
+
+    <string-array name="time_entries">
+        <item>Stunde</item>
+        <item>Zwei Stunden</item>
+        <item>Drei Stunden</item>
+        <item>Halben Tag</item>
+        <item>Tag</item>
+    </string-array>
+
+    <string-array name="entries_languages">
+        <item>Deutsch</item>
+        <item>Englisch</item>
+    </string-array>
+
+    <string-array name="entries_way_to_learn">
+        <item>Nur die Übersetzung</item>
+        <item>Nur Artikel</item>
+        <item>Gemischt</item>
+    </string-array>
+
+
+</resources>

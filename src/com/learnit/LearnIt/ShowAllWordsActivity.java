@@ -6,6 +6,7 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
+
 package com.learnit.LearnIt;
 
 import android.os.AsyncTask;
@@ -24,13 +25,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * User: igor
- * Date: 1/27/13
- * Time: 3:43 PM
- * To change this template use File | Settings | File Templates.
- */
 public class ShowAllWordsActivity extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
     protected DialogFragment frag;
@@ -49,8 +43,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            mt = new MyTask();
-            mt.execute();
+
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +62,6 @@ public class ShowAllWordsActivity extends FragmentActivity {
                     showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
                 }
             });
-
             return v;
         }
 
@@ -109,13 +101,26 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
         public void showDialog(String queryWord, String translation, int dialogType)
         {
-            frag = new MyDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt(MyDialogFragment.ID_TAG, dialogType);
-            args.putString(MyDialogFragment.WORD_TAG, queryWord);
-            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-            frag.setArguments(args);
-            frag.show(getFragmentManager(), "show_word_fragment_dialog");
+            if (dialogType == MyDialogFragment.DIALOG_EDIT_WORD)
+            {
+                MyCustomEditDialog frag = new MyCustomEditDialog();
+                Bundle args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, dialogType);
+                args.putString(MyDialogFragment.WORD_TAG, queryWord);
+                args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "show_edit_word_fragment_dialog");
+            }
+            else
+            {
+                frag = new MyDialogFragment();
+                Bundle args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, dialogType);
+                args.putString(MyDialogFragment.WORD_TAG, queryWord);
+                args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+                frag.setArguments(args);
+                frag.show(getFragmentManager(), "show_word_fragment_dialog");
+            }
         }
 
         private void dismissDialog()
@@ -127,6 +132,8 @@ public class ShowAllWordsActivity extends FragmentActivity {
         public void onResume()
         {
             super.onResume();
+            mt = new MyTask();
+            mt.execute();
         }
 
         class MyTask extends AsyncTask<Void, Void, ArrayList<String> > {

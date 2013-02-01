@@ -6,18 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
 package com.learnit.LearnIt;
 
 import android.app.Notification;
@@ -108,19 +96,33 @@ public class MyAlarmService extends Service {
 
     private ArrayList<Pair<String, String> > getRandWordsFromDB(boolean isNoun)
     {
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<String> usedWords = new ArrayList<String>();
         ArrayList<Pair<String, String> > result = new ArrayList<Pair<String, String>>();
         for (int i=0; i<numOfNotif; ++i)
         {
-            ArticleWordIdStruct struct = dbHelper.getRandomWord(ids, isNoun);
+            ArticleWordIdStruct struct = dbHelper.getRandomWord(usedWords, isNoun);
             if (null!=struct)
             {
-                result.add(new Pair<String, String>(struct.article, struct.word));
-                ids.add(struct.id);
-                Log.d(LOG_TAG,"current ids " + ids);
+                if (null!=struct.article)
+                {
+                    //TODO only in German
+                    struct.word = capitalize(struct.word);
+                    result.add(new Pair<String, String>(struct.article, struct.word));
+                }
+                else if (null!=struct.prefix)
+                {
+                    result.add(new Pair<String, String>(struct.prefix, struct.word));
+                }
+                else
+                {
+                    result.add(new Pair<String, String>(null, struct.word));
+                }
+                usedWords.add(struct.word);
+                Log.d(LOG_TAG,"current words " + usedWords);
             }
             else
             {
+                Log.d(LOG_TAG,"oops, got null in i = " + i + " out of " + numOfNotif);
                 break;
             }
         }
@@ -137,10 +139,6 @@ public class MyAlarmService extends Service {
 
     private boolean CreateNotif(int wordNum, String word, String article, boolean isNoun) {
         int mId = wordNum + idModificator;
-        if (null!=article)
-        {
-            word = capitalize(word);
-        }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 this).setContentTitle(word).setContentText(getString(R.string.notif_text));
         switch (wordNum) {

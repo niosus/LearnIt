@@ -6,13 +6,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
 package com.learnit.LearnIt;
 
@@ -55,17 +48,22 @@ public class HomeworkActivity extends FragmentActivity{
     {
         ArrayList<String> usedWords = new ArrayList<String>();
         usedWords.add(queryWord);
-        String temp;
+        ArticleWordIdStruct temp;
         for (int i = 0; i<btnIds.length; ++i)
         {
             if (correctId!=i)
             {
-                temp = dbHelper.getRandomTranslation(usedWords);
+                temp = dbHelper.getRandomWord(usedWords, false);
                 if (null==temp)
                 {
-                    break;
+                    ((Button) findViewById(btnIds[i])).setEnabled(false);
                 }
-                ((Button) findViewById(btnIds[i])).setText(temp);
+                else
+                {
+                    ((Button) findViewById(btnIds[i])).setEnabled(true);
+                    ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslation(temp.word));
+                    usedWords.add(temp.word);
+                }
             }
             else
             {
@@ -126,24 +124,17 @@ public class HomeworkActivity extends FragmentActivity{
         }
     }
 
-    private String capitalize(String str)
-    {
-        if (str.length()>0)
-            return str.substring(0, 1).toUpperCase() + str.substring(1);
-        else
-            return null;
-    }
-
     protected void onResume() {
         super.onResume();
 
         TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-        if (null==article)
-            queryWordTextView.setText(queryWord);
+        if (null!=article)
+        {
+            queryWordTextView.setText(article + " " + queryWord);
+        }
         else
         {
-            queryWord = capitalize(queryWord);
-            queryWordTextView.setText(article + " " + queryWord);
+            queryWordTextView.setText(queryWord);
         }
     }
 }
