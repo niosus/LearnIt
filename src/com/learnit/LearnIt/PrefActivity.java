@@ -34,6 +34,7 @@ public class PrefActivity extends PreferenceActivity {
         ListPreference lstWayToLearn;
         ListPreference lstNumOfWords;
         ListPreference lstLanguageToLearn;
+        ListPreference lstLanguageYouKnow;
         CheckBoxPreference checkBoxPreference;
         TimePreference timePreference;
         boolean changed = false;
@@ -46,8 +47,11 @@ public class PrefActivity extends PreferenceActivity {
             lstNotifFreq = (ListPreference) findPreference(getString(R.string.key_notification_frequency));
             lstNotifFreq.setOnPreferenceChangeListener(listener);
 
-            lstLanguageToLearn = (ListPreference) findPreference(getString(R.string.key_language));
+            lstLanguageToLearn = (ListPreference) findPreference(getString(R.string.key_language_from));
             lstLanguageToLearn.setOnPreferenceChangeListener(listener);
+
+            lstLanguageYouKnow = (ListPreference) findPreference(getString(R.string.key_language_to));
+            lstLanguageYouKnow.setOnPreferenceChangeListener(listener);
 
             lstWayToLearn = (ListPreference) findPreference(getString(R.string.key_way_to_learn));
             lstWayToLearn.setOnPreferenceChangeListener(listener);
@@ -68,6 +72,8 @@ public class PrefActivity extends PreferenceActivity {
                 lstNotifFreq.setSummary(lstNotifFreq.getEntry().toString());
             if (lstLanguageToLearn.getEntry()!=null)
                 lstLanguageToLearn.setSummary(lstLanguageToLearn.getEntry().toString());
+            if (lstLanguageYouKnow.getEntry()!=null)
+                lstLanguageYouKnow.setSummary(lstLanguageYouKnow.getEntry().toString());
             if (lstWayToLearn.getEntry()!=null)
                 lstWayToLearn.setSummary(lstWayToLearn.getEntry().toString());
             if (lstNumOfWords.getEntry()!=null)
@@ -171,7 +177,7 @@ public class PrefActivity extends PreferenceActivity {
             public boolean onPreferenceChange(Preference pref, Object newValue) {
                 if (pref instanceof CheckBoxPreference)
                 {
-                   if (pref.getKey().toString()==getString(R.string.key_pref_notif_active))
+                   if (pref.getKey().equals(getString(R.string.key_pref_notif_active)))
                    {
                        lstNotifFreq.setEnabled((Boolean) newValue);
                        timePreference.setEnabled(((Boolean) newValue));
@@ -181,7 +187,7 @@ public class PrefActivity extends PreferenceActivity {
                    }
                 }
                 else if (pref instanceof ListPreference) {
-                    if (pref.getKey().toString()==getString(R.string.key_notification_frequency))
+                    if (pref.getKey().equals(getString(R.string.key_notification_frequency)))
                     {
                         lstNotifFreq = (ListPreference) pref;
                         pref.setSummary(lstNotifFreq.getEntries()[lstNotifFreq.findIndexOfValue(newValue.toString())]);
@@ -189,7 +195,7 @@ public class PrefActivity extends PreferenceActivity {
                         updated = true;
                         return true;
                     }
-                    else if (pref.getKey().toString()==getString(R.string.key_num_of_words))
+                    else if (pref.getKey().equals(getString(R.string.key_num_of_words)))
                     {
                         lstNumOfWords = (ListPreference) pref;
                         pref.setSummary(lstNumOfWords.getEntries()[lstNumOfWords.findIndexOfValue(newValue.toString())]);
@@ -197,13 +203,19 @@ public class PrefActivity extends PreferenceActivity {
                         updated = true;
                         return true;
                     }
-                    else if (pref.getKey().toString()==getString(R.string.key_language))
+                    else if (pref.getKey().equals(getString(R.string.key_language_from)))
                     {
                         lstLanguageToLearn = (ListPreference) pref;
                         pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
                         return true;
                     }
-                    else if (pref.getKey().toString()==getString(R.string.key_way_to_learn))
+                    else if (pref.getKey().equals(getString(R.string.key_language_to)))
+                    {
+                        lstLanguageYouKnow = (ListPreference) pref;
+                        pref.setSummary(lstLanguageYouKnow.getEntries()[lstLanguageYouKnow.findIndexOfValue(newValue.toString())]);
+                        return true;
+                    }
+                    else if (pref.getKey().equals(getString(R.string.key_way_to_learn)))
                     {
                         lstWayToLearn = (ListPreference) pref;
                         pref.setSummary(lstWayToLearn.getEntries()[lstWayToLearn.findIndexOfValue(newValue.toString())]);

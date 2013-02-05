@@ -38,7 +38,8 @@ public class AddWordFragment extends Fragment {
     private DBHelper dbHelper;
     GetDictTask task;
     StarDict dict;
-    String selectedLanguage;
+    String selectedLanguageFrom;
+    String selectedLanguageTo;
 
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
@@ -53,7 +54,8 @@ public class AddWordFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
+        selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
+        selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
         dbHelper = new DBHelper(this.getActivity());
 
     }
@@ -67,26 +69,43 @@ public class AddWordFragment extends Fragment {
     {
         File sd = Environment.getExternalStorageDirectory();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        selectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
+        selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
+        selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
         Resources res = getResources();
-        String[] languages = res.getStringArray(R.array.values_languages);
+        String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
-        String currentLanguage = Locale.getDefault().getLanguage();
-        Log.d(LOG_TAG,"possible languages = " + allLanguages);
-        if (allLanguages.contains(selectedLanguage))
+        String currentLanguage;
+        if (allLanguages.contains(selectedLanguageTo))
         {
+            currentLanguage = selectedLanguageTo;
+        }
+        else
+        {
+            currentLanguage = Locale.getDefault().getLanguage();
+        }
+        Log.d(LOG_TAG,"possible languages = " + allLanguages);
+        if (allLanguages.contains(selectedLanguageFrom))
+        {
+            dict=null;
             sd = new File(sd, "LearnIt");
-            sd = new File(sd, selectedLanguage+"-"+currentLanguage);
+            sd = new File(sd, selectedLanguageFrom +"-"+currentLanguage);
             sd = new File(sd, "dict.ifo");
             dict = new StarDict(sd.getPath());
+            if (!dict.boolAvailable)
+            {
+                dict=null;
+            }
         }
     }
 
     public void onResume() {
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String newSelectedLanguage = sp.getString(getString(R.string.key_language),"NONE");
-        if (null==dict || selectedLanguage!=newSelectedLanguage)
+        String newSelectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
+        String newSelectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
+        if (null==dict
+                || !selectedLanguageFrom.equals(newSelectedLanguageFrom)
+                || !selectedLanguageTo.equals(newSelectedLanguageTo))
         {
             dict=null;
             task = new GetDictTask();
@@ -155,23 +174,24 @@ public class AddWordFragment extends Fragment {
         editWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && editable.toString()!="")
+                if (editable.toString()!=null && !editable.toString().equals(""))
                 {
                     btn_clear_word.setVisibility(View.VISIBLE);
                 }
                 if (editable.length()==0)
                 {
-                    saveItem.setVisible(false);
+                    if (null!=saveItem)
+                    {
+                        saveItem.setVisible(false);
+                    }
                     updateList(null);
                     btn_clear_word.setVisibility(View.INVISIBLE);
                 }
@@ -180,17 +200,15 @@ public class AddWordFragment extends Fragment {
         editTranslation.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && editable.toString()!="")
+                if (editable.toString()!=null && !editable.toString().equals(""))
                 {
                     btn_clear_trans.setVisibility(View.VISIBLE);
                     if (editable.length()>0)
@@ -200,7 +218,10 @@ public class AddWordFragment extends Fragment {
                 }
                 if (editable.length()==0)
                 {
-                    saveItem.setVisible(false);
+                    if (null!=saveItem)
+                    {
+                        saveItem.setVisible(false);
+                    }
                     btn_clear_trans.setVisibility(View.INVISIBLE);
                 }
             }
@@ -232,8 +253,6 @@ public class AddWordFragment extends Fragment {
         editTranslation.setText("");
         editWord.setText("");
     }
-
-    private static final Pattern TAG_REGEX = Pattern.compile("<dtrn>(.+?)</dtrn>");
 
 
     private  ArrayList<String> parseDictOutput(String str) {
@@ -370,18 +389,12 @@ public class AddWordFragment extends Fragment {
 
     boolean isArticle(String article) {
         String articles = getString(R.string.articles_de);
-        if (articles.contains(article.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return articles.contains(article.toLowerCase());
     }
 
     boolean isPrefix(String word) {
         String prefix = this.getString(R.string.help_words_de);
-        if (prefix.contains(word.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return prefix.contains(word.toLowerCase());
     }
 
     private String cutAwayFirstWord(String input)
@@ -437,9 +450,19 @@ public class AddWordFragment extends Fragment {
     }
 
     class GetDictTask extends AsyncTask<Integer, Void, ArrayList<String> > {
+        private boolean createDict=false;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (null==dict)
+            {
+                createDict=true;
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loading_dict), Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                createDict=false;
+            }
         }
 
 
@@ -453,23 +476,20 @@ public class AddWordFragment extends Fragment {
                     if (null!=tempWord)
                     {
                         String newWord = stripFromArticle(tempWord);
-                        ArrayList<String> items = parseDictOutput(dict.lookupWord(newWord));
-                        return items;
+                        return parseDictOutput(dict.lookupWord(newWord));
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
                 else if (action[0]==ASYNC_TASK_LOAD_DICTIONARY)
                 {
                     try {
                         getDict();
+                        return null;
                     }
                     catch (OutOfMemoryError e)
                     {
                         dict=null;
-                        Log.d(LOG_TAG,"ERROR"+e.getStackTrace().toString());
+                        Log.d(LOG_TAG,"ERROR in asyncronical get dict");
                     }
                 }
             }
@@ -483,6 +503,26 @@ public class AddWordFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<String> items) {
             super.onPostExecute(items);
+            if (null==items)
+            {
+
+                if (null==dict)
+                {
+                    if (selectedLanguageTo.equals("auto"))
+                    {
+                        selectedLanguageTo=Locale.getDefault().getLanguage();
+                    }
+                    Toast.makeText(getActivity().getApplicationContext(), String.format(getString(R.string.toast_no_dict), selectedLanguageFrom+"-"+selectedLanguageTo), Toast.LENGTH_LONG).show();
+                }
+                else if (createDict)
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loaded_dict), Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
+                }
+            }
             updateList(items);
         }
     }

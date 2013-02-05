@@ -26,6 +26,7 @@ import java.util.Random;
 public class HomeworkActivity extends FragmentActivity{
     int notificationId = -1;
     String queryWord = null;
+    int numOfWrongAnswers=0;
     String article = null;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
@@ -53,14 +54,14 @@ public class HomeworkActivity extends FragmentActivity{
         {
             if (correctId!=i)
             {
-                temp = dbHelper.getRandomWord(usedWords, false);
+                temp = dbHelper.getRandomWord(usedWords, false, DBHelper.WEIGHT_NEW);
                 if (null==temp)
                 {
-                    ((Button) findViewById(btnIds[i])).setEnabled(false);
+                    findViewById(btnIds[i]).setEnabled(false);
                 }
                 else
                 {
-                    ((Button) findViewById(btnIds[i])).setEnabled(true);
+                    findViewById(btnIds[i]).setEnabled(true);
                     ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslation(temp.word));
                     usedWords.add(temp.word);
                 }
@@ -105,6 +106,26 @@ public class HomeworkActivity extends FragmentActivity{
         this.finish();
     }
 
+    private void updateWordWeight()
+    {
+        Log.d(LOG_TAG,"word to be updated " + queryWord);
+        switch (numOfWrongAnswers)
+        {
+            case 0:
+                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_CORRECT_BUTTON);
+                break;
+            case 1:
+                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_ONE_WRONG);
+                break;
+            case 2:
+                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_TWO_WRONG);
+                break;
+            case 3:
+                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_THREE_WRONG);
+                break;
+        }
+    }
+
     private class MyButtonOnClick implements OnClickListener
     {
         public int correct = 0;
@@ -115,10 +136,12 @@ public class HomeworkActivity extends FragmentActivity{
             {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.cancel(notificationId);
+                updateWordWeight();
                 stopActivity();
             }
             else
             {
+                numOfWrongAnswers++;
                 showDialogWrong();
             }
         }

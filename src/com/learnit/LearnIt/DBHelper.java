@@ -44,6 +44,25 @@ public class DBHelper extends SQLiteOpenHelper{
     public static final int EXIT_CODE_WRONG_ARTICLE = -12;
     public static final int EXIT_CODE_WRONG_FORMAT = -13;
 
+    public static final int WEIGHT_NEW=10;
+
+    public static final int WEIGHT_ONE_WRONG=10;
+    public static final int WEIGHT_TWO_WRONG=12;
+    public static final int WEIGHT_THREE_WRONG=15;
+
+    public static final int WEIGHT_CORRECT_BUTTON=5;
+    public static final int WEIGHT_NO_MORE_LEARNING=0;
+    public static final int WEIGHT_CORRECT_INPUT=1;
+
+    public static final int[] WEIGHTS = {
+            WEIGHT_NO_MORE_LEARNING,
+            WEIGHT_CORRECT_INPUT,
+            WEIGHT_CORRECT_BUTTON,
+            WEIGHT_NEW,
+            WEIGHT_ONE_WRONG,
+            WEIGHT_TWO_WRONG,
+            WEIGHT_THREE_WRONG};
+
     long maxId = 0;
 
     private Context mContext;
@@ -90,33 +109,58 @@ public class DBHelper extends SQLiteOpenHelper{
         return cursor.getCount();
     }
 
-    public Cursor getRandRow(boolean noun)
-    {
+    public long getDBWeightSize(boolean noun, int weight) {
         db = this.getReadableDatabase();
-        if (!noun)
+        Cursor cursor;
+        if (noun)
         {
-            return db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
+            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight, null);
         }
         else
         {
-            return db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
+            cursor = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight, null);
+        }
+        return cursor.getCount();
+    }
+
+    public Cursor getRandRow(boolean noun, int weight)
+    {
+        db = this.getReadableDatabase();
+        Cursor temp = null;
+        if (!noun)
+        {
+            temp = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
+            if (0!=temp.getCount())
+            {
+                return temp;
+            }
+            else
+            {
+                return  db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
+            }
+        }
+        else
+        {
+            temp = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
+            if (0!=temp.getCount())
+            {
+                return temp;
+            }
+            else
+            {
+                return  db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
+            }
         }
     }
 
     boolean isArticle(String article) {
         String articles = this.mContext.getString(R.string.articles_de);
-        if (articles.contains(article.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return articles.contains(article.toLowerCase());
     }
 
     boolean isPrefix(String word) {
         String prefix = this.mContext.getString(R.string.help_words_de);
-        if (prefix.contains(word.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return prefix.contains(word.toLowerCase());
     }
 
     public int checkEmptyString(String str)
@@ -138,7 +182,6 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public int writeToDB(String word, String translation) {
         try {
-            int startWeight=10;
             word=word.toLowerCase();
             translation = translation.toLowerCase();
             List<String> wordsList = Arrays.asList(word.split(" "));
@@ -219,7 +262,7 @@ public class DBHelper extends SQLiteOpenHelper{
                 }
             }
             cv.put(TRANSLATION_COLUMN_NAME, translation);
-            cv.put(WEIGHT_COLUMN_NAME,startWeight);
+            cv.put(WEIGHT_COLUMN_NAME,WEIGHT_NEW);
             if (!updatedFlag) {
                 long rowID = db.insert(DB_NAME, null, cv);
                 Log.d(LOG_TAG, "row inserted, ID = " + rowID + " rows total = "
@@ -254,9 +297,24 @@ public class DBHelper extends SQLiteOpenHelper{
         return false;
     }
 
+    public boolean updateWordWeight(String word, int newWeight)
+    {
+        try{
+            db = this.getWritableDatabase();
+            Cursor c = db.rawQuery("UPDATE " + DB_NAME + " SET " + WEIGHT_COLUMN_NAME + "=" + newWeight + " WHERE " + WORD_COLUMN_NAME + "='" + word + "'", null);
+            c.moveToFirst();
+            c.close();
+            Log.d(LOG_TAG, "word " + word + " updated weight to " + newWeight);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.e(LOG_TAG,"error in update weight in DbHelper class");
+            return false;
+        }
+    }
 
-
-    public ArticleWordIdStruct getRandomWord(ArrayList<String> usedWords, boolean noun) {
+    public ArticleWordIdStruct getRandomWord(ArrayList<String> usedWords, boolean noun, int weight) {
         maxId = getDBSize(noun);
         if (usedWords.size()>=maxId)
         {
@@ -268,7 +326,11 @@ public class DBHelper extends SQLiteOpenHelper{
         Cursor c;
         int id = 0;
         do {
-            c = getRandRow(noun);
+            if (usedWords.size()>=getDBWeightSize(noun,weight))
+            {
+                weight = DBHelper.WEIGHT_NEW;
+            }
+            c = getRandRow(noun, weight);
             if (c.moveToFirst()) {
                 int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
                 int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);

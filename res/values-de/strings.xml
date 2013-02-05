@@ -26,6 +26,10 @@
     <string name="toast_notif_start_text">Zeitgeber gestartet</string>
     <string name="toast_notif_stop_text">Zeitgeber gestoppt</string>
     <string name="toast_notif_update_text">Zeitgeber aktualisiert</string>
+    <string name="toast_no_dict">Es gibt kein Wörterbuch für den Wortpaar \"%s\".</string>
+    <string name="toast_no_word">Es gibt kein solches Wort in den Wörterbuch.</string>
+    <string name="toast_loading_dict">Wörterbuch wird geladen.</string>
+    <string name="toast_loaded_dict">Wörterbuch ist geladen. Versuchen Sie neue Wörter hinzufügen.</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Hoppla!</string>
@@ -57,6 +61,7 @@
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Häufigkeit der Benachrichtigungen</string>
     <string name="pref_language_to_learn">Sprache zu lernen</string>
+    <string name="pref_language_you_know">Sprache der Sie kennen</string>
     <string name="pref_time_to_start">Wenn die Benachrichtigungen zeigen zu anfangen</string>
     <string name="pref_num_of_words">Worte in der Sitzung</string>
     <string name="pref_way_to_learn">Methode</string>
@@ -102,9 +107,27 @@
         <item>Tag</item>
     </string-array>
 
-    <string-array name="entries_languages">
+    <string-array name="entries_languages_from">
         <item>Deutsch</item>
         <item>Englisch</item>
+        <item>Polisch</item>
+        <item>Swedisch</item>
+        <item>Russisch</item>
+        <item>Spanisch</item>
+        <item>Frankisch</item>
+        <item>Italienisch</item>
+    </string-array>
+
+    <string-array name="entries_languages_to">
+        <item>Automatisch</item>
+        <item>Deutsch</item>
+        <item>Englisch</item>
+        <item>Polisch</item>
+        <item>Swedisch</item>
+        <item>Russisch</item>
+        <item>Spanisch</item>
+        <item>Frankisch</item>
+        <item>Italienisch</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

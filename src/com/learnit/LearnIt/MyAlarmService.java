@@ -65,7 +65,7 @@ public class MyAlarmService extends Service {
 
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Random rand = new Random();
         boolean isNoun;
         switch (mode)
@@ -87,6 +87,7 @@ public class MyAlarmService extends Service {
             Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).second+" " + randWords.get(i-1).first);
             CreateNotif(i, randWords.get(i - 1).second, randWords.get(i - 1).first, isNoun);
         }
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -94,18 +95,39 @@ public class MyAlarmService extends Service {
         return super.onUnbind(intent);
     }
 
+    private int generateWeight()
+    {
+        int sum=0;
+        for (int i:DBHelper.WEIGHTS)
+        {
+            sum+=i;
+        }
+        Random rand = new Random();
+        int randNum = rand.nextInt(sum);
+        for (int i = DBHelper.WEIGHTS.length-1; i>=0; --i)
+        {
+            randNum-=DBHelper.WEIGHTS[i];
+            if (randNum<=0)
+            {
+                return DBHelper.WEIGHTS[i];
+            }
+        }
+        return DBHelper.WEIGHT_NEW;
+    }
+
     private ArrayList<Pair<String, String> > getRandWordsFromDB(boolean isNoun)
     {
         ArrayList<String> usedWords = new ArrayList<String>();
         ArrayList<Pair<String, String> > result = new ArrayList<Pair<String, String>>();
+        int weight;
         for (int i=0; i<numOfNotif; ++i)
         {
-            ArticleWordIdStruct struct = dbHelper.getRandomWord(usedWords, isNoun);
+            weight = generateWeight();
+            ArticleWordIdStruct struct = dbHelper.getRandomWord(usedWords, isNoun, weight);
             if (null!=struct)
             {
                 if (null!=struct.article)
                 {
-                    //TODO only in German
                     struct.word = capitalize(struct.word);
                     result.add(new Pair<String, String>(struct.article, struct.word));
                 }

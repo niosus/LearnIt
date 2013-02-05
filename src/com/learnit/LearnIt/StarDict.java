@@ -3,6 +3,7 @@
  */
 
 package com.learnit.LearnIt;
+
 import android.util.Log;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class StarDict {
     private String strURL = null;
 
     /** decide if object has loaded the entries. */
-    private boolean boolAvailable = false;
+    public boolean boolAvailable = false;
 
     /** ifo file. */
     private IfoFile ifoFile = null;

@@ -26,9 +26,13 @@
     <string name="toast_notif_start_text">Таймер запущен</string>
     <string name="toast_notif_stop_text">Таймер остановлен</string>
     <string name="toast_notif_update_text">Таймер обновлен</string>
+    <string name="toast_no_dict">Нет словаря для языковой пары \"%s\".</string>
+    <string name="toast_no_word">Нет такого слова в словаре.</string>
+    <string name="toast_loading_dict">Загружаем словарь-помощник.</string>
+    <string name="toast_loaded_dict">Словарь готов. Попробуйте добавить новое слово.</string>
 
     <!--Dialog strings-->
-    <string name="dialog_empty_title">Ой...</string>
+    <string name="dialog_empty_title">Ой…</string>
     <string name="dialog_empty_text">Одно из полей не заполнено. Пожалуйста, заполните его.</string>
     <string name="dialog_added_title">Готово!</string>
     <string name="dialog_added_text">Слово успешно добавлено</string>
@@ -44,7 +48,7 @@
     <string name="dialog_wrong_guess_message">Неправильно, попробуйте еще</string>
     <string name="dialog_word_deleted_title">Готово!</string>
     <string name="dialog_word_deleted_message">Слово \"%s\" успешно удалено</string>
-    <string name="dialog_progress_title">Работаем...</string>
+    <string name="dialog_progress_title">Работаем…</string>
     <string name="dialog_progress_message">Пожалуйста подождите пока мы достаем слова из словаря</string>
     <string name="notif_text">Клацните, чтобы перевести слово</string>
     <string name="ok">OK</string>
@@ -56,6 +60,7 @@
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Частота напоминаний</string>
     <string name="pref_language_to_learn">Изучаемый язык</string>
+    <string name="pref_language_you_know">Язык, который Вы знаете</string>
     <string name="pref_time_to_start">Когда начать показывать напоминания?</string>
     <string name="pref_num_of_words">Слов в сессии</string>
     <string name="pref_way_to_learn">Метод изучения</string>
@@ -106,9 +111,27 @@
         <item>День</item>
     </string-array>
 
-    <string-array name="entries_languages">
+    <string-array name="entries_languages_from">
         <item>Немецкий</item>
         <item>Английский</item>
+        <item>Польский</item>
+        <item>Шведский</item>
+        <item>Русский</item>
+        <item>Испанский</item>
+        <item>Французский</item>
+        <item>Итальянский</item>
+    </string-array>
+
+    <string-array name="entries_languages_to">
+        <item>Авто</item>
+        <item>Немецкий</item>
+        <item>Английский</item>
+        <item>Польский</item>
+        <item>Шведский</item>
+        <item>Русский</item>
+        <item>Испанский</item>
+        <item>Французский</item>
+        <item>Итальянский</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

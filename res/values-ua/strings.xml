@@ -25,6 +25,10 @@
     <string name="toast_notif_start_text">Таймер запущено</string>
     <string name="toast_notif_stop_text">Таймер зупинено</string>
     <string name="toast_notif_update_text">Таймер оновлено</string>
+    <string name="toast_no_dict">Нажаль немає словника для пари \"%s\".</string>
+    <string name="toast_no_word">Нажаль такого слова в словнику немає.</string>
+    <string name="toast_loading_dict">Загружаємо словник-помічник.</string>
+    <string name="toast_loaded_dict">Словник готовий. Спробуйте додати нове слово.</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Ой лишенько!</string>
@@ -56,6 +60,7 @@
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Частота нагадувань</string>
     <string name="pref_language_to_learn">Яку мову вчимо</string>
+    <string name="pref_language_you_know">Яку мову знаємо</string>
     <string name="pref_time_to_start">Коли почати показувати нагадування?</string>
     <string name="pref_num_of_words">Слів у сесії</string>
     <string name="pref_way_to_learn">Метод вивчення</string>
@@ -101,9 +106,27 @@
         <item>День</item>
     </string-array>
 
-    <string-array name="entries_languages">
+    <string-array name="entries_languages_from">
         <item>Німецька</item>
         <item>Англійська</item>
+        <item>Польська</item>
+        <item>Шведська</item>
+        <item>Російська</item>
+        <item>Іспанська</item>
+        <item>Французська</item>
+        <item>Італійська</item>
+    </string-array>
+
+    <string-array name="entries_languages_to">
+        <item>Авто</item>
+        <item>Німецька</item>
+        <item>Англійська</item>
+        <item>Польська</item>
+        <item>Шведська</item>
+        <item>Російська</item>
+        <item>Іспанська</item>
+        <item>Французська</item>
+        <item>Італійська</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

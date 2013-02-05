@@ -27,6 +27,10 @@
     <string name="toast_notif_start_text">Notification timer started</string>
     <string name="toast_notif_stop_text">Notification timer stopped</string>
     <string name="toast_notif_update_text">Notification timer updated</string>
+    <string name="toast_no_dict">There is no dict for language pair \"%s\".</string>
+    <string name="toast_no_word">There is no such word in dictionary.</string>
+    <string name="toast_loading_dict">Loading help dictionary.</string>
+    <string name="toast_loaded_dict">Dictionary loaded. Try to add a new word.</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Oops..</string>
@@ -57,6 +61,7 @@
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Reminder frequency</string>
     <string name="pref_language_to_learn">Language to learn</string>
+    <string name="pref_language_you_know">Language you know</string>
     <string name="pref_time_to_start">Time to start notifications</string>
     <string name="pref_num_of_words">Number of words in session</string>
     <string name="pref_way_to_learn">Way to learn words</string>
@@ -108,9 +113,27 @@
         <item>Day</item>
     </string-array>
 
-    <string-array name="entries_languages">
+    <string-array name="entries_languages_from">
         <item>German</item>
         <item>English</item>
+        <item>Polish</item>
+        <item>Swedish</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Italian</item>
+    </string-array>
+
+    <string-array name="entries_languages_to">
+        <item>Auto</item>
+        <item>German</item>
+        <item>English</item>
+        <item>Polish</item>
+        <item>Swedish</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Italian</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

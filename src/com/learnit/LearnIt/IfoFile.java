@@ -184,7 +184,6 @@ public class IfoFile {
             strDescription = getStringForKey("description=", strInput);
             strDate = getStringForKey("date=", strInput);
             // make sure that ifo file is loaded successfully
-            Log.d("my_logs", strDescription);
             setBoolIsLoaded(getLongWordCount() > 0);
         } catch (Exception ex) {
 //            LOG.error("Loading file '" + strFileName + "'", ex);

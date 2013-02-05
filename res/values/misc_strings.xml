@@ -13,7 +13,8 @@
     <string name="key_notification_frequency">notification_frequency</string>
     <string name="key_way_to_learn">way_to_learn</string>
     <string name="key_num_of_words">num_of_words</string>
-    <string name="key_language">language_to_learn</string>
+    <string name="key_language_from">language_to_learn</string>
+    <string name="key_language_to">language_you_know</string>
 
     <string-array name="values_freq">
         <item>1</item>
@@ -36,9 +37,27 @@
         <item>10</item>
     </string-array>
 
-    <string-array name="values_languages">
+    <string-array name="values_languages_from">
         <item>de</item>
         <item>en</item>
+        <item>pl</item>
+        <item>swe</item>
+        <item>ru</item>
+        <item>esp</item>
+        <item>fr</item>
+        <item>it</item>
+    </string-array>
+
+    <string-array name="values_languages_to">
+        <item>auto</item>
+        <item>de</item>
+        <item>en</item>
+        <item>pl</item>
+        <item>swe</item>
+        <item>ru</item>
+        <item>esp</item>
+        <item>fr</item>
+        <item>it</item>
     </string-array>
 
     <string-array name="values_way_to_learn">

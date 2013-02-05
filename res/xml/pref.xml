@@ -10,11 +10,18 @@
     <PreferenceCategory
             android:title="@string/main_group">
         <ListPreference
-                android:key="@string/key_language"
+                android:key="@string/key_language_from"
                 android:summary=""
                 android:title="@string/pref_language_to_learn"
-                android:entries="@array/entries_languages"
-                android:entryValues="@array/values_languages"/>
+                android:entries="@array/entries_languages_from"
+                android:entryValues="@array/values_languages_from"/>
+        <ListPreference
+                android:key="@string/key_language_to"
+                android:summary=""
+                android:defaultValue="auto"
+                android:title="@string/pref_language_you_know"
+                android:entries="@array/entries_languages_to"
+                android:entryValues="@array/values_languages_to"/>
 
         <ListPreference
                 android:key="@string/key_way_to_learn"

@@ -50,10 +50,12 @@ public class MainActivity extends FragmentActivity {
     }
     protected void onResume() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String selectedLanguage = sp.getString(getString(R.string.key_language), "NONE");
-        Log.d(LOG_TAG,"selected language = " + selectedLanguage);
+        String selectedLanguage = sp.getString(getString(R.string.key_language_from), "NONE");
+        String selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
+        Log.d(LOG_TAG,"language to translate to = "+ selectedLanguageTo);
+        Log.d(LOG_TAG,"language to translate from = " + selectedLanguage);
         Resources res = getResources();
-        String[] languages = res.getStringArray(R.array.values_languages);
+        String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
         Log.d(LOG_TAG,"possible languages = " + allLanguages);
         if (!allLanguages.contains(selectedLanguage))
