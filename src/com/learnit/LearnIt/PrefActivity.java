@@ -28,6 +28,8 @@ public class PrefActivity extends PreferenceActivity {
                 .commit();
     }
 
+
+
     public static class PrefsFragment1 extends PreferenceFragment {
         private final String LOG_TAG = "my_logs";
         ListPreference lstNotifFreq;

@@ -12,13 +12,13 @@ import android.widget.Button;
 
 import java.util.Arrays;
 
-public class InstructionsActivity extends FragmentActivity {
+public class WellcomeActivity extends FragmentActivity {
     private final String LOG_TAG = "my_logs";
     Button btnSettings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.instructions);
+        setContentView(R.layout.wellcome);
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
     }

@@ -5,6 +5,7 @@
 package com.learnit.LearnIt;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -61,26 +62,13 @@ public class DictFragment extends Fragment {
 
     public void showDialog(String queryWord, String translation, int dialogType)
     {
-        if (dialogType == MyDialogFragment.DIALOG_EDIT_WORD)
-        {
-            MyCustomEditDialog frag = new MyCustomEditDialog();
-            Bundle args = new Bundle();
-            args.putInt(MyDialogFragment.ID_TAG, dialogType);
-            args.putString(MyDialogFragment.WORD_TAG, queryWord);
-            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-            frag.setArguments(args);
-            frag.show(getFragmentManager(), "show_edit_word_fragment_dialog");
-        }
-        else
-        {
-            MyDialogFragment frag = new MyDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt(MyDialogFragment.ID_TAG, dialogType);
-            args.putString(MyDialogFragment.WORD_TAG, queryWord);
-            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-            frag.setArguments(args);
-            frag.show(getFragmentManager(), "show_word_fragment_dialog");
-        }
+        MyDialogFragment frag = new MyDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(MyDialogFragment.ID_TAG, dialogType);
+        args.putString(MyDialogFragment.WORD_TAG, queryWord);
+        args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+        frag.setArguments(args);
+        frag.show(getFragmentManager(), "show_word_fragment_dialog");
     }
 
     boolean isArticle(String article) {
@@ -209,6 +197,14 @@ public class DictFragment extends Fragment {
         }
     }
 
+    void startEditWordActivity(String word)
+    {
+        Intent intent = new Intent(this.getActivity(), EditWord.class);
+        intent.putExtra("word",word);
+        startActivity(intent);
+        Log.d(LOG_TAG,"start info activity called");
+    }
+
 
     private class ListActionMode implements ActionMode.Callback
     {
@@ -240,7 +236,7 @@ public class DictFragment extends Fragment {
             Log.d(LOG_TAG,"item selected = " + queryWord);
             switch (item.getItemId()) {
                 case R.id.context_menu_edit:
-                    showDialog(queryWord,null,MyDialogFragment.DIALOG_EDIT_WORD);
+                    startEditWordActivity(queryWord);
                     edtWord.setText("");
                     mode.finish(); // Action picked, so close the CAB
                     return true;

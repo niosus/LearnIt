@@ -1,0 +1,193 @@
+package com.learnit.LearnIt;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import com.learnit.LearnIt.utils.Utils;
+
+public class EditWord extends FragmentActivity {
+    public static final String ID_TAG = "id";
+    public static final String WORD_TAG = "word";
+    public final String LOG_TAG = "my_logs";
+    public static final int DIALOG_EDIT_WORD = 9;
+    EditText edtWord;
+    EditText edtTrans;
+    String oldWord;
+    String oldStrippedWord;
+    Utils utils;
+    int currentId=-1;
+
+    private ImageButton btnClearWord;
+    private ImageButton btnClearTrans;
+
+    DBHelper dbHelper;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(this);
+        utils = new Utils();
+        oldWord= getIntent().getStringExtra(WORD_TAG);
+        oldStrippedWord = utils.stripFromArticle(this,oldWord);
+        String translation=dbHelper.getTranslation(oldStrippedWord);
+        Log.d(LOG_TAG,"got word to edit = " + oldStrippedWord + ", trans = " + translation);
+
+        setContentView(R.layout.edit_word);
+
+        edtWord = (EditText) findViewById(R.id.edtWord);
+        edtTrans = (EditText) findViewById(R.id.edtTrans);
+        edtWord.setText(oldWord);
+        edtTrans.setText(translation);
+
+        btnClearWord = (ImageButton) findViewById(R.id.btn_add_word_clear);
+        btnClearTrans = (ImageButton) findViewById(R.id.btn_add_trans_clear);
+        Button btnOk = (Button) findViewById(R.id.btn_ok);
+        Button btnCancel = (Button) findViewById(R.id.btn_cancel);
+        MyBtnTouchListener myBtnTouchListener = new MyBtnTouchListener();
+        btnClearTrans.setOnClickListener(myBtnTouchListener);
+        btnClearWord.setOnClickListener(myBtnTouchListener);
+        btnCancel.setOnClickListener(myBtnTouchListener);
+        btnOk.setOnClickListener(myBtnTouchListener);
+
+        edtWord.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString()!=null && editable.toString()!="")
+                {
+                    btnClearWord.setVisibility(View.VISIBLE);
+                }
+                if (editable.length()==0)
+                {
+                    btnClearWord.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        edtTrans.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString()!=null && editable.toString()!="")
+                {
+                    btnClearTrans.setVisibility(View.VISIBLE);
+                }
+                if (editable.length()==0)
+                {
+                    btnClearTrans.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void finishActivity()
+    {
+       this.finish();
+    }
+
+    private class MyBtnTouchListener implements View.OnClickListener
+    {
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.btn_add_trans_clear:
+                    edtTrans.setText("");
+                    v.setVisibility(View.INVISIBLE);
+                    break;
+                case R.id.btn_add_word_clear:
+                    edtWord.setText("");
+                    v.setVisibility(View.INVISIBLE);
+                    break;
+                case R.id.btn_ok:
+                    Log.d(LOG_TAG,"update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+                    if (dbHelper.checkEmptyString(edtWord.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT
+                            || dbHelper.checkEmptyString(edtTrans.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT)
+                    {
+                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+                    }
+                    else
+                    {
+                        dbHelper.deleteWord(oldStrippedWord);
+                        int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+                        showMessage(exitCode);
+                    }
+                    break;
+                case R.id.btn_cancel:
+                    finishActivity();
+                    break;
+            }
+        }
+    }
+
+    private void showMessage(int exitCode)
+    {
+        MyDialogFragment frag;
+        Bundle args;
+        switch (exitCode) {
+            case DBHelper.EXIT_CODE_OK:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "word_updated");
+                this.finish();
+                break;
+            case DBHelper.EXIT_CODE_WORD_UPDATED:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "word_updated");
+                this.finish();
+                break;
+            case DBHelper.EXIT_CODE_EMPTY_INPUT:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "word_empty");
+                break;
+            case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "word_exists");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "wrong_article");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_FORMAT:
+                frag = new MyDialogFragment();
+                args = new Bundle();
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
+                frag.setArguments(args);
+                frag.show(getSupportFragmentManager(), "wrong_format");
+                break;
+        }
+    }
+
+}

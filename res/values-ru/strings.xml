@@ -64,6 +64,7 @@
     <string name="pref_time_to_start">Когда начать показывать напоминания?</string>
     <string name="pref_num_of_words">Слов в сессии</string>
     <string name="pref_way_to_learn">Метод изучения</string>
+    <string name="pref_notifications">Уведомления</string>
 
 
     <string name="checkbox1_title">CheckBox 1</string>
@@ -83,25 +84,58 @@
     <string name="menu_export">Экспорт словаря</string>
     <string name="menu_import">Импорт словаря</string>
     <string name="menu_show_all_words">Показать все слова</string>
+    <string name="menu_info">Справка</string>
 
     <!--prefs categories-->
     <string name="notification_group">Настройки уведомлений</string>
     <string name="main_group">Основные настройки</string>
 
-    <!--instructions-->
-    <string name="instructions">
-        Привет всем! это уродство - заготовка для инструкций, пока я не разберусь как их делать красиво \n\n
-        ВАЖНО!!! \n\n
-        ЧТОБЫ НАЧАТЬ ПОЛЬЗОВАТЬСЯ ПРИЛОЖЕНИЕМ НУЖНО ВЫБРАТЬ ЯЗЫК! \n\n
-        Новая фишка! \n
-        --Когда вводите новое слово, клацните на поле для перевода и внизу появятся слова из словаря, если он подключен.  \n\n
-        Changelog: \n
-        --Добавил Stardict словари \n
-        --словари нужно класть сюда (язык изменить на нужный): \n/phone_memory/LearnIt/en-ru/dict.*  \n
-        --пока что их можно найти в моем Google Drive\n
-        --много ошибок пофиксил \n
-    </string>
+    <!--welcome-->
+
     <string name="instr_go_to_settings">Настройки</string>
+    <string name="quick_instructions">Просто нажмите на \"Настройки\" внизу страницы и там выберите язык, который хотите изучать. Далее нажмине \"Назад\" и вы попадете на главный экран приложения.</string>
+    <string name="quick_start">Быстрый старт!</string>
+    <string name="welcome">Привет!</string>
+    <string name="instuctions_title">О программе</string>
+    <string name="instructions_method_title">Идея</string>
+    <string name="instructions_method_text">
+        Это приложение позволяет Вам изучать слова, даже, если вы сами уверены, что для этого слишком ленивы. \n\n
+        Метод, который я использую прост. \n\n
+        Как только Вы добавляете слова в Ваш словарь, они начинают появлятся как оповещения,
+        так, что их невозможно не заметить. \n\n
+        Нажатие на оповещение показывет слово, которое Вы хотите перевести и варианты перевода из которых Вам предстоит выбрать правильный.\n\n
+
+        Основная идея в том, что закрыть оповещение можно только выбрав правильный вариант.\n\n
+
+        Вся эта система заставляет Вас учить слова как минимум каждый день, а это гарантирует запоминание слова, практически не прикладывая усилий.\n</string>
+    <string name="instructions_guess_trans_title">Угадываем перевод</string>
+    <string name="instructions_guess_trans_text">
+       Недавно я добавил поддержку оффлайн словарей StarDict. На данный момент они используются только в качестве помощи при вводе нового слова. \n\n
+
+        Когда вы набираете новое слово на экране "Новые слова" и кликаете на поле "перевод", приложение попробует подсказать Вам варианты перевода.\n\n
+
+        Это часто избавляет от необходимости переключать раскладку на клавиатуре. \n
+    </string>
+
+    <string name="instructions_dict_help_title">ВАЖНО! Информация про словари!</string>
+    <string name="instructions_dict_help_text">
+        На данный момент словари нужно устанавливать вручную, так как метод автоматической их установки я еще не придумал.\n\n
+        Словари необходимо поместить на карту памяти, в папку "LearnIt" (ее можно создать прямо из приложения, просто нажав "экспорт словаря"). Если у вас есть идеи как это можно реализовать - буду рад их услывать.\n\n
+        Словари нужно положить в папки с названием {language_from}-{language_to}. \n\n
+        Формат StarDict обычно разспространятся как 3 файла: *.ifo, *.idx, *.dict. Все должны иметь имя "dict".\n\n
+        Итак для словаря Немецкий-Английский все должно выглядеть примерно так:\n\n
+        /SD_CARD/LearnIt/de-en/dict.ifo\n
+        /SD_CARD/LearnIt/de-en/dict.idx\n
+        /SD_CARD/LearnIt/de-en/dict.dict\n</string>
+
+    <string name="instructions_edit_words_help_title">Редактирование существующих слов</string>
+    <string name="instructions_edit_words_help_text">
+        Когда вы находитесь на экране "Мой Словарь" и список показывает какие нибудь слова, вы можете удалить или редактировать их по долгому нажатию на соответствующее слово.\n</string>
+
+    <string name="instructions_thank_you_title">Спасибо Вам!</string>
+    <string name="instructions_thank_you_text">
+        Не смотря на то, что это приложение - просто мое хобби, для меня много значит, что им пользуются живые люди.
+        Если у вас есть мнение, которым хочется поделиться, или какие нибудь пожелания - пишите, я буду рад их услышать. \n</string>
 
     <string-array name="time_entries">
         <item>Час</item>
@@ -120,6 +154,7 @@
         <item>Испанский</item>
         <item>Французский</item>
         <item>Итальянский</item>
+        <item>Украинский</item>
     </string-array>
 
     <string-array name="entries_languages_to">
@@ -132,6 +167,7 @@
         <item>Испанский</item>
         <item>Французский</item>
         <item>Итальянский</item>
+        <item>Украинский</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

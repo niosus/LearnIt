@@ -12,12 +12,12 @@
             android:id="@+id/context_menu_edit"
             android:orderInCategory="100"
             android:showAsAction="always"
-            android:icon="@drawable/ic_action_edit_dark"
+            android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/context_menu_edit"/>
     <item
             android:id="@+id/context_menu_delete"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_action_delete_dark"
+            android:icon="@android:drawable/ic_menu_delete"
             android:showAsAction="always"
             android:title="@string/context_menu_delete"/>
 </menu>

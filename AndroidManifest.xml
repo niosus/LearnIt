@@ -23,6 +23,13 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
+
+        <receiver android:name="PrefActivity" >
+            <intent-filter>
+                <action
+                        android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <activity
                 android:name="com.learnit.LearnIt.MainActivity"
                 android:label="@string/app_name"
@@ -61,7 +68,17 @@
                   android:label="@string/app_name"
                 android:theme="@android:style/Theme.Holo">
         </activity>
-        <activity android:name=".InstructionsActivity"
+        <activity android:name=".WellcomeActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Holo">
+        </activity>
+        <activity android:name=".InfoActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Holo">
+        </activity>
+        <activity android:name=".EditWord"
                   android:screenOrientation="portrait"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Holo">

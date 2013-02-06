@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity {
         Log.d(LOG_TAG,"possible languages = " + allLanguages);
         if (!allLanguages.contains(selectedLanguage))
         {
-            startShowInstructionsActivity();
+            startShowWellcomeActivity();
         }
         super.onResume();
     }
@@ -71,16 +71,22 @@ public class MainActivity extends FragmentActivity {
         Log.d(LOG_TAG,"start activity called");
     }
 
+    private void startAboutActivity() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG,"start info activity called");
+    }
+
     private void startShowWordsActivity() {
         Intent intent = new Intent(this, ShowAllWordsActivity.class);
         startActivity(intent);
         Log.d(LOG_TAG,"start activity called");
     }
 
-    private void startShowInstructionsActivity() {
-        Intent intent = new Intent(this, InstructionsActivity.class);
+    private void startShowWellcomeActivity() {
+        Intent intent = new Intent(this, WellcomeActivity.class);
         startActivity(intent);
-        Log.d(LOG_TAG,"start activity instructions");
+        Log.d(LOG_TAG,"start activity welcome");
     }
 
     @Override
@@ -102,6 +108,10 @@ public class MainActivity extends FragmentActivity {
             case R.id.menu_show_all_words:
                 Log.d(LOG_TAG, "show all words");
                 startShowWordsActivity();
+                return true;
+            case R.id.menu_info:
+                Log.d(LOG_TAG, "show about");
+                startAboutActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

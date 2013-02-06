@@ -38,5 +38,12 @@
             android:showAsAction="ifRoom"
             android:title="@string/menu_settings"/>
 
+    <item
+            android:id="@+id/menu_info"
+            android:orderInCategory="200"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:showAsAction="ifRoom"
+            android:title="@string/menu_info"/>
+
 
 </menu>

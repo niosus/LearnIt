@@ -12,13 +12,16 @@ package com.learnit.LearnIt;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,6 +31,9 @@ public class HomeworkActivity extends FragmentActivity{
     String queryWord = null;
     int numOfWrongAnswers=0;
     String article = null;
+    String prefix = null;
+    String translation = null;
+    Utils utils;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
     int[] btnIds = {R.id.left_top_button,
@@ -38,6 +44,8 @@ public class HomeworkActivity extends FragmentActivity{
     private void getEverythingFromIntent() {
         Intent intent = getIntent();
         article = intent.getStringExtra("article");
+        prefix = intent.getStringExtra("prefix");
+        translation = intent.getStringExtra("translation");
         queryWord = intent.getStringExtra("word");
         notificationId = intent.getIntExtra("id", -1);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
@@ -47,28 +55,17 @@ public class HomeworkActivity extends FragmentActivity{
 
     private void setBtnTexts(int correctId)
     {
-        ArrayList<String> usedWords = new ArrayList<String>();
-        usedWords.add(queryWord);
-        ArticleWordIdStruct temp;
-        for (int i = 0; i<btnIds.length; ++i)
+        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length,queryWord,false);
+        for (int i=0; i<randomWords.size(); ++i)
         {
-            if (correctId!=i)
+            if (correctId==i)
             {
-                temp = dbHelper.getRandomWord(usedWords, false, DBHelper.WEIGHT_NEW);
-                if (null==temp)
-                {
-                    findViewById(btnIds[i]).setEnabled(false);
-                }
-                else
-                {
-                    findViewById(btnIds[i]).setEnabled(true);
-                    ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslation(temp.word));
-                    usedWords.add(temp.word);
-                }
+                ((Button) findViewById(btnIds[i])).setText(translation);
             }
             else
             {
-                ((Button) findViewById(btnIds[i])).setText(dbHelper.getTranslation(queryWord));
+                findViewById(btnIds[i]).setEnabled(true);
+                ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).translation);
             }
         }
     }
@@ -76,6 +73,7 @@ public class HomeworkActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getEverythingFromIntent();
+        utils = new Utils();
         setContentView(R.layout.homework);
         MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
         Random random = new Random();
@@ -149,11 +147,23 @@ public class HomeworkActivity extends FragmentActivity{
 
     protected void onResume() {
         super.onResume();
-
         TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String learnLang = sp.getString(getString(R.string.key_language_from),"null");
         if (null!=article)
         {
-            queryWordTextView.setText(article + " " + queryWord);
+            if ("de".equals(learnLang))
+            {
+                queryWordTextView.setText(article + " " + utils.capitalize(queryWord));
+            }
+            else
+            {
+                queryWordTextView.setText(article + " " + queryWord);
+            }
+        }
+        else if (null!=prefix)
+        {
+            queryWordTextView.setText(prefix + " " + queryWord);
         }
         else
         {

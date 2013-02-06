@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class AddWordFragment extends Fragment {
     StarDict dict;
     String selectedLanguageFrom;
     String selectedLanguageTo;
+    Utils utils;
 
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
@@ -63,6 +65,7 @@ public class AddWordFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        utils = new Utils();
     }
 
     private void getDict()
@@ -129,6 +132,10 @@ public class AddWordFragment extends Fragment {
                 saveItem.setVisible(false);
             }
         }
+    }
+
+    public void onPause() {
+        super.onPause();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -387,43 +394,9 @@ public class AddWordFragment extends Fragment {
 
     }
 
-    boolean isArticle(String article) {
-        String articles = getString(R.string.articles_de);
-        return articles.contains(article.toLowerCase());
-    }
-
-    boolean isPrefix(String word) {
-        String prefix = this.getString(R.string.help_words_de);
-        return prefix.contains(word.toLowerCase());
-    }
-
-    private String cutAwayFirstWord(String input)
+    private String getRealWord(String word)
     {
-        return input.split(" ", 2)[1];
-    }
-
-
-    private String stripFromArticle(String str)
-    {
-        String[] tempArray = str.split("\\s");
-        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-        if (tempArray.length==1)
-        {
-            return str;
-        }
-        else if (tempArray.length>1)
-        {
-            if (isArticle(tempArray[0]))
-            {
-                return cutAwayFirstWord(str);
-            }
-            else if (isPrefix(tempArray[0]))
-            {
-                return cutAwayFirstWord(str);
-            }
-            return str;
-        }
-        else return null;
+        return utils.stripFromArticle(this.getActivity(),word);
     }
 
     private class MyBtnOnClickListener implements OnClickListener {
@@ -475,7 +448,7 @@ public class AddWordFragment extends Fragment {
                     Log.d(LOG_TAG,"temp word is " + tempWord);
                     if (null!=tempWord)
                     {
-                        String newWord = stripFromArticle(tempWord);
+                        String newWord = getRealWord(tempWord);
                         return parseDictOutput(dict.lookupWord(newWord));
                     }
                     return null;
@@ -483,7 +456,8 @@ public class AddWordFragment extends Fragment {
                 else if (action[0]==ASYNC_TASK_LOAD_DICTIONARY)
                 {
                     try {
-                        getDict();
+                        if (null==dict)
+                            getDict();
                         return null;
                     }
                     catch (OutOfMemoryError e)

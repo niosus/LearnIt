@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
-import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,7 +27,7 @@ import java.util.Random;
 public class MyAlarmService extends Service {
     private final String NONE_STR = "-1";
     private final int NONE = -1;
-    private static final int idModificator = 1552235; // some number
+    public static final int idModificator = 1552235; // some number
     public static DBHelper dbHelper;
     private int numOfNotif = 5;
     private int mode;
@@ -81,11 +80,11 @@ public class MyAlarmService extends Service {
                 break;
             default:isNoun=false;
         }
-        ArrayList<Pair<String, String> > randWords = getRandWordsFromDB(isNoun);
+        ArrayList<ArticleWordIdStruct> randWords = getRandWordsFromDB(isNoun);
         for (int i = randWords.size(); i>0; --i)
         {
-            Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).second+" " + randWords.get(i-1).first);
-            CreateNotif(i, randWords.get(i - 1).second, randWords.get(i - 1).first, isNoun);
+            Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).word);
+            CreateNotification(i, randWords.get(i - 1), isNoun);
         }
         return START_NOT_STICKY;
     }
@@ -95,74 +94,15 @@ public class MyAlarmService extends Service {
         return super.onUnbind(intent);
     }
 
-    private int generateWeight()
+    private ArrayList<ArticleWordIdStruct> getRandWordsFromDB(boolean isNoun)
     {
-        int sum=0;
-        for (int i:DBHelper.WEIGHTS)
-        {
-            sum+=i;
-        }
-        Random rand = new Random();
-        int randNum = rand.nextInt(sum);
-        for (int i = DBHelper.WEIGHTS.length-1; i>=0; --i)
-        {
-            randNum-=DBHelper.WEIGHTS[i];
-            if (randNum<=0)
-            {
-                return DBHelper.WEIGHTS[i];
-            }
-        }
-        return DBHelper.WEIGHT_NEW;
+        Log.d(LOG_TAG,"MyAlarmService: get random words executed");
+        return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
 
-    private ArrayList<Pair<String, String> > getRandWordsFromDB(boolean isNoun)
-    {
-        ArrayList<String> usedWords = new ArrayList<String>();
-        ArrayList<Pair<String, String> > result = new ArrayList<Pair<String, String>>();
-        int weight;
-        for (int i=0; i<numOfNotif; ++i)
-        {
-            weight = generateWeight();
-            ArticleWordIdStruct struct = dbHelper.getRandomWord(usedWords, isNoun, weight);
-            if (null!=struct)
-            {
-                if (null!=struct.article)
-                {
-                    struct.word = capitalize(struct.word);
-                    result.add(new Pair<String, String>(struct.article, struct.word));
-                }
-                else if (null!=struct.prefix)
-                {
-                    result.add(new Pair<String, String>(struct.prefix, struct.word));
-                }
-                else
-                {
-                    result.add(new Pair<String, String>(null, struct.word));
-                }
-                usedWords.add(struct.word);
-                Log.d(LOG_TAG,"current words " + usedWords);
-            }
-            else
-            {
-                Log.d(LOG_TAG,"oops, got null in i = " + i + " out of " + numOfNotif);
-                break;
-            }
-        }
-        return result;
-    }
-
-    private String capitalize(String str)
-    {
-        if (str.length()>0)
-            return str.substring(0, 1).toUpperCase() + str.substring(1);
-        else
-            return null;
-    }
-
-    private boolean CreateNotif(int wordNum, String word, String article, boolean isNoun) {
-        int mId = wordNum + idModificator;
+    private boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, boolean isNoun) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setContentTitle(word).setContentText(getString(R.string.notif_text));
+                this).setContentTitle(struct.word).setContentText(getString(R.string.notif_text));
         switch (wordNum) {
             case 1:
                 mBuilder.setSmallIcon(R.drawable.ic_stat_one);
@@ -201,10 +141,13 @@ public class MyAlarmService extends Service {
             resultIntent = new Intent(this, HomeworkArticleActivity.class);
         else
             resultIntent = new Intent(this, HomeworkActivity.class);
+        int mId = (int)struct.id + idModificator;
         resultIntent.putExtra("id", mId);
-        resultIntent.putExtra("word", word);
-        resultIntent.putExtra("article", article);
-        resultIntent.setAction(mId + " " + word + " " + System.currentTimeMillis());
+        resultIntent.putExtra("word", struct.word);
+        resultIntent.putExtra("article", struct.article);
+        resultIntent.putExtra("translation", struct.translation);
+        resultIntent.putExtra("prefix", struct.prefix);
+        resultIntent.setAction(mId + " " + struct.word + " " + System.currentTimeMillis());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         if (isNoun)
             stackBuilder.addParentStack(HomeworkArticleActivity.class);

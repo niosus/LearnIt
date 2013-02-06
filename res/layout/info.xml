@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instuctions_title"
+            android:id="@+id/instructions_title"
+            android:padding="20dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            style="@android:style/TextAppearance.Holo.Medium"
+            android:textColor="@android:color/holo_blue_bright"
+            android:typeface="normal"/>
+
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/instructions_title"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="30dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_method_title"
+                    style="@android:style/TextAppearance.Holo.Small"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_method_text"
+                    android:textAlignment="viewStart"
+                    style="@android:style/TextAppearance.Holo.Small"/>
+            <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_guess_trans_title"
+                    style="@android:style/TextAppearance.Holo.Small"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_guess_trans_text"
+                    android:textAlignment="viewStart"
+                    style="@android:style/TextAppearance.Holo.Small"/>
+
+            <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_edit_words_help_title"
+                    style="@android:style/TextAppearance.Holo.Small"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_edit_words_help_text"
+                    android:textAlignment="viewStart"
+                    style="@android:style/TextAppearance.Holo.Small"/>
+
+            <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_dict_help_title"
+                    style="@android:style/TextAppearance.Holo.Small"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_dict_help_text"
+                    android:textAlignment="viewStart"
+                    style="@android:style/TextAppearance.Holo.Small"/>
+
+            <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_thank_you_title"
+                    style="@android:style/TextAppearance.Holo.Small"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_blue_dark"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions_thank_you_text"
+                    android:textAlignment="viewStart"
+                    style="@android:style/TextAppearance.Holo.Small"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

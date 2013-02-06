@@ -8,6 +8,7 @@
 
 package com.learnit.LearnIt;
 
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -91,67 +92,70 @@ public class DBHelper extends SQLiteOpenHelper{
         word = word.toLowerCase();
         Log.d(LOG_TAG,"delete word = " + word);
         db = this.getWritableDatabase();
+        int id = this.getId(word);
         db.delete(DB_NAME,WORD_COLUMN_NAME + "='" + word + "'", null);
+        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(id + MyAlarmService.idModificator);
         return true;
     }
 
-    public long getDBSize(boolean noun) {
-        db = this.getReadableDatabase();
-        Cursor cursor;
-        if (noun)
-        {
-            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null", null);
-        }
-        else
-        {
-            cursor = db.rawQuery("select * from " + DB_NAME, null);
-        }
-        return cursor.getCount();
-    }
+//    public long getDBSize(boolean noun) {
+//        db = this.getReadableDatabase();
+//        Cursor cursor;
+//        if (noun)
+//        {
+//            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null", null);
+//        }
+//        else
+//        {
+//            cursor = db.rawQuery("select * from " + DB_NAME, null);
+//        }
+//        return cursor.getCount();
+//    }
 
-    public long getDBWeightSize(boolean noun, int weight) {
-        db = this.getReadableDatabase();
-        Cursor cursor;
-        if (noun)
-        {
-            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight, null);
-        }
-        else
-        {
-            cursor = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight, null);
-        }
-        return cursor.getCount();
-    }
+//    public long getDBWeightSize(boolean noun, int weight) {
+//        db = this.getReadableDatabase();
+//        Cursor cursor;
+//        if (noun)
+//        {
+//            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight, null);
+//        }
+//        else
+//        {
+//            cursor = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight, null);
+//        }
+//        return cursor.getCount();
+//    }
 
-    public Cursor getRandRow(boolean noun, int weight)
-    {
-        db = this.getReadableDatabase();
-        Cursor temp = null;
-        if (!noun)
-        {
-            temp = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
-            if (0!=temp.getCount())
-            {
-                return temp;
-            }
-            else
-            {
-                return  db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
-            }
-        }
-        else
-        {
-            temp = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
-            if (0!=temp.getCount())
-            {
-                return temp;
-            }
-            else
-            {
-                return  db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
-            }
-        }
-    }
+//    public Cursor getRandRow(boolean noun, int weight)
+//    {
+//        db = this.getReadableDatabase();
+//        Cursor temp = null;
+//        if (!noun)
+//        {
+//            temp = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
+//            if (0!=temp.getCount())
+//            {
+//                return temp;
+//            }
+//            else
+//            {
+//                return  db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
+//            }
+//        }
+//        else
+//        {
+//            temp = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
+//            if (0!=temp.getCount())
+//            {
+//                return temp;
+//            }
+//            else
+//            {
+//                return  db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
+//            }
+//        }
+//    }
 
     boolean isArticle(String article) {
         String articles = this.mContext.getString(R.string.articles_de);
@@ -285,17 +289,17 @@ public class DBHelper extends SQLiteOpenHelper{
 
     }
 
-    private boolean wordInArray(String word,  List<String> array)
-    {
-        for (String a:array)
-        {
-            if (word.toLowerCase().equals(a.toLowerCase()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean wordInArray(String word,  List<String> array)
+//    {
+//        for (String a:array)
+//        {
+//            if (word.toLowerCase().equals(a.toLowerCase()))
+//            {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public boolean updateWordWeight(String word, int newWeight)
     {
@@ -314,48 +318,32 @@ public class DBHelper extends SQLiteOpenHelper{
         }
     }
 
-    public ArticleWordIdStruct getRandomWord(ArrayList<String> usedWords, boolean noun, int weight) {
-        maxId = getDBSize(noun);
-        if (usedWords.size()>=maxId)
-        {
-            return null;
-        }
-        String word = null;
-        String prefix = null;
-        String article = null;
-        Cursor c;
-        int id = 0;
-        do {
-            if (usedWords.size()>=getDBWeightSize(noun,weight))
-            {
-                weight = DBHelper.WEIGHT_NEW;
-            }
-            c = getRandRow(noun, weight);
-            if (c.moveToFirst()) {
-                int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-                int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
-                int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
-                int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
+    public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, boolean noun) {
+        db = this.getReadableDatabase();
+        ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
+        Cursor c=db.rawQuery("select * from "+DB_NAME+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+        String word, translation;
+        String article;
+        int id;
+        String prefix;
+        if (c.moveToFirst()) {
+            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+            int transColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
+            int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
+            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
+            do {
                 word = (c.getString(wordColIndex));
+                translation = (c.getString(transColIndex));
                 article = (c.getString(articleColIndex));
                 id = (c.getInt(idColIndex));
                 prefix = (c.getString(prefixColIndex));
-                Log.d(LOG_TAG, "randWord = " + article + " " + word);
-                c.close();
-            } else {
-                Log.d(LOG_TAG, "0 rows");
-                return null;
-            }
-            Log.d(LOG_TAG, "word " + word + " is in array " + usedWords.toString() + " = " + wordInArray(word,usedWords));
-        }
-        while (wordInArray(word,usedWords));
-        if (noun)
-        {
-            //TODO only in German
-            word=capitalize(word);
-        }
-        ArticleWordIdStruct result = new ArticleWordIdStruct(article, prefix, word, id);
-        return result;
+                structArray.add(new ArticleWordIdStruct(article,prefix,word,translation,id));
+            } while (c.moveToNext());
+        } else
+            Log.d(LOG_TAG, "0 rows");
+        c.close();
+        return structArray;
     }
 
     private String capitalize(String str)

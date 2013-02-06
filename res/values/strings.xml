@@ -65,45 +65,85 @@
     <string name="pref_time_to_start">Time to start notifications</string>
     <string name="pref_num_of_words">Number of words in session</string>
     <string name="pref_way_to_learn">Way to learn words</string>
+    <string name="pref_notifications">Notifications</string>
 
 
-    <string name="checkbox1_title">CheckBox 1</string>
-    <string name="checkbox1_summary">Summary of CheckBox 1</string>
-    <string name="edittext1_title">EditText 1</string>
-    <string name="edittext1_summary">Summary of EditText 1</string>
-    <string name="list1_title">List 1</string>
-    <string name="list1_summary">Summary of List 1</string>
+    <!--<string name="checkbox1_title">CheckBox 1</string>-->
+    <!--<string name="checkbox1_summary">Summary of CheckBox 1</string>-->
+    <!--<string name="edittext1_title">EditText 1</string>-->
+    <!--<string name="edittext1_summary">Summary of EditText 1</string>-->
+    <!--<string name="list1_title">List 1</string>-->
+    <!--<string name="list1_summary">Summary of List 1</string>-->
     <string name="db_exported">Dictionary was exported to \n%s</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_delete">Delete</string>
 
+
     <!--menu strings-->
     <string name="menu_settings">Settings</string>
     <string name="menu_export">Export dictionary</string>
     <string name="menu_import">Import dictionary</string>
     <string name="menu_show_all_words">Show all words</string>
+    <string name="menu_info">About</string>
 
     <!--prefs categories-->
     <string name="notification_group">Notification settings</string>
     <string name="main_group">Main settings</string>
 
-    <!--instructions-->
+    <!--welcome-->
     <string name="instructions">
-        Hi all! This is an ugly pre-version of instructions activity! \n\n
-        IMPORTANT!!! \n\n
-        YOU HAVE TO SET LANGUAGE IN SETTINGS TO PROCCEED! \n\n
-        New Features: \n
-        --When in ADD_WORDS the dict will help you translating the word you provided if dictionary exists \n\n
-
-        Changelog: \n
-           --Added Stardict support \n
-           --Your dictionaries should be put as follows (choose appropriate languages): \n/phone_memory/LearnIt/en-ru/dict.*  \n
-           --You can find dictionaries in my Google Drive for now \n
-           --fixed lots of bugs \n
-    </string>
+        Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
+        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation" field you will get some possible translations, you may have wanted to use.\n
+        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the other. </string>
     <string name="instr_go_to_settings">Settings</string>
+    <string name="quick_instructions">just click on the \"Settings\" button below and pick a language you want to learn there. Then just click the \"Back\" button and you are ready to go.</string>
+    <string name="quick_start">For a Quick Start</string>
+    <string name="version">you are using version xxx of the app</string>
+    <string name="welcome">Welcome!</string>
+    <string name="instuctions_title">About This Application</string>
+    <string name="instructions_method_title">Concept</string>
+    <string name="instructions_method_text">
+        This app allows you to learn the words even if you think that you are just too lazy to do it. \n\n
+        The method, used by LearnIt is simple. \n\n
+        Once you have added new words to your dictionary, they start appearing as notifications,
+        making it impossible for you to miss them. \n\n
+        The click on a notification shows the word you would want to translate and some possible translations from which you have to pick a correct one.\n\n
+
+        The key idea is that the notifications can only be closed by picking the correct translation of the word.\n\n
+
+        This whole system makes you repeat the words you learn every day (at most), which ensures remembering the word, while putting nearly no effort in learning.\n
+        Basically, the app takes away all your responsibility to learn 5 or 10 new words every day. It works for me, anyway.\n</string>
+    <string name="instructions_guess_trans_title">Guessing Translation</string>
+    <string name="instructions_guess_trans_text">
+        Recently I have added the external offline dictionaries support. They are currently used only as a helper for guessing translations you wanted to enter. \n\n
+
+        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation" field you will get some possible translations, you may have wanted to use.\n\n
+
+        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the other. \n
+        </string>
+
+    <string name="instructions_dict_help_title">IMPORTANT Information About Dictionaries</string>
+    <string name="instructions_dict_help_text">
+        To use the dictionary currently you would have to download and put it into your phone\'s memory manually as I have still not developed any way to do that automatically.\n\n
+        The dictionaries should be put in the sd card, in the folder "LearnIt" (you may want to click "export dictionary" inside the app - this will create the folder automatically)
+        If you have any ideas, I would love to hear them.\n\n
+        The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
+        StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name "dict".\n\n
+        So for German-English dict the path looks as follows:\n\n
+        /SD_CARD/LearnIt/de-en/dict.ifo\n
+        /SD_CARD/LearnIt/de-en/dict.idx\n
+        /SD_CARD/LearnIt/de-en/dict.dict\n</string>
+
+    <string name="instructions_edit_words_help_title">Editing Existing Words</string>
+    <string name="instructions_edit_words_help_text">
+        While you are on "Dictionary" screen, and you have some words from your dictionary showing in the list, you may long-click them and edit/delete them.\n</string>
+
+    <string name="instructions_thank_you_title">Thank You!</string>
+    <string name="instructions_thank_you_text">
+        While this application is just my hobby project it really means a lot for me, that people use it.
+        If you have any feedback or suggestions, feel free to contact me and tell what you think. It is really very important for me.\n</string>
 
     <string-array name="time_entries">
         <item>Hour</item>

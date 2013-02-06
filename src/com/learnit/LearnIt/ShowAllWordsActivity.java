@@ -9,19 +9,19 @@
 
 package com.learnit.LearnIt;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
     protected DialogFragment frag;
     DBHelper dbHelper;
+    Utils utils;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fragment fragTemp = new ShowWordsFragment();
@@ -39,11 +40,12 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
     public class ShowWordsFragment extends Fragment {
         private final String LOG_TAG = "my_logs";
+        ActionMode mActionMode=null;
         MyTask mt;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
+            utils = new Utils();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,19 @@ public class ShowAllWordsActivity extends FragmentActivity {
                     Log.d(LOG_TAG, queryWord);
                     String translation = getTranslation(tempStrippedWord);
                     showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
+                }
+            });
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                // Called when the user long-clicks on someView
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                                               long id) {
+                    if (mActionMode != null) {
+                        return false;
+                    }
+                    ListActionMode mActionModeCallback = new ListActionMode(view);
+                    mActionMode = getActivity().startActionMode(mActionModeCallback);
+                    view.setSelected(true);
+                    return true;
                 }
             });
             return v;
@@ -95,32 +110,19 @@ public class ShowAllWordsActivity extends FragmentActivity {
             ArrayList<String> strings = items;
             adapter = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_list_item_1, strings);
-            ((ListView) this.getView().findViewById(R.id.list_of_all_words))
-                    .setAdapter(adapter);
+            ListView list = (ListView) this.getView().findViewById(R.id.list_of_all_words);
+            list.setAdapter(adapter);
         }
 
         public void showDialog(String queryWord, String translation, int dialogType)
         {
-            if (dialogType == MyDialogFragment.DIALOG_EDIT_WORD)
-            {
-                MyCustomEditDialog frag = new MyCustomEditDialog();
-                Bundle args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, dialogType);
-                args.putString(MyDialogFragment.WORD_TAG, queryWord);
-                args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "show_edit_word_fragment_dialog");
-            }
-            else
-            {
-                frag = new MyDialogFragment();
-                Bundle args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, dialogType);
-                args.putString(MyDialogFragment.WORD_TAG, queryWord);
-                args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "show_word_fragment_dialog");
-            }
+            frag = new MyDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(MyDialogFragment.ID_TAG, dialogType);
+            args.putString(MyDialogFragment.WORD_TAG, queryWord);
+            args.putString(MyDialogFragment.TRANSLATION_TAG, translation);
+            frag.setArguments(args);
+            frag.show(getFragmentManager(), "show_word_fragment_dialog");
         }
 
         private void dismissDialog()
@@ -137,6 +139,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
         }
 
         class MyTask extends AsyncTask<Void, Void, ArrayList<String> > {
+            public int action=0;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -163,6 +166,73 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 super.onPostExecute(items);
                 updateList(items);
                 dismissDialog();
+            }
+        }
+
+        void startEditWordActivity(String word)
+        {
+            Intent intent = new Intent(this.getActivity(), EditWord.class);
+            intent.putExtra("word",word);
+            startActivity(intent);
+            Log.d(LOG_TAG,"start info activity called");
+        }
+
+        String stripWord(String word)
+        {
+            return utils.stripFromArticle(this.getActivity(), word);
+        }
+
+        private class ListActionMode implements ActionMode.Callback
+        {
+            private View v;
+
+            public ListActionMode(View view) {
+                v = view;
+            }
+            // Called when the action mode is created; startActionMode() was called
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Inflate a menu resource providing context menu items
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.context_menu, menu);
+                return true;
+            }
+
+            // Called each time the action mode is shown. Always called after onCreateActionMode, but
+            // may be called multiple times if the mode is invalidated.
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false; // Return false if nothing is done
+            }
+
+            // Called when the user selects a contextual menu item
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                String queryWord = ((TextView)v).getText().toString();
+                Log.d(LOG_TAG,"item selected = " + queryWord);
+                switch (item.getItemId()) {
+                    case R.id.context_menu_edit:
+                        mode.finish(); // Action picked, so close the CAB
+                        startEditWordActivity(queryWord);
+                        return true;
+                    case R.id.context_menu_delete:
+                        if (dbHelper.deleteWord(stripWord(queryWord)))
+                        {
+                            mt = new MyTask();
+                            mt.action=1;
+                            mt.execute();
+                        }
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            // Called when the user exits the action mode
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                mActionMode = null;
             }
         }
     }

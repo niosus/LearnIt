@@ -16,13 +16,15 @@ public class ArticleWordIdStruct {
     public String article;
     public String prefix;
     public String word;
+    public String translation;
     public long id;
 
-    ArticleWordIdStruct(String article, String prefix, String word, long id)
+    ArticleWordIdStruct(String article, String prefix, String word, String translation, long id)
         {
             this.article = article;
             this.prefix = prefix;
             this.word = word;
+            this.translation = translation;
             this.id = id;
         }
 }

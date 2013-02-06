@@ -48,7 +48,6 @@ public class HomeworkArticleActivity extends FragmentActivity{
     private String getRandArticle(ArrayList<String> array)
     {
         Resources res = getResources();
-        ArrayList<String> tempArray = new ArrayList<String>();
         String articles = res.getString(R.string.articles_de);
         Log.d(LOG_TAG,"articles are " + articles.toString());
         Random rand = new Random();
