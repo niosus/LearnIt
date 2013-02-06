@@ -24,7 +24,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
 
-        <receiver android:name="PrefActivity" >
+        <receiver android:name=".BootSetter" >
             <intent-filter>
                 <action
                         android:name="android.intent.action.BOOT_COMPLETED" />
@@ -81,7 +81,7 @@
         <activity android:name=".EditWord"
                   android:screenOrientation="portrait"
                   android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo">
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge">
         </activity>
     </application>
 
