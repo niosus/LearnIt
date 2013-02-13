@@ -268,7 +268,7 @@ public class AddWordFragment extends Fragment {
         if (str.contains("<dtrn>"))
         {
 
-            String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)";
+            String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)|(<nu/>(.+?)<nu/>)";
             String selectDtrn = "<dtrn>(.+?)</dtrn>";
 //            String selectDtrn = ".*";
             Pattern p = Pattern.compile(deleteCo);
