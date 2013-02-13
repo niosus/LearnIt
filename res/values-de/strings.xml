@@ -151,6 +151,7 @@
         <item>Spanisch</item>
         <item>Frankisch</item>
         <item>Italienisch</item>
+        <item>Ukrainisch</item>
     </string-array>
 
     <string-array name="entries_languages_to">
@@ -163,6 +164,7 @@
         <item>Spanisch</item>
         <item>Frankisch</item>
         <item>Italienisch</item>
+        <item>Ukrainisch</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">
