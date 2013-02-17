@@ -230,7 +230,8 @@ public class DictFragment extends Fragment {
         // Called when the user selects a contextual menu item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            String queryWord = ((TextView)v).getText().toString();
+            TwoLineListItem listItem = (TwoLineListItem) v;
+            String queryWord = listItem.getText1().getText().toString();
             Log.d(LOG_TAG,"item selected = " + queryWord);
             switch (item.getItemId()) {
                 case R.id.context_menu_edit:

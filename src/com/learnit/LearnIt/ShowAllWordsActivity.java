@@ -20,7 +20,7 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
+import android.widget.TwoLineListItem;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.HashMap;
@@ -188,7 +188,9 @@ public class ShowAllWordsActivity extends FragmentActivity {
             // Called when the user selects a contextual menu item
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                String queryWord = ((TextView)v).getText().toString();
+                TwoLineListItem listItem = (TwoLineListItem) v;
+                String queryWord = listItem.getText1().getText().toString();
+//                String queryWord = ((TextView)v).getText().toString();
                 Log.d(LOG_TAG,"item selected = " + queryWord);
                 switch (item.getItemId()) {
                     case R.id.context_menu_edit:
