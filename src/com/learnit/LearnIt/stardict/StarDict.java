@@ -2,9 +2,11 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.stardict;
 
 import android.util.Log;
+import com.learnit.LearnIt.Word;
+import com.learnit.LearnIt.WordEntry;
 
 import java.io.File;
 import java.util.ArrayList;

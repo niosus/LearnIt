@@ -23,9 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DBHelper extends SQLiteOpenHelper{
     final static int DB_VERSION = 1;
@@ -45,13 +43,13 @@ public class DBHelper extends SQLiteOpenHelper{
     public static final int EXIT_CODE_WRONG_ARTICLE = -12;
     public static final int EXIT_CODE_WRONG_FORMAT = -13;
 
-    public static final int WEIGHT_NEW=10;
+    public static final int WEIGHT_NEW=100;
 
-    public static final int WEIGHT_ONE_WRONG=10;
-    public static final int WEIGHT_TWO_WRONG=12;
-    public static final int WEIGHT_THREE_WRONG=15;
+    public static final int WEIGHT_ONE_WRONG=100;
+    public static final int WEIGHT_TWO_WRONG=1000;
+    public static final int WEIGHT_THREE_WRONG=10000;
 
-    public static final int WEIGHT_CORRECT_BUTTON=5;
+    public static final int WEIGHT_CORRECT_BUTTON=10;
     public static final int WEIGHT_NO_MORE_LEARNING=0;
     public static final int WEIGHT_CORRECT_INPUT=1;
 
@@ -98,64 +96,6 @@ public class DBHelper extends SQLiteOpenHelper{
         mNotificationManager.cancel(id + MyAlarmService.idModificator);
         return true;
     }
-
-//    public long getDBSize(boolean noun) {
-//        db = this.getReadableDatabase();
-//        Cursor cursor;
-//        if (noun)
-//        {
-//            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null", null);
-//        }
-//        else
-//        {
-//            cursor = db.rawQuery("select * from " + DB_NAME, null);
-//        }
-//        return cursor.getCount();
-//    }
-
-//    public long getDBWeightSize(boolean noun, int weight) {
-//        db = this.getReadableDatabase();
-//        Cursor cursor;
-//        if (noun)
-//        {
-//            cursor = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight, null);
-//        }
-//        else
-//        {
-//            cursor = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight, null);
-//        }
-//        return cursor.getCount();
-//    }
-
-//    public Cursor getRandRow(boolean noun, int weight)
-//    {
-//        db = this.getReadableDatabase();
-//        Cursor temp = null;
-//        if (!noun)
-//        {
-//            temp = db.rawQuery("select * from " + DB_NAME + " where "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
-//            if (0!=temp.getCount())
-//            {
-//                return temp;
-//            }
-//            else
-//            {
-//                return  db.rawQuery("select * from " + DB_NAME + " order by random() limit 1", null);
-//            }
-//        }
-//        else
-//        {
-//            temp = db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null and "+WEIGHT_COLUMN_NAME+"=="+weight+" order by random() limit 1", null);
-//            if (0!=temp.getCount())
-//            {
-//                return temp;
-//            }
-//            else
-//            {
-//                return  db.rawQuery("select * from " + DB_NAME + " where " + ARTICLE_COLUMN_NAME + " is not null order by random() limit 1", null);
-//            }
-//        }
-//    }
 
     boolean isArticle(String article) {
         String articles = this.mContext.getString(R.string.articles_de);
@@ -289,18 +229,6 @@ public class DBHelper extends SQLiteOpenHelper{
 
     }
 
-//    private boolean wordInArray(String word,  List<String> array)
-//    {
-//        for (String a:array)
-//        {
-//            if (word.toLowerCase().equals(a.toLowerCase()))
-//            {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     public boolean updateWordWeight(String word, int newWeight)
     {
         try{
@@ -321,7 +249,15 @@ public class DBHelper extends SQLiteOpenHelper{
     public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, boolean noun) {
         db = this.getReadableDatabase();
         ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
-        Cursor c=db.rawQuery("select * from "+DB_NAME+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+        Cursor c;
+        if (!noun)
+        {
+            c=db.rawQuery("select * from "+DB_NAME+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+        }
+        else
+        {
+            c=db.rawQuery("select * from "+DB_NAME+" where "+ARTICLE_COLUMN_NAME+" is not null and " +WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+        }
         String word, translation;
         String article;
         int id;
@@ -471,23 +407,26 @@ public class DBHelper extends SQLiteOpenHelper{
         return 0;
     }
 
-    public ArrayList<String> getWords(String word) {
+    public List<Map<String, String>> getWords(String word) {
         word=word.toLowerCase();
         db = this.getWritableDatabase();
-        ArrayList<String> listItems = new ArrayList<String>();
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
         Cursor c = db.query(DB_NAME,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME,
                         PREFIX_COLUMN_NAME, WEIGHT_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
+                WORD_COLUMN_NAME + " like '%" + word + "%' or " + TRANSLATION_COLUMN_NAME + " like '%"+word+"%'", null, null,
                 null, WORD_COLUMN_NAME);
         String tempWord;
+        String tempTrans;
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
             int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
             int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
+            int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
             do {
                 tempWord = c.getString(wordColIndex);
+                tempTrans = c.getString(translationColIndex);
                 if (null!=(c.getString(articleColIndex)))
                 {
                     tempWord = capitalize(tempWord);
@@ -497,42 +436,45 @@ public class DBHelper extends SQLiteOpenHelper{
                 {
                     tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
                 }
-                listItems.add(tempWord);
+                Map<String, String> datum = new HashMap<String, String>(2);
+                datum.put("word", tempWord);
+                datum.put("translation",tempTrans);
+                data.add(datum);
             } while (c.moveToNext());
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        return listItems;
+        return data;
     }
 
-    public ArrayList<String> getAllWords() {
-        db = this.getReadableDatabase();
-        ArrayList<String> listItems = new ArrayList<String>();
-        Cursor c = db.rawQuery("SELECT * FROM " + DB_NAME + " ORDER BY "+ WORD_COLUMN_NAME, null);
-        String tempWord;
-        if (c.moveToFirst()) {
-            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
-            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
-            do {
-                tempWord = c.getString(wordColIndex);
-                if (null!=(c.getString(articleColIndex)))
-                {
-                    //TODO capitalize only in German
-                    tempWord = capitalize(tempWord);
-                    tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
-                }
-                if (null!=(c.getString(prefixColIndex)))
-                {
-                    tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
-                }
-                listItems.add(tempWord);
-            } while (c.moveToNext());
-        } else
-            Log.d(LOG_TAG, "0 rows");
-        c.close();
-        return listItems;
-    }
+//    public ArrayList<String> getAllWords() {
+//        db = this.getReadableDatabase();
+//        ArrayList<String> listItems = new ArrayList<String>();
+//        Cursor c = db.rawQuery("SELECT * FROM " + DB_NAME + " ORDER BY "+ WORD_COLUMN_NAME, null);
+//        String tempWord;
+//        if (c.moveToFirst()) {
+//            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+//            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+//            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
+//            do {
+//                tempWord = c.getString(wordColIndex);
+//                if (null!=(c.getString(articleColIndex)))
+//                {
+//                    //TODO capitalize only in German
+//                    tempWord = capitalize(tempWord);
+//                    tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
+//                }
+//                if (null!=(c.getString(prefixColIndex)))
+//                {
+//                    tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
+//                }
+//                listItems.add(tempWord);
+//            } while (c.moveToNext());
+//        } else
+//            Log.d(LOG_TAG, "0 rows");
+//        c.close();
+//        return listItems;
+//    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

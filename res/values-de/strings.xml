@@ -14,7 +14,7 @@
 <resources>
 
     <string name="app_name">LearnIt</string>
-    <string name="learn_words_frag_title">Lernen</string>
+    <string name="learn_words_frag_title">Meine Wörter Lernen</string>
     <string name="add_words_frag_title">Neue Wörter anpassen</string>
     <string name="dictionary_frag_title">Mein Wörterbuch</string>
     <string name="add_word_hint">Wort</string>
@@ -94,7 +94,7 @@
     <string name="quick_instructions">einfach auf die "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu lernen und klicken Sie auf "Zurück"</string>
     <string name="quick_start">Für Einen Schnellen Start</string>
     <string name="welcome">Willkommen!</string>
-    <string name="instuctions_title">Was Tun Diese App?</string>
+    <string name="instructions_title">Version %s</string>
     <string name="instructions_method_title">Konzept</string>
     <string name="instructions_method_text">
         Diese App ermöglicht es Ihnen, die Wörter zu lernen, auch wenn Sie denken, dass Sie zu faul sind.\n\n

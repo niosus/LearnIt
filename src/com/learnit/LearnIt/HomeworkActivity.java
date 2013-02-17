@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Random;
 
 public class HomeworkActivity extends FragmentActivity{
     int notificationId = -1;
+    int fromLearnToKnow = 0;
     String queryWord = null;
     int numOfWrongAnswers=0;
     String article = null;
@@ -48,6 +50,7 @@ public class HomeworkActivity extends FragmentActivity{
         translation = intent.getStringExtra("translation");
         queryWord = intent.getStringExtra("word");
         notificationId = intent.getIntExtra("id", -1);
+        fromLearnToKnow = intent.getIntExtra("direction", -1);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
                 + notificationId);
         dbHelper = new DBHelper(this);
@@ -55,19 +58,40 @@ public class HomeworkActivity extends FragmentActivity{
 
     private void setBtnTexts(int correctId)
     {
+
         ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length,queryWord,false);
-        for (int i=0; i<randomWords.size(); ++i)
+        switch (fromLearnToKnow)
         {
-            if (correctId==i)
-            {
-                ((Button) findViewById(btnIds[i])).setText(translation);
-            }
-            else
-            {
-                findViewById(btnIds[i]).setEnabled(true);
-                ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).translation);
-            }
+            case Constants.FROM_FOREIGN_TO_MY:
+                for (int i=0; i<randomWords.size(); ++i)
+                {
+                    if (correctId==i)
+                    {
+                        ((Button) findViewById(btnIds[i])).setText(translation);
+                    }
+                    else
+                    {
+                        findViewById(btnIds[i]).setEnabled(true);
+                        ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).translation);
+                    }
+                }
+                break;
+            case Constants.FROM_MY_TO_FOREIGN:
+                for (int i=0; i<randomWords.size(); ++i)
+                {
+                    if (correctId==i)
+                    {
+                        ((Button) findViewById(btnIds[i])).setText(queryWord);
+                    }
+                    else
+                    {
+                        findViewById(btnIds[i]).setEnabled(true);
+                        ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).word);
+                    }
+                }
+                break;
         }
+
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,26 +172,34 @@ public class HomeworkActivity extends FragmentActivity{
     protected void onResume() {
         super.onResume();
         TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String learnLang = sp.getString(getString(R.string.key_language_from),"null");
-        if (null!=article)
+        switch (fromLearnToKnow)
         {
-            if ("de".equals(learnLang))
-            {
-                queryWordTextView.setText(article + " " + utils.capitalize(queryWord));
-            }
-            else
-            {
-                queryWordTextView.setText(article + " " + queryWord);
-            }
-        }
-        else if (null!=prefix)
-        {
-            queryWordTextView.setText(prefix + " " + queryWord);
-        }
-        else
-        {
-            queryWordTextView.setText(queryWord);
+            case Constants.FROM_FOREIGN_TO_MY:
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                String learnLang = sp.getString(getString(R.string.key_language_from),"null");
+                if (null!=article)
+                {
+                    if ("de".equals(learnLang))
+                    {
+                        queryWordTextView.setText(article + " " + utils.capitalize(queryWord));
+                    }
+                    else
+                    {
+                        queryWordTextView.setText(article + " " + queryWord);
+                    }
+                }
+                else if (null!=prefix)
+                {
+                    queryWordTextView.setText(prefix + " " + queryWord);
+                }
+                else
+                {
+                    queryWordTextView.setText(queryWord);
+                }
+                break;
+            case Constants.FROM_MY_TO_FOREIGN:
+                queryWordTextView.setText(translation);
+                break;
         }
     }
 }

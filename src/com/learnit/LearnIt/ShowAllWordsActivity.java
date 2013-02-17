@@ -18,12 +18,14 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import com.learnit.LearnIt.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ShowAllWordsActivity extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
@@ -57,10 +59,10 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-                    String queryWord = ((TextView) view).getText().toString();
-                    String tempStrippedWord = stripWordFromArticle(queryWord);
+                    HashMap<String, String> maplist = (HashMap<String, String>)parent.getAdapter().getItem(position);
+                    String queryWord = maplist.get("word");
                     Log.d(LOG_TAG, queryWord);
-                    String translation = getTranslation(tempStrippedWord);
+                    String translation = maplist.get("translation");
                     showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
                 }
             });
@@ -80,36 +82,14 @@ public class ShowAllWordsActivity extends FragmentActivity {
             return v;
         }
 
-        private String getTranslation(String word) {
-            if (word != null && !word.isEmpty()) {
-                Log.d(LOG_TAG, String.format("search word-%s", word));
-                return dbHelper.getTranslation(word);
-            }
-            return null;
-        }
-
-
-        private String stripWordFromArticle(String str)
+        private void updateList(List<Map<String, String>> items)
         {
-            String[] tempArray = str.split(" ");
-            Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-            switch (tempArray.length)
-            {
-                case 1:
-                    return str;
-                case 2:
-                    return tempArray[1];
-                default:
-                    return null;
-            }
-        }
-
-        private void updateList(ArrayList<String> items)
-        {
-            ArrayAdapter<String> adapter;
-            ArrayList<String> strings = items;
-            adapter = new ArrayAdapter<String>(this.getActivity(),
-                    android.R.layout.simple_list_item_1, strings);
+            SimpleAdapter adapter;
+            List<Map<String, String>> strings = items;
+            adapter = new SimpleAdapter(this.getActivity(), strings,
+                    android.R.layout.simple_list_item_2,
+                    new String[] {"word", "translation" },
+                    new int[] {android.R.id.text1, android.R.id.text2 });
             ListView list = (ListView) this.getView().findViewById(R.id.list_of_all_words);
             list.setAdapter(adapter);
         }
@@ -138,7 +118,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
             mt.execute();
         }
 
-        class MyTask extends AsyncTask<Void, Void, ArrayList<String> > {
+        class MyTask extends AsyncTask<Void, Void, List<Map<String, String>> > {
             public int action=0;
             @Override
             protected void onPreExecute() {
@@ -149,9 +129,9 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
 
             @Override
-            protected ArrayList<String> doInBackground(Void... word) {
+            protected List<Map<String, String>> doInBackground(Void... word) {
                 try {
-                    ArrayList<String> items = dbHelper.getAllWords();
+                    List<Map<String, String>> items = dbHelper.getWords("");
                     return items;
                 }
                 catch (Exception e)
@@ -162,7 +142,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
             }
 
             @Override
-            protected void onPostExecute(ArrayList<String> items) {
+            protected void onPostExecute(List<Map<String, String>> items) {
                 super.onPostExecute(items);
                 updateList(items);
                 dismissDialog();

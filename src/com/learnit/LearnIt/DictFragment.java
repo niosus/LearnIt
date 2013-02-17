@@ -16,6 +16,9 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DictFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
@@ -38,14 +41,16 @@ public class DictFragment extends Fragment {
     }
 
     public void getWordsByPattern(String word) {
-        ArrayAdapter<String> adapter;
-        ArrayList<String> strings = new ArrayList<String>();
+        SimpleAdapter adapter;
+        List<Map<String, String>> strings = new ArrayList<Map<String, String>>();
         if (word != null && !word.isEmpty()) {
             Log.d(LOG_TAG, String.format("search word by mask-%s", word));
             strings=dbHelper.getWords(word);
         }
-        adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_list_item_1, strings);
+        adapter = new SimpleAdapter(this.getActivity(), strings,
+                android.R.layout.simple_list_item_2,
+                new String[] {"word", "translation" },
+                new int[] {android.R.id.text1, android.R.id.text2 });
         ((ListView) this.getView().findViewById(R.id.list_of_words))
                 .setAdapter(adapter);
     }
@@ -73,18 +78,12 @@ public class DictFragment extends Fragment {
 
     boolean isArticle(String article) {
         String articles = getString(R.string.articles_de);
-        if (articles.contains(article.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return articles.contains(article.toLowerCase());
     }
 
     boolean isPrefix(String word) {
         String prefix = this.getString(R.string.help_words_de);
-        if (prefix.contains(word.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return prefix.contains(word.toLowerCase());
     }
 
     private String cutAwayFirstWord(String input)
@@ -126,7 +125,7 @@ public class DictFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 getWordsByPattern(s.toString());
-                if (s.toString()!="" && s.toString()!=null)
+                if (!s.toString().equals("") && s.toString()!=null)
                 {
                     btnClear.setVisibility(View.VISIBLE);
                 }
@@ -170,11 +169,10 @@ public class DictFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                String queryWord = ((TextView) view).getText().toString();
-                String tempStrippedWord = stripFromArticle(queryWord);
+                HashMap<String, String> maplist = (HashMap<String, String>) parent.getAdapter().getItem(position);
+                String queryWord = maplist.get("word");
                 Log.d(LOG_TAG, queryWord);
-                edtWord.setText(tempStrippedWord);
-                String translation = getTranslation(tempStrippedWord);
+                String translation = maplist.get("translation");
                 showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
             }
         });

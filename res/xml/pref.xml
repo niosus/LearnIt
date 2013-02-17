@@ -8,6 +8,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+            android:key="prefs_main"
             android:title="@string/main_group">
         <ListPreference
                 android:key="@string/key_language_from"
@@ -30,6 +31,14 @@
                 android:defaultValue="1"
                 android:entries="@array/entries_way_to_learn"
                 android:entryValues="@array/values_way_to_learn"/>
+
+        <ListPreference
+                android:key="@string/key_direction_of_trans"
+                android:summary=""
+                android:title="@string/pref_direction_of_trans"
+                android:defaultValue="1"
+                android:entries="@array/entries_direction_of_trans"
+                android:entryValues="@array/values_direction_of_trans"/>
 
     </PreferenceCategory>
     <PreferenceCategory

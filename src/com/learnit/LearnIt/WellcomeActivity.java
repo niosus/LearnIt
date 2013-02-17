@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
@@ -21,6 +22,8 @@ public class WellcomeActivity extends FragmentActivity {
         setContentView(R.layout.wellcome);
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
+        TextView txtVersion = (TextView) findViewById(R.string.instructions_title);
+        txtVersion.setText(String.format(txtVersion.getText().toString(),getString(R.string.version)));
     }
     protected void onResume() {
         super.onResume();

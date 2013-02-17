@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import com.learnit.LearnIt.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,6 +32,7 @@ public class MyAlarmService extends Service {
     public static DBHelper dbHelper;
     private int numOfNotif = 5;
     private int mode;
+    private int directionOfTrans= Constants.MIXED;
     private final String LOG_TAG = "my_logs";
 
     @Override
@@ -41,6 +43,12 @@ public class MyAlarmService extends Service {
         numOfNotif = Integer.parseInt(strNumOfNotif);
         String strMode = sp.getString(getString(R.string.key_way_to_learn),NONE_STR);
         mode = Integer.parseInt(strMode);
+        String strTransDir = sp.getString(getString(R.string.key_direction_of_trans),NONE_STR);
+        directionOfTrans = Integer.parseInt(strTransDir);
+        if (-1==directionOfTrans)
+        {
+            directionOfTrans=Constants.MIXED;
+        }
         if (-1==numOfNotif)
         {
             numOfNotif=5;
@@ -101,8 +109,49 @@ public class MyAlarmService extends Service {
     }
 
     private boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, boolean isNoun) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setContentTitle(struct.word).setContentText(getString(R.string.notif_text));
+        NotificationCompat.Builder mBuilder = null;
+        int currentDirection=-1;
+        Intent resultIntent;
+        if (isNoun)
+        {
+            resultIntent = new Intent(this, HomeworkArticleActivity.class);
+            directionOfTrans = Constants.FROM_FOREIGN_TO_MY;
+        }
+        else
+            resultIntent = new Intent(this, HomeworkActivity.class);
+        int mId = (int)struct.id + idModificator;
+        resultIntent.putExtra("id", mId);
+        resultIntent.putExtra("word", struct.word);
+        resultIntent.putExtra("article", struct.article);
+        resultIntent.putExtra("translation", struct.translation);
+        resultIntent.putExtra("prefix", struct.prefix);
+        switch (directionOfTrans)
+        {
+            case Constants.MIXED:
+                Random rand = new Random();
+                currentDirection = rand.nextInt(2)+1;
+                if (Constants.FROM_MY_TO_FOREIGN==currentDirection)
+                    mBuilder = new NotificationCompat.Builder(
+                            this).setContentTitle(struct.translation).setContentText(getString(R.string.notif_text));
+                else if (Constants.FROM_FOREIGN_TO_MY==currentDirection)
+                    mBuilder = new NotificationCompat.Builder(
+                            this).setContentTitle(struct.word).setContentText(getString(R.string.notif_text));
+
+                resultIntent.putExtra("direction", currentDirection);
+                break;
+            case Constants.FROM_FOREIGN_TO_MY:
+                mBuilder = new NotificationCompat.Builder(
+                    this).setContentTitle(struct.word).setContentText(getString(R.string.notif_text));
+                resultIntent.putExtra("direction", directionOfTrans);
+                break;
+            case Constants.FROM_MY_TO_FOREIGN:
+                mBuilder =  new NotificationCompat.Builder(
+                        this).setContentTitle(struct.translation).setContentText(getString(R.string.notif_text));
+                resultIntent.putExtra("direction", directionOfTrans);
+                break;
+            default:
+                return false;
+        }
         switch (wordNum) {
             case 1:
                 mBuilder.setSmallIcon(R.drawable.ic_stat_one);
@@ -136,17 +185,6 @@ public class MyAlarmService extends Service {
                 break;
 
         }
-        Intent resultIntent;
-        if (isNoun)
-            resultIntent = new Intent(this, HomeworkArticleActivity.class);
-        else
-            resultIntent = new Intent(this, HomeworkActivity.class);
-        int mId = (int)struct.id + idModificator;
-        resultIntent.putExtra("id", mId);
-        resultIntent.putExtra("word", struct.word);
-        resultIntent.putExtra("article", struct.article);
-        resultIntent.putExtra("translation", struct.translation);
-        resultIntent.putExtra("prefix", struct.prefix);
         resultIntent.setAction(mId + " " + struct.word + " " + System.currentTimeMillis());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         if (isNoun)

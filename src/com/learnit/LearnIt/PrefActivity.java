@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.util.Log;
 import android.widget.Toast;
 
 public class PrefActivity extends PreferenceActivity {
@@ -34,6 +35,7 @@ public class PrefActivity extends PreferenceActivity {
         private final String LOG_TAG = "my_logs";
         ListPreference lstNotifFreq;
         ListPreference lstWayToLearn;
+        ListPreference lstDirectionOfTrans;
         ListPreference lstNumOfWords;
         ListPreference lstLanguageToLearn;
         ListPreference lstLanguageYouKnow;
@@ -41,6 +43,7 @@ public class PrefActivity extends PreferenceActivity {
         TimePreference timePreference;
         boolean changed = false;
         boolean updated = false;
+        boolean showArticlesOption=true;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -51,18 +54,34 @@ public class PrefActivity extends PreferenceActivity {
 
             lstLanguageToLearn = (ListPreference) findPreference(getString(R.string.key_language_from));
             lstLanguageToLearn.setOnPreferenceChangeListener(listener);
+            if (!lstLanguageToLearn.getValue().equals("de"))
+            {
+                showArticlesOption=false;
+            }
+
+            lstDirectionOfTrans = (ListPreference) findPreference(getString(R.string.key_direction_of_trans));
+            lstDirectionOfTrans.setOnPreferenceChangeListener(listener);
 
             lstLanguageYouKnow = (ListPreference) findPreference(getString(R.string.key_language_to));
             lstLanguageYouKnow.setOnPreferenceChangeListener(listener);
 
             lstWayToLearn = (ListPreference) findPreference(getString(R.string.key_way_to_learn));
-            lstWayToLearn.setOnPreferenceChangeListener(listener);
+            if (showArticlesOption)
+            {
+                lstWayToLearn.setOnPreferenceChangeListener(listener);
+            }
+            else
+            {
+                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                mCategory.removePreference(lstWayToLearn);
+            }
 
             lstNumOfWords = (ListPreference) findPreference(getString(R.string.key_num_of_words));
             lstNumOfWords.setOnPreferenceChangeListener(listener);
 
             checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
             checkBoxPreference.setOnPreferenceChangeListener(listener);
+
             timePreference = (TimePreference) findPreference("time_to_start");
 
             updateAllSummaries();
@@ -80,6 +99,14 @@ public class PrefActivity extends PreferenceActivity {
                 lstWayToLearn.setSummary(lstWayToLearn.getEntry().toString());
             if (lstNumOfWords.getEntry()!=null)
                 lstNumOfWords.setSummary(lstNumOfWords.getEntry().toString());
+            if (lstDirectionOfTrans.getEntry()!=null)
+                lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntry().toString());
+            if (lstWayToLearn.getValue().equals("2"))
+            {
+                lstDirectionOfTrans.setValue("2");
+                lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
+                lstDirectionOfTrans.setEnabled(false);
+            }
         }
 
         @Override
@@ -209,6 +236,16 @@ public class PrefActivity extends PreferenceActivity {
                     {
                         lstLanguageToLearn = (ListPreference) pref;
                         pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
+                        if (!newValue.toString().equals("de"))
+                        {
+                            PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                            mCategory.removePreference(lstWayToLearn);
+                        }
+                        else
+                        {
+                            PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                            mCategory.addPreference(lstWayToLearn);
+                        }
                         return true;
                     }
                     else if (pref.getKey().equals(getString(R.string.key_language_to)))
@@ -221,8 +258,25 @@ public class PrefActivity extends PreferenceActivity {
                     {
                         lstWayToLearn = (ListPreference) pref;
                         pref.setSummary(lstWayToLearn.getEntries()[lstWayToLearn.findIndexOfValue(newValue.toString())]);
+                        if (newValue.toString().equals("2"))
+                        {
+                            lstDirectionOfTrans.setValue("2");
+                            lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
+                            lstDirectionOfTrans.setEnabled(false);
+                        }
+                        else
+                        {
+                            lstDirectionOfTrans.setEnabled(true);
+                        }
                         changed = true;
                         updated = true;
+                        return true;
+                    }
+                    else if (pref.getKey().equals(getString(R.string.key_direction_of_trans)))
+                    {
+                        lstDirectionOfTrans = (ListPreference) pref;
+                        pref.setSummary(lstDirectionOfTrans.getEntries()[lstDirectionOfTrans.findIndexOfValue(newValue.toString())]);
+                        Log.d(LOG_TAG,"changed!!!!");
                         return true;
                     }
                 }

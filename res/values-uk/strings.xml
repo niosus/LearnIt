@@ -10,7 +10,7 @@
 <resources>
 
     <string name="app_name">LearnIt</string>
-    <string name="learn_words_frag_title">Вчити</string>
+    <string name="learn_words_frag_title">Вчити мої слова</string>
     <string name="add_words_frag_title">Додати нові слова</string>
     <string name="dictionary_frag_title">Мій словник</string>
     <string name="add_word_hint">Слово</string>
@@ -40,8 +40,8 @@
     <string name="dialog_format_text">Неправильний формат</string>
     <string name="dialog_article_title">Ой лишенько!</string>
     <string name="dialog_article_text">Тількі артіклі можуть бути першим словом</string>
-    <string name="dialog_wrong_guess_title">Не вгадали</string>
-    <string name="dialog_wrong_guess_message">Спробуйте ще?</string>
+    <string name="dialog_wrong_guess_title">Не правильно</string>
+    <string name="dialog_wrong_guess_message">Не панікуйте, спробуйте ще раз</string>
     <string name="dialog_word_deleted_title">Готово!</string>
     <string name="dialog_word_deleted_message">Слово \"%s\" успішно видалено</string>
     <string name="dialog_progress_title">Працюємо</string>
@@ -89,7 +89,7 @@
         Далі натисніть \"Назад\" і ви готові починати.</string>
     <string name="quick_start">Швидкий старт!</string>
     <string name="welcome">Привіт!</string>
-    <string name="instuctions_title">Про програму</string>
+    <string name="instructions_title">Версія %s</string>
     <string name="instructions_method_title">Ідея</string>
     <string name="instructions_method_text">
         Ця програма дозволяє Вам вивчати слова, навіть, якщо Ви самі впевнені, що Ви для цього занадто ліниві. \n\n

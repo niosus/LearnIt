@@ -30,15 +30,13 @@ public class BootSetter extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getService(mContext, 0,
                 myIntent, 0);
 
-        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         Long time = sp.getLong("time_to_start", 0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 time, notif_freq, pendingIntent);
-        {
-            Toast.makeText(mContext, R.string.toast_notif_start_text, Toast.LENGTH_LONG)
-                    .show();
-        }
+        Toast.makeText(mContext, R.string.toast_notif_start_text, Toast.LENGTH_LONG)
+                .show();
     }
 
     protected long getFreqFromId(String id) {

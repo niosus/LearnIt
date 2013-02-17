@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
@@ -268,7 +269,7 @@ public class AddWordFragment extends Fragment {
         if (str.contains("<dtrn>"))
         {
 
-            String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)|(<nu/>(.+?)<nu/>)";
+            String deleteCo = "(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.+?)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
             String selectDtrn = "<dtrn>(.+?)</dtrn>";
 //            String selectDtrn = ".*";
             Pattern p = Pattern.compile(deleteCo);
@@ -477,27 +478,34 @@ public class AddWordFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<String> items) {
             super.onPostExecute(items);
-            if (null==items)
-            {
+            try {
+                if (null==items)
+                {
 
-                if (null==dict)
-                {
-                    if (selectedLanguageTo.equals("auto"))
+                    if (null==dict)
                     {
-                        selectedLanguageTo=Locale.getDefault().getLanguage();
+                        if (selectedLanguageTo.equals("auto"))
+                        {
+                            selectedLanguageTo=Locale.getDefault().getLanguage();
+                        }
+                        Toast.makeText(getActivity().getApplicationContext(), String.format(getString(R.string.toast_no_dict), selectedLanguageFrom+"-"+selectedLanguageTo), Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(getActivity().getApplicationContext(), String.format(getString(R.string.toast_no_dict), selectedLanguageFrom+"-"+selectedLanguageTo), Toast.LENGTH_LONG).show();
+                    else if (createDict)
+                    {
+
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loaded_dict), Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
+                    }
                 }
-                else if (createDict)
-                {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loaded_dict), Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
-                }
+                updateList(items);
             }
-            updateList(items);
+            catch (Exception ex)
+            {
+                Log.d(LOG_TAG,"exception onPostExecute AddWordsFragment");
+            }
         }
     }
 }
