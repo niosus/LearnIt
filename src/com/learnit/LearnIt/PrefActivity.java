@@ -89,6 +89,13 @@ public class PrefActivity extends PreferenceActivity {
 
         void updateAllSummaries()
         {
+            if(checkBoxPreference.isChecked())
+            {
+                checkBoxPreference.setSummary(R.string.pref_notifications_enabled);
+            }
+            else {
+                checkBoxPreference.setSummary(R.string.pref_notifications_disabled);
+            }
             if (lstNotifFreq.getEntry()!=null)
                 lstNotifFreq.setSummary(lstNotifFreq.getEntry().toString());
             if (lstLanguageToLearn.getEntry()!=null)
@@ -211,6 +218,14 @@ public class PrefActivity extends PreferenceActivity {
                        lstNotifFreq.setEnabled((Boolean) newValue);
                        timePreference.setEnabled(((Boolean) newValue));
                        lstNumOfWords.setEnabled((Boolean) newValue);
+                       if ((Boolean) newValue)
+                       {
+                           pref.setSummary(R.string.pref_notifications_enabled);
+                       }
+                       else
+                       {
+                           pref.setSummary(R.string.pref_notifications_disabled);
+                       }
                        changed=true;
                        return true;
                    }

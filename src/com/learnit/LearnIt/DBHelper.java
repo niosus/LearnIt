@@ -447,35 +447,6 @@ public class DBHelper extends SQLiteOpenHelper{
         return data;
     }
 
-//    public ArrayList<String> getAllWords() {
-//        db = this.getReadableDatabase();
-//        ArrayList<String> listItems = new ArrayList<String>();
-//        Cursor c = db.rawQuery("SELECT * FROM " + DB_NAME + " ORDER BY "+ WORD_COLUMN_NAME, null);
-//        String tempWord;
-//        if (c.moveToFirst()) {
-//            int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-//            int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
-//            int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
-//            do {
-//                tempWord = c.getString(wordColIndex);
-//                if (null!=(c.getString(articleColIndex)))
-//                {
-//                    //TODO capitalize only in German
-//                    tempWord = capitalize(tempWord);
-//                    tempWord = String.format("%s %s", c.getString(articleColIndex),tempWord);
-//                }
-//                if (null!=(c.getString(prefixColIndex)))
-//                {
-//                    tempWord = String.format("%s %s", c.getString(prefixColIndex),tempWord);
-//                }
-//                listItems.add(tempWord);
-//            } while (c.moveToNext());
-//        } else
-//            Log.d(LOG_TAG, "0 rows");
-//        c.close();
-//        return listItems;
-//    }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }

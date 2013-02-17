@@ -45,7 +45,7 @@
         android:title="@string/notification_group">
         <CheckBoxPreference
                 android:key="@string/key_pref_notif_active"
-                android:summary="Enable notifications"
+                android:summary="@string/pref_notifications_enabled"
                 android:title="@string/pref_notifications">
         </CheckBoxPreference>
 
