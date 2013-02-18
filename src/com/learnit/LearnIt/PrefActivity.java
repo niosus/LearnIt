@@ -54,10 +54,18 @@ public class PrefActivity extends PreferenceActivity {
 
             lstLanguageToLearn = (ListPreference) findPreference(getString(R.string.key_language_from));
             lstLanguageToLearn.setOnPreferenceChangeListener(listener);
-            if (!lstLanguageToLearn.getValue().equals("de"))
-            {
-                showArticlesOption=false;
+
+            try {
+                if (!lstLanguageToLearn.getValue().equals("de"))
+                {
+                    showArticlesOption=false;
+                }
             }
+            catch (Exception ex)
+            {
+               Log.d(LOG_TAG,"cought exception on pref start");
+            }
+
 
             lstDirectionOfTrans = (ListPreference) findPreference(getString(R.string.key_direction_of_trans));
             lstDirectionOfTrans.setOnPreferenceChangeListener(listener);

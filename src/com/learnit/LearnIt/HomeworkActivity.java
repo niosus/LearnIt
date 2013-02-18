@@ -63,30 +63,40 @@ public class HomeworkActivity extends FragmentActivity{
         switch (fromLearnToKnow)
         {
             case Constants.FROM_FOREIGN_TO_MY:
-                for (int i=0; i<randomWords.size(); ++i)
+                for (int i=0; i<4; ++i)
                 {
                     if (correctId==i)
                     {
                         ((Button) findViewById(btnIds[i])).setText(translation);
                     }
-                    else
+                    else if (i<randomWords.size())
                     {
                         findViewById(btnIds[i]).setEnabled(true);
                         ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).translation);
                     }
+                    else
+                    {
+                        findViewById(btnIds[i]).setEnabled(false);
+                        ((Button) findViewById(btnIds[i])).setText("");
+                    }
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                for (int i=0; i<randomWords.size(); ++i)
+                for (int i=0; i<4; ++i)
                 {
                     if (correctId==i)
                     {
                         ((Button) findViewById(btnIds[i])).setText(queryWord);
                     }
-                    else
+                    else if (i<randomWords.size())
                     {
                         findViewById(btnIds[i]).setEnabled(true);
                         ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).word);
+                    }
+                    else
+                    {
+                        findViewById(btnIds[i]).setEnabled(false);
+                        ((Button) findViewById(btnIds[i])).setText("");
                     }
                 }
                 break;

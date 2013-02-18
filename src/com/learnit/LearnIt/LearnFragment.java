@@ -72,9 +72,19 @@ public class LearnFragment extends Fragment {
                 direction = random.nextInt(2)+1;
             }
         }
-        int correctIdx = random.nextInt(btnIds.length);
         ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(4,null,false);
-        setQueryWordTxt(words.get(correctIdx));
+        int correctIdx=0;
+        if (words.size()==0)
+        {
+            TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
+            queryWordTextView.setText("No word");
+        }
+        else
+        {
+            correctIdx = random.nextInt(words.size());
+            setQueryWordTxt(words.get(correctIdx));
+        }
+
         MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
         myButtonOnClick.correct=btnIds[correctIdx];
         (v.findViewById(R.id.left_top_button))
@@ -131,13 +141,31 @@ public class LearnFragment extends Fragment {
             case Constants.FROM_FOREIGN_TO_MY:
                 for (int i=0; i<4; ++i)
                 {
-                    ((Button) v.findViewById(btnIds[i])).setText(words.get(i).translation);
+                    if (i>=words.size() || words.size()==0)
+                    {
+                        ((Button) v.findViewById(btnIds[i])).setText("");
+                        (v.findViewById(btnIds[i])).setEnabled(false);
+                    }
+                    else
+                    {
+                        ((Button) v.findViewById(btnIds[i])).setText(words.get(i).translation);
+                        (v.findViewById(btnIds[i])).setEnabled(true);
+                    }
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
                 for (int i=0; i<4; ++i)
                 {
-                    ((Button) v.findViewById(btnIds[i])).setText(words.get(i).word);
+                    if (i>=words.size() || words.size()==0)
+                    {
+                        ((Button) v.findViewById(btnIds[i])).setText("");
+                        (v.findViewById(btnIds[i])).setEnabled(false);
+                    }
+                    else
+                    {
+                        ((Button) v.findViewById(btnIds[i])).setText(words.get(i).word);
+                        (v.findViewById(btnIds[i])).setEnabled(true);
+                    }
                 }
                 break;
         }
