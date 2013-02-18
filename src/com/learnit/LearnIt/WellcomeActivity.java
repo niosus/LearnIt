@@ -22,8 +22,10 @@ public class WellcomeActivity extends FragmentActivity {
         setContentView(R.layout.wellcome);
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
-        TextView txtVersion = (TextView) findViewById(R.string.instructions_title);
-        txtVersion.setText(String.format(txtVersion.getText().toString(),getString(R.string.version)));
+        TextView txtVersion = (TextView) findViewById(R.id.instructions_title);
+        String currentstr = txtVersion.getText().toString();
+        Log.d(LOG_TAG,currentstr);
+        txtVersion.setText(String.format(currentstr,getString(R.string.version)));
     }
     protected void onResume() {
         super.onResume();
