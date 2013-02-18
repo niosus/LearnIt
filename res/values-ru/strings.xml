@@ -21,6 +21,7 @@
     <string name="edit_dialog_title">Редактируем</string>
     <string name="search_word_hint">Поиск</string>
     <string name="add_translation_hint">Введите перевод</string>
+    <string name="learn_no_words">Добавьте слова в словарь</string>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Таймер запущен</string>

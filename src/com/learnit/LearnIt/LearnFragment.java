@@ -77,7 +77,7 @@ public class LearnFragment extends Fragment {
         if (words.size()==0)
         {
             TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-            queryWordTextView.setText("No word");
+            queryWordTextView.setText(getString(R.string.learn_no_words));
         }
         else
         {

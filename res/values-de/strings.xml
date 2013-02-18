@@ -21,6 +21,7 @@
     <string name="edit_dialog_title">Bearbeiten</string>
     <string name="search_word_hint">Suchen</string>
     <string name="add_translation_hint">Übersetzen</string>
+    <string name="learn_no_words">Bitte Wörter eingeben</string>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Zeitgeber gestartet</string>

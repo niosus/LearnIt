@@ -22,6 +22,7 @@
     <string name="search_word_hint">Start typing to search</string>
     <string name="add_translation_hint">Input translation</string>
     <string name="add_word_button_text">Add</string>
+    <string name="learn_no_words">Please add words</string>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Notification timer started</string>

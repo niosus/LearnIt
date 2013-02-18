@@ -36,7 +36,7 @@
                 android:key="@string/key_direction_of_trans"
                 android:summary=""
                 android:title="@string/pref_direction_of_trans"
-                android:defaultValue="1"
+                android:defaultValue="3"
                 android:entries="@array/entries_direction_of_trans"
                 android:entryValues="@array/values_direction_of_trans"/>
 
