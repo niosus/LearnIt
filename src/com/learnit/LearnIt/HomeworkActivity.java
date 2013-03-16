@@ -104,6 +104,7 @@ public class HomeworkActivity extends FragmentActivity{
 
     }
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getEverythingFromIntent();

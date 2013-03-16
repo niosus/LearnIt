@@ -72,7 +72,7 @@ public class LearnFragment extends Fragment {
                 direction = random.nextInt(2)+1;
             }
         }
-        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(4,null,false);
+        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length,null,false);
         int correctIdx=0;
         if (words.size()==0)
         {
@@ -139,7 +139,7 @@ public class LearnFragment extends Fragment {
         switch (direction)
         {
             case Constants.FROM_FOREIGN_TO_MY:
-                for (int i=0; i<4; ++i)
+                for (int i=0; i<btnIds.length; ++i)
                 {
                     if (i>=words.size() || words.size()==0)
                     {
@@ -154,7 +154,7 @@ public class LearnFragment extends Fragment {
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                for (int i=0; i<4; ++i)
+                for (int i=0; i<btnIds.length; ++i)
                 {
                     if (i>=words.size() || words.size()==0)
                     {
