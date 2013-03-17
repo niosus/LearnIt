@@ -94,7 +94,7 @@ public class MyDialogFragment extends DialogFragment {
                 ProgressDialog progDialog = new ProgressDialog(getActivity());
                 progDialog.setMessage(this.getString(R.string.dialog_progress_message));
                 progDialog.setTitle(R.string.dialog_progress_title);
-                progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progDialog.setOnCancelListener(myOnCancelListener);
                 return progDialog;
 

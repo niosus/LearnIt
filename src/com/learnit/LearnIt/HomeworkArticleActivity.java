@@ -42,7 +42,7 @@ public class HomeworkArticleActivity extends FragmentActivity{
         notificationId = intent.getIntExtra("id", -1);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
                 + notificationId);
-        dbHelper = new DBHelper(this);
+        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
     private String getRandArticle(ArrayList<String> array)

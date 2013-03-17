@@ -4,14 +4,14 @@
   -->
 
 
-
-
-
 <resources>
 
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Вчити мої слова</string>
     <string name="add_words_frag_title">Додати нові слова</string>
+    <string name="add_words_frag_help_text_words">Можливо ви щукаєте на ці слова?</string>
+    <string name="add_words_frag_help_text_trans">Можливо ви шукаєте на ці переклади?</string>
+
     <string name="dictionary_frag_title">Мій словник</string>
     <string name="add_word_hint">Слово</string>
     <string name="edit_dialog_title">Редагуємо</string>
@@ -132,6 +132,15 @@
         Не дивлячись на те, що цей додаток - просто моє хобі, для мене багато значить, що ним користуються живі люди.
         Якщо у вас є думка, якою хочеться поділитися, або які небудь побажання - пишіть, я буду радий їх почути. \n</string>
 
+
+    <!--dict to sql activity strings-->
+    <string name="dict_sql_title">Словник</string>
+    <string name="dict_sql_no_dict">Не знайдено словника для пари</string>
+    <string name="dict_sql_success">був успішно завантажений</string>
+    <string name="dict_sql_version">%1$s-%2$s. Версія: %3$s</string>
+    <string name="dict_sql_progress_found">Словник знайдено. \nЙде індексація…</string>
+    <string name="dict_sql_progress_searching">Пошук словника.</string>
+
     <string-array name="time_entries">
         <item>Година</item>
         <item>Дві години</item>
@@ -143,12 +152,12 @@
     <string-array name="entries_languages_from">
         <item>Німецька</item>
         <item>Англійська</item>
-        <item>Польська</item>
-        <item>Шведська</item>
-        <item>Російська</item>
         <item>Іспанська</item>
         <item>Французська</item>
         <item>Італійська</item>
+        <item>Польська</item>
+        <item>Російська</item>
+        <item>Шведська</item>
         <item>Українська</item>
     </string-array>
 
@@ -156,12 +165,12 @@
         <item>Авто</item>
         <item>Німецька</item>
         <item>Англійська</item>
-        <item>Польська</item>
-        <item>Шведська</item>
-        <item>Російська</item>
         <item>Іспанська</item>
         <item>Французська</item>
         <item>Італійська</item>
+        <item>Польська</item>
+        <item>Російська</item>
+        <item>Шведська</item>
         <item>Українська</item>
     </string-array>
 

@@ -53,7 +53,7 @@ public class HomeworkActivity extends FragmentActivity{
         fromLearnToKnow = intent.getIntExtra("direction", -1);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
                 + notificationId);
-        dbHelper = new DBHelper(this);
+        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
     private void setBtnTexts(int correctId)

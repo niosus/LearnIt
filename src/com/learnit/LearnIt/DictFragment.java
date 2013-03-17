@@ -37,7 +37,7 @@ public class DictFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        dbHelper = new DBHelper(this.getActivity());
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
     }
 
     public void getWordsByPattern(String word) {
@@ -55,13 +55,13 @@ public class DictFragment extends Fragment {
                 .setAdapter(adapter);
     }
 
-    public String getTranslation(String word) {
-        if (word != null && !word.isEmpty()) {
-            Log.d(LOG_TAG, String.format("search word-%s", word));
-            return dbHelper.getTranslation(word);
-        }
-        return null;
-    }
+//    public String getTranslation(String word) {
+//        if (word != null && !word.isEmpty()) {
+//            Log.d(LOG_TAG, String.format("search word-%s", word));
+//            return dbHelper.getTranslation(word);
+//        }
+//        return null;
+//    }
 
 
 

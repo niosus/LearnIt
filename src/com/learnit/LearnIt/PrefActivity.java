@@ -9,7 +9,9 @@
 package com.learnit.LearnIt;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,18 +19,65 @@ import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 import android.widget.Toast;
-
 public class PrefActivity extends PreferenceActivity {
-    private final String LOG_TAG = "my_logs";
-
+    protected static boolean m_languages_changed = false;
+    String selectedLanguageFrom;
+    String selectedLanguageTo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment1())
                 .commit();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
+        selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
     }
 
+    @Override
+    public void onBackPressed() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String newSelectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
+        String newSelectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
+        if(newSelectedLanguageFrom.equals(selectedLanguageFrom) && newSelectedLanguageTo.equals(selectedLanguageTo))
+        {
+            this.finish();
+        }
+        else
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
+                    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).show();
+        }
+
+
+    }
+
+    void finishActivity()
+    {
+        this.finish();
+    }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    startDictToSQLActivity();
+                    finishActivity();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
+
+
+    private void startDictToSQLActivity() {
+        Intent intent = new Intent(this, DictToSQL.class);
+        startActivity(intent);
+    }
 
 
     public static class PrefsFragment1 extends PreferenceFragment {
@@ -42,6 +91,7 @@ public class PrefActivity extends PreferenceActivity {
         CheckBoxPreference checkBoxPreference;
         TimePreference timePreference;
         boolean changed = false;
+
         boolean updated = false;
         boolean showArticlesOption=true;
         @Override
@@ -80,7 +130,7 @@ public class PrefActivity extends PreferenceActivity {
             }
             else
             {
-                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");    //TODO: change to R
                 mCategory.removePreference(lstWayToLearn);
             }
 
@@ -90,7 +140,7 @@ public class PrefActivity extends PreferenceActivity {
             checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
             checkBoxPreference.setOnPreferenceChangeListener(listener);
 
-            timePreference = (TimePreference) findPreference("time_to_start");
+            timePreference = (TimePreference) findPreference("time_to_start");     //TODO: change to R
 
             updateAllSummaries();
         }
@@ -216,6 +266,7 @@ public class PrefActivity extends PreferenceActivity {
             }
         }
 
+
         OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference pref, Object newValue) {
@@ -258,23 +309,31 @@ public class PrefActivity extends PreferenceActivity {
                     else if (pref.getKey().equals(getString(R.string.key_language_from)))
                     {
                         lstLanguageToLearn = (ListPreference) pref;
-                        pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
-                        if (!newValue.toString().equals("de"))
+                        if (!newValue.toString().equals(lstLanguageToLearn.getValue()))
                         {
-                            PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
-                            mCategory.removePreference(lstWayToLearn);
-                        }
-                        else
-                        {
-                            PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
-                            mCategory.addPreference(lstWayToLearn);
+                            pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
+                            if (!newValue.toString().equals("de"))
+                            {
+                                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                                mCategory.removePreference(lstWayToLearn);
+                            }
+                            else
+                            {
+                                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                                mCategory.addPreference(lstWayToLearn);
+                            }
+                            m_languages_changed=true;
                         }
                         return true;
                     }
                     else if (pref.getKey().equals(getString(R.string.key_language_to)))
                     {
                         lstLanguageYouKnow = (ListPreference) pref;
-                        pref.setSummary(lstLanguageYouKnow.getEntries()[lstLanguageYouKnow.findIndexOfValue(newValue.toString())]);
+                        if (!newValue.toString().equals(lstLanguageYouKnow.getValue()))
+                        {
+                            pref.setSummary(lstLanguageYouKnow.getEntries()[lstLanguageYouKnow.findIndexOfValue(newValue.toString())]);
+                            m_languages_changed=true;
+                        }
                         return true;
                     }
                     else if (pref.getKey().equals(getString(R.string.key_way_to_learn)))

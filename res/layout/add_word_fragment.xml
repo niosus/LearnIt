@@ -2,9 +2,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -53,13 +50,21 @@
                 android:padding="5dp"
                 android:background="@android:color/transparent" />
     </RelativeLayout>
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@android:color/holo_blue_dark"
+              android:paddingLeft="20dp"
+              android:layout_below="@id/linear_translation"
+              android:id="@+id/text_view_help"
+              android:textAppearance="@android:style/TextAppearance.Holo.Small"
+            />
     <ListView
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:id="@+id/list_of_add_words"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linear_translation">
+            android:layout_below="@id/text_view_help">
     </ListView>
 
 </RelativeLayout>

@@ -1,0 +1,38 @@
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/relative_layout_dict"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+    <TextView
+            android:id="@+id/text_dict_to_sql_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large">
+    </TextView>
+    <TextView
+            android:id="@+id/text_dictionary_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large"
+            android:textStyle="bold">
+    </TextView>
+    <TextView
+            android:id="@+id/text_dictionary_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:textAppearance="@android:style/TextAppearance.Holo.Small">
+    </TextView>
+    <TextView
+            android:id="@+id/text_loaded"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large">
+    </TextView>
+
+</LinearLayout>

@@ -3,18 +3,16 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-
-
 
 <resources>
 
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Learn My Words</string>
     <string name="add_words_frag_title">Add New Words</string>
+
+    <string name="add_words_frag_help_text_words">Possible words</string>
+    <string name="add_words_frag_help_text_trans">Possible translations</string>
+
     <string name="dictionary_frag_title">Dictionary</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_word_hint">Input word</string>
@@ -70,6 +68,11 @@
     <string name="pref_direction_of_trans">Direction of translation</string>
     <string name="pref_notifications_enabled">Notifications Enabled</string>
     <string name="pref_notifications_disabled">Notifications Disabled</string>
+
+    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
+    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the application has to update the help dictionary.</string>
+    <string name="pref_dialog_update_dict_dismiss">Go back</string>
+
 
     <string name="db_exported">Dictionary was exported to \n%s</string>
 
@@ -141,6 +144,17 @@
         While this application is just my hobby project it really means a lot for me, that people use it.
         If you have any feedback or suggestions, feel free to contact me and tell what you think. It is really very important for me.\n</string>
 
+
+    <!--dict to sql activity strings-->
+    <string name="dict_sql_title">Help dictionary</string>
+    <string name="dict_sql_no_dict">No help dictionary found for pair</string>
+    <string name="dict_sql_success">Successfully loaded</string>
+    <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
+    <string name="dict_sql_progress_found">Dictionary found. \nIndexing…</string>
+    <string name="dict_sql_progress_searching">Searching for dictionary</string>
+
+
+
     <string-array name="time_entries">
         <item>Hour</item>
         <item>Two Hours</item>
@@ -152,12 +166,12 @@
     <string-array name="entries_languages_from">
         <item>German</item>
         <item>English</item>
-        <item>Polish</item>
-        <item>Swedish</item>
-        <item>Russian</item>
         <item>Spanish</item>
         <item>French</item>
         <item>Italian</item>
+        <item>Polish</item>
+        <item>Russian</item>
+        <item>Swedish</item>
         <item>Ukrainian</item>
     </string-array>
 
@@ -165,12 +179,12 @@
         <item>Auto</item>
         <item>German</item>
         <item>English</item>
-        <item>Polish</item>
-        <item>Swedish</item>
-        <item>Russian</item>
         <item>Spanish</item>
         <item>French</item>
         <item>Italian</item>
+        <item>Polish</item>
+        <item>Russian</item>
+        <item>Swedish</item>
         <item>Ukrainian</item>
     </string-array>
 

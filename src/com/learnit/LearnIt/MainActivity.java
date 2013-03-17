@@ -10,6 +10,7 @@
 
 package com.learnit.LearnIt;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.Arrays;
 
@@ -48,6 +50,12 @@ public class MainActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
     protected void onResume() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String selectedLanguage = sp.getString(getString(R.string.key_language_from), "NONE");
@@ -99,7 +107,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.menu_export:
                 Log.d(LOG_TAG, "export DB");
 
-                DBHelper dbHelper = new DBHelper(this);
+                DBHelper dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
                 dbHelper.exportDB();
                 return true;
 //            case R.id.menu_import:

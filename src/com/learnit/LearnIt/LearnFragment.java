@@ -45,6 +45,33 @@ public class LearnFragment extends Fragment {
     public LearnFragment() {
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser == true) {
+            playOpenAnimation();
+            openButtons();
+            v.findViewById(R.id.left_top_button).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.right_bottom_button).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.left_bottom_button).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.right_top_button).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
+            MainActivity.hideSoftKeyboard(this.getActivity());
+        }
+        else if (isVisibleToUser == false) {
+            if (null!=v)
+            {
+                v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.right_bottom_button).setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.left_bottom_button).setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.right_top_button).setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.word_to_ask).setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         utils = new Utils();
@@ -96,6 +123,11 @@ public class LearnFragment extends Fragment {
         (v.findViewById(R.id.right_top_button))
                 .setOnClickListener(myButtonOnClick);
         setBtnTexts(words);
+        v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.right_bottom_button).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.left_bottom_button).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.right_top_button).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.word_to_ask).setVisibility(View.INVISIBLE);
     }
 
     private void setQueryWordTxt(ArticleWordIdStruct struct)
@@ -188,6 +220,11 @@ public class LearnFragment extends Fragment {
                 fetchNewWords();
                 playOpenAnimation();
                 openButtons();
+                v.findViewById(R.id.left_top_button).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.right_bottom_button).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.left_bottom_button).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.right_top_button).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -206,8 +243,8 @@ public class LearnFragment extends Fragment {
 
     private void openButtons()
     {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_left);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_right);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
@@ -216,8 +253,8 @@ public class LearnFragment extends Fragment {
 
     private void closeButtons()
     {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_left);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_right);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
@@ -278,7 +315,7 @@ public class LearnFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        dbHelper = new DBHelper(this.getActivity());
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
 
     }
 }

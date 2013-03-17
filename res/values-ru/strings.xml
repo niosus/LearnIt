@@ -15,6 +15,9 @@
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Учить мои слова</string>
     <string name="add_words_frag_title">Добавить новые слова</string>
+    <string name="add_words_frag_help_text_words">Возможно вы ищете эти слова?</string>
+    <string name="add_words_frag_help_text_trans">Возможно вы ищете эти переводы?</string>
+
     <string name="dictionary_frag_title">Мой словарь</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_word_hint">Введите слово</string>
@@ -134,6 +137,14 @@
         Не смотря на то, что это приложение - просто мое хобби, для меня много значит, что им пользуются живые люди.
         Если у вас есть мнение, которым хочется поделиться, или какие нибудь пожелания - пишите, я буду рад их услышать. \n</string>
 
+    <!--dict to sql activity strings-->
+    <string name="dict_sql_title">Словарь</string>
+    <string name="dict_sql_no_dict">Словарь не найден для пары</string>
+    <string name="dict_sql_success">был успешно загружен</string>
+    <string name="dict_sql_version">%1$s-%2$s. Версия: %3$s</string>
+    <string name="dict_sql_progress_found">Словарь найден. \nИдет индексация…</string>
+    <string name="dict_sql_progress_searching">Поиск словаря.</string>
+
     <string-array name="time_entries">
         <item>Час</item>
         <item>Два часа</item>
@@ -145,12 +156,12 @@
     <string-array name="entries_languages_from">
         <item>Немецкий</item>
         <item>Английский</item>
-        <item>Польский</item>
-        <item>Шведский</item>
-        <item>Русский</item>
         <item>Испанский</item>
         <item>Французский</item>
         <item>Итальянский</item>
+        <item>Польский</item>
+        <item>Русский</item>
+        <item>Шведский</item>
         <item>Украинский</item>
     </string-array>
 
@@ -158,12 +169,12 @@
         <item>Авто</item>
         <item>Немецкий</item>
         <item>Английский</item>
-        <item>Польский</item>
-        <item>Шведский</item>
-        <item>Русский</item>
         <item>Испанский</item>
         <item>Французский</item>
         <item>Итальянский</item>
+        <item>Польский</item>
+        <item>Русский</item>
+        <item>Шведский</item>
         <item>Украинский</item>
     </string-array>
 

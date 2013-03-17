@@ -124,7 +124,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
                 showDialog(null,null,MyDialogFragment.DIALOG_PROGRESS);
-                dbHelper = new DBHelper(getActivity());
+                dbHelper = new DBHelper(getActivity(), DBHelper.DB_WORDS);
             }
 
 

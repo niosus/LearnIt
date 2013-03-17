@@ -20,15 +20,17 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
-import com.learnit.LearnIt.stardict.StarDict;
+import com.learnit.LearnIt.stardict.DictFile;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,28 +40,30 @@ public class AddWordFragment extends Fragment {
     private EditText editWord;
     private EditText editTranslation;
     private DBHelper dbHelper;
+    private DBHelper dbHelperDict;
     GetDictTask task;
-    StarDict dict;
     String selectedLanguageFrom;
     String selectedLanguageTo;
+    String currentLanguage;
     Utils utils;
+    boolean wordFocused=false;
+    boolean transFocused=false;
 
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
+    TextView tv_help;
 
     MenuItem saveItem;
 
-    private final int ASYNC_TASK_LOAD_DICTIONARY = 2;
+    private final int ASYNC_TASK_FIND_TRANSLATION = 2;
     private final int ASYNC_TASK_FIND_WORD = 1;
     View v;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
-        selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
-        dbHelper = new DBHelper(this.getActivity());
+        wordFocused=true;
+        transFocused=false;
 
     }
 
@@ -69,16 +73,13 @@ public class AddWordFragment extends Fragment {
         utils = new Utils();
     }
 
-    private void getDict()
-    {
-        File sd = Environment.getExternalStorageDirectory();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+    public void onResume() {
+        super.onResume();SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
         selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
-        String currentLanguage;
         if (allLanguages.contains(selectedLanguageTo))
         {
             currentLanguage = selectedLanguageTo;
@@ -87,34 +88,8 @@ public class AddWordFragment extends Fragment {
         {
             currentLanguage = Locale.getDefault().getLanguage();
         }
-        Log.d(LOG_TAG,"possible languages = " + allLanguages);
-        if (allLanguages.contains(selectedLanguageFrom))
-        {
-            dict=null;
-            sd = new File(sd, "LearnIt");
-            sd = new File(sd, selectedLanguageFrom +"-"+currentLanguage);
-            sd = new File(sd, "dict.ifo");
-            dict = new StarDict(sd.getPath());
-            if (!dict.boolAvailable)
-            {
-                dict=null;
-            }
-        }
-    }
-
-    public void onResume() {
-        super.onResume();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String newSelectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
-        String newSelectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
-        if (null==dict
-                || !selectedLanguageFrom.equals(newSelectedLanguageFrom)
-                || !selectedLanguageTo.equals(newSelectedLanguageTo))
-        {
-            dict=null;
-            task = new GetDictTask();
-            task.execute(ASYNC_TASK_LOAD_DICTIONARY);
-        }
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+        dbHelperDict = new DBHelper(this.getActivity(), DBHelper.DB_DICT_FROM);
         if (null!=saveItem)
         {
             if (null!=editTranslation && null!=editWord)
@@ -166,14 +141,29 @@ public class AddWordFragment extends Fragment {
         btn_clear_word.setOnClickListener(myBtnOnClickListener);
         btn_clear_trans.setVisibility(View.INVISIBLE);
         btn_clear_word.setVisibility(View.INVISIBLE);
+        tv_help = (TextView) v.findViewById(R.id.text_view_help);
+        tv_help.setVisibility(View.INVISIBLE);
         editWord = (EditText) v.findViewById(R.id.edv_add_word);
+        editWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus && editWord.getText().toString().length()>0){
+                    task = new GetDictTask();
+                    task.execute(ASYNC_TASK_FIND_WORD);
+                    wordFocused=true;
+                    transFocused=false;
+                }
+            }
+        });
         editTranslation = (EditText) v.findViewById(R.id.edv_add_translation);
         editTranslation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     task = new GetDictTask();
-                    task.execute(ASYNC_TASK_FIND_WORD);
+                    task.execute(ASYNC_TASK_FIND_TRANSLATION);
+                    wordFocused=false;
+                    transFocused=true;
                 }
             }
         });
@@ -193,6 +183,8 @@ public class AddWordFragment extends Fragment {
                 if (editable.toString()!=null && !editable.toString().equals(""))
                 {
                     btn_clear_word.setVisibility(View.VISIBLE);
+                    task = new GetDictTask();
+                    task.execute(ASYNC_TASK_FIND_WORD);
                 }
                 if (editable.length()==0)
                 {
@@ -240,17 +232,28 @@ public class AddWordFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                String queryWord = ((TextView) view).getText().toString();
-                Log.d(LOG_TAG, queryWord);
-                if (editTranslation.getText().toString()==null||editTranslation.getText().toString().equals(""))
+                if (transFocused)
                 {
-                    editTranslation.setText(queryWord);
+                    String queryWord = ((TextView) view).getText().toString();
+                    Log.d(LOG_TAG, queryWord);
+                    if (editTranslation.getText().toString()==null||editTranslation.getText().toString().equals(""))
+                    {
+                        editTranslation.setText(queryWord);
+                    }
+                    else
+                    {
+                        editTranslation.setText(queryWord + ", " + editTranslation.getText().toString());
+                    }
+                    editTranslation.setSelection(queryWord.length());
                 }
-                else
+                else if (wordFocused)
                 {
-                    editTranslation.setText(queryWord + ", " + editTranslation.getText().toString());
+                    String queryWord = ((TextView) view).getText().toString();
+                    Log.d(LOG_TAG, queryWord);
+                    editWord.setText(queryWord);
+                    editWord.setSelection(queryWord.length());
+                    editTranslation.requestFocus();
                 }
-                editTranslation.setSelection(queryWord.length());
             }
         });
         return v;
@@ -377,19 +380,25 @@ public class AddWordFragment extends Fragment {
         showMessage(exitCode);
     }
 
-    private void updateList(ArrayList<String> items)
+    private void updateList(List<String> items)
     {
         ArrayAdapter<String> adapter;
         if (null!=items)
         {
-        adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_list_item_1, items);
-        ((ListView) this.getView().findViewById(R.id.list_of_add_words))
-                .setAdapter(adapter);
+            if (wordFocused)
+                tv_help.setText(getString(R.string.add_words_frag_help_text_words));
+            else
+                tv_help.setText(getString(R.string.add_words_frag_help_text_trans));
+            tv_help.setVisibility(View.VISIBLE);
+            adapter = new ArrayAdapter<String>(this.getActivity(),
+                    android.R.layout.simple_list_item_1, items);
+            ((ListView) this.getView().findViewById(R.id.list_of_add_words))
+                    .setAdapter(adapter);
         }
         else
         {
-        ((ListView) this.getView().findViewById(R.id.list_of_add_words))
+            tv_help.setVisibility(View.INVISIBLE);
+            ((ListView) this.getView().findViewById(R.id.list_of_add_words))
                 .setAdapter(null);
         }
 
@@ -423,82 +432,55 @@ public class AddWordFragment extends Fragment {
 
     }
 
-    class GetDictTask extends AsyncTask<Integer, Void, ArrayList<String> > {
-        private boolean createDict=false;
+    class GetDictTask extends AsyncTask<Integer, Void, List<String> > {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (null==dict)
-            {
-                createDict=true;
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loading_dict), Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                createDict=false;
-            }
         }
 
 
         @Override
-        protected synchronized ArrayList<String> doInBackground(Integer... action) {
+        protected List<String> doInBackground(Integer... action) {
             try {
-                if (action[0]==ASYNC_TASK_FIND_WORD)
-                    {
+                if (action[0]==ASYNC_TASK_FIND_TRANSLATION)
+                {
+
                     String tempWord = editWord.getText().toString();
                     Log.d(LOG_TAG,"temp word is " + tempWord);
+                    Log.d(LOG_TAG, "language from - " + selectedLanguageFrom + " langiage to - " + currentLanguage);
+                    File sd = Environment.getExternalStorageDirectory();
+                    sd = new File(sd, "LearnIt");
+                    sd = new File(sd, selectedLanguageFrom+"-"+currentLanguage);
+                    sd = new File(sd, "dict.dict");
+                    DictFile dictFile = new DictFile(sd.getPath());
                     if (null!=tempWord)
                     {
                         String newWord = getRealWord(tempWord);
-                        return parseDictOutput(dict.lookupWord(newWord));
+                        Pair<Long,Long> pair = dbHelperDict.getDictOffsetAndSize(newWord);
+                        return parseDictOutput(dictFile.getWordData(pair.first, pair.second));
                     }
                     return null;
                 }
-                else if (action[0]==ASYNC_TASK_LOAD_DICTIONARY)
+                else
                 {
-                    try {
-                        if (null==dict)
-                            getDict();
-                        return null;
-                    }
-                    catch (OutOfMemoryError e)
-                    {
-                        dict=null;
-                        Log.d(LOG_TAG,"ERROR in asyncronical get dict");
-                    }
+                    return dbHelperDict.getHelpWords(editWord.getText().toString());
                 }
+
             }
             catch (Exception e)
             {
-//                Log.e("error", e.getMessage());
+                Log.d(LOG_TAG,"exception on doInBackground AddWordsFragment");
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> items) {
+        protected void onPostExecute(List<String> items) {
             super.onPostExecute(items);
             try {
                 if (null==items)
                 {
-
-                    if (null==dict)
-                    {
-                        if (selectedLanguageTo.equals("auto"))
-                        {
-                            selectedLanguageTo=Locale.getDefault().getLanguage();
-                        }
-                        Toast.makeText(getActivity().getApplicationContext(), String.format(getString(R.string.toast_no_dict), selectedLanguageFrom+"-"+selectedLanguageTo), Toast.LENGTH_LONG).show();
-                    }
-                    else if (createDict)
-                    {
-
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_loaded_dict), Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
                 }
                 updateList(items);
             }

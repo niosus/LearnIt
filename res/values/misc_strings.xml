@@ -42,12 +42,12 @@
     <string-array name="values_languages_from">
         <item>de</item>
         <item>en</item>
-        <item>pl</item>
-        <item>swe</item>
-        <item>ru</item>
-        <item>esp</item>
+        <item>es</item>
         <item>fr</item>
         <item>it</item>
+        <item>pl</item>
+        <item>ru</item>
+        <item>swe</item>
         <item>uk</item>
     </string-array>
 
@@ -55,12 +55,12 @@
         <item>auto</item>
         <item>de</item>
         <item>en</item>
-        <item>pl</item>
-        <item>swe</item>
-        <item>ru</item>
-        <item>esp</item>
+        <item>es</item>
         <item>fr</item>
         <item>it</item>
+        <item>pl</item>
+        <item>ru</item>
+        <item>swe</item>
         <item>uk</item>
     </string-array>
 

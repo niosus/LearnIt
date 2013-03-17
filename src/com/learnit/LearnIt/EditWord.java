@@ -30,7 +30,7 @@ public class EditWord extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbHelper = new DBHelper(this);
+        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
         utils = new Utils();
         oldWord= getIntent().getStringExtra(WORD_TAG);
         oldStrippedWord = utils.stripFromArticle(this,oldWord);

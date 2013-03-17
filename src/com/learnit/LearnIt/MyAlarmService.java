@@ -53,7 +53,7 @@ public class MyAlarmService extends Service {
         {
             numOfNotif=5;
         }
-        dbHelper = new DBHelper(this);
+        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
     @Override

@@ -21,6 +21,7 @@
 package com.learnit.LearnIt.stardict;
 
 import android.util.Log;
+import android.util.Pair;
 import com.learnit.LearnIt.Word;
 import com.learnit.LearnIt.WordEntry;
 
@@ -195,6 +196,14 @@ public class StarDict {
         WordEntry tempEntry = idxFile.getEntryList().get((int) idx);
 
         return dictFile.getWordData(tempEntry.getLongOffset(), tempEntry.getLongSize());
+    }
+
+    public Pair<Long,Long> findWordMemoryOffsets(int idx) {
+        if (idx < 0 || idx >= idxFile.getLongWordCount()) {
+            return null;
+        }
+        WordEntry tempEntry = idxFile.getEntryList().get((int) idx);
+        return new Pair<Long, Long>(tempEntry.getLongOffset(),tempEntry.getLongSize());
     }
 
     /**

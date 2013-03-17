@@ -3,11 +3,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-
 
 
 
@@ -16,6 +11,9 @@
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Meine Wörter Lernen</string>
     <string name="add_words_frag_title">Neue Wörter anpassen</string>
+    <string name="add_words_frag_help_text_words">Meinen Sie diese Wörter?</string>
+    <string name="add_words_frag_help_text_trans">Meinen Sie diese Übersetzungen?</string>
+
     <string name="dictionary_frag_title">Mein Wörterbuch</string>
     <string name="add_word_hint">Wort</string>
     <string name="edit_dialog_title">Bearbeiten</string>
@@ -138,6 +136,15 @@
         Wenn Sie Feedback oder Anregungen haben, zögern Sie nicht mich zu kontaktieren. Es ist sehr wichtig für mich.\n</string>
     <string name="instr_go_to_settings">Einstellundgen</string>
 
+
+    <!--dict to sql activity strings-->
+    <string name="dict_sql_title">Hilfswörterbuch</string>
+    <string name="dict_sql_no_dict">Kein Hilfswörterbuch für diese Paar</string>
+    <string name="dict_sql_success">ist erfolgreich gestattet</string>
+    <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
+    <string name="dict_sql_progress_found">Hilfswörterbuch wird gefunden. \nIndexing…</string>
+    <string name="dict_sql_progress_searching">Suchen nach den Hilfswörterbuch</string>
+
     <string-array name="time_entries">
         <item>Stunde</item>
         <item>Zwei Stunden</item>
@@ -149,26 +156,26 @@
     <string-array name="entries_languages_from">
         <item>Deutsch</item>
         <item>Englisch</item>
-        <item>Polisch</item>
-        <item>Swedisch</item>
-        <item>Russisch</item>
         <item>Spanisch</item>
-        <item>Frankisch</item>
+        <item>French</item>
         <item>Italienisch</item>
-        <item>Ukrainisch</item>
+        <item>Polish</item>
+        <item>Russisch</item>
+        <item>Swedish</item>
+        <item>Ukrainian</item>
     </string-array>
 
     <string-array name="entries_languages_to">
         <item>Automatisch</item>
-        <item>Deutsch</item>
-        <item>Englisch</item>
-        <item>Polisch</item>
-        <item>Swedisch</item>
-        <item>Russisch</item>
-        <item>Spanisch</item>
-        <item>Frankisch</item>
-        <item>Italienisch</item>
-        <item>Ukrainisch</item>
+        <item>German</item>
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Italian</item>
+        <item>Polish</item>
+        <item>Russian</item>
+        <item>Swedish</item>
+        <item>Ukrainian</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">
