@@ -11,9 +11,11 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class DictFragment extends Fragment {
     private DBHelper dbHelper;
     private EditText edtWord;
     private ImageButton btnClear;
+    Utils utils;
 
     ActionMode mActionMode=null;
 
@@ -37,6 +40,15 @@ public class DictFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        utils = new Utils();
+        Pair<String,String> langPair = utils.updateLanguages(this.getActivity());
+        Log.d(LOG_TAG, "onResume dict fragment: from - " + langPair.first + " to " + langPair.second);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
     }
 

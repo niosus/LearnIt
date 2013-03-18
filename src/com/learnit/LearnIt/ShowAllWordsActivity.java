@@ -84,14 +84,29 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
         private void updateList(List<Map<String, String>> items)
         {
-            SimpleAdapter adapter;
-            List<Map<String, String>> strings = items;
-            adapter = new SimpleAdapter(this.getActivity(), strings,
-                    android.R.layout.simple_list_item_2,
-                    new String[] {"word", "translation" },
-                    new int[] {android.R.id.text1, android.R.id.text2 });
-            ListView list = (ListView) this.getView().findViewById(R.id.list_of_all_words);
-            list.setAdapter(adapter);
+            try {
+                if (null!=items)
+                {
+                    SimpleAdapter adapter;
+                    List<Map<String, String>> strings = items;
+                    adapter = new SimpleAdapter(this.getActivity(), strings,
+                            android.R.layout.simple_list_item_2,
+                            new String[] {"word", "translation" },
+                            new int[] {android.R.id.text1, android.R.id.text2 });
+                    ListView list = (ListView) this.getView().findViewById(R.id.list_of_all_words);
+                    if (null!=adapter)
+                    {
+                        Log.d(LOG_TAG,"trying to update list for all words" + adapter.getCount());
+                        list.setAdapter(adapter);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.d(LOG_TAG,"exception caught - " + e.getMessage() + "\n");
+                e.printStackTrace();
+            }
+
         }
 
         public void showDialog(String queryWord, String translation, int dialogType)

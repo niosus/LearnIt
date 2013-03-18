@@ -10,12 +10,9 @@
 package com.learnit.LearnIt;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,9 +26,7 @@ import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,20 +69,14 @@ public class AddWordFragment extends Fragment {
     }
 
     public void onResume() {
-        super.onResume();SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
-        selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
-        Resources res = getResources();
-        String[] languages = res.getStringArray(R.array.values_languages_from);
-        String allLanguages = Arrays.toString(languages);
-        if (allLanguages.contains(selectedLanguageTo))
-        {
-            currentLanguage = selectedLanguageTo;
-        }
-        else
-        {
-            currentLanguage = Locale.getDefault().getLanguage();
-        }
+        super.onResume();
+        wordFocused=true;
+        transFocused=false;
+        editWord.requestFocus();
+        Pair<String,String> langPair = utils.updateLanguages(this.getActivity());
+        selectedLanguageFrom=langPair.first;
+        selectedLanguageTo=langPair.second;
+        Log.d(LOG_TAG, "onResume Add words fragment: from - " + selectedLanguageFrom + " to " + selectedLanguageTo);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         dbHelperDict = new DBHelper(this.getActivity(), DBHelper.DB_DICT_FROM);
         if (null!=saveItem)
@@ -252,6 +241,8 @@ public class AddWordFragment extends Fragment {
                     Log.d(LOG_TAG, queryWord);
                     editWord.setText(queryWord);
                     editWord.setSelection(queryWord.length());
+                    transFocused=true;
+                    wordFocused=false;
                     editTranslation.requestFocus();
                 }
             }
@@ -274,9 +265,42 @@ public class AddWordFragment extends Fragment {
 
             String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
             String selectDtrn = "<dtrn>(.+?)</dtrn>";
-//            String selectDtrn = ".*";
-            Pattern p = Pattern.compile(deleteCo);
-            Matcher matcher = p.matcher(str);
+            String selectSexI = "<i>(m|f|n)</i>";
+            String selectSexAbr = "<abr>(m|f|n)</abr>";
+            Pattern p;
+            Matcher matcher;
+            if (selectedLanguageFrom.equals("de"))
+            {
+                p = Pattern.compile(selectSexI);
+                matcher = p.matcher(str);
+                String sexI = null;
+                String sexAbr = null;
+                while (matcher.find()) {
+                    sexI = matcher.group(1);
+                    Log.d(LOG_TAG,"sexI = " + sexI);
+                    break;
+                }
+                p = Pattern.compile(selectSexAbr);
+                matcher = p.matcher(str);
+                while (matcher.find()) {
+                    sexAbr = matcher.group(1);
+                    Log.d(LOG_TAG,"sexAbr = " + sexAbr);
+                }
+                String article=null;
+                if (null!=sexI)
+                    article=utils.getGermanArticle(sexI);
+                else if (null!=sexAbr)
+                    article=utils.getGermanArticle(sexAbr);
+                if (null!=article)
+                {
+                    Log.d(LOG_TAG, article+" "+editWord.getText());
+                    editWord.setText(article+" "+editWord.getText());
+                }
+            }
+
+
+            p = Pattern.compile(deleteCo);
+            matcher = p.matcher(str);
             while (matcher.find()) {
                 str = matcher.replaceAll("");
                 matcher = p.matcher(str);
@@ -418,6 +442,8 @@ public class AddWordFragment extends Fragment {
                     editTranslation.setText("");
                     editTranslation.setFocusableInTouchMode(true);
                     editTranslation.requestFocus();
+                    transFocused=true;
+                    wordFocused=false;
                     v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btn_add_word_clear:
@@ -425,6 +451,8 @@ public class AddWordFragment extends Fragment {
                     editWord.setFocusableInTouchMode(true);
                     editWord.requestFocus();
                     updateList(null);
+                    transFocused=false;
+                    wordFocused=true;
                     v.setVisibility(View.INVISIBLE);
                     break;
             }
@@ -444,13 +472,12 @@ public class AddWordFragment extends Fragment {
             try {
                 if (action[0]==ASYNC_TASK_FIND_TRANSLATION)
                 {
-
                     String tempWord = editWord.getText().toString();
                     Log.d(LOG_TAG,"temp word is " + tempWord);
-                    Log.d(LOG_TAG, "language from - " + selectedLanguageFrom + " langiage to - " + currentLanguage);
+                    Log.d(LOG_TAG, "language from - " + selectedLanguageFrom + " langiage to - " + selectedLanguageTo);
                     File sd = Environment.getExternalStorageDirectory();
                     sd = new File(sd, "LearnIt");
-                    sd = new File(sd, selectedLanguageFrom+"-"+currentLanguage);
+                    sd = new File(sd, selectedLanguageFrom+"-"+selectedLanguageTo);
                     sd = new File(sd, "dict.dict");
                     DictFile dictFile = new DictFile(sd.getPath());
                     if (null!=tempWord)

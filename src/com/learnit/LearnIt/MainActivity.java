@@ -12,20 +12,20 @@ package com.learnit.LearnIt;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
@@ -57,20 +57,17 @@ public class MainActivity extends FragmentActivity {
     }
 
     protected void onResume() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String selectedLanguage = sp.getString(getString(R.string.key_language_from), "NONE");
-        String selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
-        Log.d(LOG_TAG,"language to translate to = "+ selectedLanguageTo);
-        Log.d(LOG_TAG,"language to translate from = " + selectedLanguage);
+        super.onResume();
+        Utils utils = new Utils();
+        Pair<String,String> pair = utils.updateLanguages(this);
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
-        Log.d(LOG_TAG,"possible languages = " + allLanguages);
-        if (!allLanguages.contains(selectedLanguage))
+        Log.d(LOG_TAG, "possible languages = " + allLanguages);
+        if (!allLanguages.contains(pair.first))
         {
             startShowWellcomeActivity();
         }
-        super.onResume();
     }
 
     private void startSettingsActivity() {
@@ -99,6 +96,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        DBHelper dbHelper;
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 Log.d(LOG_TAG, "pref button pressed");
@@ -106,13 +104,18 @@ public class MainActivity extends FragmentActivity {
                 return true;
             case R.id.menu_export:
                 Log.d(LOG_TAG, "export DB");
-
-                DBHelper dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+                dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
                 dbHelper.exportDB();
                 return true;
-//            case R.id.menu_import:
-//                Log.d(LOG_TAG, "import DB");
-//                dbHelper.importDB();
+            case R.id.menu_import:
+                Log.d(LOG_TAG, "import DB");
+                dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+                dbHelper.importDB();
+                dbHelper.close();
+                Utils utils = new Utils();
+                utils.updateLanguages(this);
+                dbHelper = new DBHelper(this,DBHelper.DB_WORDS);
+                return true;
             case R.id.menu_show_all_words:
                 Log.d(LOG_TAG, "show all words");
                 startShowWordsActivity();

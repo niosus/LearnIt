@@ -39,6 +39,7 @@ import java.util.Locale;
 
 public class DictToSQL extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
+    public static boolean home_button_active = true;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fragment fragTemp = new ResultFragment();
@@ -81,6 +82,7 @@ public class DictToSQL extends FragmentActivity {
             selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
             selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
             mt = new MyTask();
+            mt.action=1;
             mt.execute();
         }
 
@@ -101,7 +103,7 @@ public class DictToSQL extends FragmentActivity {
             {
                 currentLanguage = Locale.getDefault().getLanguage();
             }
-            Log.d(LOG_TAG,"possible languages = " + allLanguages);
+            Log.d(LOG_TAG,"possible languages = " + allLanguages + "\n" + currentLanguage);
             if (allLanguages.contains(selectedLanguageFrom))
             {
                 dict=null;
@@ -152,8 +154,10 @@ public class DictToSQL extends FragmentActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                home_button_active=false;
                 dialog = new ProgressDialogFragment();
-                dialog.show(getSupportFragmentManager(),"MyDialog");
+                dialog.setCancelable(false);
+                dialog.show(getSupportFragmentManager(), "MyDialog");
                 dbHelper = new DBHelper(getActivity(), DBHelper.DB_DICT_FROM);
                 db = dbHelper.getWritableDatabase();
                 db.delete(DBHelper.DB_DICT_FROM, null, null);
@@ -228,13 +232,16 @@ public class DictToSQL extends FragmentActivity {
                 dialog.setProgress(values[0]);
             }
 
+
             @Override
             protected void onPostExecute(List<String> item) {
                 super.onPostExecute(item);
+                home_button_active=true;
                 tv_title.setText(item.get(0));
                 tv_dict_name.setText(item.get(1));
                 tv_dict_info.setText(item.get(2));
                 tv_loaded.setText(item.get(3));
+                DBHelper.DB_WORDS="myDB"+selectedLanguageFrom+currentLanguage;
                 dialog.dismiss();
             }
         }

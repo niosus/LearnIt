@@ -28,8 +28,8 @@ import java.util.*;
 
 public class DBHelper extends SQLiteOpenHelper{
     final static int DB_VERSION = 1;
-    final String LOG_TAG = "my_logs";
-    final static String DB_WORDS = "myDB";
+    public static final String LOG_TAG = "my_logs";
+    public static String DB_WORDS = "myDB"; //gets changed when the languages are updated
     final static String DB_DICT_FROM = "dictFROM";
     final String WORD_COLUMN_NAME = "word";
     final String ID_COLUMN_NAME = "id";
@@ -76,32 +76,6 @@ public class DBHelper extends SQLiteOpenHelper{
 
     SQLiteDatabase db;
 
-    private enum DB_NAMES {
-
-        DB_WORDS_ENTRY(DB_WORDS),
-        DB_DICT_FROM_ENTRY(DB_DICT_FROM);
-
-        private String typeValue;
-
-        private DB_NAMES(String type) {
-            typeValue = type;
-        }
-
-        static public DB_NAMES getType(String pType) {
-            for (DB_NAMES type: DB_NAMES.values()) {
-                if (type.getTypeValue().equals(pType)) {
-                    return type;
-                }
-            }
-            throw new RuntimeException("unknown type");
-        }
-
-        public String getTypeValue() {
-            return typeValue;
-        }
-
-    }
-
     public DBHelper(Context context, String dbName) {
         super(context, dbName, null, DB_VERSION);
         currentDBName=dbName;
@@ -111,10 +85,9 @@ public class DBHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(LOG_TAG, "--- onCreate database "+currentDBName+"---");
-        DB_NAMES databaseName = DB_NAMES.getType(currentDBName);
-        switch (databaseName)
+        switch (currentDBName.toCharArray()[0])
         {
-            case DB_WORDS_ENTRY:
+            case 'm':
                 db.execSQL("CREATE TABLE " + currentDBName + " ("
                         + ID_COLUMN_NAME + " integer primary key autoincrement,"
                         + ARTICLE_COLUMN_NAME + " text,"
@@ -123,7 +96,7 @@ public class DBHelper extends SQLiteOpenHelper{
                         + WEIGHT_COLUMN_NAME + " integer,"
                         + PREFIX_COLUMN_NAME + " text"+ ");");
                 break;
-            case DB_DICT_FROM_ENTRY:
+            case 'd':
                 db.execSQL("CREATE TABLE " + currentDBName + " ("
                         + ID_COLUMN_NAME + " integer primary key autoincrement,"
                         + DICT_OFFSET_COLUMN_NAME + " long,"
@@ -377,34 +350,61 @@ public class DBHelper extends SQLiteOpenHelper{
     public boolean importDB()
     {
         try {
+
             File sd = Environment.getExternalStorageDirectory();
             sd = new File(sd, "LearnIt");
-            if (sd.canRead()) {
-                String backupDBPath = "DB_Backup.db";
-                File currentDB = mContext.getDatabasePath(currentDBName);
-                Log.d(LOG_TAG, "current db path = "+currentDB.getPath());
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel dst = new FileInputStream(currentDB).getChannel();
-                    FileChannel src = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-                else
-                {
-                    Log.d(LOG_TAG,"db not exist");
-                }
-
-                Log.d(LOG_TAG,"db imported from " + backupDB.getPath());
-                Toast toast = Toast.makeText(mContext, String.format(mContext.getString(R.string.db_exported),backupDB.getPath()), Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER,0,0);
-                toast.show();
+            String backupDBPath = "DB_Backup.db";
+            File dbfile = new File(sd, backupDBPath);
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+            Log.d(LOG_TAG,"Its open? "  + db.isOpen());
+            Cursor c_name = db.rawQuery("SELECT name FROM sqlite_sequence", null);
+            String name=null;
+            if (c_name.moveToFirst()) {
+                int name_index = c_name.getColumnIndex("name");
+                name = c_name.getString(name_index);
+                Log.d(LOG_TAG,name);
             }
+            c_name.close();
+            Cursor c = db.rawQuery("select * from "+ name, null);
+            SQLiteDatabase db_local = getWritableDatabase();
+            if (c.moveToFirst()) {
+                int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
+                int articleColIndex = c.getColumnIndex(ARTICLE_COLUMN_NAME);
+                int prefixColIndex = c.getColumnIndex(PREFIX_COLUMN_NAME);
+                int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
+                int weight = 100;
+                do {
+                    String word = c.getString(wordColIndex);
+                    String article = c.getString(articleColIndex);
+                    String prefix = c.getString(prefixColIndex);
+                    String translation = c.getString(translationColIndex);
+                    ContentValues cv = new ContentValues();
+                    cv.put(WORD_COLUMN_NAME, word);
+                    cv.put(ARTICLE_COLUMN_NAME, article);
+                    cv.put(PREFIX_COLUMN_NAME, prefix);
+                    cv.put(TRANSLATION_COLUMN_NAME, translation);
+                    cv.put(WEIGHT_COLUMN_NAME, weight);
+                    if (db_local.query(currentDBName,
+                            new String[]{TRANSLATION_COLUMN_NAME},
+                            WORD_COLUMN_NAME + " like " + "'" + word + "'", null, null,
+                            null, null).getCount()==0)
+                    {
+                        db_local.insert(currentDBName, null, cv);
+                    }
+                } while(c.moveToNext());
+            }
+            Toast toast = Toast.makeText(mContext, String.format(mContext.getString(R.string.db_imported),dbfile.getPath()), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
             return true;
-        } catch (Exception e) {
-            Log.d(LOG_TAG, "import failed - " + e.getMessage());
+
+        }
+        catch (Exception e)
+        {
+            Toast toast = Toast.makeText(mContext, String.format(mContext.getString(R.string.db_import_error)), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+            e.printStackTrace();
             return false;
         }
     }

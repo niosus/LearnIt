@@ -1,8 +1,16 @@
 package com.learnit.LearnIt.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
+import com.learnit.LearnIt.DBHelper;
 import com.learnit.LearnIt.R;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,5 +67,37 @@ public class Utils {
             return str.substring(0, 1).toUpperCase() + str.substring(1);
         else
             return null;
+    }
+
+    public Pair<String,String> updateLanguages(Context context)
+    {
+        String currentLanguage;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from),"NONE");
+        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to),"NONE");
+        Resources res = context.getResources();
+        String[] languages = res.getStringArray(R.array.values_languages_from);
+        String allLanguages = Arrays.toString(languages);
+        if (allLanguages.contains(selectedLanguageTo))
+        {
+            currentLanguage = selectedLanguageTo;
+        }
+        else
+        {
+            currentLanguage = Locale.getDefault().getLanguage();
+        }
+        DBHelper.DB_WORDS = "myDB"+selectedLanguageFrom+currentLanguage;
+        return new Pair<String, String>(selectedLanguageFrom,currentLanguage);
+    }
+
+    public String getGermanArticle(String sex)
+    {
+        if ("m"==sex)
+            return "der";
+        else if ("f"==sex)
+            return "die";
+        else if ("n"==sex)
+            return "das";
+        else return null;
     }
 }

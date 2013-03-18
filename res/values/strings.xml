@@ -75,6 +75,8 @@
 
 
     <string name="db_exported">Dictionary was exported to \n%s</string>
+    <string name="db_imported">Dictionary was imported from \n%s</string>
+    <string name="db_import_error">Error occurred while importing</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>

@@ -47,7 +47,7 @@ public class PrefActivity extends PreferenceActivity {
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
-                    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).show();
+                    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alert).show();
         }
 
 

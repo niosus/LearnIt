@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +47,22 @@ public class LearnFragment extends Fragment {
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        utils = new Utils();
+        Pair<String,String> langPair = utils.updateLanguages(this.getActivity());
+        Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+        fetchNewWords();
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser == true) {
+            dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
             playOpenAnimation();
             openButtons();
             v.findViewById(R.id.left_top_button).setVisibility(View.VISIBLE);
@@ -81,14 +94,13 @@ public class LearnFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
-        utils = new Utils();
-        fetchNewWords();
         return v;
     }
 
     private void fetchNewWords()
     {
         Random random = new Random();
+        Log.d(LOG_TAG,"DB+WORDS=" + DBHelper.DB_WORDS);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         String strDirection = sp.getString(getString(R.string.key_direction_of_trans),null);
         if (null!=strDirection)
@@ -314,8 +326,5 @@ public class LearnFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
-
     }
 }
