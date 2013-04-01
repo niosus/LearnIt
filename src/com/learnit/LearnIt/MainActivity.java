@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         Utils utils = new Utils();
-        Pair<String,String> pair = utils.updateLanguages(this);
+        Pair<String,String> pair = utils.getCurrentLanguages(this);
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
@@ -113,7 +113,7 @@ public class MainActivity extends FragmentActivity {
                 dbHelper.importDB();
                 dbHelper.close();
                 Utils utils = new Utils();
-                utils.updateLanguages(this);
+                utils.getCurrentLanguages(this);
                 dbHelper = new DBHelper(this,DBHelper.DB_WORDS);
                 return true;
             case R.id.menu_show_all_words:

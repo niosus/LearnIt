@@ -1,4 +1,4 @@
-package com.learnit.LearnIt.anim_utils;
+package com.learnit.LearnIt.utils;
 
 /**
  * Created with IntelliJ IDEA.

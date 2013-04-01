@@ -9,16 +9,12 @@ import android.util.Pair;
 import com.learnit.LearnIt.DBHelper;
 import com.learnit.LearnIt.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Created with IntelliJ IDEA.
- * User: igor
- * Date: 2/6/13
- * Time: 11:08 AM
- * To change this template use File | Settings | File Templates.
- */
 public class Utils {
     public static final String LOG_TAG = "my_logs";
     boolean isArticle( Context context, String article) {
@@ -34,7 +30,7 @@ public class Utils {
 
     private String cutAwayFirstWord(String input)
     {
-        return input.split(" ", 2)[1];
+        return input.split("\\s", 2)[1];
     }
 
 
@@ -69,7 +65,7 @@ public class Utils {
             return null;
     }
 
-    public Pair<String,String> updateLanguages(Context context)
+    public Pair<String,String> getCurrentLanguages(Context context)
     {
         String currentLanguage;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -92,12 +88,95 @@ public class Utils {
 
     public String getGermanArticle(String sex)
     {
-        if ("m"==sex)
+        if ("m".equals(sex))
             return "der";
-        else if ("f"==sex)
+        else if ("f".equals(sex))
             return "die";
-        else if ("n"==sex)
+        else if ("n".equals(sex))
             return "das";
         else return null;
+    }
+
+    public ArrayList<String> getHelpWordsFromDictOutput(String str)
+    {
+        ArrayList<String> tagValues = new ArrayList<String>();
+        if (str.contains("<dtrn>"))
+        {
+            String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
+            String selectDtrn = "<dtrn>(.+?)</dtrn>";
+            Pattern p;
+            Matcher matcher;
+            p = Pattern.compile(deleteCo);
+            matcher = p.matcher(str);
+            while (matcher.find()) {
+                str = matcher.replaceAll("");
+                matcher = p.matcher(str);
+            }
+            p = Pattern.compile(selectDtrn);
+            matcher = p.matcher(str);
+            while (matcher.find()) {
+                String[] temp = matcher.group(1).split("\\s*(,|;)\\s*");
+                for (String s:temp)
+                {
+                    tagValues.add(s);
+                }
+            }
+            return tagValues;
+        }
+        else
+        {
+            String[] temp = str.split("\\s*(\\n|,)\\s*");
+            for (String s:temp)
+            {
+                if (!s.equals(temp[0]))
+                {
+                    tagValues.add(s);
+                }
+            }
+            return tagValues;
+        }
+    }
+
+    public String getArticleFromDictOutput(String str, String languageFrom)
+    {
+        String selectSexI = "<i>(m|f|n)</i>";
+        String selectSexAbr = "<abr>(m|f|n)</abr>";
+        Pattern p;
+        Matcher matcher;
+        if (languageFrom.equals("de"))
+        {
+            p = Pattern.compile(selectSexI);
+            matcher = p.matcher(str);
+            String sexI = null;
+            String sexAbr = null;
+            while (matcher.find()) {
+                sexI = matcher.group(1);
+                Log.d(LOG_TAG,"sexI = " + sexI);
+                break;
+            }
+            p = Pattern.compile(selectSexAbr);
+            matcher = p.matcher(str);
+            while (matcher.find()) {
+                sexAbr = matcher.group(1);
+                Log.d(LOG_TAG,"sexAbr = " + sexAbr);
+            }
+            String article=null;
+            if (null!=sexI)
+                article=this.getGermanArticle(sexI);
+            else if (null!=sexAbr)
+                article=this.getGermanArticle(sexAbr);
+            if (null!=article)
+            {
+                return article;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -27,8 +27,6 @@ import com.learnit.LearnIt.utils.Utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AddWordFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
@@ -39,7 +37,7 @@ public class AddWordFragment extends Fragment {
     GetDictTask task;
     String selectedLanguageFrom;
     String selectedLanguageTo;
-    String currentLanguage;
+    String currentWord;
     Utils utils;
     boolean wordFocused=false;
     boolean transFocused=false;
@@ -73,7 +71,7 @@ public class AddWordFragment extends Fragment {
         wordFocused=true;
         transFocused=false;
         editWord.requestFocus();
-        Pair<String,String> langPair = utils.updateLanguages(this.getActivity());
+        Pair<String,String> langPair = utils.getCurrentLanguages(this.getActivity());
         selectedLanguageFrom=langPair.first;
         selectedLanguageTo=langPair.second;
         Log.d(LOG_TAG, "onResume Add words fragment: from - " + selectedLanguageFrom + " to " + selectedLanguageTo);
@@ -136,9 +134,12 @@ public class AddWordFragment extends Fragment {
         editWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus && editWord.getText().toString().length()>0){
-                    task = new GetDictTask();
-                    task.execute(ASYNC_TASK_FIND_WORD);
+                if(hasFocus){
+                    if (editWord.getText().toString().length()>0)
+                    {
+                        task = new GetDictTask();
+                        task.execute(ASYNC_TASK_FIND_WORD);
+                    }
                     wordFocused=true;
                     transFocused=false;
                 }
@@ -149,8 +150,11 @@ public class AddWordFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-                    task = new GetDictTask();
-                    task.execute(ASYNC_TASK_FIND_TRANSLATION);
+                    if (editWord.getText().toString().length()>0)
+                    {
+                        task = new GetDictTask();
+                        task.execute(ASYNC_TASK_FIND_TRANSLATION);
+                    }
                     wordFocused=false;
                     transFocused=true;
                 }
@@ -169,7 +173,7 @@ public class AddWordFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && !editable.toString().equals(""))
+                if (editable.toString()!=null && !editable.toString().equals("") && !editable.toString().equals(currentWord))
                 {
                     btn_clear_word.setVisibility(View.VISIBLE);
                     task = new GetDictTask();
@@ -234,6 +238,7 @@ public class AddWordFragment extends Fragment {
                         editTranslation.setText(queryWord + ", " + editTranslation.getText().toString());
                     }
                     editTranslation.setSelection(queryWord.length());
+                    editWord.setText(currentWord);
                 }
                 else if (wordFocused)
                 {
@@ -256,143 +261,48 @@ public class AddWordFragment extends Fragment {
         editWord.setText("");
     }
 
-
-    private  ArrayList<String> parseDictOutput(String str) {
-        Log.d(LOG_TAG,"input = " + str);
-        ArrayList<String> tagValues = new ArrayList<String>();
-        if (str.contains("<dtrn>"))
+    private void addArticleToCurrentWord(String article)
+    {
+        if (null!=article)
         {
-
-            String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
-            String selectDtrn = "<dtrn>(.+?)</dtrn>";
-            String selectSexI = "<i>(m|f|n)</i>";
-            String selectSexAbr = "<abr>(m|f|n)</abr>";
-            Pattern p;
-            Matcher matcher;
-            if (selectedLanguageFrom.equals("de"))
-            {
-                p = Pattern.compile(selectSexI);
-                matcher = p.matcher(str);
-                String sexI = null;
-                String sexAbr = null;
-                while (matcher.find()) {
-                    sexI = matcher.group(1);
-                    Log.d(LOG_TAG,"sexI = " + sexI);
-                    break;
-                }
-                p = Pattern.compile(selectSexAbr);
-                matcher = p.matcher(str);
-                while (matcher.find()) {
-                    sexAbr = matcher.group(1);
-                    Log.d(LOG_TAG,"sexAbr = " + sexAbr);
-                }
-                String article=null;
-                if (null!=sexI)
-                    article=utils.getGermanArticle(sexI);
-                else if (null!=sexAbr)
-                    article=utils.getGermanArticle(sexAbr);
-                if (null!=article)
-                {
-                    Log.d(LOG_TAG, article+" "+editWord.getText());
-                    editWord.setText(article+" "+editWord.getText());
-                }
-            }
-
-
-            p = Pattern.compile(deleteCo);
-            matcher = p.matcher(str);
-            while (matcher.find()) {
-                str = matcher.replaceAll("");
-                matcher = p.matcher(str);
-            }
-            p = Pattern.compile(selectDtrn);
-            matcher = p.matcher(str);
-            while (matcher.find()) {
-                String[] temp = matcher.group(1).split("\\s*(,|;)\\s*");
-                for (String s:temp)
-                {
-                    tagValues.add(s);
-                }
-            }
-            return tagValues;
+            Log.d(LOG_TAG, article+" "+editWord.getText().toString());
+            currentWord=article + " " + getRealWord(editWord.getText().toString());
         }
         else
         {
-            String[] temp = str.split("\\s*(\\n|,)\\s*");
-            for (String s:temp)
-            {
-                if (!s.equals(temp[0]))
-                {
-                    tagValues.add(s);
-                }
-            }
-            return tagValues;
+            currentWord = editWord.getText().toString();
         }
     }
 
-    private void showMessage(int exitCode)
+
+    private  ArrayList<String> parseDictOutput(String str) {
+        Log.d(LOG_TAG,"input = " + str);
+        ArrayList<String> tagValues = utils.getHelpWordsFromDictOutput(str);
+        String article = utils.getArticleFromDictOutput(str,selectedLanguageFrom);
+        addArticleToCurrentWord(article);
+        return tagValues;
+    }
+
+    public void updateFields(int exitCode)
     {
-        MyDialogFragment frag;
-        Bundle args;
-        switch (exitCode) {
-            case DBHelper.EXIT_CODE_OK:
-                cleanAddWordFields();
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_ADDED);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "word_added");
-                updateList(null);
-                editWord.setFocusableInTouchMode(true);
-                editWord.requestFocus();
-                break;
-            case DBHelper.EXIT_CODE_WORD_UPDATED:
-                cleanAddWordFields();
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "word_updated");
-                updateList(null);
-                editWord.setFocusableInTouchMode(true);
-                editWord.requestFocus();
-                break;
-            case DBHelper.EXIT_CODE_EMPTY_INPUT:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "word_empty");
-                updateList(null);
-                editWord.setFocusableInTouchMode(true);
-                editWord.requestFocus();
-                break;
+        switch (exitCode)
+        {
+            case  DBHelper.EXIT_CODE_OK:
             case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
-                cleanAddWordFields();
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "word_exists");
+            case DBHelper.EXIT_CODE_WORD_UPDATED:
                 updateList(null);
+                cleanAddWordFields();
                 editWord.setFocusableInTouchMode(true);
                 editWord.requestFocus();
-                break;
-            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "wrong_article");
-                break;
-            case DBHelper.EXIT_CODE_WRONG_FORMAT:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
-                frag.setArguments(args);
-                frag.show(getFragmentManager(), "wrong_format");
                 break;
         }
+    }
+
+    public void showMessage(int exitCode)
+    {
+        MyDialogFragment frag = new MyDialogFragment();
+        frag.showMessage(exitCode,getFragmentManager());
+        updateFields(exitCode);
     }
 
     private void addWordToDB(String word, String translation)
@@ -400,7 +310,7 @@ public class AddWordFragment extends Fragment {
         int exitCode;
         Log.d(LOG_TAG,"word = " + word + " trans = " + translation);
         exitCode = dbHelper.writeToDB(word, translation);
-        Log.d(LOG_TAG, "got right here exit code = " + exitCode);
+        Log.d(LOG_TAG, "add word to DB exit code = " + exitCode);
         showMessage(exitCode);
     }
 
@@ -490,7 +400,8 @@ public class AddWordFragment extends Fragment {
                 }
                 else
                 {
-                    return dbHelperDict.getHelpWords(editWord.getText().toString());
+                    String newWord = getRealWord(editWord.getText().toString());
+                    return dbHelperDict.getHelpWords(newWord);
                 }
 
             }

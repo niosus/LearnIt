@@ -47,7 +47,7 @@ public class DictFragment extends Fragment {
     {
         super.onResume();
         utils = new Utils();
-        Pair<String,String> langPair = utils.updateLanguages(this.getActivity());
+        Pair<String,String> langPair = utils.getCurrentLanguages(this.getActivity());
         Log.d(LOG_TAG, "onResume dict fragment: from - " + langPair.first + " to " + langPair.second);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
     }

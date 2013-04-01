@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 
 public class MyDialogFragment extends DialogFragment {
     public static final String ID_TAG = "id";
@@ -116,4 +117,42 @@ public class MyDialogFragment extends DialogFragment {
             }
         }
     };
+
+    public void showMessage(int exitCode, FragmentManager fragmentManager)
+    {
+        Bundle args;
+        args = new Bundle();
+        switch (exitCode) {
+            case DBHelper.EXIT_CODE_OK:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_ADDED);
+                this.setArguments(args);
+                this.show(fragmentManager, "word_added");
+                break;
+            case DBHelper.EXIT_CODE_WORD_UPDATED:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+                this.setArguments(args);
+                this.show(fragmentManager, "word_updated");
+                break;
+            case DBHelper.EXIT_CODE_EMPTY_INPUT:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
+                this.setArguments(args);
+                this.show(fragmentManager, "word_empty");
+                break;
+            case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
+                this.setArguments(args);
+                this.show(fragmentManager, "word_exists");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
+                this.setArguments(args);
+                this.show(fragmentManager, "wrong_article");
+                break;
+            case DBHelper.EXIT_CODE_WRONG_FORMAT:
+                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
+                this.setArguments(args);
+                this.show(fragmentManager, "wrong_format");
+                break;
+        }
+    }
 }
