@@ -175,6 +175,20 @@ public class DictToSQL extends FragmentActivity {
             protected List<String> doInBackground(Void... word) {
                 try {
                     getDict();
+                    if (null==dict)
+                    {
+                        List<String> list = new ArrayList<String>();
+                        list.add(getString(R.string.dict_sql_no_dict));
+                        Resources res = getResources();
+                        String[] language_codes = res.getStringArray(R.array.values_languages_from);
+                        String[] languages = res.getStringArray(R.array.entries_languages_from);
+                        String langFromFull =  languages[Arrays.binarySearch(language_codes,selectedLanguageFrom.toLowerCase())];
+                        String langToFull =  languages[Arrays.binarySearch(language_codes,currentLanguage.toLowerCase())];
+                        list.add(langFromFull+"-"+langToFull);
+                        list.add("");
+                        list.add("");
+                        return list;
+                    }
                     runOnUiThread(changeMessage);
                     int numOfWords = dict.getTotalWords();
                     String sql = "INSERT INTO "+DBHelper.DB_DICT_FROM+" ("+dbHelper.DICT_OFFSET_COLUMN_NAME +", "+dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME +", "+dbHelper.WORD_COLUMN_NAME+")  VALUES (?, ?, ?)";
@@ -211,17 +225,7 @@ public class DictToSQL extends FragmentActivity {
                 catch (Exception e)
                 {
                     Log.e(LOG_TAG, "error" + e.getMessage());
-                    List<String> list = new ArrayList<String>();
-                    list.add(getString(R.string.dict_sql_no_dict));
-                    Resources res = getResources();
-                    String[] language_codes = res.getStringArray(R.array.values_languages_from);
-                    String[] languages = res.getStringArray(R.array.entries_languages_from);
-                    String langFromFull =  languages[Arrays.binarySearch(language_codes,selectedLanguageFrom.toLowerCase())];
-                    String langToFull =  languages[Arrays.binarySearch(language_codes,currentLanguage.toLowerCase())];
-                    list.add(langFromFull+"-"+langToFull);
-                    list.add("");
-                    list.add("");
-                    return list;
+                    return null;
                 }
             }
 

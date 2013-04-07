@@ -67,14 +67,6 @@ public class DictFragment extends Fragment {
                 .setAdapter(adapter);
     }
 
-//    public String getTranslation(String word) {
-//        if (word != null && !word.isEmpty()) {
-//            Log.d(LOG_TAG, String.format("search word-%s", word));
-//            return dbHelper.getTranslation(word);
-//        }
-//        return null;
-//    }
-
 
 
     public void showDialog(String queryWord, String translation, int dialogType)
@@ -98,11 +90,6 @@ public class DictFragment extends Fragment {
         return prefix.contains(word.toLowerCase());
     }
 
-    private String cutAwayFirstWord(String input)
-    {
-        return input.split(" ", 2)[1];
-    }
-
 
     private String stripFromArticle(String str)
     {
@@ -116,11 +103,11 @@ public class DictFragment extends Fragment {
         {
             if (isArticle(tempArray[0]))
             {
-                return cutAwayFirstWord(str);
+                return utils.cutAwayFirstWord(str);
             }
             else if (isPrefix(tempArray[0]))
             {
-                return cutAwayFirstWord(str);
+                return utils.cutAwayFirstWord(str);
             }
             return str;
         }

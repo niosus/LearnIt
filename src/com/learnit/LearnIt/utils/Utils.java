@@ -28,7 +28,7 @@ public class Utils {
         return prefix.contains(word.toLowerCase());
     }
 
-    private String cutAwayFirstWord(String input)
+    public String cutAwayFirstWord(String input)
     {
         return input.split("\\s", 2)[1];
     }

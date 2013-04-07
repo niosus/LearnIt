@@ -27,7 +27,6 @@ import java.util.Random;
 
 public class MyAlarmService extends Service {
     private final String NONE_STR = "-1";
-    private final int NONE = -1;
     public static final int idModificator = 1552235; // some number
     public static DBHelper dbHelper;
     private int numOfNotif = 5;
@@ -94,7 +93,7 @@ public class MyAlarmService extends Service {
             Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).word);
             CreateNotification(i, randWords.get(i - 1), isNoun);
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
