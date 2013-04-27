@@ -123,9 +123,8 @@ public class DBHelper extends SQLiteOpenHelper{
         return true;
     }
 
-    public static void updateDBName(Context context)
+    public static void updateDBName(Context context, SharedPreferences sp)
     {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from),"NONE");
         String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to),"NONE");
         Resources res = context.getResources();

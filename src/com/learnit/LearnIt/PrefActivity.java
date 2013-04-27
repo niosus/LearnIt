@@ -188,6 +188,7 @@ public class PrefActivity extends PreferenceActivity {
         public void onPause()
         {
             super.onPause();
+            Log.d(LOG_TAG,"number of Words in Prefs = " + lstNumOfWords.getValue());
             updateNotificationTimer();
         }
 
@@ -215,12 +216,12 @@ public class PrefActivity extends PreferenceActivity {
 
         public void startRepeatingTimer() {
             Alarm alarm = new Alarm();
-            alarm.SetAlarm(this.getActivity());
+            alarm.SetAlarm(this.getActivity().getApplicationContext());
         }
 
         public void cancelRepeatingTimer(){
             Alarm alarm = new Alarm();
-            alarm.CancelAlarm(this.getActivity());
+            alarm.CancelAlarm(this.getActivity().getApplicationContext());
         }
 
 

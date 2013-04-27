@@ -22,6 +22,9 @@ public class NotificationBuilder {
     private final int LEARN_ARTICLES = 2;
     private final int LEARN_MIXED = 3;
 
+    String currentIds = "";
+    SharedPreferences sp;
+
 
 
     public static final int idModificator = 1552235; // some number
@@ -33,10 +36,9 @@ public class NotificationBuilder {
         return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
 
-    private int setWayToLearn(Context context)
+    private int setWayToLearn(Context context, SharedPreferences sp)
     {
         Random rand = new Random();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         int wayToLearn = Integer.parseInt(sp.getString(context.getString(R.string.key_way_to_learn), "3"));
         if (wayToLearn==LEARN_MIXED)
         {
@@ -45,28 +47,49 @@ public class NotificationBuilder {
         return wayToLearn;
     }
 
-    private int setNumberOfWords(Context context)
+    private int setNumberOfWords(Context context, SharedPreferences sp)
     {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return Integer.parseInt(sp.getString(context.getString(R.string.key_num_of_words), "5"));
     }
 
-    private int setDirectionOfTranslation(Context context)
+    private int setDirectionOfTranslation(Context context, SharedPreferences sp)
     {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return Integer.parseInt(sp.getString(context.getString(R.string.key_direction_of_trans), "3"));
     }
 
+    private void deleteOldNotifications(Context context, String old_ids)
+    {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Log.d(LOG_TAG, "old ids = " + old_ids);
+        if (null!=old_ids)
+        {
+            String[] ids = old_ids.split(" ");
+            for (String id: ids)
+            {
+                if (null!=id && !id.equals(""))
+                {
+                    Log.d(LOG_TAG,"trying to delete notif with id " + Integer.parseInt(id));
+                    mNotificationManager.cancel(Integer.parseInt(id));
+                }
+            }
+        }
+    }
+
     public NotificationBuilder(Context context) {
-        DBHelper.updateDBName(context);
-        int wayToLearn = setWayToLearn(context);
-        int numberOfWords = setNumberOfWords(context);
+        Log.d(LOG_TAG,"context class = " + context.getClass().getName());
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String old_ids = sp.getString("current_ids", "");
+        deleteOldNotifications(context, old_ids);
+        DBHelper.updateDBName(context, sp);
+        int wayToLearn = setWayToLearn(context, sp);
+        int numberOfWords = setNumberOfWords(context, sp);
+        Log.d(LOG_TAG, "number of notif = " + numberOfWords);
         int isNoun;
         int directionOfTrans;
         switch (wayToLearn)
         {
             case LEARN_TRANSLATIONS:
-                directionOfTrans = setDirectionOfTranslation(context);
+                directionOfTrans = setDirectionOfTranslation(context, sp);
                 isNoun=Constants.MIXED;
                 break;
             case LEARN_ARTICLES:
@@ -75,7 +98,7 @@ public class NotificationBuilder {
                 break;
             default:
                 isNoun=Constants.MIXED;
-                directionOfTrans = setDirectionOfTranslation(context);
+                directionOfTrans = setDirectionOfTranslation(context, sp);
         }
         ArrayList<ArticleWordIdStruct> randWords = getRandWordsFromDB(isNoun, numberOfWords, context);
         for (int i = randWords.size(); i>0; --i)
@@ -83,6 +106,9 @@ public class NotificationBuilder {
             Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).word);
             CreateNotification(i, randWords.get(i - 1), wayToLearn, directionOfTrans, context);
         }
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("current_ids", currentIds);
+        editor.commit();
     }
 
     private boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, int wayToLearn, int mDirectionOfTrans, Context context) {
@@ -107,6 +133,9 @@ public class NotificationBuilder {
         resultIntent.putExtra("article", struct.article);
         resultIntent.putExtra("translation", struct.translation);
         resultIntent.putExtra("prefix", struct.prefix);
+
+        currentIds = currentIds + mId + " ";
+
         switch (mDirectionOfTrans)
         {
             case Constants.MIXED:
