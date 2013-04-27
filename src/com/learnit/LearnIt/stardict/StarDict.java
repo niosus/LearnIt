@@ -22,8 +22,6 @@ package com.learnit.LearnIt.stardict;
 
 import android.util.Log;
 import android.util.Pair;
-import com.learnit.LearnIt.Word;
-import com.learnit.LearnIt.WordEntry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,8 +81,6 @@ public class StarDict {
                     idxFile = new IdxFile(path, ifoFile.getLongWordCount(), ifoFile.getLongIdxFileSize());
                 } else if (extension.equals("dict")) {
                     dictFile = new DictFile(path);
-                } else {
-                    continue;
                 }
             }
         }

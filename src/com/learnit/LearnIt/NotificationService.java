@@ -3,10 +3,8 @@ package com.learnit.LearnIt;
 import android.app.Service;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.widget.Toast;
 
 public class NotificationService extends Service {
     public String TAG = "wake_lock_tag";
@@ -28,12 +26,9 @@ public class NotificationService extends Service {
      * probably won't, either.
      */
     private void handleIntent(Intent intent) {
-        // obtain the wake lock
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
         mWakeLock.acquire();
-
-        // check the global background data setting
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (!cm.getBackgroundDataSetting()) {
             stopSelf();

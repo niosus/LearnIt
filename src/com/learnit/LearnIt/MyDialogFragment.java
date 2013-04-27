@@ -32,14 +32,14 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_ARTICLE = 6;
     public static final int DIALOG_WRONG_GUESS = 7;
     public static final int DIALOG_WORD_DELETED = 8;
-    public static final int DIALOG_EDIT_WORD = 9;
+//    public static final int DIALOG_EDIT_WORD = 9;
     public static final int DIALOG_PROGRESS = 10;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int id = getArguments().getInt(ID_TAG);
-        String word = "";
+        String word;
         switch (id)
         {
             case DIALOG_SHOW_WORD:
@@ -105,7 +105,6 @@ public class MyDialogFragment extends DialogFragment {
     DialogInterface.OnCancelListener myOnCancelListener = new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
     };
 

@@ -20,8 +20,6 @@
 
 package com.learnit.LearnIt.stardict;
 
-import com.learnit.LearnIt.WordEntry;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;

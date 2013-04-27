@@ -136,10 +136,6 @@ public class DictToSQL extends FragmentActivity {
             {
                 dialog.setMessage(text);
             }
-            public void setMax(int max)
-            {
-                dialog.setMax(max);
-            }
             public void setIndeterminate(boolean bool)
             {
                 dialog.setIndeterminate(bool);

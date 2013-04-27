@@ -114,7 +114,6 @@ public class MainActivity extends FragmentActivity {
                 dbHelper.close();
                 Utils utils = new Utils();
                 utils.getCurrentLanguages(this);
-                dbHelper = new DBHelper(this,DBHelper.DB_WORDS);
                 return true;
             case R.id.menu_show_all_words:
                 Log.d(LOG_TAG, "show all words");

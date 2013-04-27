@@ -12,16 +12,13 @@ import android.widget.ImageButton;
 import com.learnit.LearnIt.utils.Utils;
 
 public class EditWord extends FragmentActivity {
-    public static final String ID_TAG = "id";
     public static final String WORD_TAG = "word";
     public final String LOG_TAG = "my_logs";
-    public static final int DIALOG_EDIT_WORD = 9;
     EditText edtWord;
     EditText edtTrans;
     String oldWord;
     String oldStrippedWord;
     Utils utils;
-    int currentId=-1;
 
     private ImageButton btnClearWord;
     private ImageButton btnClearTrans;
@@ -65,7 +62,7 @@ public class EditWord extends FragmentActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && editable.toString()!="")
+                if (editable.toString()!=null && !editable.toString().equals(""))
                 {
                     btnClearWord.setVisibility(View.VISIBLE);
                 }
@@ -86,7 +83,7 @@ public class EditWord extends FragmentActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && editable.toString()!="")
+                if (editable.toString()!=null && !editable.toString().equals(""))
                 {
                     btnClearTrans.setVisibility(View.VISIBLE);
                 }

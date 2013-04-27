@@ -16,11 +16,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -212,7 +210,7 @@ public class PrefActivity extends PreferenceActivity {
                 boolean notif_enabled = sp.getBoolean(getString(R.string.key_pref_notif_active), false);
                 if (notif_enabled) {
                     startRepeatingTimer();
-                } else if (!notif_enabled) {
+                } else {
                     cancelRepeatingTimer();
                 }
             }

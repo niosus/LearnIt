@@ -49,7 +49,7 @@ public class HomeworkArticleActivity extends FragmentActivity{
     {
         Resources res = getResources();
         String articles = res.getString(R.string.articles_de);
-        Log.d(LOG_TAG,"articles are " + articles.toString());
+        Log.d(LOG_TAG,"articles are " + articles);
         Random rand = new Random();
         String articleArray[] = articles.split(" ");
         int length = articleArray.length;

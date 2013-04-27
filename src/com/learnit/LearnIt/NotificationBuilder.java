@@ -18,8 +18,6 @@ import java.util.Random;
 public class NotificationBuilder {
     public static final String LOG_TAG = "my_logs";
 
-    private static Context mContext;
-
     private static final int LEARN_TRANSLATIONS = 1;
     private static final int LEARN_ARTICLES = 2;
     private static final int LEARN_MIXED = 3;
@@ -77,9 +75,6 @@ public class NotificationBuilder {
         }
     }
 
-    public NotificationBuilder(Context context) {
-        mContext=context;
-    }
 
     public static void show(Context context)
     {
@@ -90,7 +85,7 @@ public class NotificationBuilder {
         DBHelper.updateDBName(context, sp);
         int wayToLearn = setWayToLearn(context, sp);
         int numberOfWords = setNumberOfWords(context, sp);
-        Log.d(LOG_TAG, "number of notif = " + numberOfWords);
+        Log.d(LOG_TAG, "number of notifications = " + numberOfWords);
         int isNoun;
         int directionOfTrans;
         switch (wayToLearn)

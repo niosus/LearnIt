@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -62,17 +61,9 @@ public class DBHelper extends SQLiteOpenHelper{
     public static final int WEIGHT_THREE_WRONG=10000;
 
     public static final int WEIGHT_CORRECT_BUTTON=10;
-    public static final int WEIGHT_NO_MORE_LEARNING=0;
-    public static final int WEIGHT_CORRECT_INPUT=1;
+//    public static final int WEIGHT_NO_MORE_LEARNING=0;
+//    public static final int WEIGHT_CORRECT_INPUT=1;
 
-    public static final int[] WEIGHTS = {
-            WEIGHT_NO_MORE_LEARNING,
-            WEIGHT_CORRECT_INPUT,
-            WEIGHT_CORRECT_BUTTON,
-            WEIGHT_NEW,
-            WEIGHT_ONE_WRONG,
-            WEIGHT_TWO_WRONG,
-            WEIGHT_THREE_WRONG};
 
     long maxId = 0;
 
@@ -228,12 +219,12 @@ public class DBHelper extends SQLiteOpenHelper{
                             .split(", "));
                     String tempTranslation = trans;
                     boolean anyNewValue = false;
-                    for (int i = 0; i < inputTransList.size(); ++i) {
-                        if (transInDBList.contains(inputTransList.get(i))) {
+                    for (String anInputTransList : inputTransList) {
+                        if (transInDBList.contains(anInputTransList)) {
                             Log.d(LOG_TAG, "translation already in table... "
-                                    + inputTransList.get(i));
+                                    + anInputTransList);
                         } else {
-                            tempTranslation += (", " + inputTransList.get(i));
+                            tempTranslation += (", " + anInputTransList);
                             anyNewValue = true;
                         }
                     }
@@ -524,7 +515,7 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     public List<String> getHelpWords(String word) {
-        if (currentDBName!=DB_DICT_FROM)
+        if (!currentDBName.equals(DB_DICT_FROM))
         {
             return null;
         }
@@ -550,7 +541,7 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     public Pair<Long,Long> getDictOffsetAndSize(String word) {
-        if (currentDBName!=DB_DICT_FROM)
+        if (!currentDBName.equals(DB_DICT_FROM))
         {
             return null;
         }

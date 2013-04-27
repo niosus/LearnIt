@@ -25,20 +25,12 @@ public class TimePreference extends DialogPreference {
     private Calendar calendar;
     private TimePicker picker = null;
 
-    public TimePreference(Context ctxt) {
-        this(ctxt, null);
-    }
-
-    public TimePreference(Context ctxt, AttributeSet attrs) {
-//        this(ctxt, attrs, 0);
-        super(ctxt,attrs);
+    public TimePreference(Context context, AttributeSet attributeSet) {
+//        this(context, attributeSet, 0);
+        super(context,attributeSet);
         setPositiveButtonText(R.string.ok);
         setNegativeButtonText(R.string.cancel);
         calendar = new GregorianCalendar();
-    }
-
-    public TimePreference(Context ctxt, AttributeSet attrs, int defStyle) {
-        super(ctxt, attrs, defStyle);
     }
 
     @Override

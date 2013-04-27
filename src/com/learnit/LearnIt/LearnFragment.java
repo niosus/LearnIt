@@ -61,7 +61,7 @@ public class LearnFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (isVisibleToUser == true) {
+        if (isVisibleToUser) {
             dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
             playOpenAnimation();
             openButtons();
@@ -72,7 +72,7 @@ public class LearnFragment extends Fragment {
             v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
             MainActivity.hideSoftKeyboard(this.getActivity());
         }
-        else if (isVisibleToUser == false) {
+        else {
             if (null!=v)
             {
                 v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
@@ -225,7 +225,6 @@ public class LearnFragment extends Fragment {
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
 
             @Override
@@ -242,7 +241,6 @@ public class LearnFragment extends Fragment {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
         });
     }

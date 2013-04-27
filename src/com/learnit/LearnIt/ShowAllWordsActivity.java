@@ -88,8 +88,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 if (null!=items)
                 {
                     SimpleAdapter adapter;
-                    List<Map<String, String>> strings = items;
-                    adapter = new SimpleAdapter(this.getActivity(), strings,
+                    adapter = new SimpleAdapter(this.getActivity(), items,
                             android.R.layout.simple_list_item_2,
                             new String[] {"word", "translation" },
                             new int[] {android.R.id.text1, android.R.id.text2 });
@@ -146,8 +145,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
             @Override
             protected List<Map<String, String>> doInBackground(Void... word) {
                 try {
-                    List<Map<String, String>> items = dbHelper.getWords("");
-                    return items;
+                    return dbHelper.getWords("");
                 }
                 catch (Exception e)
                 {

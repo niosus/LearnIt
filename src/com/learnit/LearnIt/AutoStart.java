@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,7 +15,7 @@ public class AutoStart extends BroadcastReceiver
 {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(Constants.LOG_TAG, "context setalarm = " + context.getClass().getName());
+        Log.d(Constants.LOG_TAG, "context set alarm = " + context.getClass().getName());
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String frequency_id = sp.getString(context.getApplicationContext().getString(R.string.key_notification_frequency), "-1");
         long frequency = Utils.getFreqFromId(frequency_id);
