@@ -16,15 +16,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import com.learnit.LearnIt.utils.Utils;
+
 public class PrefActivity extends PreferenceActivity {
     protected static boolean m_languages_changed = false;
     String selectedLanguageFrom;
     String selectedLanguageTo;
+    Utils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,14 +219,28 @@ public class PrefActivity extends PreferenceActivity {
         }
 
         public void startRepeatingTimer() {
-            Alarm alarm = new Alarm();
-            alarm.SetAlarm(this.getActivity().getApplicationContext());
+            Context context = this.getActivity();
+            Log.d(LOG_TAG,"context setalarm = " + context.getClass().getName());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
+            long frequency = Utils.getFreqFromId(frequency_id);
+            AlarmManager am=(AlarmManager)context.getSystemService(ALARM_SERVICE);
+            Intent i = new Intent(context, NotificationService.class);
+            PendingIntent pi = PendingIntent.getService(this.getActivity(), 0, i, 0);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
+            Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
         }
 
         public void cancelRepeatingTimer(){
-            Alarm alarm = new Alarm();
-            alarm.CancelAlarm(this.getActivity().getApplicationContext());
+            Context context = this.getActivity();
+            Intent intent = new Intent(context, NotificationService.class);
+            PendingIntent sender = PendingIntent.getService(context, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(sender);
+            Toast.makeText(context, context.getString(R.string.toast_notif_stop_text), Toast.LENGTH_LONG).show();
         }
+
+
 
 
 

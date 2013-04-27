@@ -1,5 +1,6 @@
 package com.learnit.LearnIt.utils;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -177,6 +178,24 @@ public class Utils {
         else
         {
             return null;
+        }
+    }
+
+    public static long getFreqFromId(String id) {
+        int idInt = Integer.parseInt(id);
+        switch (idInt) {
+            case 1:
+                return AlarmManager.INTERVAL_HOUR;
+            case 2:
+                return 2 * AlarmManager.INTERVAL_HOUR;
+            case 3:
+                return 4 * AlarmManager.INTERVAL_HOUR;
+            case 4:
+                return AlarmManager.INTERVAL_HALF_DAY;
+            case 5:
+                return AlarmManager.INTERVAL_DAY;
+            default:
+                return -1;
         }
     }
 }

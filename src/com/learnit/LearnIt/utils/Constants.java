@@ -8,6 +8,8 @@ package com.learnit.LearnIt.utils;
  * To change this template use File | Settings | File Templates.
  */
 public class Constants {
+    public static final String LOG_TAG = "my_logs";
+
     public final static int FROM_MY_TO_FOREIGN=1;
     public final static int FROM_FOREIGN_TO_MY=2;
     public final static int MIXED=3;
