@@ -293,6 +293,7 @@ public class DBHelper extends SQLiteOpenHelper{
     public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, int noun) {
         db = this.getReadableDatabase();
         ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
+        Log.d(LOG_TAG,"trying to get " + numOfWords + " random words != '" + ommitWord + "' and isnoun = " +noun);
         Cursor c;
         switch (noun)
         {

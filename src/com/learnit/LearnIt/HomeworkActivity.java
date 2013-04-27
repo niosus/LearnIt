@@ -69,6 +69,7 @@ public class HomeworkActivity extends FragmentActivity{
             isNoun=Constants.ONLY_NOUNS;
         }
         ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length,queryWord,isNoun);
+        Log.d(Constants.LOG_TAG,"number of words for buttons = " + randomWords.size());
         switch (fromLearnToKnow)
         {
             case Constants.FROM_FOREIGN_TO_MY:

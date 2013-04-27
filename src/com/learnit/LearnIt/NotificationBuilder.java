@@ -18,25 +18,27 @@ import java.util.Random;
 public class NotificationBuilder {
     public static final String LOG_TAG = "my_logs";
 
-    private final int LEARN_TRANSLATIONS = 1;
-    private final int LEARN_ARTICLES = 2;
-    private final int LEARN_MIXED = 3;
+    private static Context mContext;
 
-    String currentIds = "";
-    SharedPreferences sp;
+    private static final int LEARN_TRANSLATIONS = 1;
+    private static final int LEARN_ARTICLES = 2;
+    private static final int LEARN_MIXED = 3;
+
+    static String currentIds = "";
+    static SharedPreferences sp;
 
 
 
     public static final int idModificator = 1552235; // some number
 
 
-    private ArrayList<ArticleWordIdStruct> getRandWordsFromDB(int isNoun, int numOfNotif, Context context)
+    private static ArrayList<ArticleWordIdStruct> getRandWordsFromDB(int isNoun, int numOfNotif, Context context)
     {
         DBHelper dbHelper = new DBHelper(context, DBHelper.DB_WORDS);
         return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
 
-    private int setWayToLearn(Context context, SharedPreferences sp)
+    private static int setWayToLearn(Context context, SharedPreferences sp)
     {
         Random rand = new Random();
         int wayToLearn = Integer.parseInt(sp.getString(context.getString(R.string.key_way_to_learn), "3"));
@@ -47,17 +49,17 @@ public class NotificationBuilder {
         return wayToLearn;
     }
 
-    private int setNumberOfWords(Context context, SharedPreferences sp)
+    private static int setNumberOfWords(Context context, SharedPreferences sp)
     {
         return Integer.parseInt(sp.getString(context.getString(R.string.key_num_of_words), "5"));
     }
 
-    private int setDirectionOfTranslation(Context context, SharedPreferences sp)
+    private static int setDirectionOfTranslation(Context context, SharedPreferences sp)
     {
         return Integer.parseInt(sp.getString(context.getString(R.string.key_direction_of_trans), "3"));
     }
 
-    private void deleteOldNotifications(Context context, String old_ids)
+    private static void deleteOldNotifications(Context context, String old_ids)
     {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Log.d(LOG_TAG, "old ids = " + old_ids);
@@ -76,6 +78,11 @@ public class NotificationBuilder {
     }
 
     public NotificationBuilder(Context context) {
+        mContext=context;
+    }
+
+    public static void show(Context context)
+    {
         Log.d(LOG_TAG,"context class = " + context.getClass().getName());
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         String old_ids = sp.getString("current_ids", "");
@@ -111,7 +118,7 @@ public class NotificationBuilder {
         editor.commit();
     }
 
-    private boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, int wayToLearn, int mDirectionOfTrans, Context context) {
+    private static boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, int wayToLearn, int mDirectionOfTrans, Context context) {
         Log.d(LOG_TAG,"starting to create notification");
         NotificationCompat.Builder mBuilder = null;
         int currentDirection;

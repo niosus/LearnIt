@@ -17,14 +17,14 @@ public class AutoStart extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(Constants.LOG_TAG, "context setalarm = " + context.getClass().getName());
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String frequency_id = sp.getString(context.getApplicationContext().getString(R.string.key_notification_frequency), "-1");
         long frequency = Utils.getFreqFromId(frequency_id);
-        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(context, NotificationService.class);
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
+        AlarmManager am=(AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent i = new Intent(context.getApplicationContext(), NotificationService.class);
+        PendingIntent pi = PendingIntent.getService(context.getApplicationContext(), 0, i, 0);
         am.cancel(pi);
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
-        Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
+        Toast.makeText(context.getApplicationContext(), context.getApplicationContext().getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
 }
