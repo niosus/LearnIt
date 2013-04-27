@@ -2,9 +2,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
 
 package com.learnit.LearnIt;
@@ -17,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -55,7 +53,7 @@ public class DictToSQL extends FragmentActivity {
         String selectedLanguageFrom;
         String selectedLanguageTo;
         String currentLanguage;
-        TextView tv_title, tv_dict_name, tv_dict_info, tv_loaded;
+        TextView tv_title, tv_dict_name, tv_dict_info, tv_loaded, tv_countdown;
         private final String LOG_TAG = "my_logs";
         MyTask mt;
         @Override
@@ -71,6 +69,7 @@ public class DictToSQL extends FragmentActivity {
             tv_dict_name = (TextView) v.findViewById(R.id.text_dictionary_name);
             tv_dict_info = (TextView) v.findViewById(R.id.text_dictionary_info);
             tv_loaded = (TextView) v.findViewById(R.id.text_loaded);
+            tv_countdown = (TextView) v.findViewById(R.id.text_countdown);
             return v;
         }
 
@@ -145,6 +144,11 @@ public class DictToSQL extends FragmentActivity {
             {
                 dialog.setIndeterminate(bool);
             }
+        }
+
+        protected void finishActivity()
+        {
+            getActivity().finish();
         }
 
         class MyTask extends AsyncTask<Void, Integer, List<String>> {
@@ -247,6 +251,16 @@ public class DictToSQL extends FragmentActivity {
                 tv_loaded.setText(item.get(3));
                 DBHelper.DB_WORDS="myDB"+selectedLanguageFrom+currentLanguage;
                 dialog.dismiss();
+                new CountDownTimer(10000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        tv_countdown.setText(String.format(getString(R.string.dict_sql_closing_window), millisUntilFinished / 1000));
+                    }
+
+                    public void onFinish() {
+                        finishActivity();
+                    }
+                }.start();
             }
         }
     }

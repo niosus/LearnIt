@@ -441,8 +441,6 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
 
-
-
     public String getTranslation(String word) {
         word=word.toLowerCase();
         db = this.getReadableDatabase();
