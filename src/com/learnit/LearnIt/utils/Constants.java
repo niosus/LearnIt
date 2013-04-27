@@ -11,4 +11,7 @@ public class Constants {
     public final static int FROM_MY_TO_FOREIGN=1;
     public final static int FROM_FOREIGN_TO_MY=2;
     public final static int MIXED=3;
+
+    public final static int ONLY_NOUNS = 1;
+    public final static int NOT_NOUNS = 2;
 }

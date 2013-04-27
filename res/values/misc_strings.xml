@@ -3,11 +3,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-
 <resources>
     <string name="key_pref_notif_active">notification_enabled</string>
     <string name="key_notification_frequency">notification_frequency</string>
@@ -16,7 +11,7 @@
     <string name="key_direction_of_trans">direction_of_trans</string>
     <string name="key_language_from">language_to_learn</string>
     <string name="key_language_to">language_you_know</string>
-    <string name="version">0.5.002</string>
+    <string name="version">0.5.003</string>
 
     <string-array name="values_freq">
         <item>1</item>

@@ -35,6 +35,7 @@ public class HomeworkActivity extends FragmentActivity{
     String article = null;
     String prefix = null;
     String translation = null;
+    int isNoun = 3;
     Utils utils;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
@@ -51,6 +52,7 @@ public class HomeworkActivity extends FragmentActivity{
         queryWord = intent.getStringExtra("word");
         notificationId = intent.getIntExtra("id", -1);
         fromLearnToKnow = intent.getIntExtra("direction", -1);
+        isNoun = intent.getIntExtra("is_noun", 3);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
                 + notificationId);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
@@ -58,8 +60,15 @@ public class HomeworkActivity extends FragmentActivity{
 
     private void setBtnTexts(int correctId)
     {
-
-        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length,queryWord,false);
+        if (null==article)
+        {
+            isNoun=Constants.NOT_NOUNS;
+        }
+        else
+        {
+            isNoun=Constants.ONLY_NOUNS;
+        }
+        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length,queryWord,isNoun);
         switch (fromLearnToKnow)
         {
             case Constants.FROM_FOREIGN_TO_MY:

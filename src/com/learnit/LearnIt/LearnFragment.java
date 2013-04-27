@@ -111,7 +111,8 @@ public class LearnFragment extends Fragment {
                 direction = random.nextInt(2)+1;
             }
         }
-        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length,null,false);
+        int nouns = random.nextInt(2)+1;
+        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length,null,nouns);
         int correctIdx=0;
         if (words.size()==0)
         {

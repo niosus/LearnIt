@@ -11,6 +11,7 @@ package com.learnit.LearnIt;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 public class PrefActivity extends PreferenceActivity {
     protected static boolean m_languages_changed = false;
@@ -142,6 +144,7 @@ public class PrefActivity extends PreferenceActivity {
 
             timePreference = (TimePreference) findPreference("time_to_start");     //TODO: change to R
 
+
             updateAllSummaries();
         }
 
@@ -202,69 +205,24 @@ public class PrefActivity extends PreferenceActivity {
             if (changed)
             {
                 boolean notif_enabled = sp.getBoolean(getString(R.string.key_pref_notif_active), false);
-                String frequency_id = sp.getString(getString(R.string.key_notification_frequency), "-1");
                 if (notif_enabled) {
-                    startNotificationTimer(getFreqFromId(frequency_id));
+                    startRepeatingTimer();
                 } else if (!notif_enabled) {
-                    stopTimer();
+                    cancelRepeatingTimer();
                 }
             }
         }
 
-        public void startNotificationTimer(long notif_freq) {
-
-            Intent myIntent = new Intent(this.getActivity(),
-                    MyAlarmService.class);
-
-            PendingIntent pendingIntent = PendingIntent.getService(this.getActivity(), 0,
-                    myIntent, 0);
-
-            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-            Long time = sp.getLong("time_to_start", 0);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                    time, notif_freq, pendingIntent);
-            if (updated)
-            {
-                Toast.makeText(this.getActivity(), R.string.toast_notif_update_text, Toast.LENGTH_LONG)
-                    .show();
-            }
-            else
-            {
-                Toast.makeText(this.getActivity(), R.string.toast_notif_start_text, Toast.LENGTH_LONG)
-                        .show();
-            }
+        public void startRepeatingTimer() {
+            Alarm alarm = new Alarm();
+            alarm.SetAlarm(this.getActivity());
         }
 
-        private void stopTimer() {
-            Intent myIntent = new Intent(this.getActivity(), MyAlarmService.class);
-
-            PendingIntent pendingIntent = PendingIntent.getService(this.getActivity(), 0,
-                    myIntent, 0);
-            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-            alarmManager.cancel(pendingIntent);
-            pendingIntent.cancel();
-            Toast.makeText(this.getActivity(), R.string.toast_notif_stop_text, Toast.LENGTH_LONG)
-                    .show();
+        public void cancelRepeatingTimer(){
+            Alarm alarm = new Alarm();
+            alarm.CancelAlarm(this.getActivity());
         }
 
-        protected long getFreqFromId(String id) {
-            int idInt = Integer.parseInt(id);
-            switch (idInt) {
-                case 1:
-                    return AlarmManager.INTERVAL_HOUR;
-                case 2:
-                    return 2 * AlarmManager.INTERVAL_HOUR;
-                case 3:
-                    return 4 * AlarmManager.INTERVAL_HOUR;
-                case 4:
-                    return AlarmManager.INTERVAL_HALF_DAY;
-                case 5:
-                    return AlarmManager.INTERVAL_DAY;
-                default:
-                    return -1;
-            }
-        }
 
 
         OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {

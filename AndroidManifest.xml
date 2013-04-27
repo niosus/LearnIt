@@ -9,6 +9,9 @@
           android:versionCode="7"
           android:versionName="@string/version">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <uses-sdk
             android:minSdkVersion="14"
@@ -21,12 +24,14 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
 
-        <receiver android:name=".BootSetter" >
+        <receiver android:name=".AutoStart">
             <intent-filter>
-                <action
-                        android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver  android:process=":remote" android:name="Alarm" />
+
         <activity
                 android:name="com.learnit.LearnIt.MainActivity"
                 android:label="@string/app_name"
@@ -52,8 +57,6 @@
                 android:multiprocess="true"
                 android:theme="@android:style/Theme.Holo.DialogWhenLarge">
         </activity>
-
-        <service android:name="com.learnit.LearnIt.MyAlarmService"/>
 
         <activity
                 android:name=".PrefActivity"

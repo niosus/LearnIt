@@ -11,14 +11,18 @@ package com.learnit.LearnIt;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.widget.Toast;
+import com.learnit.LearnIt.utils.Constants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,8 +119,29 @@ public class DBHelper extends SQLiteOpenHelper{
         int id = this.getId(word);
         db.delete(currentDBName,WORD_COLUMN_NAME + "='" + word + "'", null);
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(id + MyAlarmService.idModificator);
+        mNotificationManager.cancel(id + NotificationBuilder.idModificator);
         return true;
+    }
+
+    public static void updateDBName(Context context)
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from),"NONE");
+        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to),"NONE");
+        Resources res = context.getResources();
+        String[] languages = res.getStringArray(R.array.values_languages_from);
+        String allLanguages = Arrays.toString(languages);
+        String currentLanguage;
+        if (allLanguages.contains(selectedLanguageTo))
+        {
+            currentLanguage = selectedLanguageTo;
+        }
+        else
+        {
+            currentLanguage = Locale.getDefault().getLanguage();
+        }
+        DBHelper.DB_WORDS="myDB"+selectedLanguageFrom+currentLanguage;
+
     }
 
     boolean isArticle(String article) {
@@ -141,14 +166,14 @@ public class DBHelper extends SQLiteOpenHelper{
 
     private String cutAwayFirstWord(String input)
     {
-        return input.split(" ", 2)[1];
+        return input.split("\\s", 2)[1];
     }
 
     public int writeToDB(String word, String translation) {
         try {
             word=word.toLowerCase();
             translation = translation.toLowerCase();
-            List<String> wordsList = Arrays.asList(word.split(" "));
+            List<String> wordsList = Arrays.asList(word.split("\\s"));
             ContentValues cv = new ContentValues();
             switch (wordsList.size()) {
                 case 0:
@@ -266,17 +291,23 @@ public class DBHelper extends SQLiteOpenHelper{
         }
     }
 
-    public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, boolean noun) {
+    public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, int noun) {
         db = this.getReadableDatabase();
         ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
         Cursor c;
-        if (!noun)
+        switch (noun)
         {
-            c=db.rawQuery("select * from "+currentDBName+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
-        }
-        else
-        {
-            c=db.rawQuery("select * from "+currentDBName+" where "+ARTICLE_COLUMN_NAME+" is not null and " +WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+            case Constants.MIXED:
+                c=db.rawQuery("select * from "+currentDBName+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+                break;
+            case Constants.NOT_NOUNS:
+                c=db.rawQuery("select * from "+currentDBName+" where "+ARTICLE_COLUMN_NAME+" is null and "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+                break;
+            case Constants.ONLY_NOUNS:
+                c=db.rawQuery("select * from "+currentDBName+" where "+ARTICLE_COLUMN_NAME+" is not null and " +WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
+                break;
+            default:
+                c=db.rawQuery("select * from "+currentDBName+" where "+WORD_COLUMN_NAME+"!='"+ommitWord+"' order by "+WEIGHT_COLUMN_NAME+"*random() desc limit "+numOfWords,null);
         }
         String word, translation;
         String article;
