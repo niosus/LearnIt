@@ -23,7 +23,7 @@
             android:id="@+id/linearLayDict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        >
+            >
         <EditText
                 android:id="@+id/edv_search_word"
                 android:layout_width="match_parent"
@@ -40,8 +40,8 @@
                 android:src="@drawable/ic_stat_clear"
                 android:padding="5dp"
                 android:contentDescription="@string/clear"
-                android:background="@android:color/transparent" />
-        </RelativeLayout>
+                android:background="@android:color/transparent"/>
+    </RelativeLayout>
     <ListView
             android:id="@+id/list_of_words"
             android:layout_width="fill_parent"

@@ -7,7 +7,6 @@
  */
 
 
-
 package com.learnit.LearnIt;
 
 import android.app.Activity;
@@ -52,20 +51,19 @@ public class MainActivity extends FragmentActivity {
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     protected void onResume() {
         super.onResume();
         Utils utils = new Utils();
-        Pair<String,String> pair = utils.getCurrentLanguages(this);
+        Pair<String, String> pair = utils.getCurrentLanguages(this);
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
         Log.d(LOG_TAG, "possible languages = " + allLanguages);
-        if (!allLanguages.contains(pair.first))
-        {
+        if (!allLanguages.contains(pair.first)) {
             startShowWellcomeActivity();
         }
     }
@@ -73,25 +71,25 @@ public class MainActivity extends FragmentActivity {
     private void startSettingsActivity() {
         Intent intent = new Intent(this, PrefActivity.class);
         startActivity(intent);
-        Log.d(LOG_TAG,"start activity called");
+        Log.d(LOG_TAG, "start activity called");
     }
 
     private void startAboutActivity() {
         Intent intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
-        Log.d(LOG_TAG,"start info activity called");
+        Log.d(LOG_TAG, "start info activity called");
     }
 
     private void startShowWordsActivity() {
         Intent intent = new Intent(this, ShowAllWordsActivity.class);
         startActivity(intent);
-        Log.d(LOG_TAG,"start activity called");
+        Log.d(LOG_TAG, "start activity called");
     }
 
     private void startShowWellcomeActivity() {
         Intent intent = new Intent(this, WellcomeActivity.class);
         startActivity(intent);
-        Log.d(LOG_TAG,"start activity welcome");
+        Log.d(LOG_TAG, "start activity welcome");
     }
 
     @Override
@@ -175,7 +173,6 @@ public class MainActivity extends FragmentActivity {
             return null;
         }
     }
-
 
 
 }

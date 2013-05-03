@@ -15,39 +15,38 @@
   -->
 
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:gravity="bottom|center_horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <TextView
+            android:id="@+id/word_to_ask"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Large Text"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="3"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textSize="50sp"/>
 
-    <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-            android:gravity="bottom|center_horizontal"
+
+    <Button
+            android:id="@+id/btn_first"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                    android:id="@+id/word_to_ask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="Large Text"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_weight="3"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textSize="50sp"/>
-
-
-            <Button
-                    android:id="@+id/btn_first"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_weight="1"/>
-            <Button
-                    android:id="@+id/btn_second"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_weight="1"/>
-            <Button
-                    android:id="@+id/btn_third"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_weight="1"/>
-    </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_weight="1"/>
+    <Button
+            android:id="@+id/btn_second"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_weight="1"/>
+    <Button
+            android:id="@+id/btn_third"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_weight="1"/>
+</LinearLayout>

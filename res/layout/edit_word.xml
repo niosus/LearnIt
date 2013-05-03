@@ -13,7 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-    >
+        >
     <TextView
             android:id="@+id/txtViewEditDialog"
             android:layout_width="wrap_content"
@@ -23,11 +23,11 @@
             android:paddingLeft="10dp"
             android:textColor="@android:color/holo_blue_dark"/>
     <RelativeLayout
-                  android:id="@+id/linearLayWord"
-                  android:orientation="horizontal"
-                  android:layout_below="@id/txtViewEditDialog"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content">
+            android:id="@+id/linearLayWord"
+            android:orientation="horizontal"
+            android:layout_below="@id/txtViewEditDialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtWord"
                 android:layout_width="match_parent"
@@ -68,10 +68,10 @@
 
     </RelativeLayout>
     <LinearLayout
-        android:layout_below="@id/linearLayTrans"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+            android:layout_below="@id/linearLayTrans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
         <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
@@ -84,6 +84,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/update"/>
-        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
 

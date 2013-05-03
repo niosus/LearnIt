@@ -33,15 +33,18 @@ public class DictFile {
 
     /**
      * Constructor.
+     *
      * @param fileName get fileName and assign it to strFileName.
      */
     public DictFile(String fileName) {
         strFileName = fileName;
     }
+
     /**
      * Get Word meaning by its offset and its meaning size.
+     *
      * @param offset offset that is get in .idx file.
-     * @param size size that is get in .idx file
+     * @param size   size that is get in .idx file
      * @return meaning of word data
      */
     public String getWordData(long offset, long size) {
@@ -67,8 +70,10 @@ public class DictFile {
         }
         return strMeaning;
     }
+
     /**
      * Add data to .dict file.
+     *
      * @param strMeaning meaning of a paticular word.
      * @return size of strMeaning.
      */

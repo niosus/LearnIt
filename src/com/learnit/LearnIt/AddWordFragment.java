@@ -39,8 +39,8 @@ public class AddWordFragment extends Fragment {
     String selectedLanguageTo;
     String currentWord;
     Utils utils;
-    boolean wordFocused=false;
-    boolean transFocused=false;
+    boolean wordFocused = false;
+    boolean transFocused = false;
 
     private ImageButton btn_clear_word;
     private ImageButton btn_clear_trans;
@@ -55,8 +55,8 @@ public class AddWordFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        wordFocused=true;
-        transFocused=false;
+        wordFocused = true;
+        transFocused = false;
 
     }
 
@@ -68,30 +68,23 @@ public class AddWordFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        wordFocused=true;
-        transFocused=false;
+        wordFocused = true;
+        transFocused = false;
         editWord.requestFocus();
-        Pair<String,String> langPair = utils.getCurrentLanguages(this.getActivity());
-        selectedLanguageFrom=langPair.first;
-        selectedLanguageTo=langPair.second;
+        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
+        selectedLanguageFrom = langPair.first;
+        selectedLanguageTo = langPair.second;
         Log.d(LOG_TAG, "onResume Add words fragment: from - " + selectedLanguageFrom + " to " + selectedLanguageTo);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         dbHelperDict = new DBHelper(this.getActivity(), DBHelper.DB_DICT_FROM);
-        if (null!=saveItem)
-        {
-            if (null!=editTranslation && null!=editWord)
-            {
-                if (editWord.length()>0 && editTranslation.length()>0)
-                {
+        if (null != saveItem) {
+            if (null != editTranslation && null != editWord) {
+                if (editWord.length() > 0 && editTranslation.length() > 0) {
                     saveItem.setVisible(true);
-                }
-                else
-                {
+                } else {
                     saveItem.setVisible(false);
                 }
-            }
-            else
-            {
+            } else {
                 saveItem.setVisible(false);
             }
         }
@@ -112,7 +105,7 @@ public class AddWordFragment extends Fragment {
     MenuItem.OnMenuItemClickListener myOnMenuClickListener = new MenuItem.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            addWordToDB(editWord.getText().toString(),editTranslation.getText().toString());
+            addWordToDB(editWord.getText().toString(), editTranslation.getText().toString());
             return false;  //To change body of implemented methods use File | Settings | File Templates.
         }
     };
@@ -134,14 +127,13 @@ public class AddWordFragment extends Fragment {
         editWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    if (editWord.getText().toString().length()>0)
-                    {
+                if (hasFocus) {
+                    if (editWord.getText().toString().length() > 0) {
                         task = new GetDictTask();
                         task.execute(ASYNC_TASK_FIND_WORD);
                     }
-                    wordFocused=true;
-                    transFocused=false;
+                    wordFocused = true;
+                    transFocused = false;
                 }
             }
         });
@@ -149,14 +141,13 @@ public class AddWordFragment extends Fragment {
         editTranslation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    if (editWord.getText().toString().length()>0)
-                    {
+                if (hasFocus) {
+                    if (editWord.getText().toString().length() > 0) {
                         task = new GetDictTask();
                         task.execute(ASYNC_TASK_FIND_TRANSLATION);
                     }
-                    wordFocused=false;
-                    transFocused=true;
+                    wordFocused = false;
+                    transFocused = true;
                 }
             }
         });
@@ -173,16 +164,13 @@ public class AddWordFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && !editable.toString().equals("") && !editable.toString().equals(currentWord))
-                {
+                if (editable.toString() != null && !editable.toString().equals("") && !editable.toString().equals(currentWord)) {
                     btn_clear_word.setVisibility(View.VISIBLE);
                     task = new GetDictTask();
                     task.execute(ASYNC_TASK_FIND_WORD);
                 }
-                if (editable.length()==0)
-                {
-                    if (null!=saveItem)
-                    {
+                if (editable.length() == 0) {
+                    if (null != saveItem) {
                         saveItem.setVisible(false);
                     }
                     updateList(null);
@@ -201,18 +189,14 @@ public class AddWordFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && !editable.toString().equals(""))
-                {
+                if (editable.toString() != null && !editable.toString().equals("")) {
                     btn_clear_trans.setVisibility(View.VISIBLE);
-                    if (editable.length()>0)
-                    {
+                    if (editable.length() > 0) {
                         saveItem.setVisible(true);
                     }
                 }
-                if (editable.length()==0)
-                {
-                    if (null!=saveItem)
-                    {
+                if (editable.length() == 0) {
+                    if (null != saveItem) {
                         saveItem.setVisible(false);
                     }
                     btn_clear_trans.setVisibility(View.INVISIBLE);
@@ -225,29 +209,23 @@ public class AddWordFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                if (transFocused)
-                {
+                if (transFocused) {
                     String queryWord = ((TextView) view).getText().toString();
                     Log.d(LOG_TAG, queryWord);
-                    if (editTranslation.getText().toString()==null||editTranslation.getText().toString().equals(""))
-                    {
+                    if (editTranslation.getText().toString() == null || editTranslation.getText().toString().equals("")) {
                         editTranslation.setText(queryWord);
-                    }
-                    else
-                    {
+                    } else {
                         editTranslation.setText(queryWord + ", " + editTranslation.getText().toString());
                     }
                     editTranslation.setSelection(queryWord.length());
                     editWord.setText(currentWord);
-                }
-                else if (wordFocused)
-                {
+                } else if (wordFocused) {
                     String queryWord = ((TextView) view).getText().toString();
                     Log.d(LOG_TAG, queryWord);
                     editWord.setText(queryWord);
                     editWord.setSelection(queryWord.length());
-                    transFocused=true;
-                    wordFocused=false;
+                    transFocused = true;
+                    wordFocused = false;
                     editTranslation.requestFocus();
                 }
             }
@@ -255,39 +233,32 @@ public class AddWordFragment extends Fragment {
         return v;
     }
 
-    private void cleanAddWordFields()
-    {
+    private void cleanAddWordFields() {
         editTranslation.setText("");
         editWord.setText("");
     }
 
-    private void addArticleToCurrentWord(String article)
-    {
-        if (null!=article)
-        {
-            Log.d(LOG_TAG, article+" "+editWord.getText().toString());
-            currentWord=article + " " + getRealWord(editWord.getText().toString());
-        }
-        else
-        {
+    private void addArticleToCurrentWord(String article) {
+        if (null != article) {
+            Log.d(LOG_TAG, article + " " + editWord.getText().toString());
+            currentWord = article + " " + getRealWord(editWord.getText().toString());
+        } else {
             currentWord = editWord.getText().toString();
         }
     }
 
 
-    private  ArrayList<String> parseDictOutput(String str) {
-        Log.d(LOG_TAG,"input = " + str);
+    private ArrayList<String> parseDictOutput(String str) {
+        Log.d(LOG_TAG, "input = " + str);
         ArrayList<String> tagValues = utils.getHelpWordsFromDictOutput(str);
-        String article = utils.getArticleFromDictOutput(str,selectedLanguageFrom);
+        String article = utils.getArticleFromDictOutput(str, selectedLanguageFrom);
         addArticleToCurrentWord(article);
         return tagValues;
     }
 
-    public void updateFields(int exitCode)
-    {
-        switch (exitCode)
-        {
-            case  DBHelper.EXIT_CODE_OK:
+    public void updateFields(int exitCode) {
+        switch (exitCode) {
+            case DBHelper.EXIT_CODE_OK:
             case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
             case DBHelper.EXIT_CODE_WORD_UPDATED:
                 updateList(null);
@@ -298,27 +269,23 @@ public class AddWordFragment extends Fragment {
         }
     }
 
-    public void showMessage(int exitCode)
-    {
+    public void showMessage(int exitCode) {
         MyDialogFragment frag = new MyDialogFragment();
-        frag.showMessage(exitCode,getFragmentManager());
+        frag.showMessage(exitCode, getFragmentManager());
         updateFields(exitCode);
     }
 
-    private void addWordToDB(String word, String translation)
-    {
+    private void addWordToDB(String word, String translation) {
         int exitCode;
-        Log.d(LOG_TAG,"word = " + word + " trans = " + translation);
+        Log.d(LOG_TAG, "word = " + word + " trans = " + translation);
         exitCode = dbHelper.writeToDB(word, translation);
         Log.d(LOG_TAG, "add word to DB exit code = " + exitCode);
         showMessage(exitCode);
     }
 
-    private void updateList(List<String> items)
-    {
+    private void updateList(List<String> items) {
         ArrayAdapter<String> adapter;
-        if (null!=items)
-        {
+        if (null != items) {
             if (wordFocused)
                 tv_help.setText(getString(R.string.add_words_frag_help_text_words));
             else
@@ -328,32 +295,28 @@ public class AddWordFragment extends Fragment {
                     android.R.layout.simple_list_item_1, items);
             ((ListView) this.getView().findViewById(R.id.list_of_add_words))
                     .setAdapter(adapter);
-        }
-        else
-        {
+        } else {
             tv_help.setVisibility(View.INVISIBLE);
             ((ListView) this.getView().findViewById(R.id.list_of_add_words))
-                .setAdapter(null);
+                    .setAdapter(null);
         }
 
     }
 
-    private String getRealWord(String word)
-    {
-        return utils.stripFromArticle(this.getActivity(),word);
+    private String getRealWord(String word) {
+        return utils.stripFromArticle(this.getActivity(), word);
     }
 
     private class MyBtnOnClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-            switch (v.getId())
-            {
+            switch (v.getId()) {
                 case R.id.btn_add_trans_clear:
                     editTranslation.setText("");
                     editTranslation.setFocusableInTouchMode(true);
                     editTranslation.requestFocus();
-                    transFocused=true;
-                    wordFocused=false;
+                    transFocused = true;
+                    wordFocused = false;
                     v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btn_add_word_clear:
@@ -361,8 +324,8 @@ public class AddWordFragment extends Fragment {
                     editWord.setFocusableInTouchMode(true);
                     editWord.requestFocus();
                     updateList(null);
-                    transFocused=false;
-                    wordFocused=true;
+                    transFocused = false;
+                    wordFocused = true;
                     v.setVisibility(View.INVISIBLE);
                     break;
             }
@@ -370,7 +333,7 @@ public class AddWordFragment extends Fragment {
 
     }
 
-    class GetDictTask extends AsyncTask<Integer, Void, List<String> > {
+    class GetDictTask extends AsyncTask<Integer, Void, List<String>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -380,34 +343,28 @@ public class AddWordFragment extends Fragment {
         @Override
         protected List<String> doInBackground(Integer... action) {
             try {
-                if (action[0]==ASYNC_TASK_FIND_TRANSLATION)
-                {
+                if (action[0] == ASYNC_TASK_FIND_TRANSLATION) {
                     String tempWord = editWord.getText().toString();
-                    Log.d(LOG_TAG,"temp word is " + tempWord);
+                    Log.d(LOG_TAG, "temp word is " + tempWord);
                     Log.d(LOG_TAG, "language from - " + selectedLanguageFrom + " langiage to - " + selectedLanguageTo);
                     File sd = Environment.getExternalStorageDirectory();
                     sd = new File(sd, "LearnIt");
-                    sd = new File(sd, selectedLanguageFrom+"-"+selectedLanguageTo);
+                    sd = new File(sd, selectedLanguageFrom + "-" + selectedLanguageTo);
                     sd = new File(sd, "dict.dict");
                     DictFile dictFile = new DictFile(sd.getPath());
-                    if (null!=tempWord)
-                    {
+                    if (null != tempWord) {
                         String newWord = getRealWord(tempWord);
-                        Pair<Long,Long> pair = dbHelperDict.getDictOffsetAndSize(newWord);
+                        Pair<Long, Long> pair = dbHelperDict.getDictOffsetAndSize(newWord);
                         return parseDictOutput(dictFile.getWordData(pair.first, pair.second));
                     }
                     return null;
-                }
-                else
-                {
+                } else {
                     String newWord = getRealWord(editWord.getText().toString());
                     return dbHelperDict.getHelpWords(newWord);
                 }
 
-            }
-            catch (Exception e)
-            {
-                Log.d(LOG_TAG,"exception on doInBackground AddWordsFragment");
+            } catch (Exception e) {
+                Log.d(LOG_TAG, "exception on doInBackground AddWordsFragment");
             }
             return null;
         }
@@ -416,15 +373,12 @@ public class AddWordFragment extends Fragment {
         protected void onPostExecute(List<String> items) {
             super.onPostExecute(items);
             try {
-                if (null==items)
-                {
+                if (null == items) {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_no_word), Toast.LENGTH_LONG).show();
                 }
                 updateList(items);
-            }
-            catch (Exception ex)
-            {
-                Log.d(LOG_TAG,"exception onPostExecute AddWordsFragment");
+            } catch (Exception ex) {
+                Log.d(LOG_TAG, "exception onPostExecute AddWordsFragment");
             }
         }
     }

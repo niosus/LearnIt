@@ -24,15 +24,16 @@ public class EditWord extends FragmentActivity {
     private ImageButton btnClearTrans;
 
     DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
         utils = new Utils();
-        oldWord= getIntent().getStringExtra(WORD_TAG);
-        oldStrippedWord = utils.stripFromArticle(this,oldWord);
-        String translation=dbHelper.getTranslation(oldStrippedWord);
-        Log.d(LOG_TAG,"got word to edit = " + oldStrippedWord + ", trans = " + translation);
+        oldWord = getIntent().getStringExtra(WORD_TAG);
+        oldStrippedWord = utils.stripFromArticle(this, oldWord);
+        String translation = dbHelper.getTranslation(oldStrippedWord);
+        Log.d(LOG_TAG, "got word to edit = " + oldStrippedWord + ", trans = " + translation);
 
         setContentView(R.layout.edit_word);
 
@@ -62,12 +63,10 @@ public class EditWord extends FragmentActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && !editable.toString().equals(""))
-                {
+                if (editable.toString() != null && !editable.toString().equals("")) {
                     btnClearWord.setVisibility(View.VISIBLE);
                 }
-                if (editable.length()==0)
-                {
+                if (editable.length() == 0) {
                     btnClearWord.setVisibility(View.INVISIBLE);
                 }
             }
@@ -83,29 +82,23 @@ public class EditWord extends FragmentActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString()!=null && !editable.toString().equals(""))
-                {
+                if (editable.toString() != null && !editable.toString().equals("")) {
                     btnClearTrans.setVisibility(View.VISIBLE);
                 }
-                if (editable.length()==0)
-                {
+                if (editable.length() == 0) {
                     btnClearTrans.setVisibility(View.INVISIBLE);
                 }
             }
         });
     }
 
-    private void finishActivity()
-    {
-       this.finish();
+    private void finishActivity() {
+        this.finish();
     }
 
-    private class MyBtnTouchListener implements View.OnClickListener
-    {
-        public void onClick(View v)
-        {
-            switch (v.getId())
-            {
+    private class MyBtnTouchListener implements View.OnClickListener {
+        public void onClick(View v) {
+            switch (v.getId()) {
                 case R.id.btn_add_trans_clear:
                     edtTrans.setText("");
                     v.setVisibility(View.INVISIBLE);
@@ -115,14 +108,11 @@ public class EditWord extends FragmentActivity {
                     v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btn_ok:
-                    Log.d(LOG_TAG,"update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                    if (dbHelper.checkEmptyString(edtWord.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT
-                            || dbHelper.checkEmptyString(edtTrans.getText().toString())==DBHelper.EXIT_CODE_EMPTY_INPUT)
-                    {
+                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
+                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
                         showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
-                    }
-                    else
-                    {
+                    } else {
                         dbHelper.deleteWord(oldStrippedWord);
                         int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
                         showMessage(exitCode);
@@ -135,8 +125,7 @@ public class EditWord extends FragmentActivity {
         }
     }
 
-    private void showMessage(int exitCode)
-    {
+    private void showMessage(int exitCode) {
         MyDialogFragment frag;
         Bundle args;
         switch (exitCode) {

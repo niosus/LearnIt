@@ -13,7 +13,7 @@ public class InfoActivity extends FragmentActivity {
         setContentView(R.layout.info);
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);
         String currentStr = txtVersion.getText().toString();
-        Log.d(Constants.LOG_TAG,currentStr);
-        txtVersion.setText(String.format(currentStr,getString(R.string.version)));
+        Log.d(Constants.LOG_TAG, currentStr);
+        txtVersion.setText(String.format(currentStr, getString(R.string.version)));
     }
 }

@@ -5,24 +5,34 @@ package com.learnit.LearnIt.stardict;
 
 /**
  * This class is used to store entries in .idx file.
+ *
  * @author kien
  */
 public class WordEntry {
 
-    /** lower case of str_word. */
+    /**
+     * lower case of str_word.
+     */
     private String strLwrWord;
 
-    /** Word. */
+    /**
+     * Word.
+     */
     private String strWord;
 
-    /** position of meaning of this word in ".dict" file. */
+    /**
+     * position of meaning of this word in ".dict" file.
+     */
     private long longOffset;
 
-    /** length of the meaning of this word in ".dict" file. */
+    /**
+     * length of the meaning of this word in ".dict" file.
+     */
     private long longSize;
 
     /**
      * Set the value for longSize.
+     *
      * @param longSize the longSize to set
      */
     public void setLongSize(long longSize) {
@@ -31,6 +41,7 @@ public class WordEntry {
 
     /**
      * Get value of longSize.
+     *
      * @return the longSize
      */
     public long getLongSize() {
@@ -39,6 +50,7 @@ public class WordEntry {
 
     /**
      * Set the value for longOffset.
+     *
      * @param longOffset the longOffset to set
      */
     public void setLongOffset(long longOffset) {
@@ -47,6 +59,7 @@ public class WordEntry {
 
     /**
      * Get value of longOffset.
+     *
      * @return the longOffset
      */
     public long getLongOffset() {
@@ -55,6 +68,7 @@ public class WordEntry {
 
     /**
      * Set the value for strWord.
+     *
      * @param strWord the strWord to set
      */
     public void setStrWord(String strWord) {
@@ -63,6 +77,7 @@ public class WordEntry {
 
     /**
      * Get value of strWord.
+     *
      * @return the strWord
      */
     public String getStrWord() {
@@ -71,6 +86,7 @@ public class WordEntry {
 
     /**
      * Set the value for strLwrWord.
+     *
      * @param strLwrWord the strLwrWord to set
      */
     public void setStrLwrWord(String strLwrWord) {
@@ -79,6 +95,7 @@ public class WordEntry {
 
     /**
      * Get value of strLwrWord.
+     *
      * @return the strLwrWord
      */
     public String getStrLwrWord() {

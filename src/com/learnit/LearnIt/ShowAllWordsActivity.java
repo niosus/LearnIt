@@ -32,6 +32,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
     protected DialogFragment frag;
     DBHelper dbHelper;
     Utils utils;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fragment fragTemp = new ShowWordsFragment();
@@ -42,8 +43,9 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
     public class ShowWordsFragment extends Fragment {
         private final String LOG_TAG = "my_logs";
-        ActionMode mActionMode=null;
+        ActionMode mActionMode = null;
         MyTask mt;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -59,11 +61,11 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-                    HashMap<String, String> maplist = (HashMap<String, String>)parent.getAdapter().getItem(position);
+                    HashMap<String, String> maplist = (HashMap<String, String>) parent.getAdapter().getItem(position);
                     String queryWord = maplist.get("word");
                     Log.d(LOG_TAG, queryWord);
                     String translation = maplist.get("translation");
-                    showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
+                    showDialog(queryWord, translation, MyDialogFragment.DIALOG_SHOW_WORD);
                 }
             });
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -82,34 +84,28 @@ public class ShowAllWordsActivity extends FragmentActivity {
             return v;
         }
 
-        private void updateList(List<Map<String, String>> items)
-        {
+        private void updateList(List<Map<String, String>> items) {
             try {
-                if (null!=items)
-                {
+                if (null != items) {
                     SimpleAdapter adapter;
                     adapter = new SimpleAdapter(this.getActivity(), items,
                             android.R.layout.simple_list_item_2,
-                            new String[] {"word", "translation" },
-                            new int[] {android.R.id.text1, android.R.id.text2 });
+                            new String[]{"word", "translation"},
+                            new int[]{android.R.id.text1, android.R.id.text2});
                     ListView list = (ListView) this.getView().findViewById(R.id.list_of_all_words);
-                    if (null!=adapter)
-                    {
-                        Log.d(LOG_TAG,"trying to update list for all words" + adapter.getCount());
+                    if (null != adapter) {
+                        Log.d(LOG_TAG, "trying to update list for all words" + adapter.getCount());
                         list.setAdapter(adapter);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Log.d(LOG_TAG,"exception caught - " + e.getMessage() + "\n");
+            } catch (Exception e) {
+                Log.d(LOG_TAG, "exception caught - " + e.getMessage() + "\n");
                 e.printStackTrace();
             }
 
         }
 
-        public void showDialog(String queryWord, String translation, int dialogType)
-        {
+        public void showDialog(String queryWord, String translation, int dialogType) {
             frag = new MyDialogFragment();
             Bundle args = new Bundle();
             args.putInt(MyDialogFragment.ID_TAG, dialogType);
@@ -119,25 +115,24 @@ public class ShowAllWordsActivity extends FragmentActivity {
             frag.show(getFragmentManager(), "show_word_fragment_dialog");
         }
 
-        private void dismissDialog()
-        {
+        private void dismissDialog() {
             frag.dismiss();
         }
 
         @Override
-        public void onResume()
-        {
+        public void onResume() {
             super.onResume();
             mt = new MyTask();
             mt.execute();
         }
 
-        class MyTask extends AsyncTask<Void, Void, List<Map<String, String>> > {
-            public int action=0;
+        class MyTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
+            public int action = 0;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                showDialog(null,null,MyDialogFragment.DIALOG_PROGRESS);
+                showDialog(null, null, MyDialogFragment.DIALOG_PROGRESS);
                 dbHelper = new DBHelper(getActivity(), DBHelper.DB_WORDS);
             }
 
@@ -146,9 +141,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
             protected List<Map<String, String>> doInBackground(Void... word) {
                 try {
                     return dbHelper.getWords("");
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("error", e.getMessage());
                 }
                 return null;
@@ -162,26 +155,24 @@ public class ShowAllWordsActivity extends FragmentActivity {
             }
         }
 
-        void startEditWordActivity(String word)
-        {
+        void startEditWordActivity(String word) {
             Intent intent = new Intent(this.getActivity(), EditWord.class);
-            intent.putExtra("word",word);
+            intent.putExtra("word", word);
             startActivity(intent);
-            Log.d(LOG_TAG,"start info activity called");
+            Log.d(LOG_TAG, "start info activity called");
         }
 
-        String stripWord(String word)
-        {
+        String stripWord(String word) {
             return utils.stripFromArticle(this.getActivity(), word);
         }
 
-        private class ListActionMode implements ActionMode.Callback
-        {
+        private class ListActionMode implements ActionMode.Callback {
             private View v;
 
             public ListActionMode(View view) {
                 v = view;
             }
+
             // Called when the action mode is created; startActionMode() was called
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -203,17 +194,16 @@ public class ShowAllWordsActivity extends FragmentActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 TextView tv = (TextView) v.findViewById(android.R.id.text1);
                 String queryWord = tv.getText().toString();
-                Log.d(LOG_TAG,"item selected = " + queryWord);
+                Log.d(LOG_TAG, "item selected = " + queryWord);
                 switch (item.getItemId()) {
                     case R.id.context_menu_edit:
                         mode.finish(); // Action picked, so close the CAB
                         startEditWordActivity(queryWord);
                         return true;
                     case R.id.context_menu_delete:
-                        if (dbHelper.deleteWord(stripWord(queryWord)))
-                        {
+                        if (dbHelper.deleteWord(stripWord(queryWord))) {
                             mt = new MyTask();
-                            mt.action=1;
+                            mt.action = 1;
                             mt.execute();
                         }
                         mode.finish();

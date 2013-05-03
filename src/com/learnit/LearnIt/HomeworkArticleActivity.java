@@ -7,7 +7,6 @@
  */
 
 
-
 package com.learnit.LearnIt;
 
 import android.app.NotificationManager;
@@ -25,15 +24,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class HomeworkArticleActivity extends FragmentActivity{
+public class HomeworkArticleActivity extends FragmentActivity {
     int notificationId = -1;
     String queryWord = null;
     String article = null;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
     int[] btnIds = {R.id.btn_first,
-                    R.id.btn_second,
-                    R.id.btn_third};
+            R.id.btn_second,
+            R.id.btn_third};
 
     private void getEverythingFromIntent() {
         Intent intent = getIntent();
@@ -45,33 +44,28 @@ public class HomeworkArticleActivity extends FragmentActivity{
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
-    private String getRandArticle(ArrayList<String> array)
-    {
+    private String getRandArticle(ArrayList<String> array) {
         Resources res = getResources();
         String articles = res.getString(R.string.articles_de);
-        Log.d(LOG_TAG,"articles are " + articles);
+        Log.d(LOG_TAG, "articles are " + articles);
         Random rand = new Random();
         String articleArray[] = articles.split(" ");
         int length = articleArray.length;
         int randId;
-        do
-        {
+        do {
             randId = rand.nextInt(length);
         }
         while (array.contains(articleArray[randId]));
         return articleArray[randId];
     }
 
-    private void setBtnTexts(int correctId)
-    {
+    private void setBtnTexts(int correctId) {
         ((Button) findViewById(btnIds[correctId])).setText(article);
         ArrayList<String> array = new ArrayList<String>();
         array.add(article);
         String tempArticle;
-        for (int i = 0; i<btnIds.length; ++i)
-        {
-            if (correctId!=i)
-            {
+        for (int i = 0; i < btnIds.length; ++i) {
+            if (correctId != i) {
                 tempArticle = getRandArticle(array);
                 ((Button) findViewById(btnIds[i])).setText(tempArticle);
                 array.add(tempArticle);
@@ -86,7 +80,7 @@ public class HomeworkArticleActivity extends FragmentActivity{
         MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
         Random random = new Random();
         int randIdx = random.nextInt(btnIds.length);
-        myButtonOnClick.correct=btnIds[randIdx];
+        myButtonOnClick.correct = btnIds[randIdx];
         (findViewById(R.id.btn_first))
                 .setOnClickListener(myButtonOnClick);
         (findViewById(R.id.btn_second))
@@ -96,8 +90,7 @@ public class HomeworkArticleActivity extends FragmentActivity{
         setBtnTexts(randIdx);
     }
 
-    private void showDialogWrong()
-    {
+    private void showDialogWrong() {
         MyDialogFragment frag = new MyDialogFragment();
         Bundle args = new Bundle();
         args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);
@@ -105,25 +98,21 @@ public class HomeworkArticleActivity extends FragmentActivity{
         frag.show(getSupportFragmentManager(), "wrong_guess");
     }
 
-    protected void stopActivity()
-    {
+    protected void stopActivity() {
         this.finish();
     }
 
-    private class MyButtonOnClick implements OnClickListener
-    {
+    private class MyButtonOnClick implements OnClickListener {
         public int correct = 0;
+
         @Override
         public void onClick(View v) {
             int id = v.getId();
-            if (correct==id)
-            {
+            if (correct == id) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.cancel(notificationId);
                 stopActivity();
-            }
-            else
-            {
+            } else {
                 showDialogWrong();
             }
         }

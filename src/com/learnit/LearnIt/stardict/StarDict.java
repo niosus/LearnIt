@@ -30,32 +30,46 @@ import java.util.List;
 
 /**
  * This class is used to read idx, ifo,dict files get dictionary information, word and meaning.
+ *
  * @author kien
  * @author Thach Le
  */
 public class StarDict {
     private final String LOG_TAG = "my_logs";
 
-    /** number of the nearest word that is displayed. */
+    /**
+     * number of the nearest word that is displayed.
+     */
     private final int nearest = 10;
 
-    /** Dict directory.(path to the .dict file). */
+    /**
+     * Dict directory.(path to the .dict file).
+     */
     private String strURL = null;
 
-    /** decide if object has loaded the entries. */
+    /**
+     * decide if object has loaded the entries.
+     */
     public boolean boolAvailable = false;
 
-    /** ifo file. */
+    /**
+     * ifo file.
+     */
     private IfoFile ifoFile = null;
 
-    /** idx file. */
+    /**
+     * idx file.
+     */
     private IdxFile idxFile = null;
 
-    /** dict file. */
+    /**
+     * dict file.
+     */
     private DictFile dictFile = null;
 
     /**
      * Constructor to load dictionary with given path.
+     *
      * @param url Path of one of stardict file or Path of folder contains stardict files
      */
     public StarDict(String url) {
@@ -67,7 +81,7 @@ public class StarDict {
             ifoFile = new IfoFile(strURL + ".ifo");
             idxFile = new IdxFile(strURL + ".idx", ifoFile.getLongWordCount(), ifoFile.getLongIdxFileSize());
             dictFile = new DictFile(strURL + ".dict");
-            Log.d(LOG_TAG,"done " +ifoFile.isBoolIsLoaded() +" "+ idxFile.isLoaded() + " ");
+            Log.d(LOG_TAG, "done " + ifoFile.isBoolIsLoaded() + " " + idxFile.isLoaded() + " ");
         } else {
             String[] list = file.list();
             strURL = url;
@@ -145,6 +159,7 @@ public class StarDict {
 
     /**
      * get book name of dictionary.
+     *
      * @return Book name
      */
     public String getDictName() {
@@ -153,6 +168,7 @@ public class StarDict {
 
     /**
      * get book version.
+     *
      * @return version of a dictionary
      */
     public String getDictVersion() {
@@ -161,6 +177,7 @@ public class StarDict {
 
     /**
      * get amount of words in a StarDict dictionary (within 3 files).
+     *
      * @return a long totalWord.
      * @author LongNX
      */
@@ -171,6 +188,7 @@ public class StarDict {
     /**
      * get word content from an idx. let say the stardict-dictd-easton-2.4.2, we give this method the idx 1000 and it
      * return us the "diana".
+     *
      * @param idx
      * @return word
      * @author LongNX
@@ -182,6 +200,7 @@ public class StarDict {
 
     /**
      * lookup a word by its index.
+     *
      * @param idx index of a word
      * @return word data
      */
@@ -194,16 +213,17 @@ public class StarDict {
         return dictFile.getWordData(tempEntry.getLongOffset(), tempEntry.getLongSize());
     }
 
-    public Pair<Long,Long> findWordMemoryOffsets(int idx) {
+    public Pair<Long, Long> findWordMemoryOffsets(int idx) {
         if (idx < 0 || idx >= idxFile.getLongWordCount()) {
             return null;
         }
         WordEntry tempEntry = idxFile.getEntryList().get((int) idx);
-        return new Pair<Long, Long>(tempEntry.getLongOffset(),tempEntry.getLongSize());
+        return new Pair<Long, Long>(tempEntry.getLongOffset(), tempEntry.getLongSize());
     }
 
     /**
      * lookup a word.
+     *
      * @param word that is looked up in database.
      * @return word data
      */
@@ -218,6 +238,7 @@ public class StarDict {
 
     /**
      * get a list of word entry.
+     *
      * @return list of word entry
      */
     public List<WordEntry> getWordEntry() {
@@ -239,6 +260,7 @@ public class StarDict {
 
     /**
      * get the nearest of the chosen word.
+     *
      * @param word that is looked up in database
      * @return a list of nearest word.
      */
@@ -265,6 +287,7 @@ public class StarDict {
 
     /**
      * check if a word is in dictionary.
+     *
      * @param word that is looked up in database
      * @return true if exists, false otherwise
      */
@@ -282,8 +305,10 @@ public class StarDict {
 
         return false;
     }
+
     /**
      * Add list of word to idx, dict file, modify size .ifo file.
+     *
      * @param pWord word that is added
      * @param pMean word mean
      * @return true if success
@@ -325,6 +350,7 @@ public class StarDict {
 
     /**
      * Add a word to .dict file and .idx file, modify the size of ifo file.
+     *
      * @param word word that is needed to add.
      * @param mean word meaning.
      * @return true if add complete.
@@ -340,6 +366,7 @@ public class StarDict {
 
     /**
      * Get file name without extension. For example: input: a:\b.a - output: a:\b
+     *
      * @param url path of a file
      * @return original file name
      */
@@ -351,6 +378,7 @@ public class StarDict {
 
     /**
      * get extension of file.
+     *
      * @param url path to file
      * @return extension of file
      */

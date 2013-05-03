@@ -33,7 +33,7 @@ public class LearnFragment extends Fragment {
 
     View v;
     String queryWord = null;
-    int numOfWrongAnswers=0;
+    int numOfWrongAnswers = 0;
     int direction = 0;
     Utils utils;
     final String LOG_TAG = "my_logs";
@@ -47,11 +47,10 @@ public class LearnFragment extends Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         utils = new Utils();
-        Pair<String,String> langPair = utils.getCurrentLanguages(this.getActivity());
+        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
         Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         fetchNewWords();
@@ -71,10 +70,8 @@ public class LearnFragment extends Fragment {
             v.findViewById(R.id.right_top_button).setVisibility(View.VISIBLE);
             v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
             MainActivity.hideSoftKeyboard(this.getActivity());
-        }
-        else {
-            if (null!=v)
-            {
+        } else {
+            if (null != v) {
                 v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
                 v.findViewById(R.id.right_bottom_button).setVisibility(View.INVISIBLE);
                 v.findViewById(R.id.left_bottom_button).setVisibility(View.INVISIBLE);
@@ -97,36 +94,30 @@ public class LearnFragment extends Fragment {
         return v;
     }
 
-    private void fetchNewWords()
-    {
+    private void fetchNewWords() {
         Random random = new Random();
-        Log.d(LOG_TAG,"DB+WORDS=" + DBHelper.DB_WORDS);
+        Log.d(LOG_TAG, "DB+WORDS=" + DBHelper.DB_WORDS);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String strDirection = sp.getString(getString(R.string.key_direction_of_trans),null);
-        if (null!=strDirection)
-        {
+        String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
+        if (null != strDirection) {
             direction = Integer.parseInt(strDirection);
-            if (direction== Constants.MIXED)
-            {
-                direction = random.nextInt(2)+1;
+            if (direction == Constants.MIXED) {
+                direction = random.nextInt(2) + 1;
             }
         }
-        int nouns = random.nextInt(2)+1;
-        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length,null,nouns);
-        int correctIdx=0;
-        if (words.size()==0)
-        {
+        int nouns = random.nextInt(2) + 1;
+        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length, null, nouns);
+        int correctIdx = 0;
+        if (words.size() == 0) {
             TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
             queryWordTextView.setText(getString(R.string.learn_no_words));
-        }
-        else
-        {
+        } else {
             correctIdx = random.nextInt(words.size());
             setQueryWordTxt(words.get(correctIdx));
         }
 
         MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
-        myButtonOnClick.correct=btnIds[correctIdx];
+        myButtonOnClick.correct = btnIds[correctIdx];
         (v.findViewById(R.id.left_top_button))
                 .setOnClickListener(myButtonOnClick);
         (v.findViewById(R.id.right_bottom_button))
@@ -143,32 +134,22 @@ public class LearnFragment extends Fragment {
         v.findViewById(R.id.word_to_ask).setVisibility(View.INVISIBLE);
     }
 
-    private void setQueryWordTxt(ArticleWordIdStruct struct)
-    {
+    private void setQueryWordTxt(ArticleWordIdStruct struct) {
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-        queryWord=struct.word;
-        switch (direction)
-        {
+        queryWord = struct.word;
+        switch (direction) {
             case Constants.FROM_FOREIGN_TO_MY:
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-                String learnLang = sp.getString(getString(R.string.key_language_from),"null");
-                if (null!=struct.article)
-                {
-                    if ("de".equals(learnLang))
-                    {
+                String learnLang = sp.getString(getString(R.string.key_language_from), "null");
+                if (null != struct.article) {
+                    if ("de".equals(learnLang)) {
                         queryWordTextView.setText(struct.article + " " + utils.capitalize(struct.word));
-                    }
-                    else
-                    {
+                    } else {
                         queryWordTextView.setText(struct.article + " " + struct.word);
                     }
-                }
-                else if (null!=struct.prefix)
-                {
+                } else if (null != struct.prefix) {
                     queryWordTextView.setText(struct.prefix + " " + struct.word);
-                }
-                else
-                {
+                } else {
                     queryWordTextView.setText(struct.word);
                 }
                 break;
@@ -179,35 +160,25 @@ public class LearnFragment extends Fragment {
 
     }
 
-    private void setBtnTexts(ArrayList<ArticleWordIdStruct> words)
-    {
-        switch (direction)
-        {
+    private void setBtnTexts(ArrayList<ArticleWordIdStruct> words) {
+        switch (direction) {
             case Constants.FROM_FOREIGN_TO_MY:
-                for (int i=0; i<btnIds.length; ++i)
-                {
-                    if (i>=words.size() || words.size()==0)
-                    {
+                for (int i = 0; i < btnIds.length; ++i) {
+                    if (i >= words.size() || words.size() == 0) {
                         ((Button) v.findViewById(btnIds[i])).setText("");
                         (v.findViewById(btnIds[i])).setEnabled(false);
-                    }
-                    else
-                    {
+                    } else {
                         ((Button) v.findViewById(btnIds[i])).setText(words.get(i).translation);
                         (v.findViewById(btnIds[i])).setEnabled(true);
                     }
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                for (int i=0; i<btnIds.length; ++i)
-                {
-                    if (i>=words.size() || words.size()==0)
-                    {
+                for (int i = 0; i < btnIds.length; ++i) {
+                    if (i >= words.size() || words.size() == 0) {
                         ((Button) v.findViewById(btnIds[i])).setText("");
                         (v.findViewById(btnIds[i])).setEnabled(false);
-                    }
-                    else
-                    {
+                    } else {
                         ((Button) v.findViewById(btnIds[i])).setText(words.get(i).word);
                         (v.findViewById(btnIds[i])).setEnabled(true);
                     }
@@ -217,8 +188,7 @@ public class LearnFragment extends Fragment {
 
     }
 
-    private void playCloseAnimation()
-    {
+    private void playCloseAnimation() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWordTextView.startAnimation(anim);
@@ -245,15 +215,13 @@ public class LearnFragment extends Fragment {
         });
     }
 
-    private void playOpenAnimation()
-    {
+    private void playOpenAnimation() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWordTextView.startAnimation(anim);
     }
 
-    private void openButtons()
-    {
+    private void openButtons() {
         Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
@@ -262,8 +230,7 @@ public class LearnFragment extends Fragment {
         (v.findViewById(R.id.right_top_button)).startAnimation(animRight);
     }
 
-    private void closeButtons()
-    {
+    private void closeButtons() {
         Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
         Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
@@ -272,49 +239,43 @@ public class LearnFragment extends Fragment {
         (v.findViewById(R.id.right_top_button)).startAnimation(animRight);
     }
 
-    private class MyButtonOnClick implements View.OnClickListener
-    {
+    private class MyButtonOnClick implements View.OnClickListener {
         public int correct = 0;
+
         @Override
         public void onClick(View v) {
             int id = v.getId();
-            if (correct==id)
-            {
+            if (correct == id) {
                 updateWordWeight();
-                numOfWrongAnswers=0;
+                numOfWrongAnswers = 0;
                 playCloseAnimation();
                 closeButtons();
-            }
-            else
-            {
+            } else {
                 numOfWrongAnswers++;
                 showDialogWrong();
             }
         }
     }
 
-    private void updateWordWeight()
-    {
+    private void updateWordWeight() {
         Log.d(LOG_TAG, "word to be updated " + queryWord);
-        switch (numOfWrongAnswers)
-        {
+        switch (numOfWrongAnswers) {
             case 0:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_CORRECT_BUTTON);
+                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT_BUTTON);
                 break;
             case 1:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_ONE_WRONG);
+                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_ONE_WRONG);
                 break;
             case 2:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_TWO_WRONG);
+                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_TWO_WRONG);
                 break;
             case 3:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(),DBHelper.WEIGHT_THREE_WRONG);
+                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_THREE_WRONG);
                 break;
         }
     }
 
-    private void showDialogWrong()
-    {
+    private void showDialogWrong() {
         MyDialogFragment frag = new MyDialogFragment();
         Bundle args = new Bundle();
         args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);

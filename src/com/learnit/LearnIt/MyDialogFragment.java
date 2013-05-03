@@ -32,7 +32,7 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_ARTICLE = 6;
     public static final int DIALOG_WRONG_GUESS = 7;
     public static final int DIALOG_WORD_DELETED = 8;
-//    public static final int DIALOG_EDIT_WORD = 9;
+    //    public static final int DIALOG_EDIT_WORD = 9;
     public static final int DIALOG_PROGRESS = 10;
 
     @Override
@@ -40,8 +40,7 @@ public class MyDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int id = getArguments().getInt(ID_TAG);
         String word;
-        switch (id)
-        {
+        switch (id) {
             case DIALOG_SHOW_WORD:
                 word = getArguments().getString(WORD_TAG);
                 String translation = getArguments().getString(TRANSLATION_TAG);
@@ -102,6 +101,7 @@ public class MyDialogFragment extends DialogFragment {
         }
         return null;
     }
+
     DialogInterface.OnCancelListener myOnCancelListener = new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialogInterface) {
@@ -117,8 +117,7 @@ public class MyDialogFragment extends DialogFragment {
         }
     };
 
-    public void showMessage(int exitCode, FragmentManager fragmentManager)
-    {
+    public void showMessage(int exitCode, FragmentManager fragmentManager) {
         Bundle args;
         args = new Bundle();
         switch (exitCode) {

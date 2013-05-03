@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class WellcomeActivity extends FragmentActivity {
     private final String LOG_TAG = "my_logs";
     Button btnSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,20 +25,20 @@ public class WellcomeActivity extends FragmentActivity {
         btnSettings.setOnClickListener(onClickListener);
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);
         String currentstr = txtVersion.getText().toString();
-        Log.d(LOG_TAG,currentstr);
-        txtVersion.setText(String.format(currentstr,getString(R.string.version)));
+        Log.d(LOG_TAG, currentstr);
+        txtVersion.setText(String.format(currentstr, getString(R.string.version)));
     }
+
     protected void onResume() {
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String selectedLanguage = sp.getString(getString(R.string.key_language_from), "NONE");
-        Log.d(LOG_TAG,"selected language = " + selectedLanguage);
+        Log.d(LOG_TAG, "selected language = " + selectedLanguage);
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
-        Log.d(LOG_TAG,"possible languages = " + allLanguages);
-        if (allLanguages.contains(selectedLanguage))
-        {
+        Log.d(LOG_TAG, "possible languages = " + allLanguages);
+        if (allLanguages.contains(selectedLanguage)) {
             this.finish();
         }
     }
@@ -51,8 +52,7 @@ public class WellcomeActivity extends FragmentActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (view.getId()==btnSettings.getId())
-            {
+            if (view.getId() == btnSettings.getId()) {
                 startSettingsActivity();
             }
         }

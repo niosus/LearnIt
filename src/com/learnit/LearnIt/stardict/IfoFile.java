@@ -27,48 +27,74 @@ import java.io.*;
 
 /**
  * This class is used for reading .ifo file.
+ *
  * @author kien
  */
 public class IfoFile {
 
-    /** constant of 500. */
+    /**
+     * constant of 500.
+     */
     private final int fixHundred = 500;
 
-    /** path to the ".ifo" file. */
+    /**
+     * path to the ".ifo" file.
+     */
     private String strFileName;
 
-    /** number of entries stored in ".idx" file. */
+    /**
+     * number of entries stored in ".idx" file.
+     */
     private long longWordCount = 0;
 
-    /** the type of file. */
+    /**
+     * the type of file.
+     */
     private String strSameTypeSequence = "";
 
-    /** size of ".idx" file. */
+    /**
+     * size of ".idx" file.
+     */
     private long longIdxFileSize = 0;
 
-    /** decide if ".ifo" file is loaded. */
+    /**
+     * decide if ".ifo" file is loaded.
+     */
     private boolean boolIsLoaded = false;
 
-    /** version f dictionary. */
+    /**
+     * version f dictionary.
+     */
     private String strVersion = "";
 
-    /** name of dictionary. */
+    /**
+     * name of dictionary.
+     */
     private String strBookname = "";
 
-    /** author of dictionary. */
+    /**
+     * author of dictionary.
+     */
     private String strAuthor = "";
 
-    /** dict url. */
+    /**
+     * dict url.
+     */
     private String strWebsite = "";
 
-    /** Description of book. */
+    /**
+     * Description of book.
+     */
     private String strDescription = "";
 
-    /** date. */
+    /**
+     * date.
+     */
     private String strDate = "";
 
     /**
      * Constructor.
+     *
      * @param fileName file name to the path of ifo file.
      */
     public IfoFile(String fileName) {
@@ -78,6 +104,7 @@ public class IfoFile {
 
     /**
      * Set the value for longWordCount.
+     *
      * @param longWordCount the longWordCount to set
      * @return longWordCount
      */
@@ -88,6 +115,7 @@ public class IfoFile {
 
     /**
      * Set the value for longIdxFileSize.
+     *
      * @param longIdxFileSize the longIdxFileSize to set
      * @return longIdxFileSize
      */
@@ -98,6 +126,7 @@ public class IfoFile {
 
     /**
      * Get value of longIdxFileSize.
+     *
      * @return the longIdxFileSize
      */
     public long getLongIdxFileSize() {
@@ -106,6 +135,7 @@ public class IfoFile {
 
     /**
      * Get value of longWordCount.
+     *
      * @return the longWordCount
      */
     public long getLongWordCount() {
@@ -114,6 +144,7 @@ public class IfoFile {
 
     /**
      * Set the value for boolIsLoaded.
+     *
      * @param boolIsLoaded the boolIsLoaded to set
      */
     public void setBoolIsLoaded(boolean boolIsLoaded) {
@@ -122,6 +153,7 @@ public class IfoFile {
 
     /**
      * Get value of boolIsLoaded.
+     *
      * @return the boolIsLoaded
      */
     public boolean isBoolIsLoaded() {
@@ -130,6 +162,7 @@ public class IfoFile {
 
     /**
      * Set the value for strBookname.
+     *
      * @param strBookname the strBookname to set
      */
     public void setStrBookname(String strBookname) {
@@ -138,6 +171,7 @@ public class IfoFile {
 
     /**
      * Get value of strBookname.
+     *
      * @return the strBookname
      */
     public String getStrBookname() {
@@ -146,6 +180,7 @@ public class IfoFile {
 
     /**
      * Set the value for strVersion.
+     *
      * @param strVersion the strVersion to set
      */
     public void setStrVersion(String strVersion) {
@@ -154,6 +189,7 @@ public class IfoFile {
 
     /**
      * Get value of strVersion.
+     *
      * @return the strVersion
      */
     public String getStrVersion() {
@@ -203,7 +239,7 @@ public class IfoFile {
             setBoolIsLoaded(getLongWordCount() > 0);
         } catch (Exception ex) {
 //            LOG.error("Loading file '" + strFileName + "'", ex);
-            Log.d("my_logs", "Loading file '" + strFileName + "'" + " "+ ex);
+            Log.d("my_logs", "Loading file '" + strFileName + "'" + " " + ex);
             ex.printStackTrace();
         }
     }
@@ -218,8 +254,9 @@ public class IfoFile {
 
     /**
      * find a long number follows the key in a string.
+     *
      * @param strKey the string key
-     * @param str string
+     * @param str    string
      * @return long
      */
     long getLongForKey(String strKey, String str) {
@@ -233,8 +270,9 @@ public class IfoFile {
 
     /**
      * find a string follows the key in a string.
+     *
      * @param strKey string key
-     * @param str string
+     * @param str    string
      * @return string
      */
     String getStringForKey(String strKey, String str) {
@@ -247,7 +285,7 @@ public class IfoFile {
         char[] strStr = str.toCharArray();
         int endPos = startPos - 1;
 
-        while ((endPos<strStr.length-1)&&(strStr[++endPos] != '\n') && (strStr[endPos] != '\0')) {
+        while ((endPos < strStr.length - 1) && (strStr[++endPos] != '\n') && (strStr[endPos] != '\0')) {
             // LOG.debug("Keep continue");
         }
         return new String(strStr, startPos, endPos - startPos);
@@ -255,6 +293,7 @@ public class IfoFile {
 
     /**
      * write info file according to a specific file name.
+     *
      * @param fileName path to .ifo file
      * @return true if success
      */
@@ -284,6 +323,7 @@ public class IfoFile {
 
     /**
      * return result of write(fileName).
+     *
      * @return true if write success
      */
     boolean write() {

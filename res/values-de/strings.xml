@@ -4,8 +4,6 @@
   -->
 
 
-
-
 <resources>
 
     <string name="app_name">LearnIt</string>
@@ -70,7 +68,6 @@
     <string name="pref_notifications_disabled">Benachrichtungen werden nicht gezeigt</string>
 
 
-
     <string name="db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
 
     <!--context menu strings-->
@@ -90,10 +87,15 @@
 
     <!--welcome-->
     <string name="instructions">
-        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt. \n
-        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
-        Das spart Ihnen Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten. \n</string>
-    <string name="quick_instructions">einfach auf die "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu lernen und klicken Sie auf "Zurück"</string>
+        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt.
+        \n
+        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die
+        mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
+        Das spart Ihnen Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten. \n
+    </string>
+    <string name="quick_instructions">einfach auf die "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu
+        lernen und klicken Sie auf "Zurück"
+    </string>
     <string name="quick_start">Für Einen Schnellen Start</string>
     <string name="welcome">Willkommen!</string>
     <string name="instructions_title">Version %s</string>
@@ -101,39 +103,52 @@
     <string name="instructions_method_text">
         Diese App ermöglicht es Ihnen, die Wörter zu lernen, auch wenn Sie denken, dass Sie zu faul sind.\n\n
         Das Verfahren ist einfach. \n\n
-        Sobald Sie neue Wörter zu Ihrem Wörterbuch hinzugefügt haben, beginnen sie erscheinen als Meldungen, um es unmöglich für Sie zu machen, sie zu verpassen. \n\n
+        Sobald Sie neue Wörter zu Ihrem Wörterbuch hinzugefügt haben, beginnen sie erscheinen als Meldungen, um es
+        unmöglich für Sie zu machen, sie zu verpassen. \n\n
         Der Klick auf eine Meldung zeigt die random Übersetzungen. \n\n
 
-        Die haupt Idee ist, dass die Meldungen nur durch die Auswahl der korrekten Übersetzung des Wortes löschen könnten. \n\n
+        Die haupt Idee ist, dass die Meldungen nur durch die Auswahl der korrekten Übersetzung des Wortes löschen
+        könnten. \n\n
 
-        Dieses ganze System zwingt Sie die Wörter zu wiederholen, auch wenn Sie das nicht machen wollen. Es funktioniert für mich jedenfalls. \n</string>
+        Dieses ganze System zwingt Sie die Wörter zu wiederholen, auch wenn Sie das nicht machen wollen. Es funktioniert
+        für mich jedenfalls. \n
+    </string>
     <string name="instructions_guess_trans_title">Übersetzung Erraten</string>
     <string name="instructions_guess_trans_text">
-        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt. \n
-        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
+        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt.
+        \n
+        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die
+        mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
         Das spart Ihnen Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten.\n
     </string>
 
     <string name="instructions_dict_help_title">WICHTIGE Informationen über Wörterbücher</string>
     <string name="instructions_dict_help_text">
-        To use the dictionary currently you would have to download and put it into your phone\'s memory manually as I have still not developed any way to do that automatically.\n\n
-        The dictionaries should be put in the sd card, in the folder "LearnIt" (you may want to click "export dictionary" inside the app - this will create the folder automatically)
+        To use the dictionary currently you would have to download and put it into your phone\'s memory manually as I
+        have still not developed any way to do that automatically.\n\n
+        The dictionaries should be put in the sd card, in the folder "LearnIt" (you may want to click "export
+        dictionary" inside the app - this will create the folder automatically)
         If you have any ideas, I would love to hear them.\n\n
         The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
         StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name "dict".\n\n
         So for German-English dict the path looks as follows:\n\n
         /SD_CARD/LearnIt/de-en/dict.ifo\n
         /SD_CARD/LearnIt/de-en/dict.idx\n
-        /SD_CARD/LearnIt/de-en/dict.dict\n</string>
+        /SD_CARD/LearnIt/de-en/dict.dict\n
+    </string>
 
     <string name="instructions_edit_words_help_title">Bearbeiten bestehender Worte</string>
     <string name="instructions_edit_words_help_text">
-        Während Sie auf "Würterbuch" Screen sind, und ein paar Wörte aus dem Wörterbuch werden gezeigt in der Liste, können Sie einfach lange auf sie klicken und bearbeiten / löschen.\n</string>
+        Während Sie auf "Würterbuch" Screen sind, und ein paar Wörte aus dem Wörterbuch werden gezeigt in der Liste,
+        können Sie einfach lange auf sie klicken und bearbeiten / löschen.\n
+    </string>
 
     <string name="instructions_thank_you_title">Vielen Dank!</string>
     <string name="instructions_thank_you_text">
-        Diese App ist nur mein Hobby-Projekt trotzdem, bedeutet es wirklich viel für mich, dass die Leute es echt verwenden.
-        Wenn Sie Feedback oder Anregungen haben, zögern Sie nicht mich zu kontaktieren. Es ist sehr wichtig für mich.\n</string>
+        Diese App ist nur mein Hobby-Projekt trotzdem, bedeutet es wirklich viel für mich, dass die Leute es echt
+        verwenden.
+        Wenn Sie Feedback oder Anregungen haben, zögern Sie nicht mich zu kontaktieren. Es ist sehr wichtig für mich.\n
+    </string>
     <string name="instr_go_to_settings">Einstellundgen</string>
 
 

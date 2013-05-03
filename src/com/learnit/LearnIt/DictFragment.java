@@ -29,7 +29,7 @@ public class DictFragment extends Fragment {
     private ImageButton btnClear;
     Utils utils;
 
-    ActionMode mActionMode=null;
+    ActionMode mActionMode = null;
 
 
     View v;
@@ -43,11 +43,10 @@ public class DictFragment extends Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         utils = new Utils();
-        Pair<String,String> langPair = utils.getCurrentLanguages(this.getActivity());
+        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
         Log.d(LOG_TAG, "onResume dict fragment: from - " + langPair.first + " to " + langPair.second);
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
     }
@@ -57,20 +56,18 @@ public class DictFragment extends Fragment {
         List<Map<String, String>> strings = new ArrayList<Map<String, String>>();
         if (word != null && !word.isEmpty()) {
             Log.d(LOG_TAG, String.format("search word by mask-%s", word));
-            strings=dbHelper.getWords(word);
+            strings = dbHelper.getWords(word);
         }
         adapter = new SimpleAdapter(this.getActivity(), strings,
                 android.R.layout.simple_list_item_2,
-                new String[] {"word", "translation" },
-                new int[] {android.R.id.text1, android.R.id.text2 });
+                new String[]{"word", "translation"},
+                new int[]{android.R.id.text1, android.R.id.text2});
         ((ListView) this.getView().findViewById(R.id.list_of_words))
                 .setAdapter(adapter);
     }
 
 
-
-    public void showDialog(String queryWord, String translation, int dialogType)
-    {
+    public void showDialog(String queryWord, String translation, int dialogType) {
         MyDialogFragment frag = new MyDialogFragment();
         Bundle args = new Bundle();
         args.putInt(MyDialogFragment.ID_TAG, dialogType);
@@ -91,27 +88,19 @@ public class DictFragment extends Fragment {
     }
 
 
-    private String stripFromArticle(String str)
-    {
+    private String stripFromArticle(String str) {
         String[] tempArray = str.split("\\s");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-        if (tempArray.length==1)
-        {
+        if (tempArray.length == 1) {
             return str;
-        }
-        else if (tempArray.length>1)
-        {
-            if (isArticle(tempArray[0]))
-            {
+        } else if (tempArray.length > 1) {
+            if (isArticle(tempArray[0])) {
                 return utils.cutAwayFirstWord(str);
-            }
-            else if (isPrefix(tempArray[0]))
-            {
+            } else if (isPrefix(tempArray[0])) {
                 return utils.cutAwayFirstWord(str);
             }
             return str;
-        }
-        else return null;
+        } else return null;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,12 +113,10 @@ public class DictFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 getWordsByPattern(s.toString());
-                if (!s.toString().equals("") && s.toString()!=null)
-                {
+                if (!s.toString().equals("") && s.toString() != null) {
                     btnClear.setVisibility(View.VISIBLE);
                 }
-                if (s.length()==0)
-                {
+                if (s.length() == 0) {
                     btnClear.setVisibility(View.INVISIBLE);
                 }
             }
@@ -172,19 +159,16 @@ public class DictFragment extends Fragment {
                 String queryWord = maplist.get("word");
                 Log.d(LOG_TAG, queryWord);
                 String translation = maplist.get("translation");
-                showDialog(queryWord,translation, MyDialogFragment.DIALOG_SHOW_WORD);
+                showDialog(queryWord, translation, MyDialogFragment.DIALOG_SHOW_WORD);
             }
         });
 
         return v;
     }
 
-    private class MyBtnTouchListener implements View.OnClickListener
-    {
-        public void onClick(View v)
-        {
-            switch (v.getId())
-            {
+    private class MyBtnTouchListener implements View.OnClickListener {
+        public void onClick(View v) {
+            switch (v.getId()) {
                 case R.id.btn_search_clear:
                     edtWord.setText("");
                     btnClear.setVisibility(View.INVISIBLE);
@@ -194,22 +178,21 @@ public class DictFragment extends Fragment {
         }
     }
 
-    void startEditWordActivity(String word)
-    {
+    void startEditWordActivity(String word) {
         Intent intent = new Intent(this.getActivity(), EditWord.class);
-        intent.putExtra("word",word);
+        intent.putExtra("word", word);
         startActivity(intent);
-        Log.d(LOG_TAG,"start info activity called");
+        Log.d(LOG_TAG, "start info activity called");
     }
 
 
-    private class ListActionMode implements ActionMode.Callback
-    {
+    private class ListActionMode implements ActionMode.Callback {
         private View v;
 
         public ListActionMode(View view) {
             v = view;
         }
+
         // Called when the action mode is created; startActionMode() was called
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -231,7 +214,7 @@ public class DictFragment extends Fragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             TextView tv = (TextView) v.findViewById(android.R.id.text1);
             String queryWord = tv.getText().toString();
-            Log.d(LOG_TAG,"item selected = " + queryWord);
+            Log.d(LOG_TAG, "item selected = " + queryWord);
             switch (item.getItemId()) {
                 case R.id.context_menu_edit:
                     startEditWordActivity(queryWord);
@@ -239,9 +222,8 @@ public class DictFragment extends Fragment {
                     mode.finish(); // Action picked, so close the CAB
                     return true;
                 case R.id.context_menu_delete:
-                    if (dbHelper.deleteWord(stripFromArticle(queryWord)))
-                    {
-                        showDialog(queryWord,null,MyDialogFragment.DIALOG_WORD_DELETED);
+                    if (dbHelper.deleteWord(stripFromArticle(queryWord))) {
+                        showDialog(queryWord, null, MyDialogFragment.DIALOG_WORD_DELETED);
                         edtWord.setText("");
                     }
                     mode.finish();

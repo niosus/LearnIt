@@ -27,7 +27,7 @@ public class TimePreference extends DialogPreference {
 
     public TimePreference(Context context, AttributeSet attributeSet) {
 //        this(context, attributeSet, 0);
-        super(context,attributeSet);
+        super(context, attributeSet);
         setPositiveButtonText(R.string.ok);
         setNegativeButtonText(R.string.cancel);
         calendar = new GregorianCalendar();

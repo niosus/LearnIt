@@ -26,49 +26,39 @@ public class NotificationBuilder {
     static SharedPreferences sp;
 
 
-
     public static final int idModificator = 1552235; // some number
 
 
-    private static ArrayList<ArticleWordIdStruct> getRandWordsFromDB(int isNoun, int numOfNotif, Context context)
-    {
+    private static ArrayList<ArticleWordIdStruct> getRandWordsFromDB(int isNoun, int numOfNotif, Context context) {
         DBHelper dbHelper = new DBHelper(context, DBHelper.DB_WORDS);
         return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
 
-    private static int setWayToLearn(Context context, SharedPreferences sp)
-    {
+    private static int setWayToLearn(Context context, SharedPreferences sp) {
         Random rand = new Random();
         int wayToLearn = Integer.parseInt(sp.getString(context.getString(R.string.key_way_to_learn), "3"));
-        if (wayToLearn==LEARN_MIXED)
-        {
-            wayToLearn = rand.nextInt(2)+1;
+        if (wayToLearn == LEARN_MIXED) {
+            wayToLearn = rand.nextInt(2) + 1;
         }
         return wayToLearn;
     }
 
-    private static int setNumberOfWords(Context context, SharedPreferences sp)
-    {
+    private static int setNumberOfWords(Context context, SharedPreferences sp) {
         return Integer.parseInt(sp.getString(context.getString(R.string.key_num_of_words), "5"));
     }
 
-    private static int setDirectionOfTranslation(Context context, SharedPreferences sp)
-    {
+    private static int setDirectionOfTranslation(Context context, SharedPreferences sp) {
         return Integer.parseInt(sp.getString(context.getString(R.string.key_direction_of_trans), "3"));
     }
 
-    private static void deleteOldNotifications(Context context, String old_ids)
-    {
+    private static void deleteOldNotifications(Context context, String old_ids) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Log.d(LOG_TAG, "old ids = " + old_ids);
-        if (null!=old_ids)
-        {
+        if (null != old_ids) {
             String[] ids = old_ids.split(" ");
-            for (String id: ids)
-            {
-                if (null!=id && !id.equals(""))
-                {
-                    Log.d(LOG_TAG,"trying to delete notif with id " + Integer.parseInt(id));
+            for (String id : ids) {
+                if (null != id && !id.equals("")) {
+                    Log.d(LOG_TAG, "trying to delete notif with id " + Integer.parseInt(id));
                     mNotificationManager.cancel(Integer.parseInt(id));
                 }
             }
@@ -76,9 +66,8 @@ public class NotificationBuilder {
     }
 
 
-    public static void show(Context context)
-    {
-        Log.d(LOG_TAG,"context class = " + context.getClass().getName());
+    public static void show(Context context) {
+        Log.d(LOG_TAG, "context class = " + context.getClass().getName());
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         String old_ids = sp.getString("current_ids", "");
         deleteOldNotifications(context, old_ids);
@@ -88,24 +77,22 @@ public class NotificationBuilder {
         Log.d(LOG_TAG, "number of notifications = " + numberOfWords);
         int isNoun;
         int directionOfTrans;
-        switch (wayToLearn)
-        {
+        switch (wayToLearn) {
             case LEARN_TRANSLATIONS:
                 directionOfTrans = setDirectionOfTranslation(context, sp);
-                isNoun=Constants.MIXED;
+                isNoun = Constants.MIXED;
                 break;
             case LEARN_ARTICLES:
                 directionOfTrans = Constants.FROM_FOREIGN_TO_MY;
-                isNoun=Constants.ONLY_NOUNS;
+                isNoun = Constants.ONLY_NOUNS;
                 break;
             default:
-                isNoun=Constants.MIXED;
+                isNoun = Constants.MIXED;
                 directionOfTrans = setDirectionOfTranslation(context, sp);
         }
         ArrayList<ArticleWordIdStruct> randWords = getRandWordsFromDB(isNoun, numberOfWords, context);
-        for (int i = randWords.size(); i>0; --i)
-        {
-            Log.d(LOG_TAG,"isNoun = " + isNoun +" "+randWords.get(i-1).word);
+        for (int i = randWords.size(); i > 0; --i) {
+            Log.d(LOG_TAG, "isNoun = " + isNoun + " " + randWords.get(i - 1).word);
             CreateNotification(i, randWords.get(i - 1), wayToLearn, directionOfTrans, context);
         }
         SharedPreferences.Editor editor = sp.edit();
@@ -114,12 +101,11 @@ public class NotificationBuilder {
     }
 
     private static boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, int wayToLearn, int mDirectionOfTrans, Context context) {
-        Log.d(LOG_TAG,"starting to create notification");
+        Log.d(LOG_TAG, "starting to create notification");
         NotificationCompat.Builder mBuilder = null;
         int currentDirection;
         Intent resultIntent;
-        switch (wayToLearn)
-        {
+        switch (wayToLearn) {
             case LEARN_TRANSLATIONS:
                 resultIntent = new Intent(context, HomeworkActivity.class);
                 break;
@@ -129,7 +115,7 @@ public class NotificationBuilder {
             default:
                 resultIntent = new Intent(context, HomeworkActivity.class);
         }
-        int mId = (int)struct.id + idModificator;
+        int mId = (int) struct.id + idModificator;
         resultIntent.putExtra("id", mId);
         resultIntent.putExtra("word", struct.word);
         resultIntent.putExtra("article", struct.article);
@@ -138,14 +124,13 @@ public class NotificationBuilder {
 
         currentIds = currentIds + mId + " ";
 
-        switch (mDirectionOfTrans)
-        {
+        switch (mDirectionOfTrans) {
             case Constants.MIXED:
                 Random rand = new Random();
-                currentDirection = rand.nextInt(2)+1;
-                if (Constants.FROM_MY_TO_FOREIGN==currentDirection)
+                currentDirection = rand.nextInt(2) + 1;
+                if (Constants.FROM_MY_TO_FOREIGN == currentDirection)
                     mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
-                else if (Constants.FROM_FOREIGN_TO_MY==currentDirection)
+                else if (Constants.FROM_FOREIGN_TO_MY == currentDirection)
                     mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notif_text));
 
                 resultIntent.putExtra("direction", currentDirection);
@@ -155,14 +140,13 @@ public class NotificationBuilder {
                 resultIntent.putExtra("direction", mDirectionOfTrans);
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                mBuilder =  new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
+                mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
                 resultIntent.putExtra("direction", mDirectionOfTrans);
                 break;
             default:
                 return false;
         }
-        if (null!= mBuilder)
-        {
+        if (null != mBuilder) {
             switch (wordNum) {
                 case 1:
                     mBuilder.setSmallIcon(R.drawable.ic_stat_one);
@@ -211,9 +195,7 @@ public class NotificationBuilder {
             // mId allows you to update the notification later on.
             mNotificationManager.notify(mId, mBuilder.build());
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
 

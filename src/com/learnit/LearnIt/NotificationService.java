@@ -49,6 +49,7 @@ public class NotificationService extends Service {
         handleIntent(intent);
         return START_NOT_STICKY;
     }
+
     public void onDestroy() {
         super.onDestroy();
         mWakeLock.release();

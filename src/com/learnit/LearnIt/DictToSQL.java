@@ -3,7 +3,6 @@
  */
 
 
-
 package com.learnit.LearnIt;
 
 import android.app.Dialog;
@@ -38,6 +37,7 @@ import java.util.Locale;
 public class DictToSQL extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
     public static boolean home_button_active = true;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fragment fragTemp = new ResultFragment();
@@ -56,6 +56,7 @@ public class DictToSQL extends FragmentActivity {
         TextView tv_title, tv_dict_name, tv_dict_info, tv_loaded, tv_countdown;
         private final String LOG_TAG = "my_logs";
         MyTask mt;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -74,51 +75,45 @@ public class DictToSQL extends FragmentActivity {
         }
 
         @Override
-        public void onResume()
-        {
+        public void onResume() {
             super.onResume();
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
-            selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
+            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
+            selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
             mt = new MyTask();
-            mt.action=1;
+            mt.action = 1;
             mt.execute();
         }
 
-        private void getDict()
-        {
+        private void getDict() {
             File sd = Environment.getExternalStorageDirectory();
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from),"NONE");
-            selectedLanguageTo = sp.getString(getString(R.string.key_language_to),"NONE");
+            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
+            selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
             Resources res = getResources();
             String[] languages = res.getStringArray(R.array.values_languages_from);
             String allLanguages = Arrays.toString(languages);
-            if (allLanguages.contains(selectedLanguageTo))
-            {
+            if (allLanguages.contains(selectedLanguageTo)) {
                 currentLanguage = selectedLanguageTo;
-            }
-            else
-            {
+            } else {
                 currentLanguage = Locale.getDefault().getLanguage();
             }
-            Log.d(LOG_TAG,"possible languages = " + allLanguages + "\n" + currentLanguage);
-            if (allLanguages.contains(selectedLanguageFrom))
-            {
-                dict=null;
+            Log.d(LOG_TAG, "possible languages = " + allLanguages + "\n" + currentLanguage);
+            if (allLanguages.contains(selectedLanguageFrom)) {
+                dict = null;
                 sd = new File(sd, "LearnIt");
-                sd = new File(sd, selectedLanguageFrom +"-"+currentLanguage);
+                sd = new File(sd, selectedLanguageFrom + "-" + currentLanguage);
                 sd = new File(sd, "dict.ifo");
                 dict = new StarDict(sd.getPath());
-                if (!dict.boolAvailable)
-                {
-                    dict=null;
+                if (!dict.boolAvailable) {
+                    dict = null;
                 }
             }
         }
 
-        class ProgressDialogFragment extends DialogFragment{
+        class ProgressDialogFragment extends DialogFragment {
             ProgressDialog dialog;
+
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 dialog = new ProgressDialog(getActivity());
@@ -128,33 +123,33 @@ public class DictToSQL extends FragmentActivity {
                 dialog.setIndeterminate(true);
                 return dialog;
             }
-            public void setProgress(int i)
-            {
+
+            public void setProgress(int i) {
                 dialog.setProgress(i);
             }
-            public void setText(String text)
-            {
+
+            public void setText(String text) {
                 dialog.setMessage(text);
             }
-            public void setIndeterminate(boolean bool)
-            {
+
+            public void setIndeterminate(boolean bool) {
                 dialog.setIndeterminate(bool);
             }
         }
 
-        protected void finishActivity()
-        {
+        protected void finishActivity() {
             getActivity().finish();
         }
 
         class MyTask extends AsyncTask<Void, Integer, List<String>> {
-            public int action=0;
+            public int action = 0;
             SQLiteDatabase db;
             ProgressDialogFragment dialog;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                home_button_active=false;
+                home_button_active = false;
                 dialog = new ProgressDialogFragment();
                 dialog.setCancelable(false);
                 dialog.show(getSupportFragmentManager(), "MyDialog");
@@ -175,27 +170,25 @@ public class DictToSQL extends FragmentActivity {
             protected List<String> doInBackground(Void... word) {
                 try {
                     getDict();
-                    if (null==dict)
-                    {
+                    if (null == dict) {
                         List<String> list = new ArrayList<String>();
                         list.add(getString(R.string.dict_sql_no_dict));
                         Resources res = getResources();
                         String[] language_codes = res.getStringArray(R.array.values_languages_from);
                         String[] languages = res.getStringArray(R.array.entries_languages_from);
-                        String langFromFull =  languages[Arrays.binarySearch(language_codes,selectedLanguageFrom.toLowerCase())];
-                        String langToFull =  languages[Arrays.binarySearch(language_codes,currentLanguage.toLowerCase())];
-                        list.add(langFromFull+"-"+langToFull);
+                        String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom.toLowerCase())];
+                        String langToFull = languages[Arrays.binarySearch(language_codes, currentLanguage.toLowerCase())];
+                        list.add(langFromFull + "-" + langToFull);
                         list.add("");
                         list.add("");
                         return list;
                     }
                     runOnUiThread(changeMessage);
                     int numOfWords = dict.getTotalWords();
-                    String sql = "INSERT INTO "+DBHelper.DB_DICT_FROM+" ("+dbHelper.DICT_OFFSET_COLUMN_NAME +", "+dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME +", "+dbHelper.WORD_COLUMN_NAME+")  VALUES (?, ?, ?)";
+                    String sql = "INSERT INTO " + DBHelper.DB_DICT_FROM + " (" + dbHelper.DICT_OFFSET_COLUMN_NAME + ", " + dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", " + dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
                     SQLiteStatement stmt = db.compileStatement(sql);
                     db.beginTransaction();
-                    for (int i=0; i<numOfWords; ++i)
-                    {
+                    for (int i = 0; i < numOfWords; ++i) {
                         Pair<Long, Long> position = dict.findWordMemoryOffsets(i);
                         String wordTemp = dict.getWordByIndex(i);
                         stmt.bindLong(1, position.first);
@@ -203,8 +196,8 @@ public class DictToSQL extends FragmentActivity {
                         stmt.bindString(3, wordTemp);
                         stmt.execute();
                         stmt.clearBindings();
-                        float ratio = (float)i / numOfWords;
-                        int percent = (int)(ratio*100);
+                        float ratio = (float) i / numOfWords;
+                        int percent = (int) (ratio * 100);
                         publishProgress(percent);
                     }
                     db.setTransactionSuccessful();
@@ -214,16 +207,14 @@ public class DictToSQL extends FragmentActivity {
                     Resources res = getResources();
                     String[] language_codes = res.getStringArray(R.array.values_languages_from);
                     String[] languages = res.getStringArray(R.array.entries_languages_from);
-                    String langFromFull =  languages[Arrays.binarySearch(language_codes,selectedLanguageFrom.toLowerCase())];
-                    String langToFull =  languages[Arrays.binarySearch(language_codes,currentLanguage.toLowerCase())];
+                    String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom.toLowerCase())];
+                    String langToFull = languages[Arrays.binarySearch(language_codes, currentLanguage.toLowerCase())];
                     list.add(getString(R.string.dict_sql_title));
                     list.add(dict.getDictName());
                     list.add(String.format(getString(R.string.dict_sql_version), langFromFull, langToFull, dict.getDictVersion()));
                     list.add(getString(R.string.dict_sql_success));
                     return list;
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e(LOG_TAG, "error" + e.getMessage());
                     return null;
                 }
@@ -240,12 +231,12 @@ public class DictToSQL extends FragmentActivity {
             @Override
             protected void onPostExecute(List<String> item) {
                 super.onPostExecute(item);
-                home_button_active=true;
+                home_button_active = true;
                 tv_title.setText(item.get(0));
                 tv_dict_name.setText(item.get(1));
                 tv_dict_info.setText(item.get(2));
                 tv_loaded.setText(item.get(3));
-                DBHelper.DB_WORDS="myDB"+selectedLanguageFrom+currentLanguage;
+                DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
                 dialog.dismiss();
                 new CountDownTimer(10000, 1000) {
 

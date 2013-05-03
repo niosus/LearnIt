@@ -5,18 +5,24 @@ package com.learnit.LearnIt.stardict;
 
 /**
  * This class is used to store word and its index.
+ *
  * @author kien
  */
 public class Word {
 
-    /** Word. */
+    /**
+     * Word.
+     */
     private String strWord = "";
 
-    /** index. */
+    /**
+     * index.
+     */
     private int index = -1;
 
     /**
      * Set the value for index.
+     *
      * @param index the index to set
      */
     public void setIndex(int index) {
@@ -25,6 +31,7 @@ public class Word {
 
     /**
      * Get value of index.
+     *
      * @return the index
      */
     public int getIndex() {
@@ -33,6 +40,7 @@ public class Word {
 
     /**
      * Set the value for strWord.
+     *
      * @param strWord the strWord to set
      */
     public void setStrWord(String strWord) {
@@ -41,6 +49,7 @@ public class Word {
 
     /**
      * Get value of strWord.
+     *
      * @return the strWord
      */
     public String getStrWord() {

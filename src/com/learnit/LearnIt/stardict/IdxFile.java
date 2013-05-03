@@ -26,62 +26,96 @@ import java.util.List;
 
 /**
  * This Class is used for reading .idx file.
+ *
  * @author kien
  */
 public class IdxFile {
-    /** constant of 0x000000FF. */
+    /**
+     * constant of 0x000000FF.
+     */
     private final int byteFirst = 0x000000FF;
 
-    /** constant of 0x0000FF00. */
+    /**
+     * constant of 0x0000FF00.
+     */
     private final int secondByte = 0x0000FF00;
 
-    /** constant of 0x00FF0000. */
+    /**
+     * constant of 0x00FF0000.
+     */
     private final int thirdByte = 0x00FF0000;
 
-    /** constant of 0xFF000000. */
+    /**
+     * constant of 0xFF000000.
+     */
     private final int fourthByte = 0xFF000000;
 
-    /** constant of 0xFFFFFFFFL. */
+    /**
+     * constant of 0xFFFFFFFFL.
+     */
     private final long fixthByte = 0xFFFFFFFFL;
 
-    /** constant of number 3. */
+    /**
+     * constant of number 3.
+     */
     private final int noThree = 3;
 
-    /** constant of number 8. */
+    /**
+     * constant of number 8.
+     */
     private final int noEight = 8;
 
-    /** constant of number 9. */
+    /**
+     * constant of number 9.
+     */
     private final int noNine = 9;
 
-    /** constant of number 16. */
+    /**
+     * constant of number 16.
+     */
     private final int noSixteen = 16;
 
-    /** constant of number 24. */
+    /**
+     * constant of number 24.
+     */
     private final int noTwentyFour = 24;
 
-    /** constant of number 4. */
+    /**
+     * constant of number 4.
+     */
     private final int aByte = 4;
 
-    /** path to the ".idx" file. */
+    /**
+     * path to the ".idx" file.
+     */
     private String strFileName;
 
-    /** decide if the properties are loaded. */
+    /**
+     * decide if the properties are loaded.
+     */
     private boolean boolIsLoaded = false;
 
-    /** number of word. */
+    /**
+     * number of word.
+     */
     private long longWordCount;
 
-    /** File size. */
+    /**
+     * File size.
+     */
     private long longIdxFileSize;
 
-    /** store the list of entries. */
+    /**
+     * store the list of entries.
+     */
     private List<WordEntry> entryList;
 
     /**
      * constructor.
-     * @param fileName path to .idx file.
+     *
+     * @param fileName  path to .idx file.
      * @param wordCount number of word.
-     * @param fileSize the file size.
+     * @param fileSize  the file size.
      */
     public IdxFile(String fileName, long wordCount, long fileSize) {
         longWordCount = wordCount;
@@ -92,6 +126,7 @@ public class IdxFile {
 
     /**
      * accessor of longIdxFileSize.
+     *
      * @return longIdxFileSize
      */
     public long getLongIdxFileSize() {
@@ -100,6 +135,7 @@ public class IdxFile {
 
     /**
      * accessor of boolIsLoaded.
+     *
      * @return boolIsLoaded
      */
     public boolean isLoaded() {
@@ -108,6 +144,7 @@ public class IdxFile {
 
     /**
      * accessor of longWordCount.
+     *
      * @return longWordCount
      */
     public long getLongWordCount() {
@@ -116,6 +153,7 @@ public class IdxFile {
 
     /**
      * accessor of entryList.
+     *
      * @return entryList
      */
     public List<WordEntry> getEntryList() {
@@ -124,6 +162,7 @@ public class IdxFile {
 
     /**
      * accessor of strFileName.
+     *
      * @return strFileName
      */
     public String getStrFileName() {
@@ -180,7 +219,8 @@ public class IdxFile {
 
     /**
      * convert 4 char array to an integer.
-     * @param str array of byte that is read from .idx file.
+     *
+     * @param str      array of byte that is read from .idx file.
      * @param beginPos the position of a word.
      * @return a long.
      */
@@ -196,6 +236,7 @@ public class IdxFile {
 
     /**
      * convert an integer to a char array.
+     *
      * @param val an integer
      * @return a char array
      */
@@ -210,6 +251,7 @@ public class IdxFile {
 
     /**
      * return the index of a word in entry list.
+     *
      * @param word the chosen word
      * @return index of this word
      */
@@ -245,6 +287,7 @@ public class IdxFile {
 
     /**
      * Write to an .idx file.
+     *
      * @param fileName path to an .idx file
      * @return true if write success
      */
@@ -271,6 +314,7 @@ public class IdxFile {
 
     /**
      * return the result of the write(filename)function.
+     *
      * @return true if write success.
      */
     public boolean write() {
@@ -279,9 +323,10 @@ public class IdxFile {
 
     /**
      * add word, offset, size to the entryList.
-     * @param word the chosen word.
+     *
+     * @param word   the chosen word.
      * @param offset the size of .dict file.
-     * @param size the size of word meaning.
+     * @param size   the size of word meaning.
      * @param addPos position of added word
      * @return true if success.
      */
@@ -310,6 +355,7 @@ public class IdxFile {
 
     /**
      * remove a word from entryList.
+     *
      * @param word the chosen word.
      * @return true if remove success.
      */

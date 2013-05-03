@@ -19,12 +19,11 @@ public class ArticleWordIdStruct {
     public String translation;
     public long id;
 
-    ArticleWordIdStruct(String article, String prefix, String word, String translation, long id)
-        {
-            this.article = article;
-            this.prefix = prefix;
-            this.word = word;
-            this.translation = translation;
-            this.id = id;
-        }
+    ArticleWordIdStruct(String article, String prefix, String word, String translation, long id) {
+        this.article = article;
+        this.prefix = prefix;
+        this.word = word;
+        this.translation = translation;
+        this.id = id;
+    }
 }

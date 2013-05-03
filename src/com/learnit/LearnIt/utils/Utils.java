@@ -18,7 +18,8 @@ import java.util.regex.Pattern;
 
 public class Utils {
     public static final String LOG_TAG = "my_logs";
-    boolean isArticle( Context context, String article) {
+
+    boolean isArticle(Context context, String article) {
 
         String articles = context.getString(R.string.articles_de);
         return articles.contains(article.toLowerCase());
@@ -29,66 +30,51 @@ public class Utils {
         return prefix.contains(word.toLowerCase());
     }
 
-    public String cutAwayFirstWord(String input)
-    {
+    public String cutAwayFirstWord(String input) {
         return input.split("\\s", 2)[1];
     }
 
 
-    public String stripFromArticle(Context context, String str)
-    {
+    public String stripFromArticle(Context context, String str) {
         String[] tempArray = str.split("\\s");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-        if (tempArray.length==1)
-        {
+        if (tempArray.length == 1) {
             return str;
-        }
-        else if (tempArray.length>1)
-        {
-            if (isArticle(context, tempArray[0]))
-            {
+        } else if (tempArray.length > 1) {
+            if (isArticle(context, tempArray[0])) {
                 return cutAwayFirstWord(str);
-            }
-            else if (isPrefix(context, tempArray[0]))
-            {
+            } else if (isPrefix(context, tempArray[0])) {
                 return cutAwayFirstWord(str);
             }
             return str;
-        }
-        else return null;
+        } else return null;
     }
 
-    public String capitalize(String str)
-    {
-        if (str.length()>0)
+    public String capitalize(String str) {
+        if (str.length() > 0)
             return str.substring(0, 1).toUpperCase() + str.substring(1);
         else
             return null;
     }
 
-    public Pair<String,String> getCurrentLanguages(Context context)
-    {
+    public Pair<String, String> getCurrentLanguages(Context context) {
         String currentLanguage;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from),"NONE");
-        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to),"NONE");
+        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
+        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to), "NONE");
         Resources res = context.getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
-        if (allLanguages.contains(selectedLanguageTo))
-        {
+        if (allLanguages.contains(selectedLanguageTo)) {
             currentLanguage = selectedLanguageTo;
-        }
-        else
-        {
+        } else {
             currentLanguage = Locale.getDefault().getLanguage();
         }
-        DBHelper.DB_WORDS = "myDB"+selectedLanguageFrom+currentLanguage;
-        return new Pair<String, String>(selectedLanguageFrom,currentLanguage);
+        DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
+        return new Pair<String, String>(selectedLanguageFrom, currentLanguage);
     }
 
-    public String getGermanArticle(String sex)
-    {
+    public String getGermanArticle(String sex) {
         if ("m".equals(sex))
             return "der";
         else if ("f".equals(sex))
@@ -98,11 +84,9 @@ public class Utils {
         else return null;
     }
 
-    public ArrayList<String> getHelpWordsFromDictOutput(String str)
-    {
+    public ArrayList<String> getHelpWordsFromDictOutput(String str) {
         ArrayList<String> tagValues = new ArrayList<String>();
-        if (str.contains("<dtrn>"))
-        {
+        if (str.contains("<dtrn>")) {
             String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
             String selectDtrn = "<dtrn>(.+?)</dtrn>";
             Pattern p;
@@ -117,20 +101,15 @@ public class Utils {
             matcher = p.matcher(str);
             while (matcher.find()) {
                 String[] temp = matcher.group(1).split("\\s*(,|;)\\s*");
-                for (String s:temp)
-                {
+                for (String s : temp) {
                     tagValues.add(s);
                 }
             }
             return tagValues;
-        }
-        else
-        {
+        } else {
             String[] temp = str.split("\\s*(\\n|,)\\s*");
-            for (String s:temp)
-            {
-                if (!s.equals(temp[0]))
-                {
+            for (String s : temp) {
+                if (!s.equals(temp[0])) {
                     tagValues.add(s);
                 }
             }
@@ -138,45 +117,38 @@ public class Utils {
         }
     }
 
-    public String getArticleFromDictOutput(String str, String languageFrom)
-    {
+    public String getArticleFromDictOutput(String str, String languageFrom) {
         String selectSexI = "<i>(m|f|n)</i>";
         String selectSexAbr = "<abr>(m|f|n)</abr>";
         Pattern p;
         Matcher matcher;
-        if (languageFrom.equals("de"))
-        {
+        if (languageFrom.equals("de")) {
             p = Pattern.compile(selectSexI);
             matcher = p.matcher(str);
             String sexI = null;
             String sexAbr = null;
             while (matcher.find()) {
                 sexI = matcher.group(1);
-                Log.d(LOG_TAG,"sexI = " + sexI);
+                Log.d(LOG_TAG, "sexI = " + sexI);
                 break;
             }
             p = Pattern.compile(selectSexAbr);
             matcher = p.matcher(str);
             while (matcher.find()) {
                 sexAbr = matcher.group(1);
-                Log.d(LOG_TAG,"sexAbr = " + sexAbr);
+                Log.d(LOG_TAG, "sexAbr = " + sexAbr);
             }
-            String article=null;
-            if (null!=sexI)
-                article=this.getGermanArticle(sexI);
-            else if (null!=sexAbr)
-                article=this.getGermanArticle(sexAbr);
-            if (null!=article)
-            {
+            String article = null;
+            if (null != sexI)
+                article = this.getGermanArticle(sexI);
+            else if (null != sexAbr)
+                article = this.getGermanArticle(sexAbr);
+            if (null != article) {
                 return article;
-            }
-            else
-            {
+            } else {
                 return null;
             }
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
