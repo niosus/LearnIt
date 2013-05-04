@@ -7,7 +7,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +21,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import com.learnit.LearnIt.fragments.MyDialogFragment;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.HashMap;

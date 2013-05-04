@@ -7,7 +7,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -23,6 +23,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import com.learnit.LearnIt.*;
+import com.learnit.LearnIt.activities.MainActivity;
+import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 

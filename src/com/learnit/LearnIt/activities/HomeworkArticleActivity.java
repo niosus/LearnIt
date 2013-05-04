@@ -7,7 +7,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -20,6 +20,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.learnit.LearnIt.fragments.MyDialogFragment;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 
 import java.util.ArrayList;
 import java.util.Random;

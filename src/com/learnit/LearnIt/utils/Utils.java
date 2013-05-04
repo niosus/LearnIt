@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
-import com.learnit.LearnIt.DBHelper;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.R;
 
 import java.util.ArrayList;

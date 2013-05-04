@@ -1,10 +1,11 @@
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.os.PowerManager;
+import com.learnit.LearnIt.data_types.NotificationBuilder;
 
 public class NotificationService extends Service {
     public String TAG = "wake_lock_tag";

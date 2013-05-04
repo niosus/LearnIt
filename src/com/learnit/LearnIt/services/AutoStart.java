@@ -1,4 +1,4 @@
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 

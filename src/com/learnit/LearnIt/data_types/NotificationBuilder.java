@@ -1,4 +1,4 @@
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.data_types;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,6 +10,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.activities.HomeworkActivity;
+import com.learnit.LearnIt.activities.HomeworkArticleActivity;
+import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 
 import java.util.ArrayList;

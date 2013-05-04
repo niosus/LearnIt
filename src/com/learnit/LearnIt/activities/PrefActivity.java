@@ -6,7 +6,7 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -20,6 +20,9 @@ import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 import android.widget.Toast;
+import com.learnit.LearnIt.services.NotificationService;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.views.TimePreference;
 import com.learnit.LearnIt.utils.Utils;
 
 public class PrefActivity extends PreferenceActivity {

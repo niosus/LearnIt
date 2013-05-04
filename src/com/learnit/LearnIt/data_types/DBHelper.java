@@ -6,7 +6,7 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.data_types;
 
 import android.app.NotificationManager;
 import android.content.ContentValues;
@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.widget.Toast;
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
 
 import java.io.File;
@@ -33,17 +34,17 @@ public class DBHelper extends SQLiteOpenHelper {
     final static int DB_VERSION = 1;
     public static final String LOG_TAG = "my_logs";
     public static String DB_WORDS = "myDB"; //gets changed when the languages are updated
-    final static String DB_DICT_FROM = "dictFROM";
-    final String WORD_COLUMN_NAME = "word";
-    final String ID_COLUMN_NAME = "id";
-    final String ARTICLE_COLUMN_NAME = "article";
-    final String WEIGHT_COLUMN_NAME = "weight";
-    final String PREFIX_COLUMN_NAME = "prefix";
-    final String TRANSLATION_COLUMN_NAME = "translation";
+    final public static String DB_DICT_FROM = "dictFROM";
+    final public String WORD_COLUMN_NAME = "word";
+    final public String ID_COLUMN_NAME = "id";
+    final public String ARTICLE_COLUMN_NAME = "article";
+    final public String WEIGHT_COLUMN_NAME = "weight";
+    final public String PREFIX_COLUMN_NAME = "prefix";
+    final public String TRANSLATION_COLUMN_NAME = "translation";
 
 
-    final String DICT_OFFSET_COLUMN_NAME = "start_offset";
-    final String DICT_CHUNK_SIZE_COLUMN_NAME = "end_offset";
+    final public String DICT_OFFSET_COLUMN_NAME = "start_offset";
+    final public String DICT_CHUNK_SIZE_COLUMN_NAME = "end_offset";
 
     String currentDBName;
 

@@ -6,7 +6,7 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +16,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 
 public class MyDialogFragment extends DialogFragment {
     public static final String ID_TAG = "id";

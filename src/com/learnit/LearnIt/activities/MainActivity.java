@@ -7,7 +7,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +24,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.fragments.AddWordFragment;
+import com.learnit.LearnIt.fragments.DictFragment;
+import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;

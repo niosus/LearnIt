@@ -8,7 +8,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.data_types;
 
 
 public class ArticleWordIdStruct {
@@ -19,7 +19,7 @@ public class ArticleWordIdStruct {
     public String translation;
     public long id;
 
-    ArticleWordIdStruct(String article, String prefix, String word, String translation, long id) {
+    public ArticleWordIdStruct(String article, String prefix, String word, String translation, long id) {
         this.article = article;
         this.prefix = prefix;
         this.word = word;

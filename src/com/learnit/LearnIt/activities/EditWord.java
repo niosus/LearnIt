@@ -1,4 +1,4 @@
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import com.learnit.LearnIt.fragments.MyDialogFragment;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Utils;
 
 public class EditWord extends FragmentActivity {

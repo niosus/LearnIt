@@ -2,7 +2,7 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.activities.EditWord;
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;

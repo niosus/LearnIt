@@ -3,7 +3,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -25,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -53,7 +55,7 @@ public class DictToSQL extends FragmentActivity {
         String selectedLanguageFrom;
         String selectedLanguageTo;
         String currentLanguage;
-        TextView tv_title, tv_dict_name, tv_dict_info, tv_loaded, tv_countdown;
+        TextView tvTitle, tvDictName, tvDictInfo, tvLoaded, tvCountdown;
         private final String LOG_TAG = "my_logs";
         MyTask mt;
 
@@ -66,11 +68,11 @@ public class DictToSQL extends FragmentActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.dict_to_sql, container, false);
-            tv_title = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
-            tv_dict_name = (TextView) v.findViewById(R.id.text_dictionary_name);
-            tv_dict_info = (TextView) v.findViewById(R.id.text_dictionary_info);
-            tv_loaded = (TextView) v.findViewById(R.id.text_loaded);
-            tv_countdown = (TextView) v.findViewById(R.id.text_countdown);
+            tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
+            tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
+            tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
+            tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
+            tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
             return v;
         }
 
@@ -232,16 +234,16 @@ public class DictToSQL extends FragmentActivity {
             protected void onPostExecute(List<String> item) {
                 super.onPostExecute(item);
                 home_button_active = true;
-                tv_title.setText(item.get(0));
-                tv_dict_name.setText(item.get(1));
-                tv_dict_info.setText(item.get(2));
-                tv_loaded.setText(item.get(3));
+                tvTitle.setText(item.get(0));
+                tvDictName.setText(item.get(1));
+                tvDictInfo.setText(item.get(2));
+                tvLoaded.setText(item.get(3));
                 DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
                 dialog.dismiss();
                 new CountDownTimer(10000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        tv_countdown.setText(String.format(getString(R.string.dict_sql_closing_window), millisUntilFinished / 1000));
+                        tvCountdown.setText(String.format(getString(R.string.dict_sql_closing_window), millisUntilFinished / 1000));
                     }
 
                     public void onFinish() {

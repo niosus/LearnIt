@@ -7,7 +7,7 @@
  */
 
 
-package com.learnit.LearnIt;
+package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -21,6 +21,8 @@ import android.util.Pair;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.stardict.DictFile;
 import com.learnit.LearnIt.utils.Utils;
 
