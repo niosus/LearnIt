@@ -40,6 +40,7 @@ public class LearnFragment extends Fragment {
     int numOfWrongAnswers = 0;
     int direction = 0;
     Utils utils;
+    int magicCounter = 0;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
     int[] btnIds = {R.id.left_top_button,
@@ -56,31 +57,51 @@ public class LearnFragment extends Fragment {
         utils = new Utils();
         Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
         Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
-        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
-        fetchNewWords();
+        Log.d(LOG_TAG, "magic counter = " + magicCounter);
+        if (magicCounter>0)
+        {
+            magicCounter--;
+            setAll(View.INVISIBLE);
+        }
+        else
+        {
+            setAll(View.VISIBLE);
+        }
+    }
+
+    private void setAll(int visibilityState)
+    {
+        v.findViewById(R.id.left_top_button).setVisibility(visibilityState);
+        v.findViewById(R.id.right_bottom_button).setVisibility(visibilityState);
+        v.findViewById(R.id.left_bottom_button).setVisibility(visibilityState);
+        v.findViewById(R.id.right_top_button).setVisibility(visibilityState);
+        v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(LOG_TAG,"on destroy");
+        magicCounter++;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-
         if (isVisibleToUser) {
             dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
             playOpenAnimation();
             openButtons();
-            v.findViewById(R.id.left_top_button).setVisibility(View.VISIBLE);
-            v.findViewById(R.id.right_bottom_button).setVisibility(View.VISIBLE);
-            v.findViewById(R.id.left_bottom_button).setVisibility(View.VISIBLE);
-            v.findViewById(R.id.right_top_button).setVisibility(View.VISIBLE);
-            v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
+            setAll(View.VISIBLE);
             MainActivity.hideSoftKeyboard(this.getActivity());
         } else {
             if (null != v) {
-                v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
-                v.findViewById(R.id.right_bottom_button).setVisibility(View.INVISIBLE);
-                v.findViewById(R.id.left_bottom_button).setVisibility(View.INVISIBLE);
-                v.findViewById(R.id.right_top_button).setVisibility(View.INVISIBLE);
-                v.findViewById(R.id.word_to_ask).setVisibility(View.INVISIBLE);
+                setAll(View.INVISIBLE);
             }
         }
 
@@ -89,12 +110,15 @@ public class LearnFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         utils = new Utils();
+        magicCounter++;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+        fetchNewWords();
         return v;
     }
 
@@ -131,11 +155,6 @@ public class LearnFragment extends Fragment {
         (v.findViewById(R.id.right_top_button))
                 .setOnClickListener(myButtonOnClick);
         setBtnTexts(words);
-        v.findViewById(R.id.left_top_button).setVisibility(View.INVISIBLE);
-        v.findViewById(R.id.right_bottom_button).setVisibility(View.INVISIBLE);
-        v.findViewById(R.id.left_bottom_button).setVisibility(View.INVISIBLE);
-        v.findViewById(R.id.right_top_button).setVisibility(View.INVISIBLE);
-        v.findViewById(R.id.word_to_ask).setVisibility(View.INVISIBLE);
     }
 
     private void setQueryWordTxt(ArticleWordIdStruct struct) {
@@ -206,11 +225,7 @@ public class LearnFragment extends Fragment {
                 fetchNewWords();
                 playOpenAnimation();
                 openButtons();
-                v.findViewById(R.id.left_top_button).setVisibility(View.VISIBLE);
-                v.findViewById(R.id.right_bottom_button).setVisibility(View.VISIBLE);
-                v.findViewById(R.id.left_bottom_button).setVisibility(View.VISIBLE);
-                v.findViewById(R.id.right_top_button).setVisibility(View.VISIBLE);
-                v.findViewById(R.id.word_to_ask).setVisibility(View.VISIBLE);
+                setAll(View.VISIBLE);
             }
 
             @Override

@@ -58,12 +58,10 @@ public class NotificationBuilder {
 
     private static void deleteOldNotifications(Context context, String old_ids) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Log.d(LOG_TAG, "old ids = " + old_ids);
         if (null != old_ids) {
             String[] ids = old_ids.split(" ");
             for (String id : ids) {
                 if (null != id && !id.equals("")) {
-                    Log.d(LOG_TAG, "trying to delete notif with id " + Integer.parseInt(id));
                     mNotificationManager.cancel(Integer.parseInt(id));
                 }
             }
@@ -197,7 +195,6 @@ public class NotificationBuilder {
             mBuilder.setPriority(Notification.PRIORITY_MAX);
             mBuilder.setOngoing(true);
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            // mId allows you to update the notification later on.
             mNotificationManager.notify(mId, mBuilder.build());
             return true;
         } else {

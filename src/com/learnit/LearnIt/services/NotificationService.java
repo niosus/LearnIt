@@ -12,20 +12,10 @@ public class NotificationService extends Service {
 
     private PowerManager.WakeLock mWakeLock;
 
-    /**
-     * Simply return null, since our Service will not be communicating with
-     * any other components. It just does its work silently.
-     */
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    /**
-     * This is where we initialize. We call this when onStart/onStartCommand is
-     * called by the system. We won't do anything with the intent here, and you
-     * probably won't, either.
-     */
     private void handleIntent(Intent intent) {
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);

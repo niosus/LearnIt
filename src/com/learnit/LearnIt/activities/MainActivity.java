@@ -36,6 +36,11 @@ import java.util.Arrays;
 public class MainActivity extends FragmentActivity {
 
     final String LOG_TAG = "my_logs";
+    public static int NUMBER_OF_FRAGMENTS = 3;
+    public final  int DICTIONARY_FRAGMENT = 1;
+    public final int ADD_WORDS_FRAGMENT = 0;
+    public final int LEARN_WORDS_FRAGMENT = 2;
+
 
     SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -147,13 +152,13 @@ public class MainActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             Fragment fragment = null;
             switch (position) {
-                case 0:
+                case DICTIONARY_FRAGMENT:
                     fragment = new DictFragment();
                     return fragment;
-                case 1:
+                case ADD_WORDS_FRAGMENT:
                     fragment = new AddWordFragment();
                     return fragment;
-                case 2:
+                case LEARN_WORDS_FRAGMENT:
                     fragment = new LearnFragment();
                     return fragment;
             }
@@ -162,17 +167,17 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return NUMBER_OF_FRAGMENTS;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case DICTIONARY_FRAGMENT:
                     return getString(R.string.dictionary_frag_title).toUpperCase();
-                case 1:
+                case ADD_WORDS_FRAGMENT:
                     return getString(R.string.add_words_frag_title).toUpperCase();
-                case 2:
+                case LEARN_WORDS_FRAGMENT:
                     return getString(R.string.learn_words_frag_title).toUpperCase();
             }
             return null;
