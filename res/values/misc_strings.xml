@@ -11,8 +11,7 @@
     <string name="key_direction_of_trans">direction_of_trans</string>
     <string name="key_language_from">language_to_learn</string>
     <string name="key_language_to">language_you_know</string>
-    <string name="version">0.5.004</string>
-    <integer name="version_code">9</integer>
+    <string name="version">0.5.010</string>
 
     <string-array name="values_freq">
         <item>1</item>
