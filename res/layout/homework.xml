@@ -2,14 +2,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -37,12 +29,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
-            <Button
+            <com.learnit.LearnIt.views.WordButton
                     android:id="@+id/left_top_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
-            <Button
+            <com.learnit.LearnIt.views.WordButton
                     android:id="@+id/right_top_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -53,12 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
-            <Button
+            <com.learnit.LearnIt.views.WordButton
                     android:id="@+id/left_bottom_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
-            <Button
+            <com.learnit.LearnIt.views.WordButton
                     android:id="@+id/right_bottom_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

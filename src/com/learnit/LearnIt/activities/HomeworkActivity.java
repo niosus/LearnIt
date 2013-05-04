@@ -19,7 +19,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
@@ -27,18 +26,15 @@ import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
+import com.learnit.LearnIt.views.WordButton;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class HomeworkActivity extends FragmentActivity {
-    int notificationId = -1;
     int fromLearnToKnow = 0;
-    String queryWord = null;
     int numOfWrongAnswers = 0;
-    String article = null;
-    String prefix = null;
-    String translation = null;
+    ArticleWordIdStruct correctEntry = null;
     int isNoun = 3;
     Utils utils;
     final String LOG_TAG = "my_logs";
@@ -50,53 +46,52 @@ public class HomeworkActivity extends FragmentActivity {
 
     private void getEverythingFromIntent() {
         Intent intent = getIntent();
-        article = intent.getStringExtra("article");
-        prefix = intent.getStringExtra("prefix");
-        translation = intent.getStringExtra("translation");
-        queryWord = intent.getStringExtra("word");
-        notificationId = intent.getIntExtra("id", -1);
+        correctEntry = new ArticleWordIdStruct(
+                intent.getStringExtra("article"),
+                intent.getStringExtra("prefix"),
+                intent.getStringExtra("word"),
+                intent.getStringExtra("translation"),
+                intent.getIntExtra("id", -1)
+        );
+
         fromLearnToKnow = intent.getIntExtra("direction", -1);
         isNoun = intent.getIntExtra("is_noun", 3);
-        Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
-                + notificationId);
+        Log.d(LOG_TAG, "got intent word=" + correctEntry.word + " id = "
+                + correctEntry.id);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
     private void setBtnTexts(int correctId) {
-        if (null == article) {
+        if (null == correctEntry.article) {
             isNoun = Constants.NOT_NOUNS;
         } else {
             isNoun = Constants.ONLY_NOUNS;
         }
-        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length, queryWord, isNoun);
+        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length, correctEntry.word, isNoun);
         Log.d(Constants.LOG_TAG, "number of words for buttons = " + randomWords.size());
-        switch (fromLearnToKnow) {
+        int showOnButton;
+        switch (fromLearnToKnow)
+        {
             case Constants.FROM_FOREIGN_TO_MY:
-                for (int i = 0; i < 4; ++i) {
-                    if (correctId == i) {
-                        ((Button) findViewById(btnIds[i])).setText(translation);
-                    } else if (i < randomWords.size()) {
-                        findViewById(btnIds[i]).setEnabled(true);
-                        ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).translation);
-                    } else {
-                        findViewById(btnIds[i]).setEnabled(false);
-                        ((Button) findViewById(btnIds[i])).setText("");
-                    }
-                }
+                showOnButton = WordButton.SHOW_TRANSLATION;
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                for (int i = 0; i < 4; ++i) {
-                    if (correctId == i) {
-                        ((Button) findViewById(btnIds[i])).setText(queryWord);
-                    } else if (i < randomWords.size()) {
-                        findViewById(btnIds[i]).setEnabled(true);
-                        ((Button) findViewById(btnIds[i])).setText(randomWords.get(i).word);
-                    } else {
-                        findViewById(btnIds[i]).setEnabled(false);
-                        ((Button) findViewById(btnIds[i])).setText("");
-                    }
-                }
+                showOnButton = WordButton.SHOW_WORD;
                 break;
+            default:
+                showOnButton = 0; //won't show anything on button
+        }
+        for (int i = 0; i < 4; ++i) {
+            WordButton tempButton = (WordButton) findViewById(btnIds[i]);
+            if (correctId == i) {
+                tempButton.setText(correctEntry, showOnButton);
+            } else if (i < randomWords.size()) {
+                tempButton.setEnabled(true);
+                tempButton.setText(randomWords.get(i), showOnButton);
+            } else {
+                tempButton.setEnabled(false);
+                tempButton.setText("");
+            }
         }
 
     }
@@ -135,19 +130,19 @@ public class HomeworkActivity extends FragmentActivity {
     }
 
     private void updateWordWeight() {
-        Log.d(LOG_TAG, "word to be updated " + queryWord);
+        Log.d(LOG_TAG, "word to be updated " + correctEntry.word);
         switch (numOfWrongAnswers) {
             case 0:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT_BUTTON);
+                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_CORRECT_BUTTON);
                 break;
             case 1:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_ONE_WRONG);
+                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_ONE_WRONG);
                 break;
             case 2:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_TWO_WRONG);
+                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_TWO_WRONG);
                 break;
             case 3:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_THREE_WRONG);
+                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_THREE_WRONG);
                 break;
         }
     }
@@ -160,7 +155,7 @@ public class HomeworkActivity extends FragmentActivity {
             int id = v.getId();
             if (correct == id) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.cancel(notificationId);
+                mNotificationManager.cancel((int) correctEntry.id);
                 updateWordWeight();
                 stopActivity();
             } else {
@@ -177,20 +172,20 @@ public class HomeworkActivity extends FragmentActivity {
             case Constants.FROM_FOREIGN_TO_MY:
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                 String learnLang = sp.getString(getString(R.string.key_language_from), "null");
-                if (null != article) {
+                if (null != correctEntry.article) {
                     if ("de".equals(learnLang)) {
-                        queryWordTextView.setText(article + " " + utils.capitalize(queryWord));
+                        queryWordTextView.setText(correctEntry.article + " " + utils.capitalize(correctEntry.word));
                     } else {
-                        queryWordTextView.setText(article + " " + queryWord);
+                        queryWordTextView.setText(correctEntry.article + " " + correctEntry.word);
                     }
-                } else if (null != prefix) {
-                    queryWordTextView.setText(prefix + " " + queryWord);
+                } else if (null != correctEntry.prefix) {
+                    queryWordTextView.setText(correctEntry.prefix + " " + correctEntry.word);
                 } else {
-                    queryWordTextView.setText(queryWord);
+                    queryWordTextView.setText(correctEntry.word);
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                queryWordTextView.setText(translation);
+                queryWordTextView.setText(correctEntry.translation);
                 break;
         }
     }
