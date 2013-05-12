@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.HashMap;
@@ -166,7 +167,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
         }
 
         String stripWord(String word) {
-            return utils.stripFromArticle(this.getActivity(), word);
+            return StringUtils.stripFromArticle(this.getActivity(), word);
         }
 
         private class ListActionMode implements ActionMode.Callback {

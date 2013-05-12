@@ -24,6 +24,7 @@ import android.widget.*;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.stardict.DictFile;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
@@ -73,7 +74,7 @@ public class AddWordFragment extends Fragment {
         wordFocused = true;
         transFocused = false;
         editWord.requestFocus();
-        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
+        Pair<String, String> langPair = Utils.getCurrentLanguages(this.getActivity());
         selectedLanguageFrom = langPair.first;
         selectedLanguageTo = langPair.second;
         Log.d(LOG_TAG, "onResume Add words fragment: from - " + selectedLanguageFrom + " to " + selectedLanguageTo);
@@ -252,8 +253,8 @@ public class AddWordFragment extends Fragment {
 
     private ArrayList<String> parseDictOutput(String str) {
         Log.d(LOG_TAG, "input = " + str);
-        ArrayList<String> tagValues = utils.getHelpWordsFromDictOutput(str);
-        String article = utils.getArticleFromDictOutput(str, selectedLanguageFrom);
+        ArrayList<String> tagValues = StringUtils.getHelpWordsFromDictOutput(str);
+        String article = StringUtils.getArticleFromDictOutput(str, selectedLanguageFrom);
         addArticleToCurrentWord(article);
         return tagValues;
     }
@@ -306,7 +307,7 @@ public class AddWordFragment extends Fragment {
     }
 
     private String getRealWord(String word) {
-        return utils.stripFromArticle(this.getActivity(), word);
+        return StringUtils.stripFromArticle(this.getActivity(), word);
     }
 
     private class MyBtnOnClickListener implements OnClickListener {

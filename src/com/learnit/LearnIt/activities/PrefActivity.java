@@ -29,7 +29,6 @@ public class PrefActivity extends PreferenceActivity {
     protected static boolean m_languages_changed = false;
     String selectedLanguageFrom;
     String selectedLanguageTo;
-    Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,24 +194,11 @@ public class PrefActivity extends PreferenceActivity {
             if (changed) {
                 boolean notif_enabled = sp.getBoolean(getString(R.string.key_pref_notif_active), false);
                 if (notif_enabled) {
-                    startRepeatingTimer();
+                    Utils.startRepeatingTimer(this.getActivity());
                 } else {
                     cancelRepeatingTimer();
                 }
             }
-        }
-
-        public void startRepeatingTimer() {
-            Context context = this.getActivity();
-            Log.d(LOG_TAG, "context setalarm = " + context.getClass().getName());
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-            String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
-            long frequency = Utils.getFreqFromId(frequency_id);
-            AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-            Intent i = new Intent(context, NotificationService.class);
-            PendingIntent pi = PendingIntent.getService(this.getActivity(), 0, i, 0);
-            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
-            Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
         }
 
         public void cancelRepeatingTimer() {

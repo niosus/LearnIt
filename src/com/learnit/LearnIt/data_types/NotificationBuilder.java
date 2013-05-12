@@ -13,6 +13,7 @@ import android.util.Log;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
 import com.learnit.LearnIt.activities.HomeworkArticleActivity;
+import com.learnit.LearnIt.activities.MainActivity;
 import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
@@ -185,6 +186,7 @@ public class NotificationBuilder {
             }
             resultIntent.setAction(mId + " " + struct.word + " " + System.currentTimeMillis());
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             if (wayToLearn == LEARN_ARTICLES)
                 stackBuilder.addParentStack(HomeworkArticleActivity.class);
             else

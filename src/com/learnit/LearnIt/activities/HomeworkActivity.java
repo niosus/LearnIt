@@ -25,6 +25,7 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 import com.learnit.LearnIt.views.WordButton;
 
@@ -58,7 +59,6 @@ public class HomeworkActivity extends FragmentActivity {
         isNoun = intent.getIntExtra("is_noun", 3);
         Log.d(LOG_TAG, "got intent word=" + correctEntry.word + " id = "
                 + correctEntry.id);
-        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
     }
 
     private void setBtnTexts(int correctId) {
@@ -99,22 +99,8 @@ public class HomeworkActivity extends FragmentActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getEverythingFromIntent();
-        utils = new Utils();
         setContentView(R.layout.homework);
-        MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
-        Random random = new Random();
-        int randIdx = random.nextInt(btnIds.length);
-        myButtonOnClick.correct = btnIds[randIdx];
-        (findViewById(R.id.left_top_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.right_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.left_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.right_top_button))
-                .setOnClickListener(myButtonOnClick);
-        setBtnTexts(randIdx);
+        getEverythingFromIntent();
     }
 
     private void showDialogWrong() {
@@ -126,7 +112,7 @@ public class HomeworkActivity extends FragmentActivity {
     }
 
     protected void stopActivity() {
-        this.finish();
+        finish();
     }
 
     private void updateWordWeight() {
@@ -167,6 +153,22 @@ public class HomeworkActivity extends FragmentActivity {
 
     protected void onResume() {
         super.onResume();
+        utils = new Utils();
+        Utils.updateCurrentDBName(this);
+        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+        MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
+        Random random = new Random();
+        int randIdx = random.nextInt(btnIds.length);
+        myButtonOnClick.correct = btnIds[randIdx];
+        (findViewById(R.id.left_top_button))
+                .setOnClickListener(myButtonOnClick);
+        (findViewById(R.id.right_bottom_button))
+                .setOnClickListener(myButtonOnClick);
+        (findViewById(R.id.left_bottom_button))
+                .setOnClickListener(myButtonOnClick);
+        (findViewById(R.id.right_top_button))
+                .setOnClickListener(myButtonOnClick);
+        setBtnTexts(randIdx);
         TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
         switch (fromLearnToKnow) {
             case Constants.FROM_FOREIGN_TO_MY:
@@ -174,7 +176,7 @@ public class HomeworkActivity extends FragmentActivity {
                 String learnLang = sp.getString(getString(R.string.key_language_from), "null");
                 if (null != correctEntry.article) {
                     if ("de".equals(learnLang)) {
-                        queryWordTextView.setText(correctEntry.article + " " + utils.capitalize(correctEntry.word));
+                        queryWordTextView.setText(correctEntry.article + " " + StringUtils.capitalize(correctEntry.word));
                     } else {
                         queryWordTextView.setText(correctEntry.article + " " + correctEntry.word);
                     }

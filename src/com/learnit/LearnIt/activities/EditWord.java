@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 public class EditWord extends FragmentActivity {
@@ -34,7 +35,7 @@ public class EditWord extends FragmentActivity {
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
         utils = new Utils();
         oldWord = getIntent().getStringExtra(WORD_TAG);
-        oldStrippedWord = utils.stripFromArticle(this, oldWord);
+        oldStrippedWord = StringUtils.stripFromArticle(this, oldWord);
         String translation = dbHelper.getTranslation(oldStrippedWord);
         Log.d(LOG_TAG, "got word to edit = " + oldStrippedWord + ", trans = " + translation);
 

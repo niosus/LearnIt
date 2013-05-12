@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.activities.EditWord;
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
@@ -48,9 +49,7 @@ public class DictFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        utils = new Utils();
-        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
-        Log.d(LOG_TAG, "onResume dict fragment: from - " + langPair.first + " to " + langPair.second);
+        Utils.updateCurrentDBName(this.getActivity());
         dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
     }
 
@@ -97,10 +96,8 @@ public class DictFragment extends Fragment {
         if (tempArray.length == 1) {
             return str;
         } else if (tempArray.length > 1) {
-            if (isArticle(tempArray[0])) {
-                return utils.cutAwayFirstWord(str);
-            } else if (isPrefix(tempArray[0])) {
-                return utils.cutAwayFirstWord(str);
+            if (isArticle(tempArray[0]) || isPrefix(tempArray[0])) {
+                return StringUtils.cutAwayFirstWord(str);
             }
             return str;
         } else return null;

@@ -28,6 +28,7 @@ import com.learnit.LearnIt.activities.MainActivity;
 import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public class LearnFragment extends Fragment {
                 String learnLang = sp.getString(getString(R.string.key_language_from), "null");
                 if (null != struct.article) {
                     if ("de".equals(learnLang)) {
-                        queryWordTextView.setText(struct.article + " " + utils.capitalize(struct.word));
+                        queryWordTextView.setText(struct.article + " " + StringUtils.capitalize(struct.word));
                     } else {
                         queryWordTextView.setText(struct.article + " " + struct.word);
                     }

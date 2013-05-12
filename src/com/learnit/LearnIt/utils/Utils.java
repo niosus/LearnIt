@@ -1,14 +1,18 @@
 package com.learnit.LearnIt.utils;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.services.NotificationService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,45 +23,7 @@ import java.util.regex.Pattern;
 public class Utils {
     public static final String LOG_TAG = "my_logs";
 
-    boolean isArticle(Context context, String article) {
-
-        String articles = context.getString(R.string.articles_de);
-        return articles.contains(article.toLowerCase());
-    }
-
-    boolean isPrefix(Context context, String word) {
-        String prefix = context.getString(R.string.help_words_de);
-        return prefix.contains(word.toLowerCase());
-    }
-
-    public String cutAwayFirstWord(String input) {
-        return input.split("\\s", 2)[1];
-    }
-
-
-    public String stripFromArticle(Context context, String str) {
-        String[] tempArray = str.split("\\s");
-        Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
-        if (tempArray.length == 1) {
-            return str;
-        } else if (tempArray.length > 1) {
-            if (isArticle(context, tempArray[0])) {
-                return cutAwayFirstWord(str);
-            } else if (isPrefix(context, tempArray[0])) {
-                return cutAwayFirstWord(str);
-            }
-            return str;
-        } else return null;
-    }
-
-    public String capitalize(String str) {
-        if (str.length() > 0)
-            return str.substring(0, 1).toUpperCase() + str.substring(1);
-        else
-            return null;
-    }
-
-    public Pair<String, String> getCurrentLanguages(Context context) {
+    public static void updateCurrentDBName(Context context) {
         String currentLanguage;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
@@ -71,86 +37,25 @@ public class Utils {
             currentLanguage = Locale.getDefault().getLanguage();
         }
         DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
+        Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
+    }
+
+    public static Pair<String,String> getCurrentLanguages(Context context) {
+        String currentLanguage;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
+        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to), "NONE");
+        Resources res = context.getResources();
+        String[] languages = res.getStringArray(R.array.values_languages_from);
+        String allLanguages = Arrays.toString(languages);
+        if (allLanguages.contains(selectedLanguageTo)) {
+            currentLanguage = selectedLanguageTo;
+        } else {
+            currentLanguage = Locale.getDefault().getLanguage();
+        }
+        DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
+        Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
         return new Pair<String, String>(selectedLanguageFrom, currentLanguage);
-    }
-
-    public String getGermanArticle(String sex) {
-        if ("m".equals(sex))
-            return "der";
-        else if ("f".equals(sex))
-            return "die";
-        else if ("n".equals(sex))
-            return "das";
-        else return null;
-    }
-
-    public ArrayList<String> getHelpWordsFromDictOutput(String str) {
-        ArrayList<String> tagValues = new ArrayList<String>();
-        if (str.contains("<dtrn>")) {
-            String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
-            String selectDtrn = "<dtrn>(.+?)</dtrn>";
-            Pattern p;
-            Matcher matcher;
-            p = Pattern.compile(deleteCo);
-            matcher = p.matcher(str);
-            while (matcher.find()) {
-                str = matcher.replaceAll("");
-                matcher = p.matcher(str);
-            }
-            p = Pattern.compile(selectDtrn);
-            matcher = p.matcher(str);
-            while (matcher.find()) {
-                String[] temp = matcher.group(1).split("\\s*(,|;)\\s*");
-                for (String s : temp) {
-                    tagValues.add(s);
-                }
-            }
-            return tagValues;
-        } else {
-            String[] temp = str.split("\\s*(\\n|,)\\s*");
-            for (String s : temp) {
-                if (!s.equals(temp[0])) {
-                    tagValues.add(s);
-                }
-            }
-            return tagValues;
-        }
-    }
-
-    public String getArticleFromDictOutput(String str, String languageFrom) {
-        String selectSexI = "<i>(m|f|n)</i>";
-        String selectSexAbr = "<abr>(m|f|n)</abr>";
-        Pattern p;
-        Matcher matcher;
-        if (languageFrom.equals("de")) {
-            p = Pattern.compile(selectSexI);
-            matcher = p.matcher(str);
-            String sexI = null;
-            String sexAbr = null;
-            while (matcher.find()) {
-                sexI = matcher.group(1);
-                Log.d(LOG_TAG, "sexI = " + sexI);
-                break;
-            }
-            p = Pattern.compile(selectSexAbr);
-            matcher = p.matcher(str);
-            while (matcher.find()) {
-                sexAbr = matcher.group(1);
-                Log.d(LOG_TAG, "sexAbr = " + sexAbr);
-            }
-            String article = null;
-            if (null != sexI)
-                article = this.getGermanArticle(sexI);
-            else if (null != sexAbr)
-                article = this.getGermanArticle(sexAbr);
-            if (null != article) {
-                return article;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
     }
 
     public static long getFreqFromId(String id) {
@@ -169,5 +74,17 @@ public class Utils {
             default:
                 return -1;
         }
+    }
+
+    public static void startRepeatingTimer(Context context) {
+        Log.d(LOG_TAG, "context setalarm = " + context.getClass().getName());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
+        long frequency = Utils.getFreqFromId(frequency_id);
+        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        Intent i = new Intent(context, NotificationService.class);
+        PendingIntent pi = PendingIntent.getService(context.getApplicationContext(), 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
+        Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
 }

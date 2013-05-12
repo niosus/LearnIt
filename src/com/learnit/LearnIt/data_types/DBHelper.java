@@ -23,6 +23,7 @@ import android.view.Gravity;
 import android.widget.Toast;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -267,7 +268,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, int noun) {
         db = this.getReadableDatabase();
         ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
-        Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + ommitWord + "' and isnoun = " + noun);
+        Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + ommitWord + "' and isnoun = " + noun + " from " + currentDBName);
         Cursor c;
         switch (noun) {
             case Constants.MIXED:

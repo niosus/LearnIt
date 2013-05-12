@@ -26,7 +26,6 @@ public class NotificationService extends Service {
             return;
         }
 
-        // do the actual work, in a separate thread
         NotificationBuilder.show(getApplicationContext());
     }
 
