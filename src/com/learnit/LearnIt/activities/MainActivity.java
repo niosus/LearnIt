@@ -48,7 +48,46 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * time.
      */
     ViewPager mViewPager;
+    ListOfFragments fragment;
 
+    static int currentItemShown = 0;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mViewPager!=null)
+            currentItemShown =  mViewPager.getCurrentItem();
+        if (fragment!=null && fragment.isInLayout())
+            currentItemShown = fragment.getListView().getCheckedItemPosition();
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+        fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        Log.d(LOG_TAG,"onresume mainactivity " + currentItemShown);
+        if (null!=fragment && fragment.isInLayout())
+        {
+            Log.d(LOG_TAG,"trying to show list fragment position " + currentItemShown);
+            fragment.getListView().setItemChecked(currentItemShown,true);
+            onArticleSelected(currentItemShown);
+        }
+        if (mViewPager!=null)
+        {
+            Log.d(LOG_TAG,"trying to show ViewPager position " + currentItemShown);
+            mViewPager.setCurrentItem(currentItemShown, true);
+        }
+
+        Pair<String, String> pair = Utils.getCurrentLanguages(this);
+        Resources res = getResources();
+        String[] languages = res.getStringArray(R.array.values_languages_from);
+        String allLanguages = Arrays.toString(languages);
+        Log.d(LOG_TAG, "possible languages = " + allLanguages);
+        if (!allLanguages.contains(pair.first)) {
+            startShowWellcomeActivity();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +124,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     actionBar.setSelectedNavigationItem(position);
                 }
             });
+        }
+        else
+        {
+            ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+            fragment.getListView().setSelection(0);
         }
 
         // For each of the sections in the app, add a tab to the action bar.
@@ -180,17 +224,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     return resources.getString(R.string.learn_words_frag_title);
             }
             return null;
-        }
-    }
-    protected void onResume() {
-        super.onResume();
-        Pair<String, String> pair = Utils.getCurrentLanguages(this);
-        Resources res = getResources();
-        String[] languages = res.getStringArray(R.array.values_languages_from);
-        String allLanguages = Arrays.toString(languages);
-        Log.d(LOG_TAG, "possible languages = " + allLanguages);
-        if (!allLanguages.contains(pair.first)) {
-            startShowWellcomeActivity();
         }
     }
 
