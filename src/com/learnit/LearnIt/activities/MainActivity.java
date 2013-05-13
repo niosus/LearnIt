@@ -2,16 +2,11 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
 
 package com.learnit.LearnIt.activities;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -27,14 +22,12 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.AddWordFragment;
-import com.learnit.LearnIt.fragments.DictFragment;
-import com.learnit.LearnIt.fragments.LearnFragment;
+import com.learnit.LearnIt.fragments.*;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, HeadlinesFragment.OnHeadlineSelectedListener{
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
@@ -60,6 +53,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -68,26 +62,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
 
-        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-        // parent.
-        actionBar.setHomeButtonEnabled(false);
-
-        // Specify that we will be displaying tabs in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+
+        //this means that we have loaded a bigger layout
+        if (mViewPager!=null)
+        {
+            // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+            // parent.
+            actionBar.setHomeButtonEnabled(false);
+
+            // Specify that we will be displaying tabs in the action bar.
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            mViewPager.setAdapter(mAppSectionsPagerAdapter);
+            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    // When swiping between different app sections, select the corresponding tab.
+                    // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                    // Tab.
+                    actionBar.setSelectedNavigationItem(position);
+                }
+            });
+        }
 
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
@@ -100,12 +98,29 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(
-//                getSupportFragmentManager());
-//
-//        // Set up the ViewPager with the sections adapter.
-//        mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
+
+    public void onArticleSelected(int position) {
+        // Create a new fragment
+        Fragment fragment;
+        switch(position)
+        {
+            case 0:
+                fragment = new DictFragment();
+                break;
+            case 1:
+                fragment = new AddWordFragment();
+                break;
+            case 2:
+                fragment = new LearnFragment();
+                break;
+            default: fragment = new DictFragment();
+        }
+        // Update the layout
+        FragmentManager fm = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.view_group_id, fragment);
+        ft.commit();
     }
 
     @Override
@@ -115,7 +130,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
+        if (mViewPager!=null)
+            mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override

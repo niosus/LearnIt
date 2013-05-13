@@ -33,9 +33,8 @@ import java.util.Map;
 
 public class ShowAllWordsActivity extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
-    protected DialogFragment frag;
+    protected static DialogFragment frag;
     DBHelper dbHelper;
-    Utils utils;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 .commit();
     }
 
-    public class ShowWordsFragment extends Fragment {
+    public static class ShowWordsFragment extends Fragment {
         private final String LOG_TAG = "my_logs";
         ActionMode mActionMode = null;
         MyTask mt;
@@ -53,7 +52,6 @@ public class ShowAllWordsActivity extends FragmentActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            utils = new Utils();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +79,6 @@ public class ShowAllWordsActivity extends FragmentActivity {
                     }
                     ListActionMode mActionModeCallback = new ListActionMode(view);
                     mActionMode = getActivity().startActionMode(mActionModeCallback);
-                    view.setSelected(true);
                     return true;
                 }
             });
@@ -132,6 +129,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
 
         class MyTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
             public int action = 0;
+            DBHelper dbHelper;
 
             @Override
             protected void onPreExecute() {
@@ -157,6 +155,12 @@ public class ShowAllWordsActivity extends FragmentActivity {
                 updateList(items);
                 dismissDialog();
             }
+        }
+
+        protected boolean deleteWord(String word)
+        {
+            DBHelper dbHelper = new DBHelper(getActivity(),DBHelper.DB_WORDS);
+           return dbHelper.deleteWord(stripWord(word));
         }
 
         void startEditWordActivity(String word) {
@@ -205,7 +209,7 @@ public class ShowAllWordsActivity extends FragmentActivity {
                         startEditWordActivity(queryWord);
                         return true;
                     case R.id.context_menu_delete:
-                        if (dbHelper.deleteWord(stripWord(queryWord))) {
+                        if (deleteWord(queryWord)) {
                             mt = new MyTask();
                             mt.action = 1;
                             mt.execute();
