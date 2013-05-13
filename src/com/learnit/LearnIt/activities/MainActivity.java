@@ -34,6 +34,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final  int DICTIONARY_FRAGMENT = 1;
     public static final int ADD_WORDS_FRAGMENT = 0;
     public static final int LEARN_WORDS_FRAGMENT = 2;
+    public static final int INITIAL_POSITION = 100;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -92,7 +93,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -163,10 +163,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Update the layout
         FragmentManager fm = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(R.anim.float_in_left, R.anim.float_away_right);
+        ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
         ft.replace(R.id.view_group_id, fragment);
         ft.commit();
+        currentItemShown=position;
     }
+
+
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

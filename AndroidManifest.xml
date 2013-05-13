@@ -21,8 +21,7 @@
             android:allowBackup="true"
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:label="@string/app_name">
 
         <receiver android:name=".services.AutoStart">
             <intent-filter>
@@ -36,9 +35,7 @@
                 android:name=".activities.MainActivity"
                 android:label="@string/app_name"
                 android:launchMode="standard"
-                android:multiprocess="true"
-                android:screenOrientation="sensor"
-                android:theme="@android:style/Theme.Holo">
+                android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -47,42 +44,36 @@
         </activity>
         <activity
                 android:name=".activities.HomeworkActivity"
-                android:theme="@android:style/Theme.Holo.DialogWhenLarge">
+                android:label="@string/app_name">
         </activity>
         <activity
                 android:name=".activities.HomeworkArticleActivity"
-                android:theme="@android:style/Theme.Holo.DialogWhenLarge">
+                android:label="@string/app_name">
         </activity>
 
         <activity
                 android:name=".activities.PrefActivity"
-                android:label="@string/app_name"
-                android:theme="@android:style/Theme.Holo">
+                android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.ShowAllWordsActivity"
                   android:screenOrientation="sensor"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo">
+                  android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.WellcomeActivity"
                   android:screenOrientation="sensor"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo">
+                  android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.InfoActivity"
                   android:screenOrientation="sensor"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo">
+                  android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.EditWord"
                   android:screenOrientation="sensor"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo.DialogWhenLarge">
+                  android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.DictToSQL"
                   android:screenOrientation="sensor"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Holo.DialogWhenLarge">
+                  android:label="@string/app_name">
         </activity>
     </application>
 
