@@ -13,7 +13,7 @@
     <string name="add_words_frag_help_text_words">Possible words</string>
     <string name="add_words_frag_help_text_trans">Possible translations</string>
 
-    <string name="dictionary_frag_title">Dictionary</string>
+    <string name="dictionary_frag_title">My Dictionary</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_word_hint">Input word</string>
     <string name="edit_dialog_title">Editing…</string>
@@ -21,6 +21,11 @@
     <string name="add_translation_hint">Input translation</string>
     <string name="add_word_button_text">Add</string>
     <string name="learn_no_words">Please add words</string>
+    <string-array name="fragments_titles">
+        <item>Add New Words</item>
+        <item>My Dictionary</item>
+        <item>Learn My Words</item>
+    </string-array>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Notification timer started</string>

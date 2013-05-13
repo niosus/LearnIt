@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +32,34 @@ public class EditWord extends FragmentActivity {
     DBHelper dbHelper;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_menu_cancel:
+                finishActivity();
+                return true;
+            case R.id.edit_menu_done:
+                Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+                if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
+                        || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+                    showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+                } else {
+                    dbHelper.deleteWord(oldStrippedWord);
+                    int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+                    showMessage(exitCode);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
@@ -48,13 +78,9 @@ public class EditWord extends FragmentActivity {
 
         btnClearWord = (ImageButton) findViewById(R.id.btn_add_word_clear);
         btnClearTrans = (ImageButton) findViewById(R.id.btn_add_trans_clear);
-        Button btnOk = (Button) findViewById(R.id.btn_ok);
-        Button btnCancel = (Button) findViewById(R.id.btn_cancel);
         MyBtnTouchListener myBtnTouchListener = new MyBtnTouchListener();
         btnClearTrans.setOnClickListener(myBtnTouchListener);
         btnClearWord.setOnClickListener(myBtnTouchListener);
-        btnCancel.setOnClickListener(myBtnTouchListener);
-        btnOk.setOnClickListener(myBtnTouchListener);
 
         edtWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,20 +136,6 @@ public class EditWord extends FragmentActivity {
                 case R.id.btn_add_word_clear:
                     edtWord.setText("");
                     v.setVisibility(View.INVISIBLE);
-                    break;
-                case R.id.btn_ok:
-                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
-                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
-                    } else {
-                        dbHelper.deleteWord(oldStrippedWord);
-                        int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                        showMessage(exitCode);
-                    }
-                    break;
-                case R.id.btn_cancel:
-                    finishActivity();
                     break;
             }
         }

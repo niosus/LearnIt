@@ -27,7 +27,7 @@ import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, HeadlinesFragment.OnHeadlineSelectedListener{
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, ListOfFragments.OnFragmentSelectedListener {
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
@@ -105,13 +105,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         Fragment fragment;
         switch(position)
         {
-            case 0:
+            case DICTIONARY_FRAGMENT:
                 fragment = new DictFragment();
                 break;
-            case 1:
+            case ADD_WORDS_FRAGMENT:
                 fragment = new AddWordFragment();
                 break;
-            case 2:
+            case LEARN_WORDS_FRAGMENT:
                 fragment = new LearnFragment();
                 break;
             default: fragment = new DictFragment();
@@ -119,6 +119,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Update the layout
         FragmentManager fm = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(R.anim.float_in_left, R.anim.float_away_right);
         ft.replace(R.id.view_group_id, fragment);
         ft.commit();
     }

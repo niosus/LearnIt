@@ -30,6 +30,7 @@ import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
+import com.learnit.LearnIt.views.WordButton;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -181,32 +182,31 @@ public class LearnFragment extends Fragment {
     }
 
     private void setBtnTexts(ArrayList<ArticleWordIdStruct> words) {
+        int showOnButton;
         switch (direction) {
             case Constants.FROM_FOREIGN_TO_MY:
-                for (int i = 0; i < btnIds.length; ++i) {
-                    if (i >= words.size() || words.size() == 0) {
-                        ((Button) v.findViewById(btnIds[i])).setText("");
-                        (v.findViewById(btnIds[i])).setEnabled(false);
-                    } else {
-                        ((Button) v.findViewById(btnIds[i])).setText(words.get(i).translation);
-                        (v.findViewById(btnIds[i])).setEnabled(true);
-                    }
-                }
+                showOnButton = WordButton.SHOW_TRANSLATION;
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                for (int i = 0; i < btnIds.length; ++i) {
-                    if (i >= words.size() || words.size() == 0) {
-                        ((Button) v.findViewById(btnIds[i])).setText("");
-                        (v.findViewById(btnIds[i])).setEnabled(false);
-                    } else {
-                        ((Button) v.findViewById(btnIds[i])).setText(words.get(i).word);
-                        (v.findViewById(btnIds[i])).setEnabled(true);
-                    }
-                }
+                showOnButton = WordButton.SHOW_WORD;
                 break;
+            default:
+                showOnButton = 0; //won't show anything on button
+        }
+        for (int i = 0; i < 4; ++i) {
+            WordButton tempButton = (WordButton) v.findViewById(btnIds[i]);
+            if (i < words.size()) {
+                tempButton.setEnabled(true);
+                tempButton.setText(words.get(i), showOnButton);
+            } else {
+                tempButton.setEnabled(false);
+                tempButton.setText("");
+            }
         }
 
+
     }
+
 
     private void playCloseAnimation() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
