@@ -9,7 +9,9 @@
 
 package com.learnit.LearnIt.activities;
 
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -23,7 +25,6 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
@@ -33,17 +34,26 @@ import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
-    public final  int DICTIONARY_FRAGMENT = 1;
-    public final int ADD_WORDS_FRAGMENT = 0;
-    public final int LEARN_WORDS_FRAGMENT = 2;
+    public static final  int DICTIONARY_FRAGMENT = 1;
+    public static final int ADD_WORDS_FRAGMENT = 0;
+    public static final int LEARN_WORDS_FRAGMENT = 2;
 
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
+     * three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
+     * derivative, which will keep every loaded fragment in memory. If this becomes too memory
+     * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
+    /**
+     * The {@link ViewPager} that will display the three primary sections of the app, one at a
+     * time.
+     */
     ViewPager mViewPager;
 
 
@@ -51,24 +61,113 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(
-                getSupportFragmentManager());
+        // Create the adapter that will return a fragment for each of the three primary sections
+        // of the app.
+        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        // Set up the action bar.
+        final ActionBar actionBar = getActionBar();
+
+        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+        // parent.
+        actionBar.setHomeButtonEnabled(false);
+
+        // Specify that we will be displaying tabs in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+        // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between different app sections, select the corresponding tab.
+                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                // Tab.
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
+
+        // For each of the sections in the app, add a tab to the action bar.
+        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
+            // Create a tab with text corresponding to the page title defined by the adapter.
+            // Also specify this Activity object, which implements the TabListener interface, as the
+            // listener for when this tab is selected.
+            actionBar.addTab(
+                    actionBar.newTab()
+                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                            .setTabListener(this));
+        }
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(
+//                getSupportFragmentManager());
+//
+//        // Set up the ViewPager with the sections adapter.
+//        mViewPager = (ViewPager) findViewById(R.id.pager);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // When the given tab is selected, switch to the corresponding page in the ViewPager.
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
+     * sections of the app.
+     */
+    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public AppSectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Fragment fragment = null;
+            switch (i) {
+                case DICTIONARY_FRAGMENT:
+                    return new DictFragment();
+                case ADD_WORDS_FRAGMENT:
+                    return new AddWordFragment();
+                case LEARN_WORDS_FRAGMENT:
+                    return new LearnFragment();
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return NUMBER_OF_FRAGMENTS;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Resources resources = getResources();
+            switch (position) {
+                case DICTIONARY_FRAGMENT:
+                    return resources.getString(R.string.dictionary_frag_title);
+                case ADD_WORDS_FRAGMENT:
+                    return resources.getString(R.string.add_words_frag_title);
+                case LEARN_WORDS_FRAGMENT:
+                    return resources.getString(R.string.learn_words_frag_title);
+            }
+            return null;
+        }
+    }
     protected void onResume() {
         super.onResume();
-        Utils utils = new Utils();
-        Pair<String, String> pair = utils.getCurrentLanguages(this);
+        Pair<String, String> pair = Utils.getCurrentLanguages(this);
         Resources res = getResources();
         String[] languages = res.getStringArray(R.array.values_languages_from);
         String allLanguages = Arrays.toString(languages);
@@ -120,8 +219,7 @@ public class MainActivity extends FragmentActivity {
                 dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
                 dbHelper.importDB();
                 dbHelper.close();
-                Utils utils = new Utils();
-                utils.getCurrentLanguages(this);
+                Utils.getCurrentLanguages(this);
                 return true;
             case R.id.menu_show_all_words:
                 Log.d(LOG_TAG, "show all words");
@@ -141,48 +239,4 @@ public class MainActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position) {
-                case DICTIONARY_FRAGMENT:
-                    fragment = new DictFragment();
-                    return fragment;
-                case ADD_WORDS_FRAGMENT:
-                    fragment = new AddWordFragment();
-                    return fragment;
-                case LEARN_WORDS_FRAGMENT:
-                    fragment = new LearnFragment();
-                    return fragment;
-            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return NUMBER_OF_FRAGMENTS;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case DICTIONARY_FRAGMENT:
-                    return getString(R.string.dictionary_frag_title).toUpperCase();
-                case ADD_WORDS_FRAGMENT:
-                    return getString(R.string.add_words_frag_title).toUpperCase();
-                case LEARN_WORDS_FRAGMENT:
-                    return getString(R.string.learn_words_frag_title).toUpperCase();
-            }
-            return null;
-        }
-    }
-
-
 }

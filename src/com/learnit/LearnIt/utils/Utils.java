@@ -1,5 +1,6 @@
 package com.learnit.LearnIt.utils;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.R;
@@ -87,4 +89,10 @@ public class Utils {
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
         Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
 }

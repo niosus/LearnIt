@@ -40,8 +40,6 @@ public class LearnFragment extends Fragment {
     String queryWord = null;
     int numOfWrongAnswers = 0;
     int direction = 0;
-    Utils utils;
-    int magicCounter = 0;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
     int[] btnIds = {R.id.left_top_button,
@@ -55,18 +53,13 @@ public class LearnFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        utils = new Utils();
-        Pair<String, String> langPair = utils.getCurrentLanguages(this.getActivity());
+        Pair<String, String> langPair = Utils.getCurrentLanguages(this.getActivity());
         Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
-        Log.d(LOG_TAG, "magic counter = " + magicCounter);
-        if (magicCounter>0)
+        if (null!=v)
         {
-            magicCounter--;
             setAll(View.INVISIBLE);
-        }
-        else
-        {
-            setAll(View.VISIBLE);
+            playOpenAnimation();
+            openButtons();
         }
     }
 
@@ -82,49 +75,52 @@ public class LearnFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        setAll(View.INVISIBLE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(LOG_TAG,"on destroy");
-        magicCounter++;
+        setAll(View.INVISIBLE);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
-            playOpenAnimation();
-            openButtons();
-            setAll(View.VISIBLE);
-            MainActivity.hideSoftKeyboard(this.getActivity());
-        } else {
-            if (null != v) {
+        if (null!=v)
+        {
+            if (isVisibleToUser)
+            {
+                if (View.INVISIBLE == v.findViewById(R.id.word_to_ask).getVisibility())
+                {
+                    playOpenAnimation();
+                    openButtons();
+                    setAll(View.VISIBLE);
+                }
+                Utils.hideSoftKeyboard(this.getActivity());
+            } else
+            {
                 setAll(View.INVISIBLE);
             }
         }
-
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        utils = new Utils();
-        magicCounter++;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
-        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         fetchNewWords();
+        setAll(View.INVISIBLE);
         return v;
     }
 
     private void fetchNewWords() {
         Random random = new Random();
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         Log.d(LOG_TAG, "DB+WORDS=" + DBHelper.DB_WORDS);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
@@ -239,6 +235,7 @@ public class LearnFragment extends Fragment {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWordTextView.startAnimation(anim);
+        setAll(View.VISIBLE);
     }
 
     private void openButtons() {
