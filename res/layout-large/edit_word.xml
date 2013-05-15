@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  -->
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+        >
+    <TextView
+            android:id="@+id/txtViewEditDialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_dialog_title"
+            android:textSize="30dp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/holo_blue_dark"/>
+    <RelativeLayout
+            android:id="@+id/linearLayWord"
+            android:orientation="horizontal"
+            android:layout_below="@id/txtViewEditDialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <EditText
+                android:id="@+id/edtWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_word_hint"
+                />
+        <ImageButton
+                android:id="@+id/btn_add_word_clear"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_stat_clear"
+                android:layout_alignRight="@id/edtWord"
+                android:contentDescription="@string/clear"
+                android:padding="5dp"
+                android:background="@android:color/transparent"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/linearLayTrans"
+            android:layout_below="@id/linearLayWord"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <EditText
+                android:id="@+id/edtTrans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_translation_hint"/>
+        <ImageButton
+                android:id="@+id/btn_add_trans_clear"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_stat_clear"
+                android:layout_alignRight="@id/edtTrans"
+                android:contentDescription="@string/clear"
+                android:padding="5dp"
+                android:background="@android:color/transparent"/>
+
+    </RelativeLayout>
+    <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/linearButtons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="0dip"
+            android:paddingLeft="2dip"
+            android:paddingRight="2dip"
+            android:measureWithLargestChild="true">
+
+        <Button
+                android:id="@+id/btnCancel"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@android:string/cancel"/>
+        <View
+
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="?android:attr/dividerVertical" />
+        <Button
+                android:id="@+id/btnOk"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@android:string/ok"/>
+    </LinearLayout>
+    <View
+
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_above="@id/linearButtons"
+            android:background="?android:attr/dividerVertical" />
+</RelativeLayout>
+
