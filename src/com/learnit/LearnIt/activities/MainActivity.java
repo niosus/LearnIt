@@ -31,9 +31,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
-    public static final  int DICTIONARY_FRAGMENT = 1;
     public static final int ADD_WORDS_FRAGMENT = 0;
+    public static final int DICTIONARY_FRAGMENT = 1;
     public static final int LEARN_WORDS_FRAGMENT = 2;
+
+    public static final String ADD_WORDS_FRAGMENT_TAG = "0";
+    public static final String DICTIONARY_FRAGMENT_TAG = "1";
+    public static final String LEARN_WORDS_FRAGMENT_TAG = "2";
     public static final int INITIAL_POSITION = 100;
 
     /**
@@ -162,10 +166,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
         // Update the layout
         FragmentManager fm = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
-        ft.replace(R.id.view_group_id, fragment);
-        ft.commit();
+
+        if (fm.findFragmentByTag(fragment.getClass().getName())==null)
+        {
+            android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+            ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
+            ft.replace(R.id.view_group_id, fragment, fragment.getClass().getName());
+            Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + fragment.getClass().getName());
+            ft.commit();
+        }
         currentItemShown=position;
     }
 

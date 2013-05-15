@@ -42,11 +42,6 @@ public class DictFragment extends Fragment {
     public DictFragment() {
     }
 
-    public static String getTitle(Context ctxt, int position) {
-        return ctxt.getString(R.string.dictionary_frag_title);
-    }
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
