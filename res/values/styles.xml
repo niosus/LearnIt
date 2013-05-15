@@ -10,6 +10,9 @@
     <style name="BlackTheme" parent="android:Theme.Holo">
     </style>
 
+    <style name="BlackTheme.DialogWhenLarge" parent="android:Theme.Holo.DialogWhenLarge">
+    </style>
+
     <style name="LightTheme" parent="android:Theme.Light">
     </style>
 </resources>

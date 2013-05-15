@@ -44,15 +44,18 @@
         </activity>
         <activity
                 android:name=".activities.HomeworkActivity"
+                android:theme="@style/BlackTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity
                 android:name=".activities.HomeworkArticleActivity"
+                android:theme="@style/BlackTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
 
         <activity
                 android:name=".activities.PrefActivity"
+                android:theme="@style/BlackTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.ShowAllWordsActivity"
@@ -69,9 +72,11 @@
         </activity>
         <activity android:name=".activities.EditWord"
                   android:screenOrientation="sensor"
+                  android:theme="@style/BlackTheme.DialogWhenLarge"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.DictToSQL"
+                  android:theme="@style/BlackTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>

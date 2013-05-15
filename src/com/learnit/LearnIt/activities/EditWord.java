@@ -82,6 +82,14 @@ public class EditWord extends FragmentActivity {
         btnClearTrans.setOnClickListener(myBtnTouchListener);
         btnClearWord.setOnClickListener(myBtnTouchListener);
 
+        Button btnOk = (Button) findViewById(R.id.btnOk);
+        Button btnCancel = (Button) findViewById(R.id.btnCancel);
+        if (btnOk!=null && btnCancel!=null)
+        {
+            btnOk.setOnClickListener(myBtnTouchListener);
+            btnCancel.setOnClickListener(myBtnTouchListener);
+        }
+
         edtWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -136,6 +144,20 @@ public class EditWord extends FragmentActivity {
                 case R.id.btn_add_word_clear:
                     edtWord.setText("");
                     v.setVisibility(View.INVISIBLE);
+                    break;
+                case R.id.btnCancel:
+                    finishActivity();
+                    break;
+                case R.id.btnOk:
+                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
+                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+                    } else {
+                        dbHelper.deleteWord(oldStrippedWord);
+                        int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+                        showMessage(exitCode);
+                    }
                     break;
             }
         }

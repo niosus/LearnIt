@@ -169,6 +169,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         currentItemShown=position;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
 
 
     @Override
