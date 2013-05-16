@@ -7,7 +7,7 @@ package com.learnit.LearnIt.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -15,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -34,35 +33,299 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class DictToSQL extends FragmentActivity {
     protected static final String LOG_TAG = "my_logs";
+    private static final int ACTION_NONE = 1;
+    private static final int ACTION_LOAD_DICT = 1;
     public static boolean home_button_active = true;
+    ResultFragment resultFragment;
+    MyTask mt;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fragment fragTemp = new ResultFragment();
+        resultFragment = new ResultFragment();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, fragTemp)
+                .replace(android.R.id.content, resultFragment)
                 .commit();
+        mt = (MyTask) getLastCustomNonConfigurationInstance();
+        if (mt == null) {
+            Log.d(LOG_TAG,"creating new task");
+            mt = new MyTask();
+            mt.link(this);
+            mt.init(this,ACTION_LOAD_DICT);
+            mt.execute();
+        }
+        else
+        {
+            mt.link(this);
+        }
     }
 
-    public class ResultFragment extends Fragment {
+    public Object onRetainCustomNonConfigurationInstance() {
+        mt.unLink();
+        return mt;
+    }
+
+    public static class MyTask extends AsyncTask<Void, Integer, List<String>> {
+        int action = ACTION_NONE;
+        DictToSQL activity;
+        ProgressDialogFragment progressDialog;
         DBHelper dbHelper;
-        Utils utils;
-        StarDict dict;
+        Context context;
         String selectedLanguageFrom;
         String selectedLanguageTo;
-        String currentLanguage;
+        StarDict dict;
+
+        // получаем ссылку на MainActivity
+        void link(DictToSQL act) {
+            this.activity = act;
+            this.progressDialog = new ProgressDialogFragment();
+        }
+
+        // обнуляем ссылку
+        void unLink() {
+            activity = null;
+            progressDialog=null;
+            Log.d(LOG_TAG,"unlinked everyone");
+        }
+
+        public void init(Context context, int action)
+        {
+            this.context=context;
+            this.action=action;
+        }
+
+        private void getDict() {
+            Log.d(LOG_TAG,"get dict");
+            File sd = Environment.getExternalStorageDirectory();
+            Pair<String,String> pair = Utils.getCurrentLanguages(context);
+            selectedLanguageFrom = pair.first;
+            selectedLanguageTo = pair.second;
+
+            dict = null;
+            sd = new File(sd, "LearnIt");
+            sd = new File(sd, selectedLanguageFrom + "-" + selectedLanguageTo);
+            sd = new File(sd, "dict.ifo");
+            dict = new StarDict(sd.getPath());
+            if (!dict.boolAvailable) {
+                dict = null;
+            }
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(LOG_TAG,"on pre execute task");
+            home_button_active = false;
+            progressDialog.show(activity.getSupportFragmentManager(), "MyProgressDialog");
+            dbHelper = new DBHelper(context, DBHelper.DB_DICT_FROM);
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            db.delete(DBHelper.DB_DICT_FROM, null, null);
+        }
+
+        private Runnable changeMessagePercentage = new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.setText(activity.getString(R.string.dict_sql_progress_found));
+                progressDialog.setIndeterminate(false);
+            }
+        };
+
+        private Runnable changeMessageSearching = new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.setText(activity.getString(R.string.dict_sql_progress_searching));
+                progressDialog.setIndeterminate(true);
+            }
+        };
+
+        @Override
+        protected List<String> doInBackground(Void... word) {
+            try {
+                activity.runOnUiThread(changeMessageSearching);
+                getDict();
+                if (null == dict) {
+                    List<String> list = new ArrayList<String>();
+                    list.add(activity.getString(R.string.dict_sql_no_dict));
+                    Resources res = activity.getResources();
+                    String[] language_codes = res.getStringArray(R.array.values_languages_from);
+                    String[] languages = res.getStringArray(R.array.entries_languages_from);
+                    String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom)];
+                    String langToFull = languages[Arrays.binarySearch(language_codes, selectedLanguageTo)];
+                    list.add(langFromFull + "-" + langToFull);
+                    list.add("");
+                    list.add("");
+                    return list;
+                }
+                activity.runOnUiThread(changeMessagePercentage);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                int numOfWords = dict.getTotalWords();
+                String sql = "INSERT INTO " + DBHelper.DB_DICT_FROM + " (" + dbHelper.DICT_OFFSET_COLUMN_NAME + ", " + dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", " + dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
+                SQLiteStatement stmt = db.compileStatement(sql);
+                db.beginTransaction();
+                for (int i = 0; i < numOfWords; ++i) {
+                    Pair<Long, Long> position = dict.findWordMemoryOffsets(i);
+                    String wordTemp = dict.getWordByIndex(i);
+                    stmt.bindLong(1, position.first);
+                    stmt.bindLong(2, position.second);
+                    stmt.bindString(3, wordTemp);
+                    stmt.execute();
+                    stmt.clearBindings();
+                    float ratio = (float) i / numOfWords;
+                    int percent = (int) (ratio * 100);
+                    publishProgress(percent);
+                }
+                db.setTransactionSuccessful();
+                db.endTransaction();
+
+                List<String> list = new ArrayList<String>();
+                Resources res = activity.getResources();
+                String[] language_codes = res.getStringArray(R.array.values_languages_from);
+                String[] languages = res.getStringArray(R.array.entries_languages_from);
+                String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom.toLowerCase())];
+                String langToFull = languages[Arrays.binarySearch(language_codes, selectedLanguageTo.toLowerCase())];
+                list.add(activity.getString(R.string.dict_sql_title));
+                list.add(dict.getDictName());
+                list.add(String.format(activity.getString(R.string.dict_sql_version), langFromFull, langToFull, dict.getDictVersion()));
+                list.add(activity.getString(R.string.dict_sql_success));
+                return list;
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "error" + e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Log.d(LOG_TAG,"cancelled");
+            if (dbHelper!=null)
+            {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressDialog = (ProgressDialogFragment) activity.getSupportFragmentManager().findFragmentByTag("MyProgressDialog");
+            progressDialog.setProgress(values[0]);
+        }
+
+
+        @Override
+        protected void onPostExecute(final List<String> item) {
+            super.onPostExecute(item);
+            home_button_active = true;
+            activity.resultFragment.setTexts(item);
+            progressDialog = (ProgressDialogFragment) activity.getSupportFragmentManager().findFragmentByTag("MyProgressDialog");
+            progressDialog.dismiss();
+            new CountDownTimer(10000, 100) {
+                List<String> items = item;
+
+                public void onTick(long millisUntilFinished) {
+                    activity.resultFragment.setTimerText(String.format(activity.getString(R.string.dict_sql_closing_window), millisUntilFinished / 1000));
+                    activity.resultFragment.setTexts(items);
+                }
+
+                public void onFinish() {
+                    activity.resultFragment.finishActivity();
+                }
+            }.start();
+        }
+    }
+
+    public static class ProgressDialogFragment extends DialogFragment {
+        ProgressDialog dialog;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            dialog = new ProgressDialog(getActivity());
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setProgressNumberFormat("");
+            dialog.setMessage(getString(R.string.dict_sql_progress_found));
+//            dialog.setCancelable(false);
+            Log.d(LOG_TAG,"progress progressDialog oncreate");
+            return dialog;
+        }
+
+        public void setProgress(int i) {
+            try
+            {
+                dialog.setProgress(i);
+            }
+            catch (Exception e)
+            {
+//                Log.d(LOG_TAG,"trying to update progress that belongs to old activity");
+            }
+        }
+
+        public void setText(String text) {
+            try
+            {
+                dialog.setMessage(text);
+            }
+            catch (Exception e)
+            {
+//                Log.d(LOG_TAG,"trying to update progress that belongs to old activity");
+            }
+        }
+
+        public void setIndeterminate(boolean bool) {
+            try
+            {
+                dialog.setIndeterminate(bool);
+            }
+            catch (Exception e)
+            {
+//                Log.d(LOG_TAG,"trying to update progress that belongs to old activity");
+            }
+        }
+    }
+
+
+    public static class ResultFragment extends Fragment {
         TextView tvTitle, tvDictName, tvDictInfo, tvLoaded, tvCountdown;
-        private final String LOG_TAG = "my_logs";
-        MyTask mt;
+
+        public void setTexts(List<String> item)
+        {
+            tvTitle.setText(item.get(0));
+            tvDictName.setText(item.get(1));
+            tvDictInfo.setText(item.get(2));
+            tvLoaded.setText(item.get(3));
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putString("Title", tvTitle.getText().toString());
+            outState.putString("DictName", tvDictName.getText().toString());
+            outState.putString("DictInfo", tvDictInfo.getText().toString());
+            outState.putString("Loaded", tvLoaded.getText().toString());
+        }
+
+        public void setTimerText(String text)
+        {
+            tvCountdown.setText(text);
+        }
+
+        public ResultFragment()
+        {}
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            utils = new Utils();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,178 +342,10 @@ public class DictToSQL extends FragmentActivity {
         @Override
         public void onResume() {
             super.onResume();
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
-            selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
-            mt = new MyTask();
-            mt.action = 1;
-            mt.execute();
-        }
-
-        private void getDict() {
-            File sd = Environment.getExternalStorageDirectory();
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-            selectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
-            selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
-            Resources res = getResources();
-            String[] languages = res.getStringArray(R.array.values_languages_from);
-            String allLanguages = Arrays.toString(languages);
-            if (allLanguages.contains(selectedLanguageTo)) {
-                currentLanguage = selectedLanguageTo;
-            } else {
-                currentLanguage = Locale.getDefault().getLanguage();
-            }
-            Log.d(LOG_TAG, "possible languages = " + allLanguages + "\n" + currentLanguage);
-            if (allLanguages.contains(selectedLanguageFrom)) {
-                dict = null;
-                sd = new File(sd, "LearnIt");
-                sd = new File(sd, selectedLanguageFrom + "-" + currentLanguage);
-                sd = new File(sd, "dict.ifo");
-                dict = new StarDict(sd.getPath());
-                if (!dict.boolAvailable) {
-                    dict = null;
-                }
-            }
-        }
-
-        class ProgressDialogFragment extends DialogFragment {
-            ProgressDialog dialog;
-
-            @Override
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                dialog = new ProgressDialog(getActivity());
-                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                dialog.setProgressNumberFormat("");
-                dialog.setMessage(getString(R.string.dict_sql_progress_searching));
-                dialog.setIndeterminate(true);
-                return dialog;
-            }
-
-            public void setProgress(int i) {
-                dialog.setProgress(i);
-            }
-
-            public void setText(String text) {
-                dialog.setMessage(text);
-            }
-
-            public void setIndeterminate(boolean bool) {
-                dialog.setIndeterminate(bool);
-            }
         }
 
         protected void finishActivity() {
             getActivity().finish();
-        }
-
-        class MyTask extends AsyncTask<Void, Integer, List<String>> {
-            public int action = 0;
-            SQLiteDatabase db;
-            ProgressDialogFragment dialog;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                home_button_active = false;
-                dialog = new ProgressDialogFragment();
-                dialog.setCancelable(false);
-                dialog.show(getSupportFragmentManager(), "MyDialog");
-                dbHelper = new DBHelper(getActivity(), DBHelper.DB_DICT_FROM);
-                db = dbHelper.getWritableDatabase();
-                db.delete(DBHelper.DB_DICT_FROM, null, null);
-            }
-
-            private Runnable changeMessage = new Runnable() {
-                @Override
-                public void run() {
-                    dialog.setText(getString(R.string.dict_sql_progress_found));
-                    dialog.setIndeterminate(false);
-                }
-            };
-
-            @Override
-            protected List<String> doInBackground(Void... word) {
-                try {
-                    getDict();
-                    if (null == dict) {
-                        List<String> list = new ArrayList<String>();
-                        list.add(getString(R.string.dict_sql_no_dict));
-                        Resources res = getResources();
-                        String[] language_codes = res.getStringArray(R.array.values_languages_from);
-                        String[] languages = res.getStringArray(R.array.entries_languages_from);
-                        String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom.toLowerCase())];
-                        String langToFull = languages[Arrays.binarySearch(language_codes, currentLanguage.toLowerCase())];
-                        list.add(langFromFull + "-" + langToFull);
-                        list.add("");
-                        list.add("");
-                        return list;
-                    }
-                    runOnUiThread(changeMessage);
-                    int numOfWords = dict.getTotalWords();
-                    String sql = "INSERT INTO " + DBHelper.DB_DICT_FROM + " (" + dbHelper.DICT_OFFSET_COLUMN_NAME + ", " + dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", " + dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
-                    SQLiteStatement stmt = db.compileStatement(sql);
-                    db.beginTransaction();
-                    for (int i = 0; i < numOfWords; ++i) {
-                        Pair<Long, Long> position = dict.findWordMemoryOffsets(i);
-                        String wordTemp = dict.getWordByIndex(i);
-                        stmt.bindLong(1, position.first);
-                        stmt.bindLong(2, position.second);
-                        stmt.bindString(3, wordTemp);
-                        stmt.execute();
-                        stmt.clearBindings();
-                        float ratio = (float) i / numOfWords;
-                        int percent = (int) (ratio * 100);
-                        publishProgress(percent);
-                    }
-                    db.setTransactionSuccessful();
-                    db.endTransaction();
-
-                    List<String> list = new ArrayList<String>();
-                    Resources res = getResources();
-                    String[] language_codes = res.getStringArray(R.array.values_languages_from);
-                    String[] languages = res.getStringArray(R.array.entries_languages_from);
-                    String langFromFull = languages[Arrays.binarySearch(language_codes, selectedLanguageFrom.toLowerCase())];
-                    String langToFull = languages[Arrays.binarySearch(language_codes, currentLanguage.toLowerCase())];
-                    list.add(getString(R.string.dict_sql_title));
-                    list.add(dict.getDictName());
-                    list.add(String.format(getString(R.string.dict_sql_version), langFromFull, langToFull, dict.getDictVersion()));
-                    list.add(getString(R.string.dict_sql_success));
-                    return list;
-                } catch (Exception e) {
-                    Log.e(LOG_TAG, "error" + e.getMessage());
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-
-                dialog.setProgress(values[0]);
-            }
-
-
-            @Override
-            protected void onPostExecute(List<String> item) {
-                super.onPostExecute(item);
-                home_button_active = true;
-                tvTitle.setText(item.get(0));
-                tvDictName.setText(item.get(1));
-                tvDictInfo.setText(item.get(2));
-                tvLoaded.setText(item.get(3));
-                DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
-                dialog.dismiss();
-                new CountDownTimer(10000, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                        tvCountdown.setText(String.format(getString(R.string.dict_sql_closing_window), millisUntilFinished / 1000));
-                    }
-
-                    public void onFinish() {
-                        finishActivity();
-                    }
-                }.start();
-            }
         }
     }
 }

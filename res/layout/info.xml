@@ -30,7 +30,8 @@
                 android:orientation="vertical">
             <TextView
                     android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:paddingRight="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_method_title"
                     style="@android:style/TextAppearance.Holo.Small"
@@ -44,7 +45,8 @@
                     style="@android:style/TextAppearance.Holo.Small"/>
             <TextView
                     android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:paddingRight="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_guess_trans_title"
                     style="@android:style/TextAppearance.Holo.Small"
@@ -59,7 +61,8 @@
 
             <TextView
                     android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:paddingRight="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_edit_words_help_title"
                     style="@android:style/TextAppearance.Holo.Small"
@@ -74,7 +77,8 @@
 
             <TextView
                     android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:paddingRight="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_dict_help_title"
                     style="@android:style/TextAppearance.Holo.Small"
@@ -89,7 +93,8 @@
 
             <TextView
                     android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:paddingRight="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_thank_you_title"
                     style="@android:style/TextAppearance.Holo.Small"
