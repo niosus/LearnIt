@@ -12,15 +12,15 @@ import android.util.Log;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.fragments.Dict2SqlFragment;
-import com.learnit.LearnIt.fragments.MyProgressDialog;
+import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
 import com.learnit.LearnIt.fragments.TaskContainerFragment;
 
 
-public class StarDictToSQL extends Activity implements TaskContainerFragment.OnTaskActionListener {
+public class StarDictToSqlActivity extends Activity implements TaskContainerFragment.OnTaskActionListener {
     protected static final String LOG_TAG = "my_logs";
     Dict2SqlFragment _uiFragment;
     TaskContainerFragment _taskFragment;
-    MyProgressDialog _progressDialog;
+    MyProgressDialogFragment _progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +28,7 @@ public class StarDictToSQL extends Activity implements TaskContainerFragment.OnT
         _uiFragment = new Dict2SqlFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(android.R.id.content, _uiFragment)
-                .commit();
+
         _taskFragment = (TaskContainerFragment) fragmentManager
                 .findFragmentByTag(TaskContainerFragment.TAG);
         if (_taskFragment == null)
@@ -40,24 +38,39 @@ public class StarDictToSQL extends Activity implements TaskContainerFragment.OnT
                     .add(_taskFragment, TaskContainerFragment.TAG)
                     .commit();
         }
+        fragmentManager.beginTransaction()
+                .add(android.R.id.content, _uiFragment)
+                .commit();
+        addDialogIfNeeded();
+    }
+
+    private void addDialogIfNeeded()
+    {
         if (!_taskFragment.DONE)
         {
-            _progressDialog = new MyProgressDialog();
-            _progressDialog.show(getFragmentManager(),"my_progress");
+            _progressDialog = (MyProgressDialogFragment) getFragmentManager().findFragmentByTag("my_progress");
+            if (_progressDialog == null)
+            {
+                _progressDialog = new MyProgressDialogFragment();
+                _progressDialog.show(getFragmentManager(),"my_progress");
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(LOG_TAG, "resuming fragments");
+        addDialogIfNeeded();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (_progressDialog != null)
+        {
             _progressDialog.dismiss();
+            _progressDialog = null;
+        }
         Log.e(LOG_TAG, "activity paused");
     }
 
@@ -81,14 +94,15 @@ public class StarDictToSQL extends Activity implements TaskContainerFragment.OnT
 
     @Override
     public void onProgressUpdate(int progress) {
-        _progressDialog.setProgress(progress);
+        if (_progressDialog != null)
+            _progressDialog.setProgress(progress);
     }
 
     @Override
     public void onDictLoaded(String name) {
         _progressDialog.dismiss();
         _uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-        _uiFragment.setDictInfoText(this.getString(R.string.dict_sql_version));
+        _uiFragment.setDictInfoText(name);
     }
 }
 

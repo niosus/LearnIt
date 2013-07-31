@@ -5,12 +5,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.learnit.LearnIt.R;
 
-public class MyProgressDialog extends DialogFragment {
+public class MyProgressDialogFragment extends DialogFragment {
     ProgressDialog _dialog;
     Context _context;
 
@@ -22,11 +24,35 @@ public class MyProgressDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return createDialog();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        _dialog = null;
+    }
+
+    private Dialog createDialog()
+    {
         _dialog = new ProgressDialog(_context);
         _dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         _dialog.setProgressNumberFormat("");
         _dialog.setMessage(getString(R.string.dict_sql_progress_searching));
         _dialog.setIndeterminate(false);
+        _dialog.setCancelable(true);
+        _dialog.setCanceledOnTouchOutside(false);
+        _dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == KeyEvent.KEYCODE_BACK &&
+                        keyEvent.getAction() == KeyEvent.ACTION_UP &&
+                        !keyEvent.isCanceled()) {
+                    return true;
+                }
+                return false;
+            }
+        });
         return _dialog;
     }
 

@@ -14,8 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.activities.StarDictToSQL;
+import com.learnit.LearnIt.activities.StarDictToSqlActivity;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Utils;
@@ -44,7 +43,7 @@ public class TaskContainerFragment extends Fragment {
         super.onAttach(activity);
         _context = activity;
         try {
-            mCallback = (StarDictToSQL) activity;
+            mCallback = (StarDictToSqlActivity) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnTaskActionListener");
         }
@@ -70,7 +69,6 @@ public class TaskContainerFragment extends Fragment {
     {
         if (_task == null || DONE)
         {
-            DONE = false;
             _task = new GetDictTask(langFrom, langTo);
         }
     }

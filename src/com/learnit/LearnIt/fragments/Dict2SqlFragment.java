@@ -42,13 +42,16 @@ public class Dict2SqlFragment extends Fragment{
         _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
         _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
         String title = null;
+        String dictInfo = null;
         if (savedInstanceState!=null)
         {
             title = savedInstanceState.getString("Title");
+            dictInfo = savedInstanceState.getString("DictInfo");
         }
         if (title!=null)
         {
             _tvTitle.setText(title);
+            _tvDictInfo.setText(dictInfo);
         }
         return v;
     }
@@ -78,11 +81,6 @@ public class Dict2SqlFragment extends Fragment{
     {
         if (_tvTitle!=null)
             _tvTitle.setText(text);
-    }
-
-    public String getTitleText()
-    {
-        return _tvTitle.getText().toString();
     }
 
     public void setDictNameText(String text)
