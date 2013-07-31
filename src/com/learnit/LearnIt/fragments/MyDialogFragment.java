@@ -34,8 +34,7 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WRONG_ARTICLE = 6;
     public static final int DIALOG_WRONG_GUESS = 7;
     public static final int DIALOG_WORD_DELETED = 8;
-    //    public static final int DIALOG_EDIT_WORD = 9;
-    public static final int DIALOG_PROGRESS = 10;
+    public static final int DIALOG_PROGRESS = 9;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -99,7 +98,6 @@ public class MyDialogFragment extends DialogFragment {
                 progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progDialog.setOnCancelListener(myOnCancelListener);
                 return progDialog;
-
         }
         return null;
     }

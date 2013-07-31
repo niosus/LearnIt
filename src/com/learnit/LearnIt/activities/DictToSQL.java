@@ -119,7 +119,6 @@ public class DictToSQL extends FragmentActivity {
             }
         }
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

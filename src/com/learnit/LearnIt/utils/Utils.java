@@ -43,6 +43,10 @@ public class Utils {
     }
 
     public static Pair<String,String> getCurrentLanguages(Context context) {
+        if (context == null)
+        {
+            return null;
+        }
         String currentLanguage;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
