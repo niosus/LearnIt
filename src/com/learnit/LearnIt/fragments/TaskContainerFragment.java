@@ -10,7 +10,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.StarDictToSQL;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.stardict.StarDict;
@@ -20,6 +24,8 @@ import java.io.File;
 
 public class TaskContainerFragment extends Fragment {
     final String LOG_TAG = "my_logs";
+    public static String TAG = "task_fragment";
+    public boolean DONE = false;
     private static GetDictTask _task;
     protected Context _context;
     private OnTaskActionListener mCallback;
@@ -33,31 +39,39 @@ public class TaskContainerFragment extends Fragment {
         public void onDictLoaded(String name);
     }
 
-    private void updateTask(String langFrom, String langTo)
-    {
-        if (_task == null)
-        {
-            _task = new GetDictTask(langFrom, langTo);
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        _context = activity;
+        try {
+            mCallback = (StarDictToSQL) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnTaskActionListener");
         }
     }
 
-    public void executeTask(Context context)
-    {
-        _context = context;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         Pair<String,String> pair = Utils.getCurrentLanguages(_context);
         updateTask(pair.first, pair.second);
         _task.execute();
         Log.e(LOG_TAG, "task was executed");
     }
 
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.e(LOG_TAG, "THIS IS CALLED");
-        try {
-            mCallback = (StarDictToSQL) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnTaskActionListener");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return null;
+    }
+
+    private void updateTask(String langFrom, String langTo)
+    {
+        if (_task == null || DONE)
+        {
+            DONE = false;
+            _task = new GetDictTask(langFrom, langTo);
         }
     }
 
@@ -122,9 +136,17 @@ public class TaskContainerFragment extends Fragment {
         @Override
         protected void onPostExecute(String dictName) {
             super.onPostExecute(dictName);
+            if (dictName == null)
+            {
+                mCallback.noDictFound();
+                return;
+            }
             mCallback.onDictLoaded(dictName);
+            DONE = true;
+            _task = null;
         }
 
+        @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
             mCallback.onProgressUpdate(progress[0]);
@@ -132,15 +154,29 @@ public class TaskContainerFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... unused) {
+            ((Activity)_context).runOnUiThread(onStartSearching);
             StarDict dict = getDict(_langFrom, _langTo);
             if (null == dict) {
-                mCallback.noDictFound();
                 return null;
             }
-            mCallback.onStartLoading();
+            ((Activity)_context).runOnUiThread(onStartLoading);
             updateDatabaseFromDict(dict);
             return dict.getDictName();
         }
+
+        private Runnable onStartLoading = new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onStartLoading();
+            }
+        };
+
+        private Runnable onStartSearching = new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onStartSearching();
+            }
+        };
     }
 
 }

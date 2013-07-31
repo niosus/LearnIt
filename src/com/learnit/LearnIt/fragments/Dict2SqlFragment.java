@@ -1,7 +1,14 @@
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +17,41 @@ import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 
+import java.util.List;
+
 public class Dict2SqlFragment extends Fragment{
     private TextView _tvTitle;
     private TextView _tvDictName;
     private TextView _tvDictInfo;
     private TextView _tvLoaded;
     private TextView _tvCountdown;
-    private MyProgressDialog _progressDialog;
+
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.dict_to_sql, container, false);
+        _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
+        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
+        _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
+        _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
+        _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
+        String title = null;
+        if (savedInstanceState!=null)
+        {
+            title = savedInstanceState.getString("Title");
+        }
+        if (title!=null)
+        {
+            _tvTitle.setText(title);
+        }
+        return v;
+    }
 
 
     @Override
@@ -25,46 +60,47 @@ public class Dict2SqlFragment extends Fragment{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        _progressDialog = new MyProgressDialog();
-        _progressDialog.show(getFragmentManager(),"my_progress");
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.e("blah", "saving state");
+        outState.putString("Title", _tvTitle.getText().toString());
+        outState.putString("DictName", _tvDictName.getText().toString());
+        outState.putString("DictInfo", _tvDictInfo.getText().toString());
+        outState.putString("Loaded", _tvLoaded.getText().toString());
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.dict_to_sql, container, false);
-        _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
-        _tvTitle.setText(this.getString(R.string.dict_sql_no_dict));
-        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
-        _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
-        _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
-        _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
-        return v;
+    protected void setTimerText(String text)
+    {
+        _tvCountdown.setText(text);
     }
 
-    public void setStateSearching() {
-        _progressDialog.setText(this.getString(R.string.dict_sql_progress_searching));
-        _progressDialog.setIndeterminate(true);
+    public void setTitleText(String text)
+    {
+        if (_tvTitle!=null)
+            _tvTitle.setText(text);
     }
 
-    public void setStateLoading() {
-        _progressDialog.setText(this.getString(R.string.dict_sql_progress_found));
-        _progressDialog.setIndeterminate(false);
+    public String getTitleText()
+    {
+        return _tvTitle.getText().toString();
     }
 
-    public void noDictFound() {
-        _progressDialog.dismiss();
-        _tvTitle.setText(this.getString(R.string.dict_sql_no_dict));
+    public void setDictNameText(String text)
+    {
+        if (_tvDictName!=null)
+            _tvDictName.setText(text);
     }
 
-    public void onProgressUpdate(int progress) {
-        _progressDialog.setProgress(progress);
+    public void setDictInfoText(String text)
+    {
+        if (_tvDictInfo!=null)
+            _tvDictInfo.setText(text);
     }
 
-    public void onDictLoaded(String name) {
-        _progressDialog.dismiss();
-        _tvTitle.setText(this.getString(R.string.dict_sql_success));
-        _tvDictInfo.setText(this.getString(R.string.dict_sql_version));
+    public void setLoadedText(String text)
+    {
+        if (_tvLoaded!=null)
+            _tvLoaded.setText(text);
     }
+
 }

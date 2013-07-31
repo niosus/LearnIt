@@ -78,7 +78,7 @@ public class PrefActivity extends PreferenceActivity {
 
 
     private void startDictToSQLActivity() {
-        Intent intent = new Intent(this, DictToSQL.class);
+        Intent intent = new Intent(this, StarDictToSQL.class);
         startActivity(intent);
     }
 
