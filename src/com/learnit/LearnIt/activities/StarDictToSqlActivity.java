@@ -76,19 +76,29 @@ public class StarDictToSqlActivity extends Activity implements TaskContainerFrag
 
     @Override
     public void onStartLoading() {
-        _progressDialog.setText(this.getString(R.string.dict_sql_progress_found));
-        _progressDialog.setIndeterminate(false);
+        if (_progressDialog != null)
+        {
+            _progressDialog.setText(this.getString(R.string.dict_sql_progress_found));
+            _progressDialog.setIndeterminate(false);
+        }
     }
 
     @Override
     public void onStartSearching() {
-        _progressDialog.setText(this.getString(R.string.dict_sql_progress_searching));
-        _progressDialog.setIndeterminate(true);
+        if (_progressDialog != null)
+        {
+            _progressDialog.setText(this.getString(R.string.dict_sql_progress_searching));
+            _progressDialog.setIndeterminate(true);
+        }
     }
 
     @Override
     public void noDictFound() {
-        _progressDialog.dismiss();
+        if (_progressDialog != null)
+        {
+            _progressDialog.dismiss();
+            _progressDialog = null;
+        }
         _uiFragment.setTitleText(this.getString(R.string.dict_sql_no_dict));
     }
 
@@ -100,7 +110,11 @@ public class StarDictToSqlActivity extends Activity implements TaskContainerFrag
 
     @Override
     public void onDictLoaded(String name) {
-        _progressDialog.dismiss();
+        if (_progressDialog != null)
+        {
+            _progressDialog.dismiss();
+            _progressDialog = null;
+        }
         _uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
         _uiFragment.setDictInfoText(name);
     }
