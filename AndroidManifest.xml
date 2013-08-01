@@ -77,7 +77,7 @@
                   android:theme="@style/BlackTheme.DialogWhenLarge"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".activities.StarDictToSqlActivity"
+        <activity android:name=".activities.LoadStarDictActivity"
                   android:theme="@style/BlackTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">

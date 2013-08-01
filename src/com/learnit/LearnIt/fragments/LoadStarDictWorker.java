@@ -14,14 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.activities.StarDictToSqlActivity;
+import com.learnit.LearnIt.activities.LoadStarDictActivity;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 
-public class TaskContainerFragment extends Fragment {
+public class LoadStarDictWorker extends Fragment {
     final String LOG_TAG = "my_logs";
     public static String TAG = "task_fragment";
     public boolean DONE = false;
@@ -43,7 +43,7 @@ public class TaskContainerFragment extends Fragment {
         super.onAttach(activity);
         _context = activity;
         try {
-            mCallback = (StarDictToSqlActivity) activity;
+            mCallback = (LoadStarDictActivity) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnTaskActionListener");
         }
@@ -134,14 +134,15 @@ public class TaskContainerFragment extends Fragment {
         @Override
         protected void onPostExecute(String dictName) {
             super.onPostExecute(dictName);
+            DONE = true;
+            _task = null;
             if (dictName == null)
             {
                 mCallback.noDictFound();
                 return;
             }
             mCallback.onDictLoaded(dictName);
-            DONE = true;
-            _task = null;
+
         }
 
         @Override

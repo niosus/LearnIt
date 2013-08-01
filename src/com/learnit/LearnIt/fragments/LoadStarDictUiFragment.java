@@ -19,7 +19,7 @@ import com.learnit.LearnIt.R;
 
 import java.util.List;
 
-public class Dict2SqlFragment extends Fragment{
+public class LoadStarDictUiFragment extends Fragment{
     private TextView _tvTitle;
     private TextView _tvDictName;
     private TextView _tvDictInfo;

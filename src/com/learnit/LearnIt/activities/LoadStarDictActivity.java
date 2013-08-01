@@ -8,34 +8,33 @@ package com.learnit.LearnIt.activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.fragments.Dict2SqlFragment;
+import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
+import com.learnit.LearnIt.fragments.LoadStarDictWorker;
 import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
-import com.learnit.LearnIt.fragments.TaskContainerFragment;
 
 
-public class StarDictToSqlActivity extends Activity implements TaskContainerFragment.OnTaskActionListener {
+public class LoadStarDictActivity extends Activity implements LoadStarDictWorker.OnTaskActionListener {
     protected static final String LOG_TAG = "my_logs";
-    Dict2SqlFragment _uiFragment;
-    TaskContainerFragment _taskFragment;
+    LoadStarDictUiFragment _uiFragment;
+    LoadStarDictWorker _taskFragment;
     MyProgressDialogFragment _progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _uiFragment = new Dict2SqlFragment();
+        _uiFragment = new LoadStarDictUiFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
 
-        _taskFragment = (TaskContainerFragment) fragmentManager
-                .findFragmentByTag(TaskContainerFragment.TAG);
+        _taskFragment = (LoadStarDictWorker) fragmentManager
+                .findFragmentByTag(LoadStarDictWorker.TAG);
         if (_taskFragment == null)
         {
-            _taskFragment = new TaskContainerFragment();
+            _taskFragment = new LoadStarDictWorker();
             fragmentManager.beginTransaction()
-                    .add(_taskFragment, TaskContainerFragment.TAG)
+                    .add(_taskFragment, LoadStarDictWorker.TAG)
                     .commit();
         }
         fragmentManager.beginTransaction()
@@ -71,7 +70,10 @@ public class StarDictToSqlActivity extends Activity implements TaskContainerFrag
             _progressDialog.dismiss();
             _progressDialog = null;
         }
-        Log.e(LOG_TAG, "activity paused");
+        if (_taskFragment.DONE)
+        {
+            this.finish();
+        }
     }
 
     @Override
