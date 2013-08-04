@@ -11,14 +11,14 @@ import android.os.Bundle;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
-import com.learnit.LearnIt.fragments.LoadStarDictWorker;
+import com.learnit.LearnIt.fragments.LoadStarDictWrapper;
 import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
 
 
-public class LoadStarDictActivity extends Activity implements LoadStarDictWorker.OnTaskActionListener {
+public class LoadStarDictActivity extends Activity implements LoadStarDictWrapper.OnTaskActionListener {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
-    LoadStarDictWorker _taskFragment;
+    LoadStarDictWrapper _taskFragment;
     MyProgressDialogFragment _progressDialog;
 
     @Override
@@ -28,13 +28,13 @@ public class LoadStarDictActivity extends Activity implements LoadStarDictWorker
 
         FragmentManager fragmentManager = getFragmentManager();
 
-        _taskFragment = (LoadStarDictWorker) fragmentManager
-                .findFragmentByTag(LoadStarDictWorker.TAG);
+        _taskFragment = (LoadStarDictWrapper) fragmentManager
+                .findFragmentByTag(LoadStarDictWrapper.TAG);
         if (_taskFragment == null)
         {
-            _taskFragment = new LoadStarDictWorker();
+            _taskFragment = new LoadStarDictWrapper();
             fragmentManager.beginTransaction()
-                    .add(_taskFragment, LoadStarDictWorker.TAG)
+                    .add(_taskFragment, LoadStarDictWrapper.TAG)
                     .commit();
         }
         fragmentManager.beginTransaction()

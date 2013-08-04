@@ -35,23 +35,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final int DICTIONARY_FRAGMENT = 1;
     public static final int LEARN_WORDS_FRAGMENT = 2;
 
-    public static final String ADD_WORDS_FRAGMENT_TAG = "0";
-    public static final String DICTIONARY_FRAGMENT_TAG = "1";
-    public static final String LEARN_WORDS_FRAGMENT_TAG = "2";
-    public static final int INITIAL_POSITION = 100;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
-     * three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
-     * derivative, which will keep every loaded fragment in memory. If this becomes too memory
-     * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will display the three primary sections of the app, one at a
-     * time.
-     */
     ViewPager mViewPager;
     ListOfFragments fragment;
 
@@ -71,16 +57,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onResume();
         fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        Log.d(LOG_TAG,"onresume mainactivity " + currentItemShown);
         if (null!=fragment && fragment.isInLayout())
         {
-            Log.d(LOG_TAG,"trying to show list fragment position " + currentItemShown);
             fragment.getListView().setItemChecked(currentItemShown,true);
             onArticleSelected(currentItemShown);
         }
         if (mViewPager!=null)
         {
-            Log.d(LOG_TAG,"trying to show ViewPager position " + currentItemShown);
             mViewPager.setCurrentItem(currentItemShown, true);
         }
 

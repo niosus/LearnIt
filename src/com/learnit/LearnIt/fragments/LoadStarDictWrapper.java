@@ -21,7 +21,7 @@ import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 
-public class LoadStarDictWorker extends Fragment {
+public class LoadStarDictWrapper extends Fragment {
     final String LOG_TAG = "my_logs";
     public static String TAG = "task_fragment";
     public boolean DONE = false;
