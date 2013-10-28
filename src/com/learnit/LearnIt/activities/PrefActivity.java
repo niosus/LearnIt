@@ -117,7 +117,6 @@ public class PrefActivity extends PreferenceActivity {
                 Log.d(LOG_TAG, "cought exception on pref start");
             }
 
-
             lstDirectionOfTrans = (ListPreference) findPreference(getString(R.string.key_direction_of_trans));
             lstDirectionOfTrans.setOnPreferenceChangeListener(listener);
 
@@ -246,6 +245,7 @@ public class PrefActivity extends PreferenceActivity {
                             pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
                             if (!newValue.toString().equals("de")) {
                                 PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                                lstWayToLearn.setValue("2");
                                 mCategory.removePreference(lstWayToLearn);
                             } else {
                                 PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");

@@ -133,6 +133,13 @@ public class LearnFragment extends Fragment {
         }
         int nouns = random.nextInt(2) + 1;
         ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length, null, nouns);
+        // in case we are learning english and alike where there are no nouns
+        // explicitly, we look another time
+        if (words.size()==0)
+        {
+            nouns = (nouns+1)%3 +1;
+            words = dbHelper.getRandomWords(btnIds.length, null, nouns);
+        }
         int correctIdx = 0;
         if (words.size() == 0) {
             TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
