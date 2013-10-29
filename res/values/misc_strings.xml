@@ -12,7 +12,7 @@
     <string name="key_direction_of_trans">direction_of_trans</string>
     <string name="key_language_from">language_to_learn</string>
     <string name="key_language_to">language_you_know</string>
-    <string name="version">0.6.14</string>
+    <string name="version">0.6.15</string>
 
     <string-array name="values_freq">
         <item>1</item>
