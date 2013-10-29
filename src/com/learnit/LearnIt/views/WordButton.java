@@ -3,7 +3,8 @@ package com.learnit.LearnIt.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
-import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
+
+import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.utils.StringUtils;
 
 public class WordButton extends Button {
@@ -30,7 +31,7 @@ public class WordButton extends Button {
         super.setText(text, type);
     }
 
-    public void setText(ArticleWordIdStruct entry, int type)
+    public void setText(ArticleWordId entry, int type)
     {
         String textToSet;
         switch (type)

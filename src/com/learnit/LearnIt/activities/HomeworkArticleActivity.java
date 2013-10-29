@@ -12,14 +12,19 @@ package com.learnit.LearnIt.activities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.learnit.LearnIt.data_types.ArticleWordId;
+import com.learnit.LearnIt.data_types.NotificationBuilder;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
@@ -36,12 +41,21 @@ public class HomeworkArticleActivity extends FragmentActivity {
     int[] btnIds = {R.id.btn_first,
             R.id.btn_second,
             R.id.btn_third};
+	private ArrayList<Integer> _ids;
+	private ArrayList<String> _words;
+	private ArrayList<String> _articles;
+	private int _currentNotificationIndex;
 
     private void getEverythingFromIntent() {
-        Intent intent = getIntent();
-        article = intent.getStringExtra("article");
-        queryWord = intent.getStringExtra("word");
-        notificationId = intent.getIntExtra("id", -1);
+	    Intent intent = getIntent();
+	    _ids = intent.getIntegerArrayListExtra(NotificationBuilder.IDS_TAG);
+	    _words = intent.getStringArrayListExtra(NotificationBuilder.WORDS_TAG);
+	    _articles = intent.getStringArrayListExtra(NotificationBuilder.ARTICLES_TAG);
+	    _currentNotificationIndex = intent.getIntExtra(NotificationBuilder.CURRENT_NOTIFICATION_INDEX, -1);
+
+        article = _articles.get(_currentNotificationIndex);
+        queryWord = _words.get(_currentNotificationIndex);
+        notificationId = _ids.get(_currentNotificationIndex);
         Log.d(LOG_TAG, "got intent word=" + queryWord + " id = "
                 + notificationId);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
@@ -76,6 +90,7 @@ public class HomeworkArticleActivity extends FragmentActivity {
         }
     }
 
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getEverythingFromIntent();
@@ -105,6 +120,28 @@ public class HomeworkArticleActivity extends FragmentActivity {
         this.finish();
     }
 
+	protected void updateListOfAliveIds(int correctId)
+	{
+		SharedPreferences _sp = PreferenceManager.getDefaultSharedPreferences(this);
+		Log.d(LOG_TAG, _sp.toString());
+		SharedPreferences.Editor editor = _sp.edit();
+		String ALIVE_IDS_TAG = "current_ids";
+		String idsOld = _sp.getString(ALIVE_IDS_TAG, "");
+		Log.d(LOG_TAG, idsOld);
+		String idsNew="";
+		for (Integer idInt: _ids)
+		{
+			if (idInt==correctId)
+				continue;
+			if (!idsOld.contains(idInt.toString()))
+				continue;
+			idsNew+=idInt.toString()+" ";
+		}
+		editor.putString(ALIVE_IDS_TAG, idsNew);
+		Log.d(LOG_TAG, idsNew);
+		editor.commit();
+	}
+
     private class MyButtonOnClick implements OnClickListener {
         public int correct = 0;
 
@@ -114,6 +151,7 @@ public class HomeworkArticleActivity extends FragmentActivity {
             if (correct == id) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.cancel(notificationId);
+	            updateListOfAliveIds(notificationId);
                 stopActivity();
             } else {
                 showDialogWrong();
@@ -121,6 +159,7 @@ public class HomeworkArticleActivity extends FragmentActivity {
         }
     }
 
+	@Override
     protected void onResume() {
         super.onResume();
         TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);

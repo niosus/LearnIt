@@ -164,8 +164,12 @@ public class PrefActivity extends PreferenceActivity {
             if (lstWayToLearn.getValue().equals("2")) {
                 lstDirectionOfTrans.setValue("2");
                 lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
-                lstDirectionOfTrans.setEnabled(false);
+//                lstDirectionOfTrans.setEnabled(false);
             }
+//	        else
+//            {
+//	            lstDirectionOfTrans.setEnabled(true);
+//            }
         }
 
         @Override

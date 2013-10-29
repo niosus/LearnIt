@@ -14,12 +14,21 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
 import com.learnit.LearnIt.activities.HomeworkArticleActivity;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class NotificationBuilder {
     public static final String LOG_TAG = "my_logs";
+
+	public static final String IDS_TAG = "ids";
+	public static final String WORDS_TAG = "words";
+	public static final String ARTICLES_TAG = "articles";
+	public static final String PREFIXES_TAG = "prefixes";
+	public static final String TRANSLATIONS_TAG = "translations";
+	public static final String DIRECTION_OF_TRANS_TAG = "directions_of_trans";
+	public static final String CURRENT_NOTIFICATION_INDEX = "current_index";
 
     static String currentIds = "";
     static SharedPreferences sp;
@@ -28,7 +37,7 @@ public class NotificationBuilder {
     public static final int idModificator = 1552235; // some number
 
 
-    private static ArrayList<ArticleWordIdStruct> getRandWordsFromDB(int isNoun, int numOfNotif, Context context) {
+    private static ArrayList<ArticleWordId> getRandWordsFromDB(int isNoun, int numOfNotif, Context context) {
         DBHelper dbHelper = new DBHelper(context, DBHelper.DB_WORDS);
         return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
@@ -42,12 +51,18 @@ public class NotificationBuilder {
         return Integer.parseInt(sp.getString(context.getString(R.string.key_num_of_words), "5"));
     }
 
-    private static int setDirectionOfTranslation(Context context, SharedPreferences sp, int homeworkActivityType) {
+    private static int getDirectionOfTranslation(Context context, SharedPreferences sp, int homeworkActivityType) {
         if (homeworkActivityType==Constants.LEARN_ARTICLES)
         {
             return Constants.FROM_FOREIGN_TO_MY;
         }
-        return Integer.parseInt(sp.getString(context.getString(R.string.key_direction_of_trans), "3"));
+	    int currentDirection = Integer.parseInt(sp.getString(context.getString(R.string.key_direction_of_trans), "3"));
+	    if (currentDirection == Constants.MIXED)
+	    {
+		    Random rand = new Random();
+		    currentDirection = rand.nextInt(2) + 1;
+	    }
+	    return currentDirection;
     }
 
     private static void deleteOldNotifications(Context context, String old_ids) {
@@ -72,11 +87,8 @@ public class NotificationBuilder {
         int wayToLearn = getWayToLearn(context, sp);
         int numberOfWords = setNumberOfWords(context, sp);
         Log.d(LOG_TAG, "number of notifications = " + numberOfWords);
-        ArrayList<ArticleWordIdStruct> randWords = getRandWordsFromDB(wayToLearn, numberOfWords, context);
-        for (int i = randWords.size(); i > 0; --i) {
-            Log.d(LOG_TAG, "wayToLearn = " + wayToLearn + " " + randWords.get(i - 1).word);
-            CreateNotification(i, randWords.get(i - 1), context, wayToLearn);
-        }
+        ArrayList<ArticleWordId> randWords = getRandWordsFromDB(wayToLearn, numberOfWords, context);
+	    CreateNotifications(randWords, context, wayToLearn);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("current_ids", currentIds);
         editor.commit();
@@ -96,131 +108,126 @@ public class NotificationBuilder {
         }
     }
 
-    private static boolean CreateNotification(int wordNum, ArticleWordIdStruct struct, Context context, int wayToLearn) {
-        Log.d(LOG_TAG, "starting to create notification");
-        NotificationCompat.Builder mBuilder = null;
-        int currentDirection;
-        Intent resultIntent;
-        int homeworkActivityType=0;
+
+    private static int getHomeworkType(int wayToLearn, String article)
+    {
+        int type = Constants.LEARN_TRANSLATIONS;
         switch (wayToLearn)
         {
-            case Constants.LEARN_MIXED:
-                if (struct.article!=null)
-                {
-                    homeworkActivityType=getRandomWayToLearn();
-                }
-                else
-                {
-                    homeworkActivityType = Constants.LEARN_TRANSLATIONS;
-                }
-                break;
-            case Constants.LEARN_TRANSLATIONS:
-                homeworkActivityType=Constants.LEARN_TRANSLATIONS;
-                break;
-            case Constants.LEARN_ARTICLES:
-                if (struct.article!=null)
-                {
-                    homeworkActivityType=Constants.LEARN_ARTICLES;
-                }
-                else
-                {
-                    homeworkActivityType=Constants.LEARN_TRANSLATIONS;
-                }
-                break;
-        }
-        switch (homeworkActivityType) {
-            case Constants.LEARN_TRANSLATIONS:
-                resultIntent = new Intent(context, HomeworkActivity.class);
-                break;
-            case Constants.LEARN_ARTICLES:
-                resultIntent = new Intent(context, HomeworkArticleActivity.class);
-                break;
-            default:
-                resultIntent = new Intent(context, HomeworkActivity.class);
-        }
-        int mId = (int) struct.id + idModificator;
-        resultIntent.putExtra("id", mId);
-        resultIntent.putExtra("word", struct.word);
-        resultIntent.putExtra("article", struct.article);
-        resultIntent.putExtra("translation", struct.translation);
-        resultIntent.putExtra("prefix", struct.prefix);
-
-        currentIds = currentIds + mId + " ";
-        int mDirectionOfTrans = setDirectionOfTranslation(context,sp, homeworkActivityType);
-        switch (mDirectionOfTrans) {
-            case Constants.MIXED:
-                Random rand = new Random();
-                currentDirection = rand.nextInt(2) + 1;
-                if (Constants.FROM_MY_TO_FOREIGN == currentDirection)
-                    mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
-                else if (Constants.FROM_FOREIGN_TO_MY == currentDirection)
-                    mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notif_text));
-
-                resultIntent.putExtra("direction", currentDirection);
-                break;
-            case Constants.FROM_FOREIGN_TO_MY:
-                mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notif_text));
-                resultIntent.putExtra("direction", mDirectionOfTrans);
-                break;
-            case Constants.FROM_MY_TO_FOREIGN:
-                mBuilder = new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
-                resultIntent.putExtra("direction", mDirectionOfTrans);
-                break;
-            default:
-                return false;
-        }
-        if (null != mBuilder) {
-            switch (wordNum) {
-                case 1:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_one);
-                    break;
-                case 2:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_two);
-                    break;
-                case 3:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_three);
-                    break;
-                case 4:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_four);
-                    break;
-                case 5:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_five);
-                    break;
-                case 6:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_six);
-                    break;
-                case 7:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_seven);
-                    break;
-                case 8:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_eight);
-                    break;
-                case 9:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_nine);
-                    break;
-                case 10:
-                    mBuilder.setSmallIcon(R.drawable.ic_stat_ten);
-                    break;
-
+        case Constants.LEARN_MIXED:
+            if (article!=null)
+            {
+                type = getRandomWayToLearn();
             }
-            resultIntent.setAction(mId + " " + struct.word + " " + System.currentTimeMillis());
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            if (homeworkActivityType == Constants.LEARN_ARTICLES)
-                stackBuilder.addParentStack(HomeworkArticleActivity.class);
             else
-                stackBuilder.addParentStack(HomeworkActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent pendInt = PendingIntent.getActivity(context, mId, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(pendInt);
-            mBuilder.setPriority(Notification.PRIORITY_MAX);
-            mBuilder.setOngoing(true);
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(mId, mBuilder.build());
-            return true;
-        } else {
-            return false;
+            {
+                type = Constants.LEARN_TRANSLATIONS;
+            }
+            break;
+        case Constants.LEARN_TRANSLATIONS:
+            type=Constants.LEARN_TRANSLATIONS;
+            break;
+            case Constants.LEARN_ARTICLES:
+            if (article!=null)
+            {
+                type=Constants.LEARN_ARTICLES;
+            }
+            else
+            {
+                type=Constants.LEARN_TRANSLATIONS;
+            }
+            break;
         }
-
+        return type;
     }
+
+	private static Intent getIntentFromHomeworkType(Context context, int homeworkActivityType)
+	{
+		switch (homeworkActivityType) {
+			case Constants.LEARN_TRANSLATIONS:
+				return new Intent(context, HomeworkActivity.class);
+			case Constants.LEARN_ARTICLES:
+				return new Intent(context, HomeworkArticleActivity.class);
+			default:
+				return null;
+		}
+	}
+
+	private static Class getStackTypeFromHomeworkType(int homeworkActivityType)
+	{
+		switch (homeworkActivityType) {
+			case Constants.LEARN_TRANSLATIONS:
+				return HomeworkActivity.class;
+			case Constants.LEARN_ARTICLES:
+				return HomeworkArticleActivity.class;
+			default:
+				return null;
+		}
+	}
+
+	private static NotificationCompat.Builder getBuilder(Context context, int currentDirection, ArticleWordId struct)
+	{
+		if (Constants.FROM_MY_TO_FOREIGN == currentDirection)
+			return new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
+		else if (Constants.FROM_FOREIGN_TO_MY == currentDirection)
+			return new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notif_text));
+		else return null;
+	}
+
+
+	private static boolean CreateNotifications(ArrayList<ArticleWordId> randWords, Context context, int wayToLearn) {
+		ArrayList<Intent> intents = new ArrayList<Intent>();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ArrayList<String> words = new ArrayList<String>();
+		ArrayList<String> articles = new ArrayList<String>();
+		ArrayList<String> translations = new ArrayList<String>();
+		ArrayList<String> prefixes = new ArrayList<String>();
+		ArrayList<Integer> directionsOfTrans = new ArrayList<Integer>();
+		ArrayList<Class> classes = new ArrayList<Class>();
+		for (ArticleWordId struct: randWords)
+		{
+			int homeworkActivityType = getHomeworkType(wayToLearn, struct.article);
+			int directionOfTranslation = getDirectionOfTranslation(context, sp, homeworkActivityType);
+			ids.add(struct.id + idModificator);
+			words.add(struct.word);
+			articles.add(struct.article);
+			translations.add(struct.translation);
+			prefixes.add(struct.prefix);
+			intents.add(getIntentFromHomeworkType(context, homeworkActivityType));
+			classes.add(getStackTypeFromHomeworkType(homeworkActivityType));
+			directionsOfTrans.add(directionOfTranslation);
+		}
+		for (int i=0; i<intents.size(); ++i)
+		{
+			Intent intent = intents.get(i);
+			intent.putExtra(IDS_TAG, ids);
+			intent.putExtra(WORDS_TAG, words);
+			intent.putExtra(TRANSLATIONS_TAG, translations);
+			intent.putExtra(ARTICLES_TAG, articles);
+			intent.putExtra(PREFIXES_TAG, prefixes);
+			intent.putExtra(DIRECTION_OF_TRANS_TAG, directionsOfTrans);
+			intent.putExtra(CURRENT_NOTIFICATION_INDEX, i);
+			intent.setAction(ids.get(i) + " " + words.get(i) + " " + System.currentTimeMillis());
+			NotificationCompat.Builder mBuilder;
+			mBuilder = getBuilder(context, directionsOfTrans.get(i), randWords.get(i));
+			TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+			stackBuilder.addParentStack(classes.get(i));
+			stackBuilder.addNextIntent(intent);
+			PendingIntent pendInt = PendingIntent.getActivity(context, ids.get(i), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			if (null != mBuilder)
+			{
+				mBuilder.setSmallIcon(Utils.getIconForWordNumber(i+1));
+				mBuilder.setContentIntent(pendInt);
+				mBuilder.setPriority(Notification.PRIORITY_MAX);
+				mBuilder.setOngoing(true);
+				NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+				mNotificationManager.notify(ids.get(i), mBuilder.build());
+				currentIds = currentIds + ids.get(i) + " ";
+			}
+			else
+				return false;
+		}
+		return true;
+	}
 }

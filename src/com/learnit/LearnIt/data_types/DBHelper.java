@@ -23,7 +23,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
-import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int WEIGHT_TWO_WRONG = 1000;
     public static final int WEIGHT_THREE_WRONG = 10000;
 
-    public static final int WEIGHT_CORRECT_BUTTON = 10;
+    public static final int WEIGHT_CORRECT = 10;
 //    public static final int WEIGHT_NO_MORE_LEARNING=0;
 //    public static final int WEIGHT_CORRECT_INPUT=1;
 
@@ -265,9 +264,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<ArticleWordIdStruct> getRandomWords(int numOfWords, String ommitWord, int noun) {
+    public ArrayList<ArticleWordId> getRandomWords(int numOfWords, String ommitWord, int noun) {
         db = this.getReadableDatabase();
-        ArrayList<ArticleWordIdStruct> structArray = new ArrayList<ArticleWordIdStruct>();
+        ArrayList<ArticleWordId> structArray = new ArrayList<ArticleWordId>();
         Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + ommitWord + "' and isnoun = " + noun + " from " + currentDBName);
         Cursor c;
         switch (noun) {
@@ -299,7 +298,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 article = (c.getString(articleColIndex));
                 id = (c.getInt(idColIndex));
                 prefix = (c.getString(prefixColIndex));
-                structArray.add(new ArticleWordIdStruct(article, prefix, word, translation, id));
+                structArray.add(new ArticleWordId(article, prefix, word, translation, id));
             } while (c.moveToNext());
         } else
             Log.d(LOG_TAG, "0 rows");

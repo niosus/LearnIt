@@ -19,10 +19,14 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import com.learnit.LearnIt.data_types.ArticleWordId;
+import com.learnit.LearnIt.data_types.NotificationBuilder;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -33,41 +37,123 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class HomeworkActivity extends FragmentActivity {
+	private static final String ALIVE_IDS_TAG = "current_ids";
     int fromLearnToKnow = 0;
     int numOfWrongAnswers = 0;
-    ArticleWordIdStruct correctEntry = null;
-    int isNoun = 3;
-    Utils utils;
+	SharedPreferences _sp;
+	MyButtonOnClick _myBtnOnClick;
+	DBHelper dbHelper;
+    ArticleWordId correctEntry = null;
     final String LOG_TAG = "my_logs";
-    DBHelper dbHelper;
     int[] btnIds = {R.id.left_top_button,
             R.id.right_top_button,
             R.id.left_bottom_button,
             R.id.right_bottom_button};
+	private ArrayList<Integer> _ids;
+	private ArrayList<String> _words;
+	private ArrayList<String> _translations;
+	private ArrayList<Integer> _directionsOfTrans;
+	private ArrayList<String> _articles;
+	private ArrayList<String> _prefixes;
+	private int _currentNotificationIndex;
+
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.homework);
+		getEverythingFromIntent();
+	}
+
+	private void setAllTexts()
+	{
+		Utils.updateCurrentDBName(this);
+		dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+		Random random = new Random();
+		int randIdx = random.nextInt(btnIds.length);
+		_myBtnOnClick.correct = btnIds[randIdx];
+		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
+		setBtnTexts(randIdx);
+		switch (fromLearnToKnow) {
+			case Constants.FROM_FOREIGN_TO_MY:
+				_sp = PreferenceManager.getDefaultSharedPreferences(this);
+				String learnLang = _sp.getString(getString(R.string.key_language_from), "null");
+				if (null != correctEntry.article) {
+					if ("de".equals(learnLang)) {
+						queryWordTextView.setText(correctEntry.article + " " + StringUtils.capitalize(correctEntry.word));
+					} else {
+						queryWordTextView.setText(correctEntry.article + " " + correctEntry.word);
+					}
+				} else if (null != correctEntry.prefix) {
+					queryWordTextView.setText(correctEntry.prefix + " " + correctEntry.word);
+				} else {
+					queryWordTextView.setText(correctEntry.word);
+				}
+				break;
+			case Constants.FROM_MY_TO_FOREIGN:
+				queryWordTextView.setText(correctEntry.translation);
+				break;
+		}
+	}
+
+	protected void onResume() {
+		super.onResume();
+		_myBtnOnClick = new MyButtonOnClick();
+		(findViewById(R.id.left_top_button))
+				.setOnClickListener(_myBtnOnClick);
+		(findViewById(R.id.right_bottom_button))
+				.setOnClickListener(_myBtnOnClick);
+		(findViewById(R.id.left_bottom_button))
+				.setOnClickListener(_myBtnOnClick);
+		(findViewById(R.id.right_top_button))
+				.setOnClickListener(_myBtnOnClick);
+		findNextId();
+		setAllTexts();
+	}
+
+	private boolean findNextId()
+	{
+		numOfWrongAnswers=0;
+		_sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String idsOld = _sp.getString(ALIVE_IDS_TAG, "");
+		int counter=0;
+		while (!idsOld.contains(_ids.get(_currentNotificationIndex).toString()))
+		{
+			_currentNotificationIndex++;
+			_currentNotificationIndex%=_ids.size();
+			if (counter++==_ids.size())
+				return false;
+		}
+		correctEntry = new ArticleWordId(
+				_articles.get(_currentNotificationIndex),
+				_prefixes.get(_currentNotificationIndex),
+				_words.get(_currentNotificationIndex),
+				_translations.get(_currentNotificationIndex),
+				_ids.get(_currentNotificationIndex)
+		);
+		fromLearnToKnow = _directionsOfTrans.get(_currentNotificationIndex);
+		Log.d(LOG_TAG, "got intent word=" + correctEntry.word + " id = "
+				+ correctEntry.id);
+		return true;
+	}
 
     private void getEverythingFromIntent() {
         Intent intent = getIntent();
-        correctEntry = new ArticleWordIdStruct(
-                intent.getStringExtra("article"),
-                intent.getStringExtra("prefix"),
-                intent.getStringExtra("word"),
-                intent.getStringExtra("translation"),
-                intent.getIntExtra("id", -1)
-        );
-
-        fromLearnToKnow = intent.getIntExtra("direction", -1);
-        isNoun = intent.getIntExtra("is_noun", 3);
-        Log.d(LOG_TAG, "got intent word=" + correctEntry.word + " id = "
-                + correctEntry.id);
+	    _ids = intent.getIntegerArrayListExtra(NotificationBuilder.IDS_TAG);
+	    _words = intent.getStringArrayListExtra(NotificationBuilder.WORDS_TAG);
+	    _translations = intent.getStringArrayListExtra(NotificationBuilder.TRANSLATIONS_TAG);
+	    _directionsOfTrans = intent.getIntegerArrayListExtra(NotificationBuilder.DIRECTION_OF_TRANS_TAG);
+	    _articles = intent.getStringArrayListExtra(NotificationBuilder.ARTICLES_TAG);
+	    _prefixes = intent.getStringArrayListExtra(NotificationBuilder.PREFIXES_TAG);
+	    _currentNotificationIndex = intent.getIntExtra(NotificationBuilder.CURRENT_NOTIFICATION_INDEX, -1);
     }
 
     private void setBtnTexts(int correctId) {
+	    int isNoun;
         if (null == correctEntry.article) {
             isNoun = Constants.NOT_NOUNS;
         } else {
             isNoun = Constants.ONLY_NOUNS;
         }
-        ArrayList<ArticleWordIdStruct> randomWords = dbHelper.getRandomWords(btnIds.length, correctEntry.word, isNoun);
+        ArrayList<ArticleWordId> randomWords = dbHelper.getRandomWords(btnIds.length, correctEntry.word, isNoun);
         Log.d(Constants.LOG_TAG, "number of words for buttons = " + randomWords.size());
         int showOnButton;
         switch (fromLearnToKnow)
@@ -96,21 +182,6 @@ public class HomeworkActivity extends FragmentActivity {
 
     }
 
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.homework);
-        getEverythingFromIntent();
-    }
-
-    private void showDialogWrong() {
-        MyDialogFragment frag = new MyDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);
-        frag.setArguments(args);
-        frag.show(getSupportFragmentManager(), "wrong_guess");
-    }
-
     protected void stopActivity() {
         finish();
     }
@@ -119,7 +190,7 @@ public class HomeworkActivity extends FragmentActivity {
         Log.d(LOG_TAG, "word to be updated " + correctEntry.word);
         switch (numOfWrongAnswers) {
             case 0:
-                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_CORRECT_BUTTON);
+                dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_CORRECT);
                 break;
             case 1:
                 dbHelper.updateWordWeight(correctEntry.word.toLowerCase(), DBHelper.WEIGHT_ONE_WRONG);
@@ -133,6 +204,86 @@ public class HomeworkActivity extends FragmentActivity {
         }
     }
 
+	protected void updateListOfAliveIds()
+	{
+		_sp = PreferenceManager.getDefaultSharedPreferences(this);
+		Log.d(LOG_TAG, _sp.toString());
+		SharedPreferences.Editor editor = _sp.edit();
+		String idsOld = _sp.getString(ALIVE_IDS_TAG, "");
+		Log.d(LOG_TAG, idsOld);
+		String idsNew="";
+		for (Integer idInt: _ids)
+		{
+			if (idInt==correctEntry.id)
+				continue;
+			if (!idsOld.contains(idInt.toString()))
+				continue;
+			idsNew+=idInt.toString()+" ";
+		}
+		editor.putString(ALIVE_IDS_TAG, idsNew);
+		Log.d(LOG_TAG, idsNew);
+		editor.commit();
+	}
+
+	private void closeWord() {
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.close_word);
+		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
+		queryWordTextView.startAnimation(anim);
+		anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				setAllTexts();
+				openWord();
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+	}
+
+	private void openWord() {
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.open_word);
+		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
+		queryWordTextView.startAnimation(anim);
+	}
+
+	private void openButtons() {
+		Animation animLeft = AnimationUtils.loadAnimation(this, R.anim.open_fade_in);
+		Animation animRight = AnimationUtils.loadAnimation(this, R.anim.open_fade_in);
+		(findViewById(R.id.left_top_button)).startAnimation(animLeft);
+		(findViewById(R.id.right_bottom_button)).startAnimation(animRight);
+		(findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
+		(findViewById(R.id.right_top_button)).startAnimation(animRight);
+	}
+
+	private void closeButtons() {
+		Animation animLeft = AnimationUtils.loadAnimation(this, R.anim.close_fade_out);
+		Animation animRight = AnimationUtils.loadAnimation(this, R.anim.close_fade_out);
+		(findViewById(R.id.left_top_button)).startAnimation(animLeft);
+		(findViewById(R.id.right_bottom_button)).startAnimation(animRight);
+		(findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
+		(findViewById(R.id.right_top_button)).startAnimation(animRight);
+		animLeft.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				openButtons();
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+	}
+
     private class MyButtonOnClick implements OnClickListener {
         public int correct = 0;
 
@@ -141,54 +292,29 @@ public class HomeworkActivity extends FragmentActivity {
             int id = v.getId();
             if (correct == id) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.cancel((int) correctEntry.id);
+                mNotificationManager.cancel(correctEntry.id);
                 updateWordWeight();
-                stopActivity();
+	            updateListOfAliveIds();
+	            if (findNextId())
+	            {
+		            closeWord();
+		            closeButtons();
+	            }
+	            else
+                    stopActivity();
             } else {
                 numOfWrongAnswers++;
                 showDialogWrong();
             }
         }
+
+	    private void showDialogWrong() {
+		    MyDialogFragment frag = new MyDialogFragment();
+		    Bundle args = new Bundle();
+		    args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);
+		    frag.setArguments(args);
+		    frag.show(getSupportFragmentManager(), "wrong_guess");
+	    }
     }
 
-    protected void onResume() {
-        super.onResume();
-        utils = new Utils();
-        Utils.updateCurrentDBName(this);
-        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
-        MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
-        Random random = new Random();
-        int randIdx = random.nextInt(btnIds.length);
-        myButtonOnClick.correct = btnIds[randIdx];
-        (findViewById(R.id.left_top_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.right_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.left_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (findViewById(R.id.right_top_button))
-                .setOnClickListener(myButtonOnClick);
-        setBtnTexts(randIdx);
-        TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-        switch (fromLearnToKnow) {
-            case Constants.FROM_FOREIGN_TO_MY:
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-                String learnLang = sp.getString(getString(R.string.key_language_from), "null");
-                if (null != correctEntry.article) {
-                    if ("de".equals(learnLang)) {
-                        queryWordTextView.setText(correctEntry.article + " " + StringUtils.capitalize(correctEntry.word));
-                    } else {
-                        queryWordTextView.setText(correctEntry.article + " " + correctEntry.word);
-                    }
-                } else if (null != correctEntry.prefix) {
-                    queryWordTextView.setText(correctEntry.prefix + " " + correctEntry.word);
-                } else {
-                    queryWordTextView.setText(correctEntry.word);
-                }
-                break;
-            case Constants.FROM_MY_TO_FOREIGN:
-                queryWordTextView.setText(correctEntry.translation);
-                break;
-        }
-    }
 }

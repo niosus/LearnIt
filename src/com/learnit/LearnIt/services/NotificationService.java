@@ -25,7 +25,6 @@ public class NotificationService extends Service {
             stopSelf();
             return;
         }
-
         NotificationBuilder.show(getApplicationContext());
     }
 

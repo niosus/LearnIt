@@ -36,6 +36,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final int LEARN_WORDS_FRAGMENT = 2;
     public static final String LAYOUT_NORMAL = "normal";
     public static final String LAYOUT_XLARGE = "xlarge";
+    public static final String LAYOUT_LARGE_LAND = "large_landscape";
 
 
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -55,6 +56,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         {
             //Do some special processing for xlarge screen
         }
+        else if (currentLayout.equals(LAYOUT_LARGE_LAND))
+        {
+            mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+            //Do some special processing for large screen
+            ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+            fragment.getListView().setSelection(0);
+        }
         else if (currentLayout.equals(LAYOUT_NORMAL))
         {
             // Initialize the view pager
@@ -69,31 +77,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             // user swipes between sections.
             mViewPager = (ViewPager) findViewById(R.id.pager);
 
-            //this means that we have loaded a bigger layout
-            if (mViewPager!=null)
-            {
-                // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-                // parent.
-                actionBar.setHomeButtonEnabled(false);
+            // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+            // parent.
+            actionBar.setHomeButtonEnabled(false);
 
-                // Specify that we will be displaying tabs in the action bar.
-                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                mViewPager.setAdapter(mAppSectionsPagerAdapter);
-                mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        // When swiping between different app sections, select the corresponding tab.
-                        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                        // Tab.
-                        actionBar.setSelectedNavigationItem(position);
-                    }
-                });
-            }
-            else
-            {
-                ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
-                fragment.getListView().setSelection(0);
-            }
+            // Specify that we will be displaying tabs in the action bar.
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            mViewPager.setAdapter(mAppSectionsPagerAdapter);
+            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    // When swiping between different app sections, select the corresponding tab.
+                    // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                    // Tab.
+                    actionBar.setSelectedNavigationItem(position);
+                }
+            });
 
             // For each of the sections in the app, add a tab to the action bar.
             for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {

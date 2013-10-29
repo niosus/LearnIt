@@ -42,6 +42,33 @@ public class Utils {
         Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
     }
 
+	public static int getIconForWordNumber(int wordNum)
+	{
+		switch (wordNum) {
+			case 1:
+				return R.drawable.ic_stat_one;
+			case 2:
+				return R.drawable.ic_stat_two;
+			case 3:
+				return R.drawable.ic_stat_three;
+			case 4:
+				return R.drawable.ic_stat_four;
+			case 5:
+				return R.drawable.ic_stat_five;
+			case 6:
+				return R.drawable.ic_stat_six;
+			case 7:
+				return R.drawable.ic_stat_seven;
+			case 8:
+				return R.drawable.ic_stat_eight;
+			case 9:
+				return R.drawable.ic_stat_nine;
+			case 10:
+				return R.drawable.ic_stat_ten;
+		}
+		return -1;
+	}
+
     public static Pair<String,String> getCurrentLanguages(Context context) {
         if (context == null)
         {

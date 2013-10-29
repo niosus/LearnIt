@@ -10,7 +10,8 @@
             android:pivotY="50%"
             android:startOffset="0"
             android:duration="400"
-            android:fillAfter="true"/>
+            android:fillAfter="true"
+            android:zAdjustment="top"/>
     <alpha
             android:fromAlpha="0"
             android:toAlpha="1"

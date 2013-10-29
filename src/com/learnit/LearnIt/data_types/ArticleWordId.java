@@ -11,15 +11,14 @@
 package com.learnit.LearnIt.data_types;
 
 
-public class ArticleWordIdStruct {
-
+public class ArticleWordId {
     public String article;
     public String prefix;
     public String word;
     public String translation;
-    public long id;
+    public int id;
 
-    public ArticleWordIdStruct(String article, String prefix, String word, String translation, long id) {
+    public ArticleWordId(String article, String prefix, String word, String translation, int id) {
         this.article = article;
         this.prefix = prefix;
         this.word = word;

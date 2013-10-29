@@ -23,7 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.learnit.LearnIt.*;
-import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
+import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -114,7 +114,7 @@ public class LearnFragment extends Fragment {
             }
         }
         int nouns = random.nextInt(2) + 1;
-        ArrayList<ArticleWordIdStruct> words = dbHelper.getRandomWords(btnIds.length, null, nouns);
+        ArrayList<ArticleWordId> words = dbHelper.getRandomWords(btnIds.length, null, nouns);
         // in case we are learning english and alike where there are no nouns
         // explicitly, we look another time
         if (words.size()==0)
@@ -144,7 +144,7 @@ public class LearnFragment extends Fragment {
         setBtnTexts(words);
     }
 
-    private void setQueryWordTxt(ArticleWordIdStruct struct) {
+    private void setQueryWordTxt(ArticleWordId struct) {
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWord = struct.word;
         switch (direction) {
@@ -170,7 +170,7 @@ public class LearnFragment extends Fragment {
 
     }
 
-    private void setBtnTexts(ArrayList<ArticleWordIdStruct> words) {
+    private void setBtnTexts(ArrayList<ArticleWordId> words) {
         int showOnButton;
         switch (direction) {
             case Constants.FROM_FOREIGN_TO_MY:
@@ -195,7 +195,6 @@ public class LearnFragment extends Fragment {
 
 
     }
-
 
     private void closeWord() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
@@ -281,7 +280,7 @@ public class LearnFragment extends Fragment {
         Log.d(LOG_TAG, "word to be updated " + queryWord);
         switch (numOfWrongAnswers) {
             case 0:
-                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT_BUTTON);
+                dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT);
                 break;
             case 1:
                 dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_ONE_WRONG);
