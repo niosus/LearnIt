@@ -34,6 +34,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final int ADD_WORDS_FRAGMENT = 0;
     public static final int DICTIONARY_FRAGMENT = 1;
     public static final int LEARN_WORDS_FRAGMENT = 2;
+    public static final String LAYOUT_NORMAL = "normal";
+    public static final String LAYOUT_XLARGE = "xlarge";
 
 
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -42,6 +44,69 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ListOfFragments fragment;
 
     static int currentItemShown = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        String currentLayout = getString(R.string.layout_current);
+        if (currentLayout.equals(LAYOUT_XLARGE))
+        {
+
+        }
+        else if (currentLayout.equals(LAYOUT_NORMAL))
+        {
+            // Create the adapter that will return a fragment for each of the three primary sections
+            // of the app.
+            mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+
+            // Set up the action bar.
+            final ActionBar actionBar = getActionBar();
+
+            // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+            // user swipes between sections.
+            mViewPager = (ViewPager) findViewById(R.id.pager);
+
+            //this means that we have loaded a bigger layout
+            if (mViewPager!=null)
+            {
+                // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+                // parent.
+                actionBar.setHomeButtonEnabled(false);
+
+                // Specify that we will be displaying tabs in the action bar.
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                mViewPager.setAdapter(mAppSectionsPagerAdapter);
+                mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between different app sections, select the corresponding tab.
+                        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                        // Tab.
+                        actionBar.setSelectedNavigationItem(position);
+                    }
+                });
+            }
+            else
+            {
+                ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+                fragment.getListView().setSelection(0);
+            }
+
+            // For each of the sections in the app, add a tab to the action bar.
+            for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
+                // Create a tab with text corresponding to the page title defined by the adapter.
+                // Also specify this Activity object, which implements the TabListener interface, as the
+                // listener for when this tab is selected.
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                                .setTabListener(this));
+            }
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        }
+    }
 
     @Override
     protected void onPause() {
@@ -53,10 +118,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        // check which layout is shown
         if (null!=fragment && fragment.isInLayout())
         {
             fragment.getListView().setItemChecked(currentItemShown,true);
@@ -78,57 +150,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        // Create the adapter that will return a fragment for each of the three primary sections
-        // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-
-        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-
-        //this means that we have loaded a bigger layout
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // When the given tab is selected, switch to the corresponding page in the ViewPager.
         if (mViewPager!=null)
-        {
-            // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-            // parent.
-            actionBar.setHomeButtonEnabled(false);
+            mViewPager.setCurrentItem(tab.getPosition());
+    }
 
-            // Specify that we will be displaying tabs in the action bar.
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            mViewPager.setAdapter(mAppSectionsPagerAdapter);
-            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    // When swiping between different app sections, select the corresponding tab.
-                    // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                    // Tab.
-                    actionBar.setSelectedNavigationItem(position);
-                }
-            });
-        }
-        else
-        {
-            ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
-            fragment.getListView().setSelection(0);
-        }
-
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     public void onArticleSelected(int position) {
@@ -159,27 +192,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             ft.commit();
         }
         currentItemShown=position;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //No call for super(). Bug on API Level > 11.
-    }
-
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in the ViewPager.
-        if (mViewPager!=null)
-            mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     /**
@@ -226,30 +238,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
-    private void startSettingsActivity() {
-        Intent intent = new Intent(this, PrefActivity.class);
-        startActivity(intent);
-        Log.d(LOG_TAG, "start activity called");
-    }
-
-    private void startAboutActivity() {
-        Intent intent = new Intent(this, InfoActivity.class);
-        startActivity(intent);
-        Log.d(LOG_TAG, "start info activity called");
-    }
-
-    private void startShowWordsActivity() {
-        Intent intent = new Intent(this, ShowAllWordsActivity.class);
-        startActivity(intent);
-        Log.d(LOG_TAG, "start activity called");
-    }
-
-    private void startShowWellcomeActivity() {
-        Intent intent = new Intent(this, WellcomeActivity.class);
-        startActivity(intent);
-        Log.d(LOG_TAG, "start activity welcome");
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         DBHelper dbHelper;
@@ -287,5 +275,29 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    private void startSettingsActivity() {
+        Intent intent = new Intent(this, PrefActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG, "start activity called");
+    }
+
+    private void startAboutActivity() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG, "start info activity called");
+    }
+
+    private void startShowWordsActivity() {
+        Intent intent = new Intent(this, ShowAllWordsActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG, "start activity called");
+    }
+
+    private void startShowWellcomeActivity() {
+        Intent intent = new Intent(this, WellcomeActivity.class);
+        startActivity(intent);
+        Log.d(LOG_TAG, "start activity welcome");
     }
 }

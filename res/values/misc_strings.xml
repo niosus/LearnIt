@@ -4,6 +4,7 @@
   -->
 
 <resources>
+    <string name="layout_current">normal</string>
     <string name="key_pref_notif_active">notification_enabled</string>
     <string name="key_notification_frequency">notification_frequency</string>
     <string name="key_way_to_learn">way_to_learn</string>

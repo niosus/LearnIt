@@ -7,11 +7,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:layout_height="wrap_content"
        android:layout_width="match_parent"
-       android:shape="rectangle" android:padding="10dp">
+       android:shape="rectangle" android:padding="40dp">
     <solid android:color="#FFFFFF"/>
     <corners
-            android:bottomRightRadius="15dp"
-            android:bottomLeftRadius="15dp"
-            android:topLeftRadius="15dp"
-            android:topRightRadius="15dp"/>
+            android:bottomRightRadius="50dp"
+            android:bottomLeftRadius="50dp"
+            android:topLeftRadius="50dp"
+            android:topRightRadius="50dp"/>
 </shape>

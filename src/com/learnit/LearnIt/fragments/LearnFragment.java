@@ -21,10 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextView;
 import com.learnit.LearnIt.*;
-import com.learnit.LearnIt.activities.MainActivity;
 import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
@@ -59,7 +57,7 @@ public class LearnFragment extends Fragment {
         if (null!=v)
         {
             setAll(View.INVISIBLE);
-            playOpenAnimation();
+            openWord();
             openButtons();
         }
     }
@@ -94,7 +92,7 @@ public class LearnFragment extends Fragment {
             {
                 if (View.INVISIBLE == v.findViewById(R.id.word_to_ask).getVisibility())
                 {
-                    playOpenAnimation();
+                    openWord();
                     openButtons();
                     setAll(View.VISIBLE);
                 }
@@ -227,8 +225,7 @@ public class LearnFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 fetchNewWords();
-                playOpenAnimation();
-                openButtons();
+                openWord();
                 setAll(View.VISIBLE);
             }
 
@@ -238,7 +235,7 @@ public class LearnFragment extends Fragment {
         });
     }
 
-    private void playOpenAnimation() {
+    private void openWord() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWordTextView.startAnimation(anim);
@@ -246,8 +243,8 @@ public class LearnFragment extends Fragment {
     }
 
     private void openButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_left);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_right);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
@@ -255,12 +252,27 @@ public class LearnFragment extends Fragment {
     }
 
     private void closeButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_left);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_right);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_top_button)).startAnimation(animRight);
+        animLeft.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                openButtons();
+                setAll(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     private class MyButtonOnClick implements View.OnClickListener {

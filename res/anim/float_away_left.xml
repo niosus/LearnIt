@@ -4,6 +4,6 @@
         android:interpolator="@android:anim/accelerate_interpolator"
         android:fromXDelta="0%"
         android:toXDelta="-100%"
-        android:duration="300"
+        android:duration="400"
         android:zAdjustment="bottom"
-        android:fillAfter="false"/>
+        android:fillAfter="true"/>

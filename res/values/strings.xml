@@ -5,7 +5,6 @@
 
 
 <resources>
-
     <string name="app_name">LearnIt</string>
     <string name="learn_words_frag_title">Learn My Words</string>
     <string name="add_words_frag_title">Add New Words</string>
