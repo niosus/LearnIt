@@ -56,7 +56,6 @@ public class LearnFragment extends Fragment {
         Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
         if (null!=v)
         {
-            setAll(View.INVISIBLE);
             openWord();
             openButtons();
         }
@@ -72,18 +71,6 @@ public class LearnFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        setAll(View.INVISIBLE);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        setAll(View.INVISIBLE);
-    }
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (null!=v)
@@ -94,12 +81,9 @@ public class LearnFragment extends Fragment {
                 {
                     openWord();
                     openButtons();
-                    setAll(View.VISIBLE);
+//                    setAll(View.VISIBLE);
                 }
                 Utils.hideSoftKeyboard(this.getActivity());
-            } else
-            {
-                setAll(View.INVISIBLE);
             }
         }
     }
@@ -113,7 +97,7 @@ public class LearnFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
         fetchNewWords();
-        setAll(View.INVISIBLE);
+//        setAll(View.INVISIBLE);
         return v;
     }
 
@@ -169,18 +153,18 @@ public class LearnFragment extends Fragment {
                 String learnLang = sp.getString(getString(R.string.key_language_from), "null");
                 if (null != struct.article) {
                     if ("de".equals(learnLang)) {
-                        queryWordTextView.setText(struct.article + " " + StringUtils.capitalize(struct.word));
+                        queryWordTextView.setText(struct.article + "\n" + StringUtils.capitalize(queryWord));
                     } else {
-                        queryWordTextView.setText(struct.article + " " + struct.word);
+                        queryWordTextView.setText(struct.article + "\n" + queryWord);
                     }
                 } else if (null != struct.prefix) {
-                    queryWordTextView.setText(struct.prefix + " " + struct.word);
+                    queryWordTextView.setText(struct.prefix + " " + queryWord);
                 } else {
-                    queryWordTextView.setText(struct.word);
+                    queryWordTextView.setText(queryWord);
                 }
                 break;
             case Constants.FROM_MY_TO_FOREIGN:
-                queryWordTextView.setText(struct.translation);
+                queryWordTextView.setText(StringUtils.splitOnRegex(struct.translation, ",|\\s"));
                 break;
         }
 
@@ -213,7 +197,7 @@ public class LearnFragment extends Fragment {
     }
 
 
-    private void playCloseAnimation() {
+    private void closeWord() {
         Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWordTextView.startAnimation(anim);
@@ -243,8 +227,8 @@ public class LearnFragment extends Fragment {
     }
 
     private void openButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_left);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_in_right);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_fade_in);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_fade_in);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
@@ -252,8 +236,8 @@ public class LearnFragment extends Fragment {
     }
 
     private void closeButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_left);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.float_away_right);
+        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_fade_out);
+        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_fade_out);
         (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
         (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
         (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
@@ -284,7 +268,7 @@ public class LearnFragment extends Fragment {
             if (correct == id) {
                 updateWordWeight();
                 numOfWrongAnswers = 0;
-                playCloseAnimation();
+                closeWord();
                 closeButtons();
             } else {
                 numOfWrongAnswers++;

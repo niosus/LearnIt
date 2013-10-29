@@ -15,8 +15,9 @@ public class Constants {
     public final static int MIXED = 3;
     public final static int ONLY_NOUNS = 1;
     public final static int NOT_NOUNS = 2;
-    public final static int WAY_TO_LEARN_TRANSLATIONS = 1;
-    public final static int WAY_TO_LEARN_ARTICLES = 2;
+    public static final int LEARN_TRANSLATIONS = 1;
+    public static final int LEARN_ARTICLES = 2;
+    public static final int LEARN_MIXED = 3;
 
 
 }

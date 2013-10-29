@@ -58,12 +58,13 @@
               android:textAppearance="@android:style/TextAppearance.Holo.Small"
             />
     <ListView
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:id="@+id/list_of_add_words"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_help">
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:id="@+id/list_of_add_words"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_help">
     </ListView>
 
 </RelativeLayout>

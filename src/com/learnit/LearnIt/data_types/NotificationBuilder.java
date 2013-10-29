@@ -21,10 +21,6 @@ import java.util.Random;
 public class NotificationBuilder {
     public static final String LOG_TAG = "my_logs";
 
-    private static final int LEARN_TRANSLATIONS = 1;
-    private static final int LEARN_ARTICLES = 2;
-    private static final int LEARN_MIXED = 3;
-
     static String currentIds = "";
     static SharedPreferences sp;
 
@@ -47,7 +43,7 @@ public class NotificationBuilder {
     }
 
     private static int setDirectionOfTranslation(Context context, SharedPreferences sp, int homeworkActivityType) {
-        if (homeworkActivityType==LEARN_ARTICLES)
+        if (homeworkActivityType==Constants.LEARN_ARTICLES)
         {
             return Constants.FROM_FOREIGN_TO_MY;
         }
@@ -92,11 +88,11 @@ public class NotificationBuilder {
         int randInt = r.nextInt(2);
         if (randInt==0)
         {
-            return LEARN_ARTICLES;
+            return Constants.LEARN_ARTICLES;
         }
         else
         {
-            return LEARN_TRANSLATIONS;
+            return Constants.LEARN_TRANSLATIONS;
         }
     }
 
@@ -108,28 +104,35 @@ public class NotificationBuilder {
         int homeworkActivityType=0;
         switch (wayToLearn)
         {
-            case LEARN_MIXED:
+            case Constants.LEARN_MIXED:
                 if (struct.article!=null)
                 {
                     homeworkActivityType=getRandomWayToLearn();
                 }
                 else
                 {
-                    homeworkActivityType = LEARN_TRANSLATIONS;
+                    homeworkActivityType = Constants.LEARN_TRANSLATIONS;
                 }
                 break;
-            case LEARN_TRANSLATIONS:
-                homeworkActivityType=LEARN_TRANSLATIONS;
+            case Constants.LEARN_TRANSLATIONS:
+                homeworkActivityType=Constants.LEARN_TRANSLATIONS;
                 break;
-            case LEARN_ARTICLES:
-                homeworkActivityType=LEARN_ARTICLES;
+            case Constants.LEARN_ARTICLES:
+                if (struct.article!=null)
+                {
+                    homeworkActivityType=Constants.LEARN_ARTICLES;
+                }
+                else
+                {
+                    homeworkActivityType=Constants.LEARN_TRANSLATIONS;
+                }
                 break;
         }
         switch (homeworkActivityType) {
-            case LEARN_TRANSLATIONS:
+            case Constants.LEARN_TRANSLATIONS:
                 resultIntent = new Intent(context, HomeworkActivity.class);
                 break;
-            case LEARN_ARTICLES:
+            case Constants.LEARN_ARTICLES:
                 resultIntent = new Intent(context, HomeworkArticleActivity.class);
                 break;
             default:
@@ -203,7 +206,7 @@ public class NotificationBuilder {
             resultIntent.setAction(mId + " " + struct.word + " " + System.currentTimeMillis());
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            if (homeworkActivityType == LEARN_ARTICLES)
+            if (homeworkActivityType == Constants.LEARN_ARTICLES)
                 stackBuilder.addParentStack(HomeworkArticleActivity.class);
             else
                 stackBuilder.addParentStack(HomeworkActivity.class);

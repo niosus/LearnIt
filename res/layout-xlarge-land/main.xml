@@ -20,16 +20,61 @@ limitations under the License.
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragment"
-        android:layout_weight="1"
+    <RelativeLayout
+        android:layout_height="fill_parent"
         android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <fragment android:name="com.learnit.LearnIt.fragments.DictFragment"
-        android:layout_weight="1"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/txtDictLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/dictionary_frag_title"
+            android:textSize="30sp"
+            android:textColor="@android:color/holo_blue_bright"/>
+        <fragment android:name="com.learnit.LearnIt.fragments.DictFragment"
+            android:layout_below="@id/txtDictLabel"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="fill_parent"
         android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <fragment android:name="com.learnit.LearnIt.fragments.LearnFragment"
-        android:layout_weight="3"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/txtAddWordLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/add_words_frag_title"
+            android:textSize="30sp"
+            android:textColor="@android:color/holo_blue_bright"/>
+        <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragment"
+            android:layout_below="@id/txtAddWordLabel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="fill_parent"
         android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+        android:layout_weight="3">
+        <TextView
+            android:id="@+id/txtLearnLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/learn_words_frag_title"
+            android:textSize="30sp"
+            android:textColor="@android:color/holo_blue_bright"
+            android:gravity="center_horizontal"/>
+        <fragment android:name="com.learnit.LearnIt.fragments.LearnFragment"
+            android:layout_below="@id/txtLearnLabel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="124dp"
+            android:layout_marginRight="124dp"
+            />
+    </RelativeLayout>
 </LinearLayout>

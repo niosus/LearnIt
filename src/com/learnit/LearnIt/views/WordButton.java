@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 import com.learnit.LearnIt.data_types.ArticleWordIdStruct;
+import com.learnit.LearnIt.utils.StringUtils;
 
 public class WordButton extends Button {
     public static final int SHOW_WORD = 1;
@@ -35,10 +36,10 @@ public class WordButton extends Button {
         switch (type)
         {
             case SHOW_TRANSLATION:
-                setText(entry.translation);
+                setText(StringUtils.splitOnRegex(entry.translation, ","));
                 return;
             case SHOW_WORD:
-                textToSet=entry.word;
+                textToSet=StringUtils.splitOnRegex(entry.word, ",");
                 if (null==entry.article)
                 {
                     this.setText(textToSet);
@@ -49,7 +50,7 @@ public class WordButton extends Button {
                 }
                 else
                 {
-                    this.setText(entry.article + " " + textToSet);
+                    this.setText(entry.article + "\n" + textToSet);
                 }
                 return;
             default:

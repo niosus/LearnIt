@@ -37,6 +37,19 @@ public class StringUtils {
         return input.split("\\s", 2)[1];
     }
 
+    public static String splitOnRegex(String stringToSplit, String regex)
+    {
+        String[] separateParts = stringToSplit.split(regex, -1);
+        String res = "";
+        for (String w: separateParts)
+        {
+            if (res.isEmpty())
+                res = w;
+            else if (w.length()>0)
+                res +="\n"+w;
+        }
+        return res;
+    }
 
     public static String stripFromArticle(Context context, String str) {
         String[] tempArray = str.split("\\s");
