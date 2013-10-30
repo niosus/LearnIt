@@ -53,8 +53,6 @@ public class PrefActivity extends PreferenceActivity {
             builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
                     .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alert).show();
         }
-
-
     }
 
     void finishActivity() {
@@ -137,7 +135,7 @@ public class PrefActivity extends PreferenceActivity {
             checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
             checkBoxPreference.setOnPreferenceChangeListener(listener);
 
-            timePreference = (TimePreference) findPreference("time_to_start");     //TODO: change to R
+            timePreference = (TimePreference) findPreference(getString(R.string.key_time_to_start));     //TODO: change to R
 
 
             updateAllSummaries();
@@ -164,12 +162,7 @@ public class PrefActivity extends PreferenceActivity {
             if (lstWayToLearn.getValue().equals("2")) {
                 lstDirectionOfTrans.setValue("2");
                 lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
-//                lstDirectionOfTrans.setEnabled(false);
             }
-//	        else
-//            {
-//	            lstDirectionOfTrans.setEnabled(true);
-//            }
         }
 
         @Override

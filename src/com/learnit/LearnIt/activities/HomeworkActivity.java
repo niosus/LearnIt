@@ -29,6 +29,7 @@ import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 import com.learnit.LearnIt.views.WordButton;
@@ -36,7 +37,7 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class HomeworkActivity extends FragmentActivity {
+public class HomeworkActivity extends FragmentActivity implements MyAnimationHelper.OnAnimationActionListener {
 	private static final String ALIVE_IDS_TAG = "current_ids";
     int fromLearnToKnow = 0;
     int numOfWrongAnswers = 0;
@@ -140,7 +141,7 @@ public class HomeworkActivity extends FragmentActivity {
 	    _ids = intent.getIntegerArrayListExtra(NotificationBuilder.IDS_TAG);
 	    _words = intent.getStringArrayListExtra(NotificationBuilder.WORDS_TAG);
 	    _translations = intent.getStringArrayListExtra(NotificationBuilder.TRANSLATIONS_TAG);
-	    _directionsOfTrans = intent.getIntegerArrayListExtra(NotificationBuilder.DIRECTION_OF_TRANS_TAG);
+	    _directionsOfTrans = intent.getIntegerArrayListExtra(NotificationBuilder.DIRECTIONS_OF_TRANS_TAG);
 	    _articles = intent.getStringArrayListExtra(NotificationBuilder.ARTICLES_TAG);
 	    _prefixes = intent.getStringArrayListExtra(NotificationBuilder.PREFIXES_TAG);
 	    _currentNotificationIndex = intent.getIntExtra(NotificationBuilder.CURRENT_NOTIFICATION_INDEX, -1);
@@ -204,6 +205,15 @@ public class HomeworkActivity extends FragmentActivity {
         }
     }
 
+	private void setAll(int visibilityState)
+	{
+		findViewById(R.id.left_top_button).setVisibility(visibilityState);
+		findViewById(R.id.right_bottom_button).setVisibility(visibilityState);
+		findViewById(R.id.left_bottom_button).setVisibility(visibilityState);
+		findViewById(R.id.right_top_button).setVisibility(visibilityState);
+//        v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
+	}
+
 	protected void updateListOfAliveIds()
 	{
 		_sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -226,62 +236,57 @@ public class HomeworkActivity extends FragmentActivity {
 	}
 
 	private void closeWord() {
-		Animation anim = AnimationUtils.loadAnimation(this, R.anim.close_word);
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
 		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-		queryWordTextView.startAnimation(anim);
-		anim.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				setAllTexts();
-				openWord();
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
+		animationHelper.invokeForView(queryWordTextView, R.anim.close_word, this);
 	}
 
 	private void openWord() {
-		Animation anim = AnimationUtils.loadAnimation(this, R.anim.open_word);
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
 		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-		queryWordTextView.startAnimation(anim);
+		animationHelper.invokeForView(queryWordTextView, R.anim.open_word, this);
 	}
 
 	private void openButtons() {
-		Animation animLeft = AnimationUtils.loadAnimation(this, R.anim.open_fade_in);
-		Animation animRight = AnimationUtils.loadAnimation(this, R.anim.open_fade_in);
-		(findViewById(R.id.left_top_button)).startAnimation(animLeft);
-		(findViewById(R.id.right_bottom_button)).startAnimation(animRight);
-		(findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
-		(findViewById(R.id.right_top_button)).startAnimation(animRight);
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
+		View[] views = {findViewById(R.id.left_top_button),
+				findViewById(R.id.right_bottom_button),
+				findViewById(R.id.left_bottom_button),
+				findViewById(R.id.right_top_button)};
+		animationHelper.invokeForAllViews(views, R.anim.open_fade_in, this);
 	}
 
 	private void closeButtons() {
-		Animation animLeft = AnimationUtils.loadAnimation(this, R.anim.close_fade_out);
-		Animation animRight = AnimationUtils.loadAnimation(this, R.anim.close_fade_out);
-		(findViewById(R.id.left_top_button)).startAnimation(animLeft);
-		(findViewById(R.id.right_bottom_button)).startAnimation(animRight);
-		(findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
-		(findViewById(R.id.right_top_button)).startAnimation(animRight);
-		animLeft.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
+		View[] views = {findViewById(R.id.left_top_button),
+				findViewById(R.id.right_bottom_button),
+				findViewById(R.id.left_bottom_button),
+				findViewById(R.id.right_top_button)};
+		animationHelper.invokeForAllViews(views, R.anim.close_fade_out, this);
+	}
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
+	private void shakeView(View v) {
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
+		animationHelper.invokeForView(v, R.anim.shake, this);
+	}
+
+	@Override
+	public void onAnimationFinished(int id, boolean ignore) {
+		if (ignore)
+			return;
+		Log.d(LOG_TAG,"got animation id = "+id);
+		switch (id)
+		{
+			case (R.anim.close_fade_out):
+				setAll(View.INVISIBLE);
+				break;
+			case (R.anim.close_word):
+				setAllTexts();
+				setAll(View.VISIBLE);
 				openButtons();
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
+				openWord();
+				break;
+		}
 	}
 
     private class MyButtonOnClick implements OnClickListener {
@@ -304,17 +309,9 @@ public class HomeworkActivity extends FragmentActivity {
                     stopActivity();
             } else {
                 numOfWrongAnswers++;
-                showDialogWrong();
+	            shakeView(v);
             }
         }
-
-	    private void showDialogWrong() {
-		    MyDialogFragment frag = new MyDialogFragment();
-		    Bundle args = new Bundle();
-		    args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);
-		    frag.setArguments(args);
-		    frag.show(getSupportFragmentManager(), "wrong_guess");
-	    }
     }
 
 }

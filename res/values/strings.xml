@@ -27,7 +27,7 @@
     </string-array>
 
     <!--toast texts-->
-    <string name="toast_notif_start_text">Notification timer started</string>
+    <string name="toast_notif_start_text">LearnIt notification timer started</string>
     <string name="toast_notif_stop_text">Notification timer stopped</string>
     <string name="toast_notif_update_text">Notification timer updated</string>
     <string name="toast_no_dict">There is no dict for language pair \"%s\".</string>

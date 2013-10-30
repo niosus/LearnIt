@@ -66,7 +66,7 @@
                 android:entryValues="@array/array_num_of_notif"/>
 
         <com.learnit.LearnIt.views.TimePreference
-                android:key="time_to_start"
+                android:key="@string/key_time_to_start"
                 android:title="@string/pref_time_to_start"/>
 
     </PreferenceCategory>

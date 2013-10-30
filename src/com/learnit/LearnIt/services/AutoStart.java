@@ -18,15 +18,5 @@ public class AutoStart extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Utils.startRepeatingTimer(context);
-//        Log.d(Constants.LOG_TAG, "context set alarm = " + context.getClass().getName());
-//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-//        String frequency_id = sp.getString(context.getApplicationContext().getString(R.string.key_notification_frequency), "-1");
-//        long frequency = Utils.getFreqFromId(frequency_id);
-//        AlarmManager am = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//        Intent i = new Intent(context.getApplicationContext(), NotificationService.class);
-//        PendingIntent pi = PendingIntent.getService(context.getApplicationContext(), 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
-//        am.cancel(pi);
-//        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), frequency, pi);
-//        Toast.makeText(context.getApplicationContext(), context.getApplicationContext().getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
 }

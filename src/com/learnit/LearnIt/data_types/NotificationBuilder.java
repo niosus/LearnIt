@@ -27,7 +27,7 @@ public class NotificationBuilder {
 	public static final String ARTICLES_TAG = "articles";
 	public static final String PREFIXES_TAG = "prefixes";
 	public static final String TRANSLATIONS_TAG = "translations";
-	public static final String DIRECTION_OF_TRANS_TAG = "directions_of_trans";
+	public static final String DIRECTIONS_OF_TRANS_TAG = "directions_of_trans";
 	public static final String CURRENT_NOTIFICATION_INDEX = "current_index";
 
     static String currentIds = "";
@@ -37,13 +37,23 @@ public class NotificationBuilder {
     public static final int idModificator = 1552235; // some number
 
 
-    private static ArrayList<ArticleWordId> getRandWordsFromDB(int isNoun, int numOfNotif, Context context) {
+    private static ArrayList<ArticleWordId> getRandWordsFromDB(int waytoLearn, int numOfNotif, Context context) {
         DBHelper dbHelper = new DBHelper(context, DBHelper.DB_WORDS);
+	    int isNoun;
+	    switch (waytoLearn)
+	    {
+		    case Constants.LEARN_ARTICLES:
+			    isNoun = Constants.ONLY_NOUNS;
+			    break;
+		    default:
+			    isNoun = Constants.MIXED;
+	    }
         return dbHelper.getRandomWords(numOfNotif, "", isNoun);
     }
 
     private static int getWayToLearn(Context context, SharedPreferences sp) {
         int wayToLearn = Integer.parseInt(sp.getString(context.getString(R.string.key_way_to_learn), "3"));
+	    Log.d(LOG_TAG,"way to learn = " + wayToLearn);
         return wayToLearn;
     }
 
@@ -205,7 +215,7 @@ public class NotificationBuilder {
 			intent.putExtra(TRANSLATIONS_TAG, translations);
 			intent.putExtra(ARTICLES_TAG, articles);
 			intent.putExtra(PREFIXES_TAG, prefixes);
-			intent.putExtra(DIRECTION_OF_TRANS_TAG, directionsOfTrans);
+			intent.putExtra(DIRECTIONS_OF_TRANS_TAG, directionsOfTrans);
 			intent.putExtra(CURRENT_NOTIFICATION_INDEX, i);
 			intent.setAction(ids.get(i) + " " + words.get(i) + " " + System.currentTimeMillis());
 			NotificationCompat.Builder mBuilder;

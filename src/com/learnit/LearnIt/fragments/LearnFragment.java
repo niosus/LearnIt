@@ -10,6 +10,7 @@
 package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,6 +27,7 @@ import com.learnit.LearnIt.*;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 import com.learnit.LearnIt.views.WordButton;
@@ -33,7 +35,7 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class LearnFragment extends Fragment {
+public class LearnFragment extends Fragment implements MyAnimationHelper.OnAnimationActionListener {
 
     View v;
     String queryWord = null;
@@ -67,7 +69,7 @@ public class LearnFragment extends Fragment {
         v.findViewById(R.id.right_bottom_button).setVisibility(visibilityState);
         v.findViewById(R.id.left_bottom_button).setVisibility(visibilityState);
         v.findViewById(R.id.right_top_button).setVisibility(visibilityState);
-        v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
+//        v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
     }
 
     @Override
@@ -197,68 +199,60 @@ public class LearnFragment extends Fragment {
     }
 
     private void closeWord() {
-        Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_word);
-        TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-        queryWordTextView.startAnimation(anim);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                fetchNewWords();
-                openWord();
-                setAll(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
+	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
+	    animationHelper.invokeForView(queryWordTextView, R.anim.close_word, this);
     }
 
     private void openWord() {
-        Animation anim = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_word);
-        TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-        queryWordTextView.startAnimation(anim);
-        setAll(View.VISIBLE);
+	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
+	    animationHelper.invokeForView(queryWordTextView, R.anim.open_word, this);
     }
 
+	private void shakeView(View v) {
+		MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+		animationHelper.invokeForView(v, R.anim.shake, this);
+	}
+
     private void openButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_fade_in);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.open_fade_in);
-        (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
-        (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
-        (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
-        (v.findViewById(R.id.right_top_button)).startAnimation(animRight);
+	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+	    View[] views = {v.findViewById(R.id.left_top_button),
+			    v.findViewById(R.id.right_bottom_button),
+				v.findViewById(R.id.left_bottom_button),
+				v.findViewById(R.id.right_top_button)};
+	    animationHelper.invokeForAllViews(views, R.anim.open_fade_in, this);
     }
 
     private void closeButtons() {
-        Animation animLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_fade_out);
-        Animation animRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.close_fade_out);
-        (v.findViewById(R.id.left_top_button)).startAnimation(animLeft);
-        (v.findViewById(R.id.right_bottom_button)).startAnimation(animRight);
-        (v.findViewById(R.id.left_bottom_button)).startAnimation(animLeft);
-        (v.findViewById(R.id.right_top_button)).startAnimation(animRight);
-        animLeft.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                openButtons();
-                setAll(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
+	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+	    View[] views = {v.findViewById(R.id.left_top_button),
+			    v.findViewById(R.id.right_bottom_button),
+			    v.findViewById(R.id.left_bottom_button),
+			    v.findViewById(R.id.right_top_button)};
+	    animationHelper.invokeForAllViews(views, R.anim.close_fade_out, this);
     }
 
-    private class MyButtonOnClick implements View.OnClickListener {
+	@Override
+	public void onAnimationFinished(int id, boolean ignore) {
+		if (ignore)
+			return;
+		Log.d(LOG_TAG,"got animation id = "+id);
+		switch (id)
+		{
+			case (R.anim.close_fade_out):
+				setAll(View.INVISIBLE);
+				break;
+			case (R.anim.close_word):
+				fetchNewWords();
+				setAll(View.VISIBLE);
+				openButtons();
+				openWord();
+				break;
+		}
+	}
+
+	private class MyButtonOnClick implements View.OnClickListener {
         public int correct = 0;
 
         @Override
@@ -271,7 +265,8 @@ public class LearnFragment extends Fragment {
                 closeButtons();
             } else {
                 numOfWrongAnswers++;
-                showDialogWrong();
+	            shakeView(v);
+//                showDialogWrong();
             }
         }
     }
@@ -292,14 +287,6 @@ public class LearnFragment extends Fragment {
                 dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_THREE_WRONG);
                 break;
         }
-    }
-
-    private void showDialogWrong() {
-        MyDialogFragment frag = new MyDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_GUESS);
-        frag.setArguments(args);
-        frag.show(getFragmentManager(), "wrong_guess");
     }
 
     @Override
