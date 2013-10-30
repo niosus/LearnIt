@@ -32,10 +32,13 @@
                 android:background="@android:color/transparent"/>
     </RelativeLayout>
     <ListView
-            android:id="@+id/list_of_words"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/linearLayDict">
+        android:id="@+id/list_of_words"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayDict"
+        android:background="@android:drawable/dialog_holo_dark_frame"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp">
     </ListView>
 
 </RelativeLayout>
