@@ -152,7 +152,7 @@
     <string name="dict_sql_success">був успішно завантажений</string>
     <string name="dict_sql_version">%1$s-%2$s. Версія: %3$s</string>
     <string name="dict_sql_progress_found">Словник знайдено. \nЙде індексація…</string>
-    <string name="dict_sql_progress_searching">Пошук словника.</string>
+    <string name="dict_sql_progress_searching_indexing">Пошук словника.</string>
 
     <string-array name="time_entries">
         <item>Година</item>

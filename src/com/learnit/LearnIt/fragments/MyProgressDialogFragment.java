@@ -11,10 +11,19 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.utils.Constants;
 
 public class MyProgressDialogFragment extends DialogFragment {
     ProgressDialog _dialog;
     Context _context;
+
+	public static final String TAG = "my_progress";
+
+
+	public void setContext(Context context)
+	{
+		_context = context;
+	}
 
     @Override
     public void onAttach(Activity activity) {
@@ -30,15 +39,17 @@ public class MyProgressDialogFragment extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        _dialog = null;
+	    Log.e(Constants.LOG_TAG, "onStop progress");
+	    _dialog = null;
     }
 
     private Dialog createDialog()
     {
+	    Log.e(Constants.LOG_TAG, "createProgressDialog");
         _dialog = new ProgressDialog(_context);
         _dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         _dialog.setProgressNumberFormat("");
-        _dialog.setMessage(getString(R.string.dict_sql_progress_searching));
+        _dialog.setMessage(getString(R.string.dict_sql_progress_searching_indexing));
         _dialog.setIndeterminate(false);
         _dialog.setCancelable(true);
         _dialog.setCanceledOnTouchOutside(false);
@@ -59,7 +70,10 @@ public class MyProgressDialogFragment extends DialogFragment {
     public void setProgress(int i)
     {
         if (_dialog == null)
-            return;
+        {
+	        Log.e(Constants.LOG_TAG, "_dialog is null in setProgress");
+	        return;
+        }
         _dialog.setProgress(i);
     }
 
@@ -72,8 +86,7 @@ public class MyProgressDialogFragment extends DialogFragment {
 
     public void setIndeterminate(boolean bool)
     {
-        if (_dialog == null)
-            return;
+        if (_dialog == null){ return; }
         _dialog.setIndeterminate(bool);
     }
 

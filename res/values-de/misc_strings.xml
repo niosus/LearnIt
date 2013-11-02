@@ -158,7 +158,7 @@
     <string name="dict_sql_success">ist erfolgreich gestattet</string>
     <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
     <string name="dict_sql_progress_found">Hilfswörterbuch wird gefunden. \nIndexing…</string>
-    <string name="dict_sql_progress_searching">Suchen nach den Hilfswörterbuch</string>
+    <string name="dict_sql_progress_searching_indexing">Suchen nach den Hilfswörterbuch</string>
 
     <string-array name="time_entries">
         <item>Stunde</item>

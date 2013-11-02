@@ -8,33 +8,36 @@ package com.learnit.LearnIt.activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.GetDictTaskSmart;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
-import com.learnit.LearnIt.fragments.LoadStarDictWrapper;
 import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
+import com.learnit.LearnIt.fragments.WorkerFragment;
 
 
-public class LoadStarDictActivity extends Activity implements LoadStarDictWrapper.OnTaskActionListener {
+public class LoadStarDictActivity extends Activity implements WorkerFragment.OnTaskActionListener {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
-    LoadStarDictWrapper _taskFragment;
+	WorkerFragment _taskFragment;
     MyProgressDialogFragment _progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _uiFragment = new LoadStarDictUiFragment();
-
+		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
         FragmentManager fragmentManager = getFragmentManager();
 
-        _taskFragment = (LoadStarDictWrapper) fragmentManager
-                .findFragmentByTag(LoadStarDictWrapper.TAG);
+        _taskFragment = (WorkerFragment) fragmentManager
+                .findFragmentByTag(WorkerFragment.TAG);
         if (_taskFragment == null)
         {
-            _taskFragment = new LoadStarDictWrapper();
+            _taskFragment = new WorkerFragment();
+	        _taskFragment.addNewTask(new GetDictTaskSmart());
             fragmentManager.beginTransaction()
-                    .add(_taskFragment, LoadStarDictWrapper.TAG)
+                    .add(_taskFragment, WorkerFragment.TAG)
                     .commit();
         }
         fragmentManager.beginTransaction()
@@ -43,23 +46,27 @@ public class LoadStarDictActivity extends Activity implements LoadStarDictWrappe
         addDialogIfNeeded();
     }
 
-    private void addDialogIfNeeded()
+	@Override
+	protected void onResume() {
+		super.onResume();
+		addDialogIfNeeded();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	}
+
+	private void addDialogIfNeeded()
     {
-        if (!_taskFragment.DONE)
+        if (_taskFragment.taskRunning())
         {
-            _progressDialog = (MyProgressDialogFragment) getFragmentManager().findFragmentByTag("my_progress");
+            _progressDialog = (MyProgressDialogFragment) getFragmentManager().findFragmentByTag(MyProgressDialogFragment.TAG);
             if (_progressDialog == null)
             {
                 _progressDialog = new MyProgressDialogFragment();
-                _progressDialog.show(getFragmentManager(),"my_progress");
+                _progressDialog.show(getFragmentManager(), MyProgressDialogFragment.TAG);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        addDialogIfNeeded();
     }
 
     @Override
@@ -70,55 +77,67 @@ public class LoadStarDictActivity extends Activity implements LoadStarDictWrappe
             _progressDialog.dismiss();
             _progressDialog = null;
         }
-        if (_taskFragment.DONE)
+        if (!_taskFragment.taskRunning())
         {
             this.finish();
         }
     }
 
-    @Override
-    public void onStartLoading() {
-        if (_progressDialog != null)
-        {
-            _progressDialog.setText(this.getString(R.string.dict_sql_progress_found));
-            _progressDialog.setIndeterminate(false);
-        }
-    }
+	@Override
+	public void onPreExecute() {
+		if (_progressDialog != null)
+		{
+			_progressDialog.setText(this.getString(R.string.dict_sql_progress_searching_indexing));
+			_progressDialog.setIndeterminate(false);
+		}
+	}
 
-    @Override
-    public void onStartSearching() {
-        if (_progressDialog != null)
-        {
-            _progressDialog.setText(this.getString(R.string.dict_sql_progress_searching));
-            _progressDialog.setIndeterminate(true);
-        }
-    }
+	@Override
+	public void onFail() {
+		if (_progressDialog != null)
+		{
+			_progressDialog.dismiss();
+			_progressDialog = null;
+		}
+		if (_uiFragment != null)
+		{
+			_uiFragment.setTitleText(this.getString(R.string.dict_sql_no_dict));
+		}
+		if (_taskFragment != null)
+		{
+			_taskFragment.onTaskFinished();
+		}
+	}
 
-    @Override
-    public void noDictFound() {
-        if (_progressDialog != null)
-        {
-            _progressDialog.dismiss();
-            _progressDialog = null;
-        }
-        _uiFragment.setTitleText(this.getString(R.string.dict_sql_no_dict));
-    }
+	@Override
+	public void onSuccess(String name) {
+		if (_progressDialog != null)
+		{
+			_progressDialog.dismiss();
+			_progressDialog = null;
+		}
+		if (_uiFragment != null)
+		{
+			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
+			_uiFragment.setDictInfoText(name);
+		}
+		if (_taskFragment != null)
+		{
+			_taskFragment.onTaskFinished();
+		}
+	}
 
-    @Override
-    public void onProgressUpdate(int progress) {
-        if (_progressDialog != null)
-            _progressDialog.setProgress(progress);
-    }
+	@Override
+	public void onProgressUpdate(Integer... values) {
+		if (_progressDialog != null)
+		{
+			_progressDialog.setProgress(values[0]);
+		}
+	}
 
-    @Override
-    public void onDictLoaded(String name) {
-        if (_progressDialog != null)
-        {
-            _progressDialog.dismiss();
-            _progressDialog = null;
-        }
-        _uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-        _uiFragment.setDictInfoText(name);
-    }
+	@Override
+	public void noTaskSpecified() {
+		Log.d(LOG_TAG, "no task, careful");
+	}
 }
 

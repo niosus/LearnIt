@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
 import com.learnit.LearnIt.activities.HomeworkArticleActivity;

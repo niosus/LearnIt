@@ -155,7 +155,7 @@
     <string name="dict_sql_success">был успешно загружен</string>
     <string name="dict_sql_version">%1$s-%2$s. Версия: %3$s</string>
     <string name="dict_sql_progress_found">Словарь найден. \nИдет индексация…</string>
-    <string name="dict_sql_progress_searching">Поиск словаря.</string>
+    <string name="dict_sql_progress_searching_indexing">Поиск словаря.</string>
 
     <string-array name="time_entries">
         <item>Час</item>

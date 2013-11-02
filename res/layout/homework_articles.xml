@@ -2,18 +2,6 @@
   ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
   -->
 
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:gravity="bottom|center_horizontal"
@@ -22,28 +10,25 @@
               android:orientation="vertical">
     <TextView
             android:id="@+id/word_to_ask"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="Large Text"
-            android:gravity="center_vertical|center_horizontal"
+            style="@style/MyQueryWordTextView"
             android:layout_weight="3"
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:textSize="50sp"/>
-
-
+            android:layout_height="0dp"/>
     <Button
+            style="@style/MyWordButton"
             android:id="@+id/btn_first"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_weight="1"/>
     <Button
+            style="@style/MyWordButton"
             android:id="@+id/btn_second"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_weight="1"/>
     <Button
+            style="@style/MyWordButton"
             android:id="@+id/btn_third"
             android:layout_width="match_parent"
             android:layout_height="0dp"

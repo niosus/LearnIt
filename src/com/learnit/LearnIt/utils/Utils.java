@@ -12,16 +12,13 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-import com.learnit.LearnIt.data_types.DBHelper;
+
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.services.NotificationService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utils {
     public static final String LOG_TAG = "my_logs";

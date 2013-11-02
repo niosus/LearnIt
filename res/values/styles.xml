@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="CodeFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:layout_width">fill_parent</item>
+    <style name="MyEditText" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#00FF00</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorHint">@color/my_gray</item>
+        <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="BlackTheme" parent="android:Theme.Holo">
+    <style name="MyImageButton" parent="android:Widget.ImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_content_discard</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+
+    <style name="MyListView" parent="android:Widget.ListView">
+        <item name="android:background">@drawable/my_list_view</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorSecondary">@color/my_gray</item>
+        <item name="android:colorMultiSelectHighlight">@color/pressed_my_light_holo</item>
+        <item name="android:listSelector">@drawable/list_selector</item>
+        <item name="android:choiceMode">singleChoice</item>
+    </style>
+
+    <style name="MyQueryWordTextView" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/learn_word_background</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColorSecondary">@color/my_gray</item>
+        <item name="android:colorMultiSelectHighlight">@color/pressed_my_light_holo</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+    </style>
+
+    <style name="MyWordButton" parent="android:Widget.Button">
+        <item name="android:background">@drawable/selector_my_word_button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
     <style name="BlackTheme.DialogWhenLarge" parent="android:Theme.Holo.DialogWhenLarge">
+        <item name="android:background">@android:color/black</item>
     </style>
 
     <style name="LightTheme" parent="android:Theme.Light">
+        <item name="android:background">@android:color/white</item>
     </style>
 </resources>

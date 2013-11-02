@@ -15,30 +15,19 @@
             >
         <EditText
                 android:id="@+id/edv_search_word"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/MyEditText"
                 android:hint="@string/search_word_hint"
-                android:inputType="text"
-                android:drawableLeft="@android:drawable/ic_menu_search"
-                android:paddingRight="20dp"/>
+                android:drawableLeft="@drawable/ic_action_search"/>
         <ImageButton
                 android:id="@+id/btn_search_clear"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:layout_alignRight="@id/edv_search_word"
-                android:src="@drawable/ic_stat_clear"
-                android:padding="5dp"
-                android:contentDescription="@string/clear"
-                android:background="@android:color/transparent"/>
+                style="@style/MyImageButton"
+            />
     </RelativeLayout>
     <ListView
         android:id="@+id/list_of_words"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/linearLayDict"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:paddingRight="24dp"
-        android:paddingLeft="24dp">
+        style="@style/MyListView">
     </ListView>
 
 </RelativeLayout>

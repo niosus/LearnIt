@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.widget.Toast;
+
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
 
@@ -28,7 +29,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class DBHelper extends SQLiteOpenHelper {
     final static int DB_VERSION = 1;

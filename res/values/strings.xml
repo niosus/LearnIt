@@ -178,7 +178,7 @@
     <string name="dict_sql_success">Successfully loaded</string>
     <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
     <string name="dict_sql_progress_found">Dictionary found. \nIndexing…</string>
-    <string name="dict_sql_progress_searching">Searching for dictionary</string>
+    <string name="dict_sql_progress_searching_indexing">Searching and indexing dictionary</string>
     <string name="dict_sql_closing_window">This window will be closed in %s seconds…</string>
 
 

@@ -21,6 +21,7 @@
             android:allowBackup="true"
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_launcher"
+            android:theme="@style/Theme.My_light_holo"
             android:label="@string/app_name">
 
         <receiver android:name=".services.AutoStart">
@@ -44,18 +45,18 @@
         </activity>
         <activity
                 android:name=".activities.HomeworkActivity"
-                android:theme="@style/BlackTheme.DialogWhenLarge"
+                android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity
                 android:name=".activities.HomeworkArticleActivity"
-                android:theme="@style/BlackTheme.DialogWhenLarge"
+                android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
 
         <activity
                 android:name=".activities.PrefActivity"
-                android:theme="@style/BlackTheme.DialogWhenLarge"
+                android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.ShowAllWordsActivity"
@@ -63,21 +64,22 @@
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.WellcomeActivity"
+                  android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.InfoActivity"
-                  android:theme="@style/BlackTheme.DialogWhenLarge"
+                  android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.EditWord"
+                  android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                   android:screenOrientation="sensor"
-                  android:theme="@style/BlackTheme.DialogWhenLarge"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.LoadStarDictActivity"
-                  android:theme="@style/BlackTheme.DialogWhenLarge"
+                  android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>

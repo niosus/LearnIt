@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -22,16 +21,21 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
+import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, ListOfFragments.OnFragmentSelectedListener {
+public class MainActivityController extends FragmentActivity implements
+		ActionBar.TabListener,
+		ListOfFragments.OnFragmentSelectedListener,
+		WorkerFragment.OnTaskActionListener {
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
@@ -44,9 +48,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-
     ViewPager mViewPager;
-    ListOfFragments fragment;
+    ListOfFragments listOfFragments;
 
     static int currentItemShown = 0;
 
@@ -105,7 +108,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // listener for when this tab is selected.
                 actionBar.addTab(
                         actionBar.newTab()
-                                .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                                .setText(mAppSectionsPagerAdapter.getPageTitle(this, i))
                                 .setTabListener(this));
             }
             this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -117,8 +120,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onPause();
         if (mViewPager!=null)
             currentItemShown =  mViewPager.getCurrentItem();
-        if (fragment!=null && fragment.isInLayout())
-            currentItemShown = fragment.getListView().getCheckedItemPosition();
+        if (listOfFragments !=null && listOfFragments.isInLayout())
+            currentItemShown = listOfFragments.getListView().getCheckedItemPosition();
 
     }
 
@@ -130,12 +133,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onResume() {
         super.onResume();
-        fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+        listOfFragments = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         // check which layout is shown
-        if (null!=fragment && fragment.isInLayout())
+        if (null!= listOfFragments && listOfFragments.isInLayout())
         {
-            fragment.getListView().setItemChecked(currentItemShown,true);
+            listOfFragments.getListView().setItemChecked(currentItemShown,true);
             onArticleSelected(currentItemShown);
         }
         if (mViewPager!=null)
@@ -198,49 +201,31 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         currentItemShown=position;
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a listOfFragments corresponding to one of the primary
-     * sections of the app.
-     */
-    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+	@Override
+	public void onPreExecute() {
 
-        public AppSectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+	}
 
-        @Override
-        public Fragment getItem(int i) {
-            Fragment fragment = null;
-            switch (i) {
-                case DICTIONARY_FRAGMENT:
-                    return new DictFragment();
-                case ADD_WORDS_FRAGMENT:
-                    return new AddWordFragment();
-                case LEARN_WORDS_FRAGMENT:
-                    return new LearnFragment();
-            }
-            return fragment;
-        }
+	@Override
+	public void onFail() {
 
-        @Override
-        public int getCount() {
-            return NUMBER_OF_FRAGMENTS;
-        }
+	}
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Resources resources = getResources();
-            switch (position) {
-                case DICTIONARY_FRAGMENT:
-                    return resources.getString(R.string.dictionary_frag_title);
-                case ADD_WORDS_FRAGMENT:
-                    return resources.getString(R.string.add_words_frag_title);
-                case LEARN_WORDS_FRAGMENT:
-                    return resources.getString(R.string.learn_words_frag_title);
-            }
-            return null;
-        }
-    }
+	@Override
+	public void onSuccess(String name) {
+
+	}
+
+	@Override
+	public void onProgressUpdate(Integer... values) {
+
+	}
+
+	@Override
+	public void noTaskSpecified() {
+
+	}
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

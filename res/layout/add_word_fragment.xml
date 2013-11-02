@@ -13,18 +13,12 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edv_add_word"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/MyEditText"
                 android:hint="@string/add_word_hint"/>
         <ImageButton
                 android:id="@+id/btn_add_word_clear"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_stat_clear"
-                android:contentDescription="@string/clear"
                 android:layout_alignRight="@id/edv_add_word"
-                android:padding="5dp"
-                android:background="@android:color/transparent"/>
+                style="@style/MyImageButton"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -34,37 +28,25 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edv_add_translation"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/MyEditText"
                 android:hint="@string/add_translation_hint"/>
         <ImageButton
                 android:id="@+id/btn_add_trans_clear"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/linear_word"
                 android:layout_alignRight="@id/edv_add_translation"
-                android:src="@drawable/ic_stat_clear"
-                android:contentDescription="@string/clear"
-                android:padding="5dp"
-                android:background="@android:color/transparent"/>
+                style="@style/MyImageButton"/>
     </RelativeLayout>
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textColor="@android:color/holo_blue_dark"
+              android:textColor="@color/pressed_my_light_holo"
               android:paddingLeft="20dp"
               android:layout_below="@id/linear_translation"
               android:id="@+id/text_view_help"
               android:textAppearance="@android:style/TextAppearance.Holo.Small"
             />
     <ListView
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
         android:id="@+id/list_of_add_words"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_help">
+        android:layout_below="@id/text_view_help"
+        style="@style/MyListView">
     </ListView>
 
 </RelativeLayout>

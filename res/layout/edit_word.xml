@@ -17,8 +17,9 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_dialog_title"
             android:textSize="30dp"
+            android:textStyle="bold"
             android:paddingLeft="10dp"
-            android:textColor="@android:color/holo_blue_dark"/>
+            android:textColor="@color/pressed_my_light_holo"/>
     <RelativeLayout
             android:id="@+id/linearLayWord"
             android:orientation="horizontal"
@@ -27,19 +28,13 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtWord"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/MyEditText"
                 android:hint="@string/add_word_hint"
                 />
         <ImageButton
                 android:id="@+id/btn_add_word_clear"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_stat_clear"
                 android:layout_alignRight="@id/edtWord"
-                android:contentDescription="@string/clear"
-                android:padding="5dp"
-                android:background="@android:color/transparent"/>
+                style="@style/MyImageButton"/>
 
     </RelativeLayout>
     <RelativeLayout
@@ -50,18 +45,12 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtTrans"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/add_translation_hint"/>
+                style="@style/MyEditText"
+                android:hint="@string/add_word_hint"/>
         <ImageButton
                 android:id="@+id/btn_add_trans_clear"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_stat_clear"
                 android:layout_alignRight="@id/edtTrans"
-                android:contentDescription="@string/clear"
-                android:padding="5dp"
-                android:background="@android:color/transparent"/>
+                style="@style/MyImageButton"/>
 
     </RelativeLayout>
 </RelativeLayout>

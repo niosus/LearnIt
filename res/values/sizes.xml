@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="my_normal_text">15sp</dimen>
+    <dimen name="small_shadow_size">4dp</dimen>
+    <dimen name="small_pressed_shadow_size">2dp</dimen>
+    <dimen name="radius_size">3dp</dimen>
+    <dimen name="my_margin_right">8dp</dimen>
+    <dimen name="my_margin_left">8dp</dimen>
+</resources>
