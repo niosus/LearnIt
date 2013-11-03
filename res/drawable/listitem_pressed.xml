@@ -2,7 +2,7 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Bottom 2dp Shadow -->
-    <item>
+    <item android:top="@dimen/small_shadow_size" android:bottom="@dimen/small_shadow_size">
         <shape android:shape="rectangle">
             <solid android:color="@color/pressed_my_light_holo"/>
             <corners android:radius="@dimen/radius_size"/>

@@ -1,15 +1,9 @@
 package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +11,7 @@ import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 
-import java.util.List;
-
-public class LoadStarDictUiFragment extends Fragment{
+public class LoadStarDictUiFragment extends Fragment {
     private TextView _tvTitle;
     private TextView _tvDictName;
     private TextView _tvDictInfo;

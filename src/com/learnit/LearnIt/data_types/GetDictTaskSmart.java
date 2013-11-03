@@ -13,6 +13,8 @@ import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GetDictTaskSmart extends MySmartAsyncTask {
 	private String _langFrom, _langTo;
@@ -77,7 +79,7 @@ public class GetDictTaskSmart extends MySmartAsyncTask {
 	}
 
 	@Override
-	protected void onPostExecute(String dictName) {
+	protected void onPostExecute(List<String> dictName) {
 		super.onPostExecute(dictName);
 		if (dictName == null)
 		{
@@ -89,12 +91,14 @@ public class GetDictTaskSmart extends MySmartAsyncTask {
 	}
 
 	@Override
-	protected String doInBackground(Void... unused) {
+	protected List<String> doInBackground(Void... unused) {
 		StarDict dict = getDict(_langFrom, _langTo);
 		if (null == dict) {
 			return null;
 		}
 		updateDatabaseFromDict(dict);
-		return dict.getDictName();
+		List<String> list = new ArrayList<String>();
+		list.add(dict.getDictName());
+		return list;
 	}
 }

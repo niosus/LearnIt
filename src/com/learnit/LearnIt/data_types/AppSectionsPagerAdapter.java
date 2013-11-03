@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.MainActivityController;
-import com.learnit.LearnIt.fragments.AddWordFragment;
+import com.learnit.LearnIt.fragments.AddWordFragmentNew;
 import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnFragment;
 
@@ -29,7 +29,7 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 			case MainActivityController.DICTIONARY_FRAGMENT:
 				return new DictFragment();
 			case MainActivityController.ADD_WORDS_FRAGMENT:
-				return new AddWordFragment();
+				return new AddWordFragmentNew();
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
 				return new LearnFragment();
 		}

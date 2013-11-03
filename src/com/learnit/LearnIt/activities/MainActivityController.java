@@ -23,19 +23,23 @@ import android.view.WindowManager;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.AddWordFragment;
+import com.learnit.LearnIt.data_types.GetWordsTask;
+import com.learnit.LearnIt.fragments.AddWordFragmentNew;
 import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
+import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivityController extends FragmentActivity implements
 		ActionBar.TabListener,
 		ListOfFragments.OnFragmentSelectedListener,
-		WorkerFragment.OnTaskActionListener {
+		WorkerFragment.OnTaskActionListener,
+		AddWordFragmentNew.OnUiAction{
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
@@ -50,6 +54,7 @@ public class MainActivityController extends FragmentActivity implements
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPager;
     ListOfFragments listOfFragments;
+	WorkerFragment _worker;
 
     static int currentItemShown = 0;
 
@@ -59,6 +64,16 @@ public class MainActivityController extends FragmentActivity implements
         setContentView(R.layout.main);
 
         String currentLayout = getString(R.string.layout_current);
+	    FragmentManager fragmentManager = getSupportFragmentManager();
+	    _worker = (WorkerFragment) fragmentManager
+			    .findFragmentByTag(WorkerFragment.TAG);
+	    if (_worker == null)
+	    {
+		    _worker = new WorkerFragment();
+		    fragmentManager.beginTransaction()
+				    .add(_worker, WorkerFragment.TAG)
+				    .commit();
+	    }
         if (currentLayout.equals(LAYOUT_XLARGE))
         {
             //Do some special processing for xlarge screen
@@ -180,7 +195,7 @@ public class MainActivityController extends FragmentActivity implements
                 fragment = new DictFragment();
                 break;
             case ADD_WORDS_FRAGMENT:
-                fragment = new AddWordFragment();
+                fragment = new AddWordFragmentNew();
                 break;
             case LEARN_WORDS_FRAGMENT:
                 fragment = new LearnFragment();
@@ -194,12 +209,18 @@ public class MainActivityController extends FragmentActivity implements
         {
             android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
-            ft.replace(R.id.view_group_id, fragment, fragment.getClass().getName());
+	        ft.replace(R.id.view_group_id, fragment, "android:switcher:" + 0 + ":" + position);
             Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + fragment.getClass().getName());
             ft.commit();
         }
         currentItemShown=position;
     }
+
+
+	public void showMessage(int exitCode) {
+		MyDialogFragment frag = new MyDialogFragment();
+		frag.showMessage(exitCode, getSupportFragmentManager());
+	}
 
 	@Override
 	public void onPreExecute() {
@@ -208,12 +229,14 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public void onFail() {
-
+		Log.d(LOG_TAG, "on fail!!!!");
+		_worker.onTaskFinished();
 	}
 
 	@Override
-	public void onSuccess(String name) {
-
+	public void onSuccess(List<String> name) {
+		Log.d(LOG_TAG, "on success!!!!" + name.toString());
+		_worker.onTaskFinished();
 	}
 
 	@Override
@@ -289,4 +312,88 @@ public class MainActivityController extends FragmentActivity implements
         startActivity(intent);
         Log.d(LOG_TAG, "start activity welcome");
     }
+
+	private Fragment getCurrentShownFragment()
+	{
+		String currentLayout = getString(R.string.layout_current);
+		FragmentManager fm = getSupportFragmentManager();
+		if (currentLayout.equals(LAYOUT_NORMAL))
+		{
+			return fm.findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + currentItemShown);
+		}
+		else if (currentLayout.equals(LAYOUT_LARGE_LAND))
+		{
+			return fm.findFragmentByTag("android:switcher:" + 0 + ":" + currentItemShown);
+		}
+		return null;
+	}
+
+
+	@Override
+	public void onUiClick(int id) {
+		Fragment currentFragment = getCurrentShownFragment();
+		if (currentFragment instanceof AddWordFragmentNew)
+		{
+			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			switch (id)
+			{
+				case R.id.btn_add_word_clear:
+					frag.clearWord();
+					frag.setWordFocused();
+					break;
+				case R.id.btn_add_trans_clear:
+					frag.clearTranslation();
+					frag.setTranslationFocused();
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void onUiGotFocus(int id) {
+		Fragment currentFragment = getCurrentShownFragment();
+		if (currentFragment instanceof AddWordFragmentNew)
+		{
+			Log.d(LOG_TAG, "onUiGotFocus got id = " + id);
+			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			switch (id)
+			{
+				case R.id.edv_add_word:
+					break;
+				case R.id.edv_add_translation:
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void onTextChange(int id, boolean isEmpty) {
+		Log.d(LOG_TAG, "onTextChange got id = " + id + " is empty = " + isEmpty);
+		Fragment currentFragment = getCurrentShownFragment();
+		if (currentFragment instanceof AddWordFragmentNew)
+		{
+			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			switch (id)
+			{
+				case R.id.edv_add_word:
+					if (!frag.isWordEmpty() && frag.isTransEmpty())
+					{
+						_worker.addNewTask(this, new GetWordsTask(frag.getWord()));
+					}
+					break;
+				case R.id.edv_add_translation:
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void onListItemClick(int id, String text) {
+
+	}
+
+	@Override
+	public void onMenuItemClick(int id) {
+
+	}
 }

@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 
 import com.learnit.LearnIt.fragments.WorkerFragment;
 
-public abstract class MySmartAsyncTask extends AsyncTask<Void, Integer, String> {
+import java.util.List;
+
+public abstract class MySmartAsyncTask extends AsyncTask<Void, Integer, List<String>> {
 
 	public static final String CLASS_NAME = "MySmartAsyncTask";
 
@@ -18,7 +20,7 @@ public abstract class MySmartAsyncTask extends AsyncTask<Void, Integer, String> 
 	}
 
 	@Override
-	protected abstract String doInBackground(Void... unused);
+	protected abstract List<String> doInBackground(Void... unused);
 
 	@Override
 	protected void onPreExecute() {
@@ -35,7 +37,7 @@ public abstract class MySmartAsyncTask extends AsyncTask<Void, Integer, String> 
 		depending on the outcome.
 		*/
 	@Override
-	protected void onPostExecute(String s) {
+	protected void onPostExecute(List<String> s) {
 		super.onPostExecute(s);
 	}
 

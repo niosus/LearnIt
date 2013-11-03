@@ -1,21 +1,11 @@
 package com.learnit.LearnIt.utils;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.services.NotificationService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +40,13 @@ public class StringUtils {
         }
         return res;
     }
+
+	public static ArrayList<String> parseDictOutput(String str, String langFrom) {
+		Log.d(Constants.LOG_TAG, "input = " + str);
+		ArrayList<String> tagValues = StringUtils.getHelpWordsFromDictOutput(str);
+		String article = StringUtils.getArticleFromDictOutput(str, langFrom);
+		return tagValues;
+	}
 
     public static String stripFromArticle(Context context, String str) {
         String[] tempArray = str.split("\\s");
@@ -120,7 +117,7 @@ public class StringUtils {
     }
 
     public static ArrayList<String> getHelpWordsFromDictOutput(String str) {
-        ArrayList<String> tagValues = new ArrayList<String>();
+        ArrayList<String> tagValues = new ArrayList<>();
         if (str.contains("<dtrn>")) {
             String deleteCo = "(<tr>(.*)</tr>)|(<co>(.+?)</co>)|(<abr>(.+?)</abr>)|(<c>(.*)</c>)|(<i>(.+?)</i>)|(<nu />(.+?)<nu />)";
             String selectDtrn = "<dtrn>(.+?)</dtrn>";

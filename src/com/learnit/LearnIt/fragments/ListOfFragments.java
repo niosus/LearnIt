@@ -18,9 +18,12 @@ package com.learnit.LearnIt.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.learnit.LearnIt.R;
 
 public class ListOfFragments extends ListFragment {
@@ -32,7 +35,13 @@ public class ListOfFragments extends ListFragment {
         public void onArticleSelected(int position);
     }
 
-    @Override
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_list, container, false);
+		return v;
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Create an array adapter for the list view, using the Ipsum headlines array
@@ -46,6 +55,7 @@ public class ListOfFragments extends ListFragment {
         super.onStart();
         if (getFragmentManager().findFragmentById(R.id.headlines_fragment) != null) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+	        getListView().setSelector(R.drawable.list_selector);
         }
     }
 

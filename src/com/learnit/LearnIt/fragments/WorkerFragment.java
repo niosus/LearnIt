@@ -1,8 +1,9 @@
 package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,14 @@ import android.view.ViewGroup;
 import com.learnit.LearnIt.data_types.MySmartAsyncTask;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /*
 This class is a headless fragment with no GUI.
 It is used to carry out heavy async tasks
 */
-public class WorkerFragment extends Fragment{
+public class WorkerFragment extends Fragment {
     final String LOG_TAG = "my_logs";
     public static String TAG = "work_fragment";
 
@@ -27,7 +29,7 @@ public class WorkerFragment extends Fragment{
 	public interface OnTaskActionListener {
 		public void onPreExecute();
 		public void onFail();
-		public void onSuccess(String name);
+		public void onSuccess(List<String> name);
 		public void onProgressUpdate(Integer... values);
 		public void noTaskSpecified();
 	}
@@ -41,14 +43,10 @@ public class WorkerFragment extends Fragment{
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (_taskQueue == null)
-		{
-			_taskRunning = false;
-		}
 		try {
 			_taskActionCallback = (OnTaskActionListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " " + _taskActionCallback.getClass().getName());
+			throw new ClassCastException(activity.toString() + " has to implement _taskActionCallback");
 		}
 		for (MySmartAsyncTask task: _taskQueue)
 		{
@@ -71,17 +69,21 @@ public class WorkerFragment extends Fragment{
 
 	public void addNewTask(MySmartAsyncTask task)
 	{
-		if (_taskQueue==null)
-		{
-			_taskQueue = new LinkedList<>();
-		}
 		_taskQueue.add(task);
+		startNextTaskIfNeeded();
+	}
+
+	public void addNewTask(Context context, MySmartAsyncTask task)
+	{
+		_taskQueue.add(task);
+		task.updateContextAndCallback(context, _taskActionCallback);
 		startNextTaskIfNeeded();
 	}
 
 	private boolean startNextTaskIfNeeded()
 	{
 		// if we are not yet attached to an activity do nothing
+		Log.d(LOG_TAG, "startNextTaskIfNeeded, queue size = " + _taskQueue.size());
 		if (null == this.getActivity())
 			return false;
 		if (!_taskRunning && _taskQueue.size() > 0)
@@ -104,8 +106,8 @@ public class WorkerFragment extends Fragment{
         return null;
     }
 
-	private static Queue<MySmartAsyncTask> _taskQueue;
-	private static boolean _taskRunning;
+	private static Queue<MySmartAsyncTask> _taskQueue = new LinkedList<>();
+	private static boolean _taskRunning = false;
 	private OnTaskActionListener _taskActionCallback;
 
 }

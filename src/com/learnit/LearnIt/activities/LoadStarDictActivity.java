@@ -5,9 +5,9 @@
 
 package com.learnit.LearnIt.activities;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.learnit.LearnIt.R;
@@ -16,8 +16,10 @@ import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 
+import java.util.List;
 
-public class LoadStarDictActivity extends Activity implements WorkerFragment.OnTaskActionListener {
+
+public class LoadStarDictActivity extends FragmentActivity implements WorkerFragment.OnTaskActionListener {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
 	WorkerFragment _taskFragment;
@@ -28,7 +30,7 @@ public class LoadStarDictActivity extends Activity implements WorkerFragment.OnT
         super.onCreate(savedInstanceState);
         _uiFragment = new LoadStarDictUiFragment();
 		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         _taskFragment = (WorkerFragment) fragmentManager
                 .findFragmentByTag(WorkerFragment.TAG);
@@ -110,7 +112,7 @@ public class LoadStarDictActivity extends Activity implements WorkerFragment.OnT
 	}
 
 	@Override
-	public void onSuccess(String name) {
+	public void onSuccess(List<String> name) {
 		if (_progressDialog != null)
 		{
 			_progressDialog.dismiss();
@@ -119,7 +121,7 @@ public class LoadStarDictActivity extends Activity implements WorkerFragment.OnT
 		if (_uiFragment != null)
 		{
 			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-			_uiFragment.setDictInfoText(name);
+			_uiFragment.setDictInfoText(name.get(0));
 		}
 		if (_taskFragment != null)
 		{
