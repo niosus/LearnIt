@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Bottom 2dp Shadow -->
-    <item android:top="@dimen/small_shadow_size">
+    <item android:top="@dimen/small_shadow_size" android:left="@dimen/small_shadow_size">
         <shape android:shape="rectangle">
             <solid android:color="@color/my_dark_gray"/>
             <corners android:radius="@dimen/radius_size" />
         </shape>
     </item>
     <!-- White Top color -->
-    <item android:bottom="@dimen/small_shadow_size">
-        <shape  android:shape="rectangle">
+    <item android:bottom="@dimen/small_shadow_size" android:right="@dimen/small_shadow_size">
+        <shape  android:shape="rectangle" android:dither="true">
             <solid android:color="@android:color/white" />
             <corners android:radius="@dimen/radius_size" />
         </shape>

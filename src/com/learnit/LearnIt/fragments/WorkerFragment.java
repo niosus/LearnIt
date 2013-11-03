@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.data_types.MySmartAsyncTask;
+import com.learnit.LearnIt.async_tasks.MySmartAsyncTask;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /*
@@ -29,7 +28,7 @@ public class WorkerFragment extends Fragment {
 	public interface OnTaskActionListener {
 		public void onPreExecute();
 		public void onFail();
-		public void onSuccess(List<String> name);
+		public <T> void onSuccess (T result);
 		public void onProgressUpdate(Integer... values);
 		public void noTaskSpecified();
 	}

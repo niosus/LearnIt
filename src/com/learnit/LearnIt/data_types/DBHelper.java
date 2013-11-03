@@ -453,6 +453,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<Map<String, String>> getWords(String word) {
+	    if (word==null) word = "";
         word = word.toLowerCase();
         db = this.getReadableDatabase();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
@@ -500,7 +501,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor c = db.query(currentDBName,
                 new String[]{WORD_COLUMN_NAME, DICT_OFFSET_COLUMN_NAME,
                         DICT_CHUNK_SIZE_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like '" + word + "%' limit 20", null, null,
+                WORD_COLUMN_NAME + " like '" + word + "%' limit 20 ", null, null,
                 null, null);
         String tempWord;
         if (c.moveToFirst()) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="my_gray">#bbbbbb</color>
-    <color name="my_dark_gray">#909090</color>
-    <color name="background_color">#7ad499</color>
-    <color name="pressed_my_light_holo">#CCFF4455</color>
+    <color name="my_dark_gray">#505050</color>
+    <color name="background_color">#4cb48f</color>
+    <color name="pressed_my_light_holo">#CCBF4D1A</color>
 </resources>

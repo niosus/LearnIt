@@ -16,6 +16,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
 
@@ -53,7 +54,7 @@ public class MyDialogFragment extends DialogFragment {
                 builder.setMessage(R.string.dialog_empty_text).setTitle(
                         R.string.dialog_empty_title);
                 builder.setNeutralButton(R.string.ok, myDialogClickListener);
-                builder.setIcon(R.drawable.ic_action_alert);
+                builder.setIcon(R.drawable.ic_action_alerts_and_states_warning);
                 return builder.create();
             case DIALOG_ADDED:
                 builder.setTitle(R.string.dialog_added_title)

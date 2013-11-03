@@ -16,14 +16,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import com.learnit.LearnIt.services.NotificationService;
+
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.views.TimePreference;
+import com.learnit.LearnIt.services.NotificationService;
 import com.learnit.LearnIt.utils.Utils;
+import com.learnit.LearnIt.views.TimePreference;
 
 public class PrefActivity extends PreferenceActivity {
     protected static boolean m_languages_changed = false;
@@ -162,6 +169,10 @@ public class PrefActivity extends PreferenceActivity {
             if (lstWayToLearn.getValue().equals("2")) {
                 lstDirectionOfTrans.setValue("2");
                 lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
+            } else
+            {
+	            lstDirectionOfTrans.setValue("3");
+	            lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[2]);
             }
         }
 
@@ -242,7 +253,7 @@ public class PrefActivity extends PreferenceActivity {
                             pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
                             if (!newValue.toString().equals("de")) {
                                 PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
-                                lstWayToLearn.setValue("2");
+                                lstWayToLearn.setValue("1");
                                 mCategory.removePreference(lstWayToLearn);
                             } else {
                                 PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");

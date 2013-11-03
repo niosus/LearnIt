@@ -35,17 +35,9 @@
                 android:layout_alignRight="@id/edv_add_translation"
                 style="@style/MyImageButton"/>
     </RelativeLayout>
-    <TextView android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:textColor="@color/pressed_my_light_holo"
-              android:paddingLeft="20dp"
-              android:layout_below="@id/linear_translation"
-              android:id="@+id/text_view_help"
-              android:textAppearance="@android:style/TextAppearance.Holo.Small"
-            />
     <ListView
         android:id="@+id/list_of_add_words"
-        android:layout_below="@id/text_view_help"
+        android:layout_below="@id/linear_translation"
         style="@style/MyListView">
     </ListView>
 

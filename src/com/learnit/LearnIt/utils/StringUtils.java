@@ -2,18 +2,20 @@ package com.learnit.LearnIt.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import com.learnit.LearnIt.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
     public static final String LOG_TAG = "my_logs";
 
-    static boolean isArticle(Context context, String article) {
-
+    public static boolean isArticle(Context context, String article) {
+		if (article==null) return false;
         String articles = context.getString(R.string.articles_de);
         return articles.contains(article.toLowerCase());
     }
@@ -41,14 +43,15 @@ public class StringUtils {
         return res;
     }
 
-	public static ArrayList<String> parseDictOutput(String str, String langFrom) {
+	public static Pair<String, List<String>> parseDictOutput(String str, String langFrom) {
 		Log.d(Constants.LOG_TAG, "input = " + str);
-		ArrayList<String> tagValues = StringUtils.getHelpWordsFromDictOutput(str);
+		List<String> tagValues = StringUtils.getHelpWordsFromDictOutput(str);
 		String article = StringUtils.getArticleFromDictOutput(str, langFrom);
-		return tagValues;
+		return new Pair<>(article, tagValues);
 	}
 
     public static String stripFromArticle(Context context, String str) {
+	    if (str == null) return null;
         String[] tempArray = str.split("\\s");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
         if (tempArray.length == 1) {

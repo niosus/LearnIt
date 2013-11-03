@@ -4,16 +4,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.learnit.LearnIt.fragments.AddWordFragmentNew;
+import com.learnit.LearnIt.interfaces.OnUiAction;
 
 /**
  * Created by igor on 11/2/13.
  */
 public class MyTextWatcher implements TextWatcher {
-	AddWordFragmentNew.OnUiAction _callback;
+	OnUiAction _callback;
 	View _invoker;
 
-	public MyTextWatcher(View invoker, AddWordFragmentNew.OnUiAction callback)
+	public MyTextWatcher(View invoker, OnUiAction callback)
 	{
 		super();
 		_invoker = invoker;

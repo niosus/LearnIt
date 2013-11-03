@@ -11,12 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.data_types.GetDictTaskSmart;
+import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
-
-import java.util.List;
 
 
 public class LoadStarDictActivity extends FragmentActivity implements WorkerFragment.OnTaskActionListener {
@@ -37,7 +35,7 @@ public class LoadStarDictActivity extends FragmentActivity implements WorkerFrag
         if (_taskFragment == null)
         {
             _taskFragment = new WorkerFragment();
-	        _taskFragment.addNewTask(new GetDictTaskSmart());
+	        _taskFragment.addNewTask(new GetDictTask());
             fragmentManager.beginTransaction()
                     .add(_taskFragment, WorkerFragment.TAG)
                     .commit();
@@ -112,7 +110,7 @@ public class LoadStarDictActivity extends FragmentActivity implements WorkerFrag
 	}
 
 	@Override
-	public void onSuccess(List<String> name) {
+	public <T> void onSuccess(T result) {
 		if (_progressDialog != null)
 		{
 			_progressDialog.dismiss();
@@ -121,7 +119,8 @@ public class LoadStarDictActivity extends FragmentActivity implements WorkerFrag
 		if (_uiFragment != null)
 		{
 			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-			_uiFragment.setDictInfoText(name.get(0));
+			if (result instanceof String)
+				_uiFragment.setDictInfoText((String)result);
 		}
 		if (_taskFragment != null)
 		{

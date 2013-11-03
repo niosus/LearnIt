@@ -31,15 +31,8 @@
 
 
     <item
-            android:id="@+id/menu_show_all_words"
-            android:icon="@android:drawable/ic_menu_view"
-            android:orderInCategory="100"
-            android:showAsAction="always|withText"
-            android:title="@string/menu_show_all_words"/>
-
-    <item
             android:id="@+id/menu_settings"
-            android:icon="@android:drawable/ic_menu_preferences"
+            android:icon="@drawable/ic_action_action_settings"
             android:orderInCategory="100"
             android:showAsAction="ifRoom"
             android:title="@string/menu_settings"/>
@@ -47,7 +40,7 @@
     <item
             android:id="@+id/menu_info"
             android:orderInCategory="200"
-            android:icon="@android:drawable/ic_menu_info_details"
+            android:icon="@drawable/ic_action_action_about"
             android:showAsAction="ifRoom"
             android:title="@string/menu_info"/>
 

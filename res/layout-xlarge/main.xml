@@ -37,7 +37,7 @@ limitations under the License.
             android:text="@string/dictionary_frag_title"
             android:textColor="@android:color/holo_blue_bright"
             android:textSize="30sp"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.DictFragment"
+        <fragment android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
             android:layout_below="@id/txtDictLabel"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -55,7 +55,7 @@ limitations under the License.
             android:text="@string/add_words_frag_title"
             android:textColor="@android:color/holo_blue_bright"
             android:textSize="30sp"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragment"
+        <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
             android:layout_below="@id/txtAddWordLabel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

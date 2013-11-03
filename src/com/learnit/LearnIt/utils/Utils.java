@@ -86,7 +86,7 @@ public class Utils {
         }
         DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
         Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
-        return new Pair<String, String>(selectedLanguageFrom, currentLanguage);
+        return new Pair<>(selectedLanguageFrom, currentLanguage);
     }
 
     public static long getFreqFromId(String id) {
