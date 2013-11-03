@@ -13,7 +13,7 @@
     <string name="key_language_from">language_to_learn</string>
     <string name="key_language_to">language_you_know</string>
     <string name="key_time_to_start">time_to_start</string>
-    <string name="version">0.6.26</string>
+    <string name="version">0.7.0</string>
 
     <string-array name="values_freq">
         <item>1</item>
