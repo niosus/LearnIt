@@ -125,8 +125,15 @@ public class Utils {
         Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	    try
+	    {
+	        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+	        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	    }
+	    catch (NullPointerException ex)
+	    {
+		    Log.e(LOG_TAG, ex.getMessage());
+	    }
     }
 
 }

@@ -39,7 +39,7 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 	private EditText _word;
 	private EditText _translation;
 	private ImageButton _clearButtonWord, _clearButtonTrans;
-
+	private MenuItem _saveMenuItem;
 	private OnUiAction _callback;
 
     @Override
@@ -64,8 +64,9 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actions_add_words, menu);
-	    MenuItem _saveMenuItem = menu.findItem(R.id.save_item);
+	    _saveMenuItem = menu.findItem(R.id.save_item);
 	    _saveMenuItem.setOnMenuItemClickListener(new MyOnMenuItemClickListener(_callback));
+		_saveMenuItem.setVisible(false);
     }
 
     @Override
@@ -163,6 +164,18 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 			_clearButtonWord.setVisibility(visibility);
 		if (id == _clearButtonTrans.getId())
 			_clearButtonTrans.setVisibility(visibility);
+	}
+
+	public void setMenuItemVisible(boolean visible)
+	{
+		try
+		{
+			_saveMenuItem.setVisible(visible);
+		}
+		catch (NullPointerException ex)
+		{
+			//do something
+		}
 	}
 
 	@Override

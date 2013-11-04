@@ -19,6 +19,7 @@ public class MyOnListItemLongClickListener implements AdapterView.OnItemLongClic
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long l) {
 		String queryWord;
 		queryWord = ((HashMap<String,String>)parent.getAdapter().getItem(i)).get("word");
+		view.setSelected(true);
 		_callback.onListItemLongClick(parent.getId(), queryWord);
 		return true;
 	}

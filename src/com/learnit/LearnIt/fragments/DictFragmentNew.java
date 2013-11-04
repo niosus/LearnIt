@@ -7,7 +7,6 @@ package com.learnit.LearnIt.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import com.learnit.LearnIt.data_types.MyTextWatcher;
 import com.learnit.LearnIt.interfaces.FragmentUiInterface;
 import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.listeners.MyButtonOnClickListener;
+import com.learnit.LearnIt.listeners.MyOnFocusChangeListener;
 import com.learnit.LearnIt.listeners.MyOnListItemClickListener;
 import com.learnit.LearnIt.listeners.MyOnListItemLongClickListener;
 import com.learnit.LearnIt.utils.Utils;
@@ -32,7 +32,6 @@ public class DictFragmentNew extends Fragment implements FragmentUiInterface{
     protected static final String LOG_TAG = "my_logs";
     private EditText _edtWord;
     private ImageButton _btnClear;
-    private ActionMode _actionMode = null;
 	private OnUiAction _callback;
 
 	@Override
@@ -61,6 +60,7 @@ public class DictFragmentNew extends Fragment implements FragmentUiInterface{
         _edtWord = (EditText) _view.findViewById(R.id.edv_search_word);
         _edtWord.clearFocus();
         _edtWord.addTextChangedListener(new MyTextWatcher(_edtWord, _callback));
+	    _edtWord.setOnFocusChangeListener(new MyOnFocusChangeListener(_callback));
         _btnClear = (ImageButton) _view.findViewById(R.id.btn_search_clear);
         _btnClear.setOnClickListener(new MyButtonOnClickListener(_callback));
         _btnClear.setVisibility(View.INVISIBLE);

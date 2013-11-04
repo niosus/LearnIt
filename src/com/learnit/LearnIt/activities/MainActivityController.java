@@ -22,7 +22,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetMyWordsTask;
@@ -67,6 +66,8 @@ public class MainActivityController extends FragmentActivity implements
     private ViewPager _viewPager;
     private ListOfFragments _listOfFragments;
 	private WorkerFragment _worker;
+
+	private String _wordForActionMode;
 
     private static int _currentItemShown = 0;
 
@@ -342,10 +343,18 @@ public class MainActivityController extends FragmentActivity implements
 					frag.setViewText(R.id.edv_add_word, "");
 					frag.setViewFocused(R.id.edv_add_word);
 					frag.setListEntries(null);
+					updateViewVisibility(
+							frag,
+							frag.getTextFromView(R.id.edv_add_word).isEmpty(),
+							R.id.btn_add_word_clear);
 					break;
 				case R.id.btn_add_trans_clear:
 					frag.setViewText(R.id.edv_add_translation, "");
 					frag.setViewFocused(R.id.edv_add_translation);
+					updateViewVisibility(
+							frag,
+							frag.getTextFromView(R.id.edv_add_translation).isEmpty(),
+							R.id.btn_add_trans_clear);
 					break;
 			}
 		}
@@ -376,6 +385,17 @@ public class MainActivityController extends FragmentActivity implements
 					{
 						_worker.addNewTask(this, new GetTranslationsTask(frag.getTextFromView(R.id.edv_add_word)));
 					}
+					break;
+			}
+		}
+		if (currentFragment instanceof DictFragmentNew)
+		{
+			Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
+			DictFragmentNew frag = (DictFragmentNew) currentFragment;
+			switch (id)
+			{
+				case R.id.edv_search_word:
+					_worker.addNewTask(this, new GetMyWordsTask(frag.getTextFromView(R.id.edv_add_word)));
 					break;
 			}
 		}
@@ -415,6 +435,11 @@ public class MainActivityController extends FragmentActivity implements
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 			if (!isIdValid(frag.getFocusedId(), id))
 				return;
+			if (!frag.getTextFromView(R.id.edv_add_translation).isEmpty() &&
+					!frag.getTextFromView(R.id.edv_add_translation).isEmpty())
+				frag.setMenuItemVisible(true);
+			else
+				frag.setMenuItemVisible(false);
 			switch (id)
 			{
 				case R.id.edv_add_word:
@@ -470,6 +495,7 @@ public class MainActivityController extends FragmentActivity implements
 	public void onListItemLongClick(int id, String text) {
 		ActionMode.Callback mActionModeCallback = this;
 		startActionMode(mActionModeCallback);
+		_wordForActionMode = text;
 	}
 
 	@Override
@@ -580,8 +606,7 @@ public class MainActivityController extends FragmentActivity implements
 		Fragment currentFragment = getCurrentShownFragment();
 		if (currentFragment instanceof DictFragmentNew)
 		{
-			TextView tv = (TextView) findViewById(android.R.id.text1);
-			String queryWord = tv.getText().toString();
+			String queryWord = _wordForActionMode;
 			switch (menuItem.getItemId()) {
 				case R.id.context_menu_edit:
 					startEditWordActivity(queryWord);
@@ -608,6 +633,7 @@ public class MainActivityController extends FragmentActivity implements
 			DictFragmentNew frag = (DictFragmentNew) currentFragment;
 			if (!frag.getTextFromView(R.id.edv_search_word).isEmpty())
 				frag.setViewText(R.id.edv_search_word, "");
+			_wordForActionMode = null;
 		}
 	}
 }
