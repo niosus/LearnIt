@@ -495,6 +495,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (!currentDBName.equals(DB_DICT_FROM)) {
             return null;
         }
+	    Log.d(LOG_TAG, "getHelpWords word is " + word);
+	    if (word == null) return null;
         word = word.toLowerCase();
         db = this.getReadableDatabase();
         List<String> data = new ArrayList<String>();

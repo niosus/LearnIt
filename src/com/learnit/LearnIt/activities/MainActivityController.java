@@ -552,13 +552,16 @@ public class MainActivityController extends FragmentActivity implements
 			}
 			if (result instanceof Pair)
 			{
+
 				Pair<String, List<String>> pair = (Pair)result;
+				Log.d(LOG_TAG, "pair is " + pair);
 				if (StringUtils.isArticle(this, pair.first))
 				{
 					Log.d(LOG_TAG, "article? " + pair.first);
 					frag.addArticle(pair.first);
 				}
-				frag.setListEntries(pair.second);
+				if (pair.second!=null)
+					frag.setListEntries(pair.second);
 			}
 			if (result instanceof Integer)
 			{
