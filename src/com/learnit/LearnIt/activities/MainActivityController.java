@@ -337,7 +337,6 @@ public class MainActivityController extends FragmentActivity implements
 	@Override
 	public void onUiClick(int id) {
 		MySmartFragment currentFragment = getCurrentShownFragment();
-		Log.d(LOG_TAG, "current fragment tag = " + currentFragment.TAG);
 		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
@@ -373,10 +372,8 @@ public class MainActivityController extends FragmentActivity implements
 	public void onViewGotFocus(int id) {
 		try {
 			MySmartFragment currentFragment = getCurrentShownFragment();
-			Log.d(LOG_TAG, "current fragment tag = " + currentFragment.TAG);
 			if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 			{
-				Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
 				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 				switch (id)
 				{
@@ -396,7 +393,6 @@ public class MainActivityController extends FragmentActivity implements
 			}
 			if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 			{
-				Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
 				DictFragmentNew frag = (DictFragmentNew) currentFragment;
 				switch (id)
 				{
@@ -437,7 +433,6 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public void onTextChange(int id, boolean isEmpty) {
-		Log.d(LOG_TAG, "onTextChange got id = " + id + " is empty = " + isEmpty);
 		MySmartFragment currentFragment = getCurrentShownFragment();
 		if (currentFragment == null) return;
 		Log.d(LOG_TAG, currentFragment.getClass().getName());
@@ -466,10 +461,8 @@ public class MainActivityController extends FragmentActivity implements
 		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			DictFragmentNew frag = (DictFragmentNew) currentFragment;
-			Log.d(LOG_TAG, "word changed?");
 			if (id == R.id.edv_search_word)
 			{
-				Log.d(LOG_TAG, "word changed");
 				updateViewVisibility(frag, isEmpty, R.id.btn_search_clear);
 				_worker.addNewTask(this, new GetMyWordsTask(frag.getTextFromView(id)));
 			}
@@ -478,7 +471,6 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public <T> void onListItemClick(int id, T text) {
-		Log.d(LOG_TAG, "list item clicked " + text);
 		MySmartFragment currentFragment = getCurrentShownFragment();
 		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
@@ -537,7 +529,6 @@ public class MainActivityController extends FragmentActivity implements
 	// Implementing OnTaskListener interface
 	@Override
 	public void onFail() {
-		Log.d(LOG_TAG, "on fail!!!!");
 		_worker.onTaskFinished();
 		MySmartFragment currentFragment = getCurrentShownFragment();
 		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
@@ -548,7 +539,6 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public <T> void onSuccess(T result) {
-		Log.d(LOG_TAG, "on success!!!!" + result.toString());
 		try
 		{
 			_worker.onTaskFinished();
@@ -570,10 +560,8 @@ public class MainActivityController extends FragmentActivity implements
 				{
 
 					Pair<String, List<String>> pair = (Pair)result;
-					Log.d(LOG_TAG, "pair is " + pair);
 					if (StringUtils.isArticle(this, pair.first))
 					{
-						Log.d(LOG_TAG, "article? " + pair.first);
 						frag.addArticle(pair.first);
 					}
 					if (pair.second!=null)
