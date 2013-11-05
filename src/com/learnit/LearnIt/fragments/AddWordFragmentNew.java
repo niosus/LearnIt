@@ -34,7 +34,7 @@ import com.learnit.LearnIt.listeners.MyOnMenuItemClickListener;
 
 import java.util.List;
 
-public class AddWordFragmentNew extends MySmartFragment  implements FragmentUiInterface {
+public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInterface<String> {
     protected static final String LOG_TAG = "my_logs";
 	private EditText _word;
 	private EditText _translation;
@@ -135,18 +135,16 @@ public class AddWordFragmentNew extends MySmartFragment  implements FragmentUiIn
 	}
 
 	@Override
-	public <T> void setListEntries(List<T> words) {
+	public void setListEntries(List<String> words) {
 		if (words == null)
 		{
 			((ListView) this.getView().findViewById(R.id.list_of_add_words))
 					.setAdapter(null);
 			return;
 		}
-		@SuppressWarnings("unchecked")
-		List<String> list = (List<String>)words;
 		ArrayAdapter<String> adapter;
 		adapter = new ArrayAdapter<>(this.getActivity(),
-				android.R.layout.simple_list_item_1, list);
+				android.R.layout.simple_list_item_1, words);
 		((ListView) this.getView().findViewById(R.id.list_of_add_words))
 				.setAdapter(adapter);
 	}

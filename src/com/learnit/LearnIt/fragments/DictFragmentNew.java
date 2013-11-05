@@ -24,7 +24,7 @@ import com.learnit.LearnIt.listeners.MyOnListItemLongClickListener;
 import java.util.List;
 import java.util.Map;
 
-public class DictFragmentNew extends MySmartFragment implements FragmentUiInterface{
+public class DictFragmentNew extends MySmartFragment implements FragmentUiInterface<Map<String,String>>{
     private EditText _edtWord;
     private ImageButton _btnClear;
 
@@ -65,7 +65,7 @@ public class DictFragmentNew extends MySmartFragment implements FragmentUiInterf
 	}
 
 	@Override
-	public <T> void setListEntries(List<T> words) {
+	public void setListEntries(List<Map<String,String>> words) {
 		SimpleAdapter adapter;
 		if (words==null)
 		{
@@ -73,8 +73,7 @@ public class DictFragmentNew extends MySmartFragment implements FragmentUiInterf
 					.setAdapter(null);
 			return;
 		}
-		List<Map<String, String>> strings = (List<Map<String,String>>) words;
-		adapter = new SimpleAdapter(this.getActivity(), strings,
+		adapter = new SimpleAdapter(this.getActivity(), words,
 				android.R.layout.simple_list_item_2,
 				new String[]{"word", "translation"},
 				new int[]{android.R.id.text1, android.R.id.text2});
