@@ -549,12 +549,12 @@ public class MainActivityController extends FragmentActivity implements
 				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 				if (result instanceof List)
 				{
-					List<String> list = (List<String>)result;
-					if (list.isEmpty())
-					{
+					if (((List) result).isEmpty()) {
 						frag.setListEntries(null, R.id.list_of_add_words);
 						return;
 					}
+					if (!(((List) result).get(0) instanceof String)) return;
+					List<String> list = (List<String>)result;
 					frag.setListEntries(list, R.id.list_of_add_words);
 				}
 				if (result instanceof Pair)
@@ -581,6 +581,12 @@ public class MainActivityController extends FragmentActivity implements
 				DictFragmentNew frag = (DictFragmentNew) currentFragment;
 				if (result instanceof List)
 				{
+					if (((List) result).isEmpty())
+					{
+						frag.setListEntries(null, R.id.list_of_words);
+						return;
+					}
+					if (!(((List) result).get(0) instanceof Map)) return;
 					List<Map<String,String>> list = (List<Map<String,String>>) result;
 					frag.setListEntries(list, R.id.list_of_words);
 				}

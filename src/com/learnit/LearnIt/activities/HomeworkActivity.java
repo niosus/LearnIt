@@ -16,18 +16,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.learnit.LearnIt.data_types.ArticleWordId;
-import com.learnit.LearnIt.data_types.NotificationBuilder;
-import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.NotificationBuilder;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -72,6 +70,7 @@ public class HomeworkActivity extends FragmentActivity implements MyAnimationHel
 		int randIdx = random.nextInt(btnIds.length);
 		_myBtnOnClick.correct = btnIds[randIdx];
 		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
+		queryWordTextView.setMovementMethod(new ScrollingMovementMethod());
 		setBtnTexts(randIdx);
 		switch (fromLearnToKnow) {
 			case Constants.FROM_FOREIGN_TO_MY:

@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -97,6 +98,8 @@ public class LearnFragment extends MySmartFragment implements MyAnimationHelper.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
+	    TextView textView = (TextView) v.findViewById(R.id.word_to_ask);
+	    textView.setMovementMethod(new ScrollingMovementMethod());
         fetchNewWords();
 //        setAll(View.INVISIBLE);
         return v;
