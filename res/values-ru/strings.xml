@@ -75,7 +75,7 @@
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редактировать</string>
-    <string name="context_menu_delete">Удалить</string>
+    <string name="context_menu_back">Назад</string>
 
     <!--menu strings-->
     <string name="menu_settings">Настройки</string>
@@ -91,7 +91,7 @@
     <!--welcome-->
 
     <string name="instr_go_to_settings">Настройки</string>
-    <string name="quick_instructions">Просто нажмите на \"Настройки\" внизу страницы и там выберите язык, который хотите
+    <string name="quick_instructions">Просто нажмите на \"Настройки\" внизу страницы и выберите язык, который хотите
         изучать. Далее нажмине \"Назад\" и вы попадете на главный экран приложения.
     </string>
     <string name="quick_start">Быстрый старт!</string>

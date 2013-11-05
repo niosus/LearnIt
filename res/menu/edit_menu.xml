@@ -9,7 +9,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_navigation_previous_item"
         android:showAsAction="always"
-        android:title="@string/context_menu_delete"/>
+        android:title="@string/context_menu_back"/>
     <item
             android:id="@+id/edit_menu_done"
             android:orderInCategory="100"

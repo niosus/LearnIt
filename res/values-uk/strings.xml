@@ -72,7 +72,7 @@
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редагувати</string>
-    <string name="context_menu_delete">Видалити</string>
+    <string name="context_menu_back">Назад</string>
 
     <!--menu strings-->
     <string name="menu_settings">Налаштування</string>

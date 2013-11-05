@@ -86,7 +86,7 @@
 
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>
-    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_back">Back</string>
 
 
     <!--menu strings-->

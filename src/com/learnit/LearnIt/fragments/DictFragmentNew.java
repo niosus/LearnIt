@@ -4,9 +4,7 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,42 +16,23 @@ import android.widget.SimpleAdapter;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.MyTextWatcher;
 import com.learnit.LearnIt.interfaces.FragmentUiInterface;
-import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.listeners.MyButtonOnClickListener;
 import com.learnit.LearnIt.listeners.MyOnFocusChangeListener;
 import com.learnit.LearnIt.listeners.MyOnListItemClickListener;
 import com.learnit.LearnIt.listeners.MyOnListItemLongClickListener;
-import com.learnit.LearnIt.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
 
-public class DictFragmentNew extends Fragment implements FragmentUiInterface{
-    protected static final String LOG_TAG = "my_logs";
+public class DictFragmentNew extends MySmartFragment implements FragmentUiInterface{
     private EditText _edtWord;
     private ImageButton _btnClear;
-	private OnUiAction _callback;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof OnUiAction)
-		{
-			_callback = (OnUiAction) activity;
-		}
-		else
-		{
-			throw new ClassCastException(activity.getClass().getName() + " should implement " + OnUiAction.class.getName());
-		}
+	public DictFragmentNew(int tag) {
+		super(tag);
 	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.updateCurrentDBName(this.getActivity());
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 	    View _view = inflater.inflate(R.layout.dict_fragment, container, false);
 

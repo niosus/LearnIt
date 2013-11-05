@@ -28,13 +28,13 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtWord"
-                style="@style/MyEditText"
+                style="@style/MyEditTextOnWhite"
                 android:hint="@string/add_word_hint"
                 />
         <ImageButton
                 android:id="@+id/btn_add_word_clear"
                 android:layout_alignRight="@id/edtWord"
-                style="@style/MyImageButton"/>
+                style="@style/MyImageButtonWhite"/>
 
     </RelativeLayout>
     <RelativeLayout
@@ -45,12 +45,12 @@
             android:layout_height="wrap_content">
         <EditText
                 android:id="@+id/edtTrans"
-                style="@style/MyEditText"
+                style="@style/MyEditTextOnWhite"
                 android:hint="@string/add_word_hint"/>
         <ImageButton
                 android:id="@+id/btn_add_trans_clear"
                 android:layout_alignRight="@id/edtTrans"
-                style="@style/MyImageButton"/>
+                style="@style/MyImageButtonWhite"/>
 
     </RelativeLayout>
 </RelativeLayout>

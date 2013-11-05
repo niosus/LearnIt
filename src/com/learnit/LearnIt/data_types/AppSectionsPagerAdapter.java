@@ -5,12 +5,15 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.MainActivityController;
 import com.learnit.LearnIt.fragments.AddWordFragmentNew;
 import com.learnit.LearnIt.fragments.DictFragmentNew;
 import com.learnit.LearnIt.fragments.LearnFragment;
+import com.learnit.LearnIt.fragments.MySmartFragment;
+import com.learnit.LearnIt.utils.Constants;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a listOfFragments corresponding to one of the primary
@@ -24,14 +27,20 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int i) {
-		Fragment fragment = null;
+		MySmartFragment fragment = null;
 		switch (i) {
 			case MainActivityController.DICTIONARY_FRAGMENT:
-				return new DictFragmentNew();
+				fragment = new DictFragmentNew(MainActivityController.DICTIONARY_FRAGMENT);
+				Log.d(Constants.LOG_TAG, "Created Dictionary Fragment with tag " + fragment.TAG);
+				break;
 			case MainActivityController.ADD_WORDS_FRAGMENT:
-				return new AddWordFragmentNew();
+				fragment = new AddWordFragmentNew(MainActivityController.ADD_WORDS_FRAGMENT);
+				Log.d(Constants.LOG_TAG,"Created AddWordFragmentNew with tag " + fragment.TAG);
+				break;
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
-				return new LearnFragment();
+				fragment = new LearnFragment(MainActivityController.LEARN_WORDS_FRAGMENT);
+				Log.d(Constants.LOG_TAG,"Created LearnFragment with tag " + fragment.TAG);
+				break;
 		}
 		return fragment;
 	}

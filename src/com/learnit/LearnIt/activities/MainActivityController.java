@@ -10,9 +10,9 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -35,6 +35,7 @@ import com.learnit.LearnIt.fragments.DictFragmentNew;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
+import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.FragmentUiInterface;
 import com.learnit.LearnIt.interfaces.OnUiAction;
@@ -64,7 +65,7 @@ public class MainActivityController extends FragmentActivity implements
 
     private AppSectionsPagerAdapter _appSectionsPagerAdapter;
     private ViewPager _viewPager;
-    private ListOfFragments _listOfFragments;
+    private ListFragment _listOfFragments;
 	private WorkerFragment _worker;
 
 	private String _wordForActionMode;
@@ -77,8 +78,7 @@ public class MainActivityController extends FragmentActivity implements
         setContentView(R.layout.main);
         String currentLayout = getString(R.string.layout_current);
 	    FragmentManager fragmentManager = getSupportFragmentManager();
-	    _worker = (WorkerFragment) fragmentManager
-			    .findFragmentByTag(WorkerFragment.TAG);
+	    _worker = (WorkerFragment) fragmentManager.findFragmentByTag(WorkerFragment.TAG);
 	    if (_worker == null)
 	    {
 		    _worker = new WorkerFragment();
@@ -209,18 +209,21 @@ public class MainActivityController extends FragmentActivity implements
 
     public void onArticleSelected(int position) {
         // Create a new listOfFragments
-        Fragment fragment;
+        MySmartFragment fragment;
         switch(position)
         {
             case DICTIONARY_FRAGMENT:
-                fragment = new DictFragmentNew();
+                fragment = new DictFragmentNew(DICTIONARY_FRAGMENT);
+	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.TAG);
                 break;
             case ADD_WORDS_FRAGMENT:
-                fragment = new AddWordFragmentNew();
-                break;
+                fragment = new AddWordFragmentNew(ADD_WORDS_FRAGMENT);
+	            Log.d(LOG_TAG,"Created AddWordFragmentNew with tag " + fragment.TAG);
+	            break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = new LearnFragment();
-                break;
+                fragment = new LearnFragment(LEARN_WORDS_FRAGMENT);
+	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.TAG);
+	            break;
             default: fragment = null;
         }
         // Update the layout
@@ -314,18 +317,18 @@ public class MainActivityController extends FragmentActivity implements
 		frag.show(getSupportFragmentManager(), "show_word_fragment_dialog");
 	}
 
-	private Fragment getCurrentShownFragment()
+	private MySmartFragment getCurrentShownFragment()
 	{
 		String currentLayout = getString(R.string.layout_current);
 		Log.d(LOG_TAG, currentLayout + _currentItemShown);
 		FragmentManager fm = getSupportFragmentManager();
 		if (currentLayout.equals(LAYOUT_NORMAL))
 		{
-			return fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
+			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
 		}
 		else if (currentLayout.equals(LAYOUT_LARGE_LAND))
 		{
-			return fm.findFragmentByTag("android:switcher:" + 0 + ":" + _currentItemShown);
+			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + 0 + ":" + _currentItemShown);
 		}
 		return null;
 	}
@@ -333,8 +336,9 @@ public class MainActivityController extends FragmentActivity implements
 	// Implementing OnUiAction interface
 	@Override
 	public void onUiClick(int id) {
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		Log.d(LOG_TAG, "current fragment tag = " + currentFragment.TAG);
+		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 			switch (id)
@@ -358,7 +362,7 @@ public class MainActivityController extends FragmentActivity implements
 					break;
 			}
 		}
-		if (currentFragment instanceof DictFragmentNew)
+		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			DictFragmentNew frag = (DictFragmentNew) currentFragment;
 			frag.setViewText(R.id.edv_search_word, "");
@@ -367,37 +371,44 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public void onViewGotFocus(int id) {
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
-		{
-			Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
-			switch (id)
+		try {
+			MySmartFragment currentFragment = getCurrentShownFragment();
+			Log.d(LOG_TAG, "current fragment tag = " + currentFragment.TAG);
+			if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 			{
-				case R.id.edv_add_word:
-					if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
-					{
-						_worker.addNewTask(this, new GetWordsTask(frag.getTextFromView(R.id.edv_add_word)));
-					}
-					break;
-				case R.id.edv_add_translation:
-					if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
-					{
-						_worker.addNewTask(this, new GetTranslationsTask(frag.getTextFromView(R.id.edv_add_word)));
-					}
-					break;
+				Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
+				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+				switch (id)
+				{
+					case R.id.edv_add_word:
+						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
+						{
+							_worker.addNewTask(this, new GetWordsTask(frag.getTextFromView(R.id.edv_add_word)));
+						}
+						break;
+					case R.id.edv_add_translation:
+						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
+						{
+							_worker.addNewTask(this, new GetTranslationsTask(frag.getTextFromView(R.id.edv_add_word)));
+						}
+						break;
+				}
+			}
+			if (currentFragment.TAG==DICTIONARY_FRAGMENT)
+			{
+				Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
+				DictFragmentNew frag = (DictFragmentNew) currentFragment;
+				switch (id)
+				{
+					case R.id.edv_search_word:
+						_worker.addNewTask(this, new GetMyWordsTask(frag.getTextFromView(R.id.edv_add_word)));
+						break;
+				}
 			}
 		}
-		if (currentFragment instanceof DictFragmentNew)
+		catch (ClassCastException ex)
 		{
-			Log.d(LOG_TAG, "onViewGotFocus got id = " + id);
-			DictFragmentNew frag = (DictFragmentNew) currentFragment;
-			switch (id)
-			{
-				case R.id.edv_search_word:
-					_worker.addNewTask(this, new GetMyWordsTask(frag.getTextFromView(R.id.edv_add_word)));
-					break;
-			}
+			Log.e(LOG_TAG, ex.getMessage());
 		}
 	}
 
@@ -427,10 +438,10 @@ public class MainActivityController extends FragmentActivity implements
 	@Override
 	public void onTextChange(int id, boolean isEmpty) {
 		Log.d(LOG_TAG, "onTextChange got id = " + id + " is empty = " + isEmpty);
-		Fragment currentFragment = getCurrentShownFragment();
+		MySmartFragment currentFragment = getCurrentShownFragment();
 		if (currentFragment == null) return;
 		Log.d(LOG_TAG, currentFragment.getClass().getName());
-		if (currentFragment instanceof AddWordFragmentNew)
+		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 			if (!isIdValid(frag.getFocusedId(), id))
@@ -452,7 +463,7 @@ public class MainActivityController extends FragmentActivity implements
 					break;
 			}
 		}
-		if (currentFragment instanceof DictFragmentNew)
+		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			DictFragmentNew frag = (DictFragmentNew) currentFragment;
 			Log.d(LOG_TAG, "word changed?");
@@ -468,8 +479,8 @@ public class MainActivityController extends FragmentActivity implements
 	@Override
 	public <T> void onListItemClick(int id, T text) {
 		Log.d(LOG_TAG, "list item clicked " + text);
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 			Integer focusedId = frag.getFocusedId();
@@ -484,7 +495,7 @@ public class MainActivityController extends FragmentActivity implements
 					break;
 			}
 		}
-		if (currentFragment instanceof DictFragmentNew)
+		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			Pair<String,String> pair = (Pair)text;
 			showDialog(pair.first, pair.second, MyDialogFragment.DIALOG_SHOW_WORD);
@@ -500,8 +511,8 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public void onMenuItemClick(int id) {
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
 			switch (id)
@@ -510,6 +521,9 @@ public class MainActivityController extends FragmentActivity implements
 					_worker.addNewTask(this, new SaveNewEntryTask(
 							frag.getTextFromView(R.id.edv_add_word),
 							frag.getTextFromView(R.id.edv_add_translation)));
+					frag.setViewText(R.id.edv_add_translation, "");
+					frag.setViewText(R.id.edv_add_word, "");
+					frag.setViewFocused(R.id.edv_add_word);
 					break;
 			}
 		}
@@ -525,8 +539,8 @@ public class MainActivityController extends FragmentActivity implements
 	public void onFail() {
 		Log.d(LOG_TAG, "on fail!!!!");
 		_worker.onTaskFinished();
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
 			((AddWordFragmentNew) currentFragment).setListEntries(null);
 		}
@@ -535,50 +549,57 @@ public class MainActivityController extends FragmentActivity implements
 	@Override
 	public <T> void onSuccess(T result) {
 		Log.d(LOG_TAG, "on success!!!!" + result.toString());
-		_worker.onTaskFinished();
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof AddWordFragmentNew)
+		try
 		{
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
-			if (result instanceof List)
+			_worker.onTaskFinished();
+			MySmartFragment currentFragment = getCurrentShownFragment();
+			if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 			{
-				List<String> list = (List<String>)result;
-				if (list==null || list.isEmpty())
+				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+				if (result instanceof List)
 				{
-					frag.setListEntries(null);
-					return;
+					List<String> list = (List<String>)result;
+					if (list.isEmpty())
+					{
+						frag.setListEntries(null);
+						return;
+					}
+					frag.setListEntries(list);
 				}
-				frag.setListEntries(list);
-			}
-			if (result instanceof Pair)
-			{
+				if (result instanceof Pair)
+				{
 
-				Pair<String, List<String>> pair = (Pair)result;
-				Log.d(LOG_TAG, "pair is " + pair);
-				if (StringUtils.isArticle(this, pair.first))
-				{
-					Log.d(LOG_TAG, "article? " + pair.first);
-					frag.addArticle(pair.first);
+					Pair<String, List<String>> pair = (Pair)result;
+					Log.d(LOG_TAG, "pair is " + pair);
+					if (StringUtils.isArticle(this, pair.first))
+					{
+						Log.d(LOG_TAG, "article? " + pair.first);
+						frag.addArticle(pair.first);
+					}
+					if (pair.second!=null)
+						frag.setListEntries(pair.second);
 				}
-				if (pair.second!=null)
-					frag.setListEntries(pair.second);
+				if (result instanceof Integer)
+				{
+					Integer exitCode = (Integer)result;
+					showMessage(exitCode);
+					frag.setViewText(R.id.edv_add_translation,"");
+					frag.setViewText(R.id.edv_add_word,"");
+				}
 			}
-			if (result instanceof Integer)
+			if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 			{
-				Integer exitCode = (Integer)result;
-				showMessage(exitCode);
-				frag.setViewText(R.id.edv_add_translation,"");
-				frag.setViewText(R.id.edv_add_word,"");
+				DictFragmentNew frag = (DictFragmentNew) currentFragment;
+				if (result instanceof List)
+				{
+					List<Map<String,String>> list = (List<Map<String,String>>) result;
+					frag.setListEntries(list);
+				}
 			}
 		}
-		if (currentFragment instanceof DictFragmentNew)
+		catch (NullPointerException ex)
 		{
-			DictFragmentNew frag = (DictFragmentNew) currentFragment;
-			if (result instanceof List)
-			{
-				List<Map<String,String>> list = (List<Map<String,String>>) result;
-				frag.setListEntries(list);
-			}
+			Log.e(LOG_TAG, ex.getMessage() + " in onSuccess, while trying to process " + result.toString());
 		}
 	}
 
@@ -606,8 +627,8 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof DictFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			String queryWord = _wordForActionMode;
 			switch (menuItem.getItemId()) {
@@ -630,8 +651,8 @@ public class MainActivityController extends FragmentActivity implements
 
 	@Override
 	public void onDestroyActionMode(ActionMode actionMode) {
-		Fragment currentFragment = getCurrentShownFragment();
-		if (currentFragment instanceof DictFragmentNew)
+		MySmartFragment currentFragment = getCurrentShownFragment();
+		if (currentFragment.TAG==DICTIONARY_FRAGMENT)
 		{
 			DictFragmentNew frag = (DictFragmentNew) currentFragment;
 			if (!frag.getTextFromView(R.id.edv_search_word).isEmpty())

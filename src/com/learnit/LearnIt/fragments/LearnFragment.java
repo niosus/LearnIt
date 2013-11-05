@@ -10,20 +10,17 @@
 package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import com.learnit.LearnIt.*;
+
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.utils.Constants;
@@ -35,7 +32,7 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class LearnFragment extends Fragment implements MyAnimationHelper.OnAnimationActionListener {
+public class LearnFragment extends MySmartFragment implements MyAnimationHelper.OnAnimationActionListener {
 
     View v;
     String queryWord = null;
@@ -48,10 +45,12 @@ public class LearnFragment extends Fragment implements MyAnimationHelper.OnAnima
             R.id.left_bottom_button,
             R.id.right_bottom_button};
 
-    public LearnFragment() {
-    }
+	public LearnFragment(int tag) {
+		super(tag);
+	}
 
-    @Override
+
+	@Override
     public void onResume() {
         super.onResume();
         Pair<String, String> langPair = Utils.getCurrentLanguages(this.getActivity());

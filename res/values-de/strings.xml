@@ -72,7 +72,7 @@
 
     <!--context menu strings-->
     <string name="context_menu_edit">Bearbeiten</string>
-    <string name="context_menu_delete">Löschen</string>
+    <string name="context_menu_back">Zurück</string>
 
     <!--menu strings-->
     <string name="menu_settings">Einstellungen</string>

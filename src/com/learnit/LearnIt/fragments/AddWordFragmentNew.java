@@ -9,15 +9,16 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,7 +27,6 @@ import android.widget.ListView;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.MyTextWatcher;
 import com.learnit.LearnIt.interfaces.FragmentUiInterface;
-import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.listeners.MyButtonOnClickListener;
 import com.learnit.LearnIt.listeners.MyOnFocusChangeListener;
 import com.learnit.LearnIt.listeners.MyOnListItemClickListener;
@@ -34,28 +34,19 @@ import com.learnit.LearnIt.listeners.MyOnMenuItemClickListener;
 
 import java.util.List;
 
-public class AddWordFragmentNew extends Fragment implements FragmentUiInterface {
+public class AddWordFragmentNew extends MySmartFragment  implements FragmentUiInterface {
     protected static final String LOG_TAG = "my_logs";
 	private EditText _word;
 	private EditText _translation;
 	private ImageButton _clearButtonWord, _clearButtonTrans;
 	private MenuItem _saveMenuItem;
-	private OnUiAction _callback;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-	    if (activity instanceof OnUiAction)
-	    {
-		    _callback = (OnUiAction) activity;
-	    }
-	    else
-	    {
-		    throw new ClassCastException(activity.getClass().getName() + " should implement " + OnUiAction.class.getName());
-	    }
-    }
+	public AddWordFragmentNew(int tag) {
+		super(tag);
+	}
 
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -75,7 +66,7 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 	    View _view = inflater.inflate(R.layout.add_word_fragment, container, false);
 	    if (_view == null)
 		    return null;
-	    MyButtonOnClickListener myOnClickListener = new MyButtonOnClickListener(_callback);
+	    View.OnClickListener myOnClickListener = new MyButtonOnClickListener(_callback);
 		_clearButtonWord = (ImageButton) _view.findViewById(R.id.btn_add_word_clear);
 		_clearButtonWord.setOnClickListener(myOnClickListener);
 	    _clearButtonTrans = (ImageButton) _view.findViewById(R.id.btn_add_trans_clear);
@@ -83,17 +74,17 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 	    _clearButtonWord.setVisibility(View.INVISIBLE);
 	    _clearButtonTrans.setVisibility(View.INVISIBLE);
 
-	    MyOnFocusChangeListener myOnFocusChangeListener = new MyOnFocusChangeListener(_callback);
+	    View.OnFocusChangeListener myOnFocusChangeListener = new MyOnFocusChangeListener(_callback);
 	    _word = (EditText) _view.findViewById(R.id.edv_add_word);
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
 	    _word.setOnFocusChangeListener(myOnFocusChangeListener);
 	    _translation.setOnFocusChangeListener(myOnFocusChangeListener);
-	    MyTextWatcher textWatcherWord = new MyTextWatcher(_word, _callback);
-	    MyTextWatcher textWatcherTrans = new MyTextWatcher(_translation, _callback);
+	    TextWatcher textWatcherWord = new MyTextWatcher(_word, _callback);
+	    TextWatcher textWatcherTrans = new MyTextWatcher(_translation, _callback);
 	    _word.addTextChangedListener(textWatcherWord);
 	    _translation.addTextChangedListener(textWatcherTrans);
 
-	    MyOnListItemClickListener myOnListItemClickListener = new MyOnListItemClickListener(_callback);
+	    AdapterView.OnItemClickListener myOnListItemClickListener = new MyOnListItemClickListener(_callback);
 	    ListView _list = (ListView) _view.findViewById(R.id.list_of_add_words);
 	    _list.setOnItemClickListener(myOnListItemClickListener);
 
@@ -118,7 +109,8 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 
 	private void addTextToEditText(EditText editText, String text)
 	{
-		if (editText.getText().toString().isEmpty())
+		if (editText.getText() == null
+				|| editText.getText().toString().isEmpty())
 		{
 			editText.setText(text);
 			editText.setSelection(editText.length());
@@ -150,6 +142,7 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 					.setAdapter(null);
 			return;
 		}
+		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>)words;
 		ArrayAdapter<String> adapter;
 		adapter = new ArrayAdapter<>(this.getActivity(),
@@ -160,10 +153,20 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 
 	@Override
 	public void setViewVisibility(int id, int visibility) {
-		if (id == _clearButtonWord.getId())
-			_clearButtonWord.setVisibility(visibility);
-		if (id == _clearButtonTrans.getId())
-			_clearButtonTrans.setVisibility(visibility);
+		try
+		{
+			if (id == _clearButtonWord.getId()) {
+				_clearButtonWord.setVisibility(visibility);
+				return;
+			}
+			if (id == _clearButtonTrans.getId()) {
+				_clearButtonTrans.setVisibility(visibility);
+			}
+		}
+		catch (NullPointerException ex)
+		{
+			Log.e(LOG_TAG, ex.getMessage() + "in setViewVisibility");
+		}
 	}
 
 	public void setMenuItemVisible(boolean visible)
@@ -174,33 +177,56 @@ public class AddWordFragmentNew extends Fragment implements FragmentUiInterface 
 		}
 		catch (NullPointerException ex)
 		{
-			//do something
+			Log.e(LOG_TAG, ex.getMessage() + "in setMenuItemVisible");
 		}
 	}
 
 	@Override
 	public String getTextFromView(int id)
 	{
-		if (id == _word.getId())
-			return _word.getText().toString();
-		if (id == _translation.getId())
-			return _translation.getText().toString();
-		else return null;
+		try
+		{
+			if (id == _word.getId())
+				return _word.getText().toString();
+			if (id == _translation.getId())
+				return _translation.getText().toString();
+			else return null;
+		}
+		catch (NullPointerException ex)
+		{
+			Log.e(LOG_TAG, ex.getMessage() + "in getTextFromView");
+			return null;
+		}
 	}
 
 	@Override
 	public Integer getFocusedId() {
-		if (_word.isFocused())
-			return _word.getId();
-		if (_translation.isFocused())
-			return _translation.getId();
-		return null;
+		try
+		{
+			if (_word.isFocused())
+				return _word.getId();
+			if (_translation.isFocused())
+				return _translation.getId();
+			return null;
+		}
+		catch (NullPointerException ex)
+		{
+			Log.e(LOG_TAG, ex.getMessage() + "in getFocusedId");
+			return null;
+		}
 	}
 
 	public void addArticle(String article)
 	{
-		if (_word.getText().toString().contains(article))
-			return;
-		_word.setText(article + " " + _word.getText());
+		try
+		{
+			if (_word.getText().toString().contains(article))
+				return;
+			_word.setText(article + " " + _word.getText());
+		}
+		catch (NullPointerException ex)
+		{
+			Log.e(LOG_TAG, ex.getMessage() + "in addArticle");
+		}
 	}
 }
