@@ -65,7 +65,9 @@ public class DictFragmentNew extends MySmartFragment implements FragmentUiInterf
 	}
 
 	@Override
-	public void setListEntries(List<Map<String,String>> words) {
+	public void setListEntries(List<Map<String,String>> words, int id) {
+		if (id != R.id.list_of_words)
+			return;
 		SimpleAdapter adapter;
 		if (words==null)
 		{

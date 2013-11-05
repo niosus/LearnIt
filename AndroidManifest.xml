@@ -59,7 +59,7 @@
                 android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
-        <activity android:name=".activities.WellcomeActivity"
+        <activity android:name=".activities.WelcomeActivity"
                   android:theme="@style/Theme.My_light_holo.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">

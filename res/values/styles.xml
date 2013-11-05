@@ -65,13 +65,71 @@
         <item name="android:colorMultiSelectHighlight">@color/pressed_my_light_holo</item>
         <item name="android:textSize">50sp</item>
         <item name="android:typeface">sans</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:maxLines">3</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
+    </style>
+
+    <style name="MyTextView" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/rounded_edit_text_dark</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:colorMultiSelectHighlight">@color/pressed_my_light_holo</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="MyTextViewSmall" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/my_scroll_view</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="MyTextViewLarge" parent="MyTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
 
     <style name="MyWordButton" parent="android:Widget.Button">
         <item name="android:background">@drawable/selector_my_word_button</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="MyScrollView" parent="android:Widget.ListView">
+        <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/my_margin_right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">@dimen/small_shadow_size</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="BlackTheme.DialogWhenLarge" parent="android:Theme.Holo.DialogWhenLarge">

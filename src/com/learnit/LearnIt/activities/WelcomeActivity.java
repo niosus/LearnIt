@@ -10,18 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.learnit.LearnIt.R;
 
 import java.util.Arrays;
 
-public class WellcomeActivity extends FragmentActivity {
+public class WelcomeActivity extends FragmentActivity {
     private final String LOG_TAG = "my_logs";
     Button btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wellcome);
+        setContentView(R.layout.welcome);
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);

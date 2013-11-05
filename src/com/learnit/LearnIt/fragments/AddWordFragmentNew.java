@@ -135,7 +135,9 @@ public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInt
 	}
 
 	@Override
-	public void setListEntries(List<String> words) {
+	public void setListEntries(List<String> words, int id) {
+		if (id != R.id.list_of_add_words)
+			return;
 		if (words == null)
 		{
 			((ListView) this.getView().findViewById(R.id.list_of_add_words))

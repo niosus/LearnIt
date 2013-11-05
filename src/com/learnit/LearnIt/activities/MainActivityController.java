@@ -295,7 +295,7 @@ public class MainActivityController extends FragmentActivity implements
     }
 
     private void startShowWellcomeActivity() {
-        Intent intent = new Intent(this, WellcomeActivity.class);
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
         Log.d(LOG_TAG, "start activity welcome");
     }
@@ -345,7 +345,7 @@ public class MainActivityController extends FragmentActivity implements
 				case R.id.btn_add_word_clear:
 					frag.setViewText(R.id.edv_add_word, "");
 					frag.setViewFocused(R.id.edv_add_word);
-					frag.setListEntries(null);
+					frag.setListEntries(null, R.id.list_of_add_words);
 					updateViewVisibility(
 							frag,
 							frag.getTextFromView(R.id.edv_add_word).isEmpty(),
@@ -415,7 +415,8 @@ public class MainActivityController extends FragmentActivity implements
 	{
 		if (isCurrentWordEmpty)
 		{
-			frag.setListEntries(null);
+			frag.setListEntries(null, R.id.list_of_add_words);
+			frag.setListEntries(null, R.id.list_of_words);
 			frag.setViewVisibility(id, View.INVISIBLE);
 		}
 		else
@@ -533,7 +534,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment();
 		if (currentFragment.TAG==ADD_WORDS_FRAGMENT)
 		{
-			((AddWordFragmentNew) currentFragment).setListEntries(null);
+			((AddWordFragmentNew) currentFragment).setListEntries(null, R.id.list_of_add_words);
 		}
 	}
 
@@ -551,10 +552,10 @@ public class MainActivityController extends FragmentActivity implements
 					List<String> list = (List<String>)result;
 					if (list.isEmpty())
 					{
-						frag.setListEntries(null);
+						frag.setListEntries(null, R.id.list_of_add_words);
 						return;
 					}
-					frag.setListEntries(list);
+					frag.setListEntries(list, R.id.list_of_add_words);
 				}
 				if (result instanceof Pair)
 				{
@@ -565,7 +566,7 @@ public class MainActivityController extends FragmentActivity implements
 						frag.addArticle(pair.first);
 					}
 					if (pair.second!=null)
-						frag.setListEntries(pair.second);
+						frag.setListEntries(pair.second, R.id.list_of_add_words);
 				}
 				if (result instanceof Integer)
 				{
@@ -581,7 +582,7 @@ public class MainActivityController extends FragmentActivity implements
 				if (result instanceof List)
 				{
 					List<Map<String,String>> list = (List<Map<String,String>>) result;
-					frag.setListEntries(list);
+					frag.setListEntries(list, R.id.list_of_words);
 				}
 			}
 		}

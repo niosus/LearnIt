@@ -3,15 +3,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/txt_welcome"
+            android:text="@string/welcome"
+            style="@style/MyTextViewLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+
+    <TextView
+            android:text="@string/quick_start"
+            android:id="@+id/txt_quick_start"
+            style="@style/MyTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txt_welcome"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_instructions"
+            android:paddingLeft="30dp"
+            android:id="@+id/txt_quick_instructions"
+            android:layout_gravity="left|center_vertical"
+            style="@android:style/TextAppearance.Holo.Small"
+            android:layout_alignLeft="@+id/txt_welcome"
+            android:layout_below="@id/txt_quick_start"
+            android:typeface="normal"
+            android:textIsSelectable="false"/>
+
     <TextView
         android:text="@string/instructions_title"
         android:id="@+id/instructions_title"
-        style="@style/MyTextViewLarge"
-        android:layout_alignParentLeft="true"/>
+        style="@style/MyTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/txt_quick_instructions"/>
 
+    <Button
+            android:id="@+id/btn_go_to_settings"
+            android:text="@string/instr_go_to_settings"
+            style="@style/MyWordButton"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"/>
     <ScrollView
         style="@style/MyScrollView"
-        android:layout_below="@id/instructions_title">
+        android:layout_below="@id/instructions_title"
+        android:layout_above="@id/btn_go_to_settings">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
