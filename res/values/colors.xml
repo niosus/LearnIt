@@ -3,5 +3,7 @@
     <color name="my_gray">#bbbbbb</color>
     <color name="my_dark_gray">#505050</color>
     <color name="background_color">#4E9179</color>
-    <color name="pressed_my_light_holo">#CCBF4D1A</color>
+    <color name="background_color_new">#bed4ec</color>
+    <!--<color name="pressed_my_light_holo">#CCBF4D1A</color>-->
+    <color name="pressed_blueredtheme">#CCC52B00</color>
 </resources>
