@@ -132,7 +132,6 @@ public class Utils {
 	    }
 	    catch (NullPointerException ex)
 	    {
-		    Log.e(LOG_TAG, ex.getMessage());
 	    }
     }
 
