@@ -252,7 +252,7 @@ public class HomeworkActivity extends FragmentActivity implements MyAnimationHel
 				findViewById(R.id.right_bottom_button),
 				findViewById(R.id.left_bottom_button),
 				findViewById(R.id.right_top_button)};
-		animationHelper.invokeForAllViews(views, R.anim.open_fade_in, this);
+		animationHelper.invokeForAllViews(views, R.anim.open_scale_in, this);
 	}
 
 	private void closeButtons() {
@@ -261,7 +261,7 @@ public class HomeworkActivity extends FragmentActivity implements MyAnimationHel
 				findViewById(R.id.right_bottom_button),
 				findViewById(R.id.left_bottom_button),
 				findViewById(R.id.right_top_button)};
-		animationHelper.invokeForAllViews(views, R.anim.close_fade_out, this);
+		animationHelper.invokeForAllViews(views, R.anim.close_scale_out, this);
 	}
 
 	private void shakeView(View v) {
@@ -276,7 +276,7 @@ public class HomeworkActivity extends FragmentActivity implements MyAnimationHel
 		Log.d(LOG_TAG,"got animation id = "+id);
 		switch (id)
 		{
-			case (R.anim.close_fade_out):
+			case (R.anim.close_scale_out):
 				setAll(View.INVISIBLE);
 				break;
 			case (R.anim.close_word):
