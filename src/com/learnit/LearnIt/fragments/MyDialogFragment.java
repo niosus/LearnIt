@@ -10,12 +10,12 @@ package com.learnit.LearnIt.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
@@ -26,16 +26,38 @@ public class MyDialogFragment extends DialogFragment {
     public static final String TRANSLATION_TAG = "translation";
     public final String LOG_TAG = "my_logs";
 
-    public static final int DIALOG_SHOW_WORD = 0;
-    public static final int DIALOG_EMPTY = 1;
-    public static final int DIALOG_ADDED = 2;
-    public static final int DIALOG_WORD_UPDATED = 3;
-    public static final int DIALOG_WORD_EXISTS = 4;
-    public static final int DIALOG_WRONG_FORMAT = 5;
-    public static final int DIALOG_WRONG_ARTICLE = 6;
-    public static final int DIALOG_WRONG_GUESS = 7;
-    public static final int DIALOG_WORD_DELETED = 8;
-    public static final int DIALOG_PROGRESS = 9;
+    public static final int DIALOG_SHOW_WORD = 666;
+    public static final int DIALOG_EMPTY = 667;
+    public static final int DIALOG_ADDED = 668;
+    public static final int DIALOG_WORD_UPDATED = 669;
+    public static final int DIALOG_WORD_EXISTS = 670;
+    public static final int DIALOG_WRONG_FORMAT = 671;
+    public static final int DIALOG_WRONG_ARTICLE = 672;
+    public static final int DIALOG_WRONG_GUESS = 673;
+    public static final int DIALOG_WORD_DELETED = 674;
+    public static final int DIALOG_PROGRESS = 675;
+
+	private int _type;
+
+	public MyDialogFragment(String word, String trans, int type) {
+		super();
+		Bundle args = new Bundle();
+		args.putString(WORD_TAG, word);
+		args.putString(TRANSLATION_TAG, trans);
+		args.putInt(ID_TAG, type);
+		setArguments(args);
+	}
+
+	public MyDialogFragment(int type) {
+		super();
+		Bundle args = new Bundle();
+		args.putInt(ID_TAG, type);
+		setArguments(args);
+	}
+
+	public MyDialogFragment() {
+		super();
+	}
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -118,40 +140,45 @@ public class MyDialogFragment extends DialogFragment {
         }
     };
 
-    public void showMessage(int exitCode, FragmentManager fragmentManager) {
-        Bundle args;
-        args = new Bundle();
-        switch (exitCode) {
-            case DBHelper.EXIT_CODE_OK:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_ADDED);
-                this.setArguments(args);
-                this.show(fragmentManager, "word_added");
-                break;
-            case DBHelper.EXIT_CODE_WORD_UPDATED:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
-                this.setArguments(args);
-                this.show(fragmentManager, "word_updated");
-                break;
-            case DBHelper.EXIT_CODE_EMPTY_INPUT:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
-                this.setArguments(args);
-                this.show(fragmentManager, "word_empty");
-                break;
-            case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
-                this.setArguments(args);
-                this.show(fragmentManager, "word_exists");
-                break;
-            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
-                this.setArguments(args);
-                this.show(fragmentManager, "wrong_article");
-                break;
-            case DBHelper.EXIT_CODE_WRONG_FORMAT:
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
-                this.setArguments(args);
-                this.show(fragmentManager, "wrong_format");
-                break;
-        }
-    }
+	public void show(FragmentManager fragmentManager, String exitCodeStr) {
+
+		int exitCode = Integer.parseInt(exitCodeStr);
+		Bundle args = this.getArguments();
+		if (args == null) args = new Bundle();
+		switch (exitCode) {
+			case DIALOG_SHOW_WORD:
+				super.show(fragmentManager, "word_showing");
+				break;
+			case DBHelper.EXIT_CODE_OK:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_ADDED);
+				this.setArguments(args);
+				super.show(fragmentManager, "word_added");
+				break;
+			case DBHelper.EXIT_CODE_WORD_UPDATED:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
+				this.setArguments(args);
+				super.show(fragmentManager, "word_updated");
+				break;
+			case DBHelper.EXIT_CODE_EMPTY_INPUT:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
+				this.setArguments(args);
+				super.show(fragmentManager, "word_empty");
+				break;
+			case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
+				this.setArguments(args);
+				super.show(fragmentManager, "word_exists");
+				break;
+			case DBHelper.EXIT_CODE_WRONG_ARTICLE:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
+				this.setArguments(args);
+				super.show(fragmentManager, "wrong_article");
+				break;
+			case DBHelper.EXIT_CODE_WRONG_FORMAT:
+				args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
+				this.setArguments(args);
+				super.show(fragmentManager, "wrong_format");
+				break;
+		}
+	}
 }

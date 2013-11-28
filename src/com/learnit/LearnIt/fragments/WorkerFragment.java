@@ -21,14 +21,13 @@ It is used to carry out heavy async tasks
 public class WorkerFragment extends Fragment {
     final String LOG_TAG = "my_logs";
     public static String TAG = "work_fragment";
-
-	public static final int GET_DICT_TYPE = 1;
+	private static int _fragmentId;
 
 	// Container Activity must implement this interface
 	public interface OnTaskActionListener {
 		public void onPreExecute();
-		public void onFail();
-		public <T> void onSuccess (T result);
+		public void onFail(int fragmentId);
+		public <T> void onSuccess (int fragmentId, T result);
 		public void onProgressUpdate(Integer... values);
 		public void noTaskSpecified();
 	}
@@ -49,7 +48,7 @@ public class WorkerFragment extends Fragment {
 		}
 		for (MySmartAsyncTask task: _taskQueue)
 		{
-			task.updateContextAndCallback(activity, _taskActionCallback);
+			task.updateContextAndCallback(activity, _taskActionCallback, _fragmentId);
 		}
 		startNextTaskIfNeeded();
 	}
@@ -72,10 +71,13 @@ public class WorkerFragment extends Fragment {
 		startNextTaskIfNeeded();
 	}
 
-	public void addNewTask(Context context, MySmartAsyncTask task)
+	public void addNewTask(Context context,
+	                       MySmartAsyncTask task,
+	                       int fragmentId)
 	{
 		_taskQueue.add(task);
-		task.updateContextAndCallback(context, _taskActionCallback);
+		_fragmentId = fragmentId;
+		task.updateContextAndCallback(context, _taskActionCallback, fragmentId);
 		startNextTaskIfNeeded();
 	}
 

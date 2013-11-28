@@ -11,11 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyOnListItemClickListener implements AdapterView.OnItemClickListener {
-	OnUiAction _callback;
+	private OnUiAction _callback;
+	private int _fragmentId;
 
-	public MyOnListItemClickListener(OnUiAction callback)
+	public MyOnListItemClickListener(OnUiAction callback, int fragmentId)
 	{
 		_callback = callback;
+		_fragmentId = fragmentId;
 	}
 
 	@Override
@@ -25,13 +27,13 @@ public class MyOnListItemClickListener implements AdapterView.OnItemClickListene
 		if (view instanceof TextView)
 		{
 			queryWord = ((TextView)view).getText().toString();
-			_callback.onListItemClick(parent.getId(), queryWord);
+			_callback.onListItemClick(_fragmentId, parent.getId(), queryWord);
 		}
 		if (parent.getAdapter().getItem(position) instanceof Map)
 		{
 			queryWord = ((HashMap<String,String>)parent.getAdapter().getItem(position)).get("word");
 			queryTranlation = ((HashMap<String,String>)parent.getAdapter().getItem(position)).get("translation");
-			_callback.onListItemClick(parent.getId(), new Pair<>(queryWord,queryTranlation));
+			_callback.onListItemClick(_fragmentId, parent.getId(), new Pair<>(queryWord,queryTranlation));
 		}
 
 	}

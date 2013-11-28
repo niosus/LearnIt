@@ -1,5 +1,6 @@
 package com.learnit.LearnIt.activities;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -11,9 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import com.learnit.LearnIt.fragments.MyDialogFragment;
+
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -164,54 +166,7 @@ public class EditWord extends FragmentActivity {
     }
 
     private void showMessage(int exitCode) {
-        MyDialogFragment frag;
-        Bundle args;
-        switch (exitCode) {
-            case DBHelper.EXIT_CODE_OK:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "word_updated");
-                this.finish();
-                break;
-            case DBHelper.EXIT_CODE_WORD_UPDATED:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_UPDATED);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "word_updated");
-                this.finish();
-                break;
-            case DBHelper.EXIT_CODE_EMPTY_INPUT:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_EMPTY);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "word_empty");
-                break;
-            case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WORD_EXISTS);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "word_exists");
-                break;
-            case DBHelper.EXIT_CODE_WRONG_ARTICLE:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_ARTICLE);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "wrong_article");
-                break;
-            case DBHelper.EXIT_CODE_WRONG_FORMAT:
-                frag = new MyDialogFragment();
-                args = new Bundle();
-                args.putInt(MyDialogFragment.ID_TAG, MyDialogFragment.DIALOG_WRONG_FORMAT);
-                frag.setArguments(args);
-                frag.show(getSupportFragmentManager(), "wrong_format");
-                break;
-        }
+	    DialogFragment frag = new MyDialogFragment();
+	    frag.show(getFragmentManager(), String.valueOf(exitCode));
     }
-
 }

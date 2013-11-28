@@ -18,12 +18,11 @@ import java.io.File;
 public class GetDictTask extends MySmartAsyncTask<String> {
 	private String _langFrom, _langTo;
 
-	public static final String CLASS_NAME = "GetDictTask";
-
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback)
+	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
+	                                     int fragmentId)
 	{
-		super.updateContextAndCallback(context, taskActionCallback);
+		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
 		Pair<String, String> langPair = Utils.getCurrentLanguages(context);
 		if (langPair == null)
 		{
@@ -82,10 +81,10 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		super.onPostExecute(dictName);
 		if (dictName == null)
 		{
-			_taskActionCallback.onFail();
+			_taskActionCallback.onFail(_fragmentId);
 			return;
 		}
-		_taskActionCallback.onSuccess(dictName);
+		_taskActionCallback.onSuccess(_fragmentId, dictName);
 
 	}
 

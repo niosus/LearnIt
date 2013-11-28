@@ -28,10 +28,12 @@ limitations under the License.
             android:id="@+id/txtDictLabel"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:text="@string/dictionary_frag_title"
-            android:textSize="30sp"
-            android:textColor="@android:color/holo_blue_bright"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
+            style="@style/MyTextViewLarge"
+            android:gravity="center_horizontal"/>
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
+            android:id="@+id/fragment_dict_id"
+            android:tag="@string/dictionary_frag_title"
             android:layout_below="@id/txtDictLabel"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -46,16 +48,17 @@ limitations under the License.
             android:id="@+id/txtAddWordLabel"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:text="@string/add_words_frag_title"
-            android:textSize="30sp"
-            android:textColor="@android:color/holo_blue_bright"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
+            style="@style/MyTextViewLarge"
+            android:gravity="center_horizontal"/>
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
+            android:id="@+id/fragment_add_words_id"
+            android:tag="@string/add_words_frag_title"
             android:layout_below="@id/txtAddWordLabel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            />
+            android:layout_marginRight="24dp"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_height="fill_parent"
@@ -66,15 +69,17 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:text="@string/learn_words_frag_title"
-            android:textSize="30sp"
-            android:textColor="@android:color/holo_blue_bright"
+            style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.LearnFragment"
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.LearnFragment"
+            android:id="@+id/fragment_learn_id"
+            android:tag="@string/learn_words_frag_title"
             android:layout_below="@id/txtLearnLabel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginLeft="124dp"
-            android:layout_marginRight="124dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
             />
     </RelativeLayout>
 </LinearLayout>

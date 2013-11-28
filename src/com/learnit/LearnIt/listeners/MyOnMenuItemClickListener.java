@@ -9,16 +9,18 @@ import com.learnit.LearnIt.interfaces.OnUiAction;
  */
 public class MyOnMenuItemClickListener implements MenuItem.OnMenuItemClickListener {
 	OnUiAction _callback;
+	int _fragmentId;
 
-	public MyOnMenuItemClickListener(OnUiAction callback)
+	public MyOnMenuItemClickListener(OnUiAction callback, int fragmentId)
 	{
 		super();
 		_callback = callback;
+		_fragmentId = fragmentId;
 	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem menuItem) {
-		_callback.onMenuItemClick(menuItem.getItemId());
+		_callback.onMenuItemClick(_fragmentId, menuItem.getItemId());
 		return false;
 	}
 }

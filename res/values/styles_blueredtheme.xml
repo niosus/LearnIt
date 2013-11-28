@@ -30,6 +30,7 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_blueredtheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Blueredtheme</item>
         <item name="android:windowBackground">@color/background_color_new</item>
+        <item name="android:dialogTheme">@style/Dialog.Blueredtheme</item>
     </style>
 
     <style name="Theme.Blueredtheme.DialogWhenLarge" parent="android:Theme.Holo.Light.DialogWhenLarge">
@@ -43,6 +44,7 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_blueredtheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Blueredtheme</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:dialogTheme">@style/Dialog.Blueredtheme</item>
     </style>
 
     <style name="ActionBar.Solid.Blueredtheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
@@ -87,6 +89,10 @@
     <style name="Theme.Blueredtheme.Widget" parent="@android:style/Theme.Holo">
         <item name="android:popupMenuStyle">@style/PopupMenu.Blueredtheme</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Blueredtheme</item>
+    </style>
+
+    <style name="Dialog.Blueredtheme" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:background">@color/pressed_blueredtheme</item>
     </style>
 
 </resources>

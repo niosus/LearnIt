@@ -18,9 +18,10 @@ public class GetWordsTask extends MySmartAsyncTask<List<String>> {
 	}
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback)
+	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
+	                                     int fragmentId)
 	{
-		super.updateContextAndCallback(context, taskActionCallback);
+		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
 	}
 
 	@Override
@@ -33,10 +34,10 @@ public class GetWordsTask extends MySmartAsyncTask<List<String>> {
 		super.onPostExecute(dictName);
 		if (dictName == null)
 		{
-			_taskActionCallback.onFail();
+			_taskActionCallback.onFail(_fragmentId);
 			return;
 		}
-		_taskActionCallback.onSuccess(dictName);
+		_taskActionCallback.onSuccess(_fragmentId, dictName);
 
 	}
 

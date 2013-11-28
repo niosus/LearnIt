@@ -35,9 +35,11 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:text="@string/dictionary_frag_title"
-            android:textColor="@android:color/holo_blue_bright"
-            android:textSize="30sp"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
+            style="@style/MyTextViewLarge"
+            android:gravity="center_horizontal"/>
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
+            android:id="@+id/fragment_dict_id"
             android:layout_below="@id/txtDictLabel"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -53,15 +55,16 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:text="@string/add_words_frag_title"
-            android:textColor="@android:color/holo_blue_bright"
-            android:textSize="30sp"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
+            style="@style/MyTextViewLarge"
+            android:gravity="center_horizontal"/>
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
+            android:id="@+id/fragment_add_words_id"
             android:layout_below="@id/txtAddWordLabel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            />
+            android:layout_marginRight="24dp"/>
     </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
@@ -73,10 +76,11 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:text="@string/learn_words_frag_title"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/holo_blue_bright"/>
-        <fragment android:name="com.learnit.LearnIt.fragments.LearnFragment"
+            style="@style/MyTextViewLarge"
+            android:gravity="center_horizontal"/>
+        <fragment
+            android:name="com.learnit.LearnIt.fragments.LearnFragment"
+            android:id="@+id/fragment_learn_id"
             android:layout_below="@id/txtLearnLabel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

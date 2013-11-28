@@ -93,7 +93,7 @@ public class LoadStarDictActivity extends FragmentActivity implements WorkerFrag
 	}
 
 	@Override
-	public void onFail() {
+	public void onFail(int fragmentId) {
 		if (_progressDialog != null)
 		{
 			_progressDialog.dismiss();
@@ -110,7 +110,7 @@ public class LoadStarDictActivity extends FragmentActivity implements WorkerFrag
 	}
 
 	@Override
-	public <T> void onSuccess(T result) {
+	public <T> void onSuccess(int fragmentId, T result) {
 		if (_progressDialog != null)
 		{
 			_progressDialog.dismiss();

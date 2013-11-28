@@ -2,6 +2,7 @@ package com.learnit.LearnIt.data_types;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import com.learnit.LearnIt.interfaces.OnUiAction;
@@ -12,12 +13,14 @@ import com.learnit.LearnIt.interfaces.OnUiAction;
 public class MyTextWatcher implements TextWatcher {
 	OnUiAction _callback;
 	View _invoker;
+	int _fragmentId;
 
-	public MyTextWatcher(View invoker, OnUiAction callback)
+	public MyTextWatcher(View invoker, OnUiAction callback, int fragmentId)
 	{
 		super();
 		_invoker = invoker;
 		_callback = callback;
+		_fragmentId = fragmentId;
 	}
 
 	@Override
@@ -32,6 +35,7 @@ public class MyTextWatcher implements TextWatcher {
 
 	@Override
 	public void afterTextChanged(Editable editable) {
-		_callback.onTextChange(_invoker.getId(), editable.toString().isEmpty());
+		_callback.onTextChange(_fragmentId, _invoker.getId(), editable.toString().isEmpty());
+		Log.d("my_logs", "text changed, invoker = " + _fragmentId);
 	}
 }

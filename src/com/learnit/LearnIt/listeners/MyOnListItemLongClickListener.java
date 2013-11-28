@@ -9,10 +9,12 @@ import java.util.HashMap;
 
 public class MyOnListItemLongClickListener implements AdapterView.OnItemLongClickListener {
 	OnUiAction _callback;
+	int _fragmentId;
 
-	public MyOnListItemLongClickListener(OnUiAction callback)
+	public MyOnListItemLongClickListener(OnUiAction callback, int fragmentId)
 	{
 		_callback = callback;
+		_fragmentId = fragmentId;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class MyOnListItemLongClickListener implements AdapterView.OnItemLongClic
 		String queryWord;
 		queryWord = ((HashMap<String,String>)parent.getAdapter().getItem(i)).get("word");
 		view.setSelected(true);
-		_callback.onListItemLongClick(parent.getId(), queryWord);
+		_callback.onListItemLongClick(_fragmentId, parent.getId(), queryWord);
 		return true;
 	}
 }

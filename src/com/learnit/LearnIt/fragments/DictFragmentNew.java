@@ -28,24 +28,20 @@ public class DictFragmentNew extends MySmartFragment implements FragmentUiInterf
     private EditText _edtWord;
     private ImageButton _btnClear;
 
-	public DictFragmentNew(int tag) {
-		super(tag);
-	}
-
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 	    View _view = inflater.inflate(R.layout.dict_fragment, container, false);
 
         _edtWord = (EditText) _view.findViewById(R.id.edv_search_word);
         _edtWord.clearFocus();
-        _edtWord.addTextChangedListener(new MyTextWatcher(_edtWord, _callback));
-	    _edtWord.setOnFocusChangeListener(new MyOnFocusChangeListener(_callback));
+        _edtWord.addTextChangedListener(new MyTextWatcher(_edtWord, _callback, this.getId()));
+	    _edtWord.setOnFocusChangeListener(new MyOnFocusChangeListener(_callback, this.getId()));
         _btnClear = (ImageButton) _view.findViewById(R.id.btn_search_clear);
-        _btnClear.setOnClickListener(new MyButtonOnClickListener(_callback));
+        _btnClear.setOnClickListener(new MyButtonOnClickListener(_callback, this.getId()));
         _btnClear.setVisibility(View.INVISIBLE);
         final ListView listView = (ListView) _view.findViewById(R.id.list_of_words);
-        listView.setOnItemLongClickListener(new MyOnListItemLongClickListener(_callback));
-        listView.setOnItemClickListener(new MyOnListItemClickListener(_callback));
+        listView.setOnItemLongClickListener(new MyOnListItemLongClickListener(_callback, this.getId()));
+        listView.setOnItemClickListener(new MyOnListItemClickListener(_callback, this.getId()));
 	    return _view;
     }
 

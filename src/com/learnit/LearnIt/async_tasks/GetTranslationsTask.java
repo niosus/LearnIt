@@ -26,9 +26,10 @@ public class GetTranslationsTask extends MySmartAsyncTask<Pair<String, List<Stri
 	}
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback)
+	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
+	                                     int fragmentId)
 	{
-		super.updateContextAndCallback(context, taskActionCallback);
+		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
 		Pair<String, String> langPair = Utils.getCurrentLanguages(context);
 		if (langPair == null)
 		{
@@ -49,10 +50,10 @@ public class GetTranslationsTask extends MySmartAsyncTask<Pair<String, List<Stri
 		super.onPostExecute(dictName);
 		if (dictName == null)
 		{
-			_taskActionCallback.onFail();
+			_taskActionCallback.onFail(_fragmentId);
 			return;
 		}
-		_taskActionCallback.onSuccess(dictName);
+		_taskActionCallback.onSuccess(_fragmentId, dictName);
 	}
 
 	@Override

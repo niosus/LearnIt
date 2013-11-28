@@ -41,10 +41,6 @@ public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInt
 	private ImageButton _clearButtonWord, _clearButtonTrans;
 	private MenuItem _saveMenuItem;
 
-	public AddWordFragmentNew(int tag) {
-		super(tag);
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +52,7 @@ public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInt
 	    super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actions_add_words, menu);
 	    _saveMenuItem = menu.findItem(R.id.save_item);
-	    _saveMenuItem.setOnMenuItemClickListener(new MyOnMenuItemClickListener(_callback));
+	    _saveMenuItem.setOnMenuItemClickListener(new MyOnMenuItemClickListener(_callback, this.getId()));
 		_saveMenuItem.setVisible(false);
     }
 
@@ -66,7 +62,7 @@ public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInt
 	    View _view = inflater.inflate(R.layout.add_word_fragment, container, false);
 	    if (_view == null)
 		    return null;
-	    View.OnClickListener myOnClickListener = new MyButtonOnClickListener(_callback);
+	    View.OnClickListener myOnClickListener = new MyButtonOnClickListener(_callback, this.getId());
 		_clearButtonWord = (ImageButton) _view.findViewById(R.id.btn_add_word_clear);
 		_clearButtonWord.setOnClickListener(myOnClickListener);
 	    _clearButtonTrans = (ImageButton) _view.findViewById(R.id.btn_add_trans_clear);
@@ -74,17 +70,17 @@ public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInt
 	    _clearButtonWord.setVisibility(View.INVISIBLE);
 	    _clearButtonTrans.setVisibility(View.INVISIBLE);
 
-	    View.OnFocusChangeListener myOnFocusChangeListener = new MyOnFocusChangeListener(_callback);
+	    View.OnFocusChangeListener myOnFocusChangeListener = new MyOnFocusChangeListener(_callback, this.getId());
 	    _word = (EditText) _view.findViewById(R.id.edv_add_word);
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
 	    _word.setOnFocusChangeListener(myOnFocusChangeListener);
 	    _translation.setOnFocusChangeListener(myOnFocusChangeListener);
-	    TextWatcher textWatcherWord = new MyTextWatcher(_word, _callback);
-	    TextWatcher textWatcherTrans = new MyTextWatcher(_translation, _callback);
+	    TextWatcher textWatcherWord = new MyTextWatcher(_word, _callback, this.getId());
+	    TextWatcher textWatcherTrans = new MyTextWatcher(_translation, _callback, this.getId());
 	    _word.addTextChangedListener(textWatcherWord);
 	    _translation.addTextChangedListener(textWatcherTrans);
 
-	    AdapterView.OnItemClickListener myOnListItemClickListener = new MyOnListItemClickListener(_callback);
+	    AdapterView.OnItemClickListener myOnListItemClickListener = new MyOnListItemClickListener(_callback, this.getId());
 	    ListView _list = (ListView) _view.findViewById(R.id.list_of_add_words);
 	    _list.setOnItemClickListener(myOnListItemClickListener);
 

@@ -33,7 +33,8 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class LearnFragment extends MySmartFragment implements MyAnimationHelper.OnAnimationActionListener {
+public class LearnFragment extends MySmartFragment
+		implements MyAnimationHelper.OnAnimationActionListener {
 
     View v;
     String queryWord = null;
@@ -46,9 +47,6 @@ public class LearnFragment extends MySmartFragment implements MyAnimationHelper.
             R.id.left_bottom_button,
             R.id.right_bottom_button};
 
-	public LearnFragment(int tag) {
-		super(tag);
-	}
 
 
 	@Override

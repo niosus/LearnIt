@@ -15,14 +15,8 @@ import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.utils.Utils;
 public abstract class MySmartFragment extends Fragment{
     protected static final String LOG_TAG = "my_logs";
-	public int TAG;
+	public int identifier;
 	protected OnUiAction _callback;
-
-	public MySmartFragment(int tag)
-	{
-		super();
-		TAG = tag;
-	}
 
 	@Override
 	public void onAttach(Activity activity) {
