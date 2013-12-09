@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.learnit.LearnIt.R;
@@ -36,9 +37,20 @@ public class ListOfFragments extends ListFragment {
     }
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_list, container, false);
-		return v;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		View layout = super.onCreateView(inflater, container,
+				savedInstanceState);
+		ListView lv = (ListView) layout.findViewById(android.R.id.list);
+		ViewGroup parent = (ViewGroup) lv.getParent();
+
+		// Remove ListView and add CustomView  in its place
+		int lvIndex = parent.indexOfChild(lv);
+		parent.removeViewAt(lvIndex);
+		LinearLayout mLinearLayout = (LinearLayout) inflater.inflate(
+				R.layout.fragment_list, container, false);
+		parent.addView(mLinearLayout, lvIndex, lv.getLayoutParams());
+		return layout;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.utils.Utils;
 public abstract class MySmartFragment extends Fragment{
     protected static final String LOG_TAG = "my_logs";
+	protected View _view;
 	public int identifier;
 	protected OnUiAction _callback;
 

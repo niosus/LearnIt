@@ -34,7 +34,7 @@ import com.learnit.LearnIt.listeners.MyOnMenuItemClickListener;
 
 import java.util.List;
 
-public class AddWordFragmentNew extends MySmartFragment implements FragmentUiInterface<String> {
+public class AddWordFragment extends MySmartFragment implements FragmentUiInterface<String> {
     protected static final String LOG_TAG = "my_logs";
 	private EditText _word;
 	private EditText _translation;

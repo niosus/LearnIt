@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.MainActivityController;
-import com.learnit.LearnIt.fragments.AddWordFragmentNew;
-import com.learnit.LearnIt.fragments.DictFragmentNew;
+import com.learnit.LearnIt.fragments.AddWordFragment;
+import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.utils.Constants;
@@ -30,14 +30,14 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 		MySmartFragment fragment = null;
 		switch (i) {
 			case MainActivityController.DICTIONARY_FRAGMENT:
-				fragment = new DictFragmentNew();
+				fragment = new DictFragment();
 				fragment.identifier = MainActivityController.DICTIONARY_FRAGMENT;
 				Log.d(Constants.LOG_TAG, "Created Dictionary Fragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.ADD_WORDS_FRAGMENT:
-				fragment = new AddWordFragmentNew();
+				fragment = new AddWordFragment();
 				fragment.identifier = MainActivityController.ADD_WORDS_FRAGMENT;
-				Log.d(Constants.LOG_TAG,"Created AddWordFragmentNew with tag " + fragment.identifier);
+				Log.d(Constants.LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
 				fragment = new LearnFragment();

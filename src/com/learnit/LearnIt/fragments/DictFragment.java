@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.MyTextWatcher;
@@ -24,13 +25,13 @@ import com.learnit.LearnIt.listeners.MyOnListItemLongClickListener;
 import java.util.List;
 import java.util.Map;
 
-public class DictFragmentNew extends MySmartFragment implements FragmentUiInterface<Map<String,String>>{
+public class DictFragment extends MySmartFragment implements FragmentUiInterface<Map<String,String>>{
     private EditText _edtWord;
     private ImageButton _btnClear;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-	    View _view = inflater.inflate(R.layout.dict_fragment, container, false);
+	    _view = inflater.inflate(R.layout.dict_fragment, container, false);
 
         _edtWord = (EditText) _view.findViewById(R.id.edv_search_word);
         _edtWord.clearFocus();
@@ -52,7 +53,8 @@ public class DictFragmentNew extends MySmartFragment implements FragmentUiInterf
 
 	@Override
 	public void setViewText(int id, String text) {
-		_edtWord.setText(text);
+		TextView edit = (TextView) _view.findViewById(id);
+		edit.setText(text);
 	}
 
 	@Override

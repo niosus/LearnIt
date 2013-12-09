@@ -31,8 +31,8 @@ import com.learnit.LearnIt.async_tasks.GetWordsTask;
 import com.learnit.LearnIt.async_tasks.SaveNewEntryTask;
 import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.AddWordFragmentNew;
-import com.learnit.LearnIt.fragments.DictFragmentNew;
+import com.learnit.LearnIt.fragments.AddWordFragment;
+import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
@@ -218,14 +218,14 @@ public class MainActivityController extends FragmentActivity implements
         switch(position)
         {
             case DICTIONARY_FRAGMENT:
-                fragment = new DictFragmentNew();
+                fragment = new DictFragment();
 	            fragment.identifier = DICTIONARY_FRAGMENT;
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case ADD_WORDS_FRAGMENT:
-                fragment = new AddWordFragmentNew();
+                fragment = new AddWordFragment();
 	            fragment.identifier = ADD_WORDS_FRAGMENT;
-	            Log.d(LOG_TAG,"Created AddWordFragmentNew with tag " + fragment.identifier);
+	            Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 	            break;
             case LEARN_WORDS_FRAGMENT:
                 fragment = new LearnFragment();
@@ -332,10 +332,11 @@ public class MainActivityController extends FragmentActivity implements
 			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
 		} else if (currentLayout.equals(LAYOUT_LARGE_LAND)) {
 			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + "0" + ":" + _currentItemShown);
+		} else if (currentLayout.equals(LAYOUT_XLARGE)) {
+			// we do not have tags if we are in the xlarge mode
+			return (MySmartFragment) fm.findFragmentById(id);
 		}
-		// we have to search a fragment by id if we added it in the xml,
-		// here, the id is the one of the invoker fragment
-		return (MySmartFragment) fm.findFragmentById(id);
+		return null;
 	}
 
 	// Implementing OnUiAction interface
@@ -344,7 +345,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
 		{
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			AddWordFragment frag = (AddWordFragment) currentFragment;
 			switch (viewId)
 			{
 				case R.id.btn_add_word_clear:
@@ -368,7 +369,7 @@ public class MainActivityController extends FragmentActivity implements
 		}
 		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
 		{
-			DictFragmentNew frag = (DictFragmentNew) currentFragment;
+			DictFragment frag = (DictFragment) currentFragment;
 			frag.setViewText(R.id.edv_search_word, "");
 		}
 	}
@@ -379,7 +380,7 @@ public class MainActivityController extends FragmentActivity implements
 			MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 			if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
 			{
-				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+				AddWordFragment frag = (AddWordFragment) currentFragment;
 				switch (viewId)
 				{
 					case R.id.edv_add_word:
@@ -402,7 +403,7 @@ public class MainActivityController extends FragmentActivity implements
 			}
 			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
 			{
-				DictFragmentNew frag = (DictFragmentNew) currentFragment;
+				DictFragment frag = (DictFragment) currentFragment;
 				switch (viewId)
 				{
 					case R.id.edv_search_word:
@@ -451,7 +452,7 @@ public class MainActivityController extends FragmentActivity implements
 		Log.d(LOG_TAG, currentFragment.getClass().getName());
 		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
 		{
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			AddWordFragment frag = (AddWordFragment) currentFragment;
 			if (!isIdValid(frag.getFocusedId(), viewId))
 				return;
 			if (!frag.getTextFromView(R.id.edv_add_translation).isEmpty() &&
@@ -475,7 +476,7 @@ public class MainActivityController extends FragmentActivity implements
 		}
 		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
 		{
-			DictFragmentNew frag = (DictFragmentNew) currentFragment;
+			DictFragment frag = (DictFragment) currentFragment;
 			if (viewId == R.id.edv_search_word)
 			{
 				updateViewVisibility(frag, isEmpty, R.id.btn_search_clear);
@@ -491,7 +492,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
 		{
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			AddWordFragment frag = (AddWordFragment) currentFragment;
 			Integer focusedId = frag.getFocusedId();
 			switch (focusedId)
 			{
@@ -523,7 +524,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
 		{
-			AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+			AddWordFragment frag = (AddWordFragment) currentFragment;
 			switch (viewId)
 			{
 				case R.id.save_item:
@@ -551,7 +552,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
 		{
-			((AddWordFragmentNew) currentFragment).setListEntries(null, R.id.list_of_add_words);
+			((AddWordFragment) currentFragment).setListEntries(null, R.id.list_of_add_words);
 		}
 	}
 
@@ -564,7 +565,7 @@ public class MainActivityController extends FragmentActivity implements
 			Log.d(LOG_TAG, "currentFragment.identifier = " + currentFragment.identifier);
 			if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
 			{
-				AddWordFragmentNew frag = (AddWordFragmentNew) currentFragment;
+				AddWordFragment frag = (AddWordFragment) currentFragment;
 				if (result instanceof List)
 				{
 					if (((List) result).isEmpty()) {
@@ -596,7 +597,7 @@ public class MainActivityController extends FragmentActivity implements
 			}
 			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
 			{
-				DictFragmentNew frag = (DictFragmentNew) currentFragment;
+				DictFragment frag = (DictFragment) currentFragment;
 				if (result instanceof List)
 				{
 					if (((List) result).isEmpty())
@@ -662,7 +663,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(R.id.fragment_dict_id);
 		if (currentFragment.identifier ==DICTIONARY_FRAGMENT)
 		{
-			DictFragmentNew frag = (DictFragmentNew) currentFragment;
+			DictFragment frag = (DictFragment) currentFragment;
 			if (!frag.getTextFromView(R.id.edv_search_word).isEmpty())
 				frag.setViewText(R.id.edv_search_word, "");
 			_wordForActionMode = null;

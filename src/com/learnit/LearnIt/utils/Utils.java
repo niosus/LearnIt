@@ -121,7 +121,7 @@ public class Utils {
         AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         Intent i = new Intent(context, NotificationService.class);
         PendingIntent pi = PendingIntent.getService(context.getApplicationContext(), 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, timeInMs, frequency, pi);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeInMs, frequency, pi);
         Toast.makeText(context, context.getString(R.string.toast_notif_start_text), Toast.LENGTH_LONG).show();
     }
     public static void hideSoftKeyboard(Activity activity) {

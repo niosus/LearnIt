@@ -38,7 +38,7 @@ limitations under the License.
             style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
         <fragment
-            android:name="com.learnit.LearnIt.fragments.DictFragmentNew"
+            android:name="com.learnit.LearnIt.fragments.DictFragment"
             android:id="@+id/fragment_dict_id"
             android:layout_below="@id/txtDictLabel"
             android:layout_marginLeft="24dp"
@@ -58,7 +58,7 @@ limitations under the License.
             style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
         <fragment
-            android:name="com.learnit.LearnIt.fragments.AddWordFragmentNew"
+            android:name="com.learnit.LearnIt.fragments.AddWordFragment"
             android:id="@+id/fragment_add_words_id"
             android:layout_below="@id/txtAddWordLabel"
             android:layout_width="fill_parent"
