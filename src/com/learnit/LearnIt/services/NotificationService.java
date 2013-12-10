@@ -27,7 +27,7 @@ public class NotificationService extends Service {
             return;
         }
         NotificationBuilder.show(getApplicationContext());
-//	    mWakeLock.release();
+	    stopSelf();
     }
 
     @Override
