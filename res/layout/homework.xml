@@ -8,7 +8,7 @@
               android:background="@color/background_color_new"
               android:orientation="vertical">
 
-    <TextView
+    <com.learnit.LearnIt.views.MyWordTextView
         android:id="@+id/word_to_ask"
         style="@style/MyQueryWordTextView"
         android:layout_weight="2"
