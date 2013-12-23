@@ -81,8 +81,12 @@ public class PrefActivity extends PreferenceActivity {
         }
     };
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 
-    private void startDictToSQLActivity() {
+	private void startDictToSQLActivity() {
         Intent intent = new Intent(this, LoadStarDictActivity.class);
         startActivity(intent);
     }
@@ -149,9 +153,12 @@ public class PrefActivity extends PreferenceActivity {
         }
 
         void updateAllSummaries() {
+	        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
             if (checkBoxPreference.isChecked()) {
+	            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), true);
                 checkBoxPreference.setSummary(R.string.pref_notifications_enabled);
             } else {
+	            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), false);
                 checkBoxPreference.setSummary(R.string.pref_notifications_disabled);
             }
             if (lstNotifFreq.getEntry() != null)
