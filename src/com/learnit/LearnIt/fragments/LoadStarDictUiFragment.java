@@ -29,10 +29,10 @@ public class LoadStarDictUiFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dict_to_sql, container, false);
         _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
-        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
+//        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
         _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
-        _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
-        _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
+//        _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
+//        _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
         String title = null;
         String dictInfo = null;
         if (savedInstanceState!=null)
@@ -66,7 +66,7 @@ public class LoadStarDictUiFragment extends Fragment {
 
     protected void setTimerText(String text)
     {
-        _tvCountdown.setText(text);
+//        _tvCountdown.setText(text);
     }
 
     public void setTitleText(String text)
@@ -77,8 +77,8 @@ public class LoadStarDictUiFragment extends Fragment {
 
     public void setDictNameText(String text)
     {
-        if (_tvDictName!=null)
-            _tvDictName.setText(text);
+//        if (_tvDictName!=null)
+//            _tvDictName.setText(text);
     }
 
     public void setDictInfoText(String text)
@@ -89,8 +89,8 @@ public class LoadStarDictUiFragment extends Fragment {
 
     public void setLoadedText(String text)
     {
-        if (_tvLoaded!=null)
-            _tvLoaded.setText(text);
+//        if (_tvLoaded!=null)
+//            _tvLoaded.setText(text);
     }
 
 }

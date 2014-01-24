@@ -10,37 +10,14 @@
             android:id="@+id/text_dict_to_sql_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Holo.Large">
-    </TextView>
-    <TextView
-            android:id="@+id/text_dictionary_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:textColor="@android:color/holo_blue_bright"
-            android:textAppearance="@android:style/TextAppearance.Holo.Large"
-            android:textStyle="bold">
+            style="@style/MyTextViewLarge">
     </TextView>
     <TextView
             android:id="@+id/text_dictionary_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textAppearance="@android:style/TextAppearance.Holo.Small">
-    </TextView>
-    <TextView
-            android:id="@+id/text_loaded"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Holo.Large">
-    </TextView>
-    <TextView
-            android:id="@+id/text_countdown"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="@android:style/TextAppearance.Holo.Small"
-            android:textColor="@android:color/darker_gray"
-            android:gravity="center_horizontal|bottom">
+            style="@style/MyTextView">
     </TextView>
 
 </LinearLayout>
