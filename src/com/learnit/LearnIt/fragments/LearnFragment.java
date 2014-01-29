@@ -194,8 +194,6 @@ public class LearnFragment extends MySmartFragment
                 tempButton.setText("");
             }
         }
-
-
     }
 
     private void closeWord() {
