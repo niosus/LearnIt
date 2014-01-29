@@ -19,7 +19,7 @@
             android:textSize="30dp"
             android:textStyle="bold"
             android:paddingLeft="10dp"
-            android:textColor="@color/pressed_blueredtheme"/>
+            android:textColor="@color/highlight"/>
     <RelativeLayout
             android:id="@+id/linearLayWord"
             android:orientation="horizontal"

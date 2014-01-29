@@ -62,7 +62,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColorSecondary">@color/my_gray</item>
-        <item name="android:colorMultiSelectHighlight">@color/pressed_blueredtheme</item>
+        <item name="android:colorMultiSelectHighlight">@color/highlight</item>
         <item name="android:textSize">50sp</item>
         <item name="android:typeface">sans</item>
         <item name="android:scrollbars">vertical</item>
@@ -82,7 +82,7 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:colorMultiSelectHighlight">@color/pressed_blueredtheme</item>
+        <item name="android:colorMultiSelectHighlight">@color/highlight</item>
         <item name="android:textSize">12sp</item>
         <item name="android:typeface">sans</item>
         <item name="android:gravity">left</item>

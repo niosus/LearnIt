@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetMyWordsTask;
 import com.learnit.LearnIt.async_tasks.GetTranslationsTask;
@@ -98,7 +99,7 @@ public class MainActivityController extends FragmentActivity implements
         }
         else if (currentLayout.equals(LAYOUT_LARGE_LAND))
         {
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), this);
             //Do some special processing for large screen
             ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
             fragment.getListView().setSelection(0);
@@ -108,44 +109,26 @@ public class MainActivityController extends FragmentActivity implements
             // Initialize the view pager
             // Create the adapter that will return a listOfFragments for each of the three primary sections
             // of the app.
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), this);
 
-            // Set up the action bar.
-            final ActionBar actionBar = getActionBar();
+	        final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
             // Set up the ViewPager, attaching the adapter and setting up a listener for when the
             // user swipes between sections.
             _viewPager = (ViewPager) findViewById(R.id.pager);
-
-            // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-            // parent.
-            actionBar.setHomeButtonEnabled(false);
-
-            // Specify that we will be displaying tabs in the action bar.
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             _viewPager.setAdapter(_appSectionsPagerAdapter);
-            _viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            strip.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 	            @Override
 	            public void onPageSelected(int position) {
-		            // When swiping between different app sections, select the corresponding tab.
-		            // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-		            // Tab.
 		            _currentItemShown = position;
-		            actionBar.setSelectedNavigationItem(position);
+		            Log.d(LOG_TAG, "current position updated");
 	            }
             });
-
-            // For each of the sections in the app, add a tab to the action bar.
-            for (int i = 0; i < _appSectionsPagerAdapter.getCount(); i++) {
-                // Create a tab with text corresponding to the page title defined by the adapter.
-                // Also specify this Activity object, which implements the TabListener interface, as the
-                // listener for when this tab is selected.
-                actionBar.addTab(
-                        actionBar.newTab()
-                                .setText(_appSectionsPagerAdapter.getPageTitle(this, i))
-                                .setTabListener(this));
-            }
-	        actionBar.selectTab(actionBar.getTabAt(_currentItemShown));
+	        strip.setViewPager(_viewPager);
+	        strip.setBackgroundColor(this.getResources().getColor(R.color.white));
+	        strip.setUnderlineColor(this.getResources().getColor(R.color.highlight));
+	        strip.setIndicatorColor(this.getResources().getColor(R.color.highlight_lighter));
+	        strip.setIndicatorHeight(100);
             this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         }
     }
@@ -242,7 +225,7 @@ public class MainActivityController extends FragmentActivity implements
             android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
 	        ft.replace(R.id.view_group_id, fragment, "android:switcher:" + 0 + ":" + position);
-            Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + fragment.getClass().getName());
+            Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + ((Object) fragment).getClass().getName());
             ft.commit();
         }
         _currentItemShown = position;
@@ -449,7 +432,7 @@ public class MainActivityController extends FragmentActivity implements
 		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
 		if (currentFragment == null) return;
 		Log.d(LOG_TAG, "currentFragment.tag = " + currentFragment.getTag());
-		Log.d(LOG_TAG, currentFragment.getClass().getName());
+		Log.d(LOG_TAG, ((Object) currentFragment).getClass().getName());
 		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
 		{
 			AddWordFragment frag = (AddWordFragment) currentFragment;

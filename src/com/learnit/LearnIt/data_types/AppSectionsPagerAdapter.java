@@ -1,7 +1,6 @@
 package com.learnit.LearnIt.data_types;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,9 +19,11 @@ import com.learnit.LearnIt.utils.Constants;
  * sections of the app.
  */
 public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+	private Context _context;
 
-	public AppSectionsPagerAdapter(FragmentManager fm) {
+	public AppSectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
+		_context = context;
 	}
 
 	@Override
@@ -53,15 +54,15 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 		return MainActivityController.NUMBER_OF_FRAGMENTS;
 	}
 
-	public CharSequence getPageTitle(Context context,int position) {
-		Resources resources = context.getResources();
+	@Override
+	public CharSequence getPageTitle(int position) {
 		switch (position) {
 			case MainActivityController.DICTIONARY_FRAGMENT:
-				return resources.getString(R.string.dictionary_frag_title);
+				return _context.getString(R.string.dictionary_frag_title);
 			case MainActivityController.ADD_WORDS_FRAGMENT:
-				return resources.getString(R.string.add_words_frag_title);
+				return _context.getString(R.string.add_words_frag_title);
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
-				return resources.getString(R.string.learn_words_frag_title);
+				return _context.getString(R.string.learn_words_frag_title);
 		}
 		return null;
 	}

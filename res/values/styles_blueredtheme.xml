@@ -29,7 +29,7 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_blueredtheme</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_blueredtheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Blueredtheme</item>
-        <item name="android:windowBackground">@color/background_color_new</item>
+        <item name="android:windowBackground">@color/background_color</item>
         <item name="android:dialogTheme">@style/Dialog.Blueredtheme</item>
     </style>
 
@@ -92,7 +92,7 @@
     </style>
 
     <style name="Dialog.Blueredtheme" parent="android:Theme.Holo.Light.Dialog">
-        <item name="android:background">@color/pressed_blueredtheme</item>
+        <item name="android:background">@color/highlight</item>
     </style>
 
 </resources>
