@@ -217,20 +217,30 @@ public class LearnFragment extends MySmartFragment
 
     private void openButtons() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
-	    View[] views = {v.findViewById(R.id.left_top_button),
+	    View[] viewsBottom = {
+			    v.findViewById(R.id.second_button_layout),
 			    v.findViewById(R.id.right_bottom_button),
-				v.findViewById(R.id.left_bottom_button),
-				v.findViewById(R.id.right_top_button)};
-	    animationHelper.invokeForAllViews(views, R.anim.open_scale_in, this);
+			    v.findViewById(R.id.left_bottom_button)};
+	    View[] viewsTop = {
+			    v.findViewById(R.id.first_button_layout),
+			    v.findViewById(R.id.left_top_button),
+			    v.findViewById(R.id.right_top_button)};
+	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_in_up_first_row, this);
+	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_in_up_second_row, this);
     }
 
     private void closeButtons() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
-	    View[] views = {v.findViewById(R.id.left_top_button),
+	    View[] viewsBottom = {
+			    v.findViewById(R.id.second_button_layout),
 			    v.findViewById(R.id.right_bottom_button),
-			    v.findViewById(R.id.left_bottom_button),
+			    v.findViewById(R.id.left_bottom_button)};
+	    View[] viewsTop = {
+			    v.findViewById(R.id.first_button_layout),
+			    v.findViewById(R.id.left_top_button),
 			    v.findViewById(R.id.right_top_button)};
-	    animationHelper.invokeForAllViews(views, R.anim.close_scale_out, this);
+	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_away_down_first_row, this);
+	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_away_down_second_row, this);
     }
 
 	@Override
@@ -240,7 +250,7 @@ public class LearnFragment extends MySmartFragment
 		Log.d(LOG_TAG,"got animation id = "+id);
 		switch (id)
 		{
-			case (R.anim.close_scale_out):
+			case (R.anim.float_away_down_second_row):
 				setAll(View.INVISIBLE);
 				break;
 			case (R.anim.close_word):

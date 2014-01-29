@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:fromYDelta="0%"
-        android:toYDelta="-100%"
-        android:duration="300"
+        android:toYDelta="100%"
+        android:duration="500"
         android:zAdjustment="bottom"
-        android:fillAfter="true"/>
+        android:fillAfter="false"/>
