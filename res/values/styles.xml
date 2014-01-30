@@ -57,13 +57,11 @@
         <item name="android:layout_marginLeft">@dimen/my_margin_left</item>
         <item name="android:layout_marginRight">@dimen/my_margin_right</item>
         <item name="android:layout_marginTop">4dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColorSecondary">@color/my_gray</item>
         <item name="android:colorMultiSelectHighlight">@color/highlight</item>
-        <item name="android:textSize">50sp</item>
+        <item name="android:textSize">@dimen/my_big_text</item>
         <item name="android:typeface">sans</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:maxLines">3</item>
@@ -83,7 +81,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:colorMultiSelectHighlight">@color/highlight</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/my_normal_text</item>
         <item name="android:typeface">sans</item>
         <item name="android:gravity">left</item>
     </style>

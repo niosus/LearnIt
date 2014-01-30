@@ -1,51 +1,81 @@
 package com.learnit.LearnIt.views;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
-/**
- * Created by igor on 12/15/13.
- */
+import com.learnit.LearnIt.R;
+
 public class MyWordTextView extends TextView {
 
 	public MyWordTextView(Context context) {
 		super(context);
-		this.setText("test");
 	}
 
 	public MyWordTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.setText("test");
 	}
 
 	public MyWordTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		this.setText("test");
 	}
 
 	@Override
 	public void setText(CharSequence text, BufferType type) {
 		super.setText(text, type);
+		this.setTextScaleX(1.0f);
 		this.scrollTo(0, 0);
+		float widgetWidth = getWidgetWidth();
 		Log.d("my_logs", "query word setText " + text);
+		String longestWord = getLongestWord(text);
+		updateScale(widgetWidth, longestWord);
+	}
+
+	private float getWidgetWidth() {
+		if (this.getWidth() < 1) {
+			this.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+			return this.getMeasuredWidth();
+		} else {
+			return this.getWidth();
+		}
+	}
+
+	private String getLongestWord(final CharSequence text) {
 		String str = text.toString();
 		String[] split = str.split("\\s");
-		int maxLength = 0;
-		int margin = 20;
+		float maxLength = 0;
+		String longestWord = null;
 		for (String word: split) {
 			Log.d("my_logs", "split on query word setText " + word);
 			if (word.length() > maxLength) {
 				maxLength = word.length();
+				longestWord = word;
 			}
 		}
-		float sizeX = 100000;
-		float sizeDefault = 60;
-		if (maxLength > 0)
+		return longestWord;
+	}
+
+	private void updateScale(final float widgetWidth, final String longestWord) {
+		float margin = getContext().getResources().getDimension(R.dimen.my_query_word_margin);
+		Paint mPaint;
+		mPaint = new Paint();
+		mPaint.setAntiAlias(true);
+		mPaint.setStrokeWidth(5);
+		mPaint.setStrokeCap(Paint.Cap.ROUND);
+		mPaint.setTextSize(this.getTextSize());
+		mPaint.setTypeface(this.getTypeface());
+		if (longestWord != null)
 		{
-			sizeX = (this.getWidth() - 2 * margin)/ maxLength;
+			float w = mPaint.measureText(longestWord, 0, longestWord.length());
+			float scale = (widgetWidth - margin)/ w;
+			Log.d("my_logs", "scale is " + scale);
+			Log.d("my_logs", "widget width " + widgetWidth);
+			Log.d("my_logs", "margin width " + margin);
+			Log.d("my_logs", "longest word width " + w);
+			if (scale < 1) {this.setTextScaleX(scale);}
+			Log.d("my_logs", "current scale is " + this.getTextScaleX());
 		}
-		this.setTextSize(Math.min(sizeX, sizeDefault));
 	}
 }

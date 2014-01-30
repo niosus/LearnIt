@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="my_normal_text">15sp</dimen>
+    <dimen name="my_big_text">60sp</dimen>
     <dimen name="small_shadow_size">2dp</dimen>
     <dimen name="small_pressed_shadow_size">1dp</dimen>
     <dimen name="radius_size">2dp</dimen>
@@ -9,4 +10,5 @@
     <dimen name="button_not_pressed_depth">4dp</dimen>
     <dimen name="my_margin_right">8dp</dimen>
     <dimen name="my_margin_left">8dp</dimen>
+    <dimen name="my_query_word_margin">10dp</dimen>
 </resources>
