@@ -248,21 +248,32 @@ public class HomeworkActivity extends FragmentActivity implements MyAnimationHel
 
 	private void openButtons() {
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
-		View[] views = {findViewById(R.id.left_top_button),
+		View[] viewsBottom = {
+				findViewById(R.id.second_button_layout),
 				findViewById(R.id.right_bottom_button),
-				findViewById(R.id.left_bottom_button),
+				findViewById(R.id.left_bottom_button)};
+		View[] viewsTop = {
+				findViewById(R.id.first_button_layout),
+				findViewById(R.id.left_top_button),
 				findViewById(R.id.right_top_button)};
-		animationHelper.invokeForAllViews(views, R.anim.open_scale_in, this);
+		animationHelper.invokeForAllViews(viewsBottom, R.anim.float_in_up_first_row, this);
+		animationHelper.invokeForAllViews(viewsTop, R.anim.float_in_up_second_row, this);
 	}
 
 	private void closeButtons() {
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this);
-		View[] views = {findViewById(R.id.left_top_button),
+		View[] viewsBottom = {
+				findViewById(R.id.second_button_layout),
 				findViewById(R.id.right_bottom_button),
-				findViewById(R.id.left_bottom_button),
+				findViewById(R.id.left_bottom_button)};
+		View[] viewsTop = {
+				findViewById(R.id.first_button_layout),
+				findViewById(R.id.left_top_button),
 				findViewById(R.id.right_top_button)};
-		animationHelper.invokeForAllViews(views, R.anim.close_scale_out, this);
+		animationHelper.invokeForAllViews(viewsBottom, R.anim.float_away_down_first_row, this);
+		animationHelper.invokeForAllViews(viewsTop, R.anim.float_away_down_second_row, this);
 	}
+
 
 	private void shakeView(View v) {
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this);

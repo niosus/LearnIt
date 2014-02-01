@@ -6,7 +6,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.learnit.LearnIt"
-          android:versionCode="76"
+          android:versionCode="77"
           android:versionName="@string/version">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -21,7 +21,7 @@
             android:allowBackup="true"
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_launcher"
-            android:theme="@style/Theme.Blueredtheme"
+            android:theme="@style/Theme.BlueTheme"
             android:label="@string/app_name">
 
         <receiver android:name=".services.AutoStart">
@@ -45,37 +45,37 @@
         </activity>
         <activity
                 android:name=".activities.HomeworkActivity"
-                android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity
                 android:name=".activities.HomeworkArticleActivity"
-                android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
 
         <activity
                 android:name=".activities.PrefActivity"
-                android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.WelcomeActivity"
-                  android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.InfoActivity"
-                  android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.EditWord"
-                  android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".activities.LoadStarDictActivity"
-                  android:theme="@style/Theme.Blueredtheme.DialogWhenLarge"
+                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                   android:screenOrientation="sensor"
                   android:label="@string/app_name">
         </activity>

@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Blueredtheme" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.BlueTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_blueredtheme</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Blueredtheme</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Blueredtheme</item>
@@ -33,7 +33,7 @@
         <item name="android:dialogTheme">@style/Dialog.Blueredtheme</item>
     </style>
 
-    <style name="Theme.Blueredtheme.DialogWhenLarge" parent="android:Theme.Holo.Light.DialogWhenLarge">
+    <style name="Theme.BlueTheme.DialogWhenLarge" parent="android:Theme.Holo.Light.DialogWhenLarge">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_blueredtheme</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Blueredtheme</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Blueredtheme</item>
@@ -45,6 +45,10 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Blueredtheme</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:dialogTheme">@style/Dialog.Blueredtheme</item>
+    </style>
+
+    <style name="Theme.BlueTheme.TextView" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/my_normal_text</item>
     </style>
 
     <style name="ActionBar.Solid.Blueredtheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
