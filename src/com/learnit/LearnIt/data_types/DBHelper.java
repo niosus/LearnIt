@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
     final public String DICT_OFFSET_COLUMN_NAME = "start_offset";
     final public String DICT_CHUNK_SIZE_COLUMN_NAME = "end_offset";
 
-    String currentDBName;
+    public String currentDBName;
 
     public static final int EXIT_CODE_EMPTY_INPUT = -10;
     public static final int EXIT_CODE_WORD_ALREADY_IN_DB = -11;

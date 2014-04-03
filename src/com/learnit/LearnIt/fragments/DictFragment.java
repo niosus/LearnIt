@@ -15,57 +15,76 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.data_types.MyTextWatcher;
-import com.learnit.LearnIt.interfaces.FragmentUiInterface;
-import com.learnit.LearnIt.listeners.MyButtonOnClickListener;
-import com.learnit.LearnIt.listeners.MyOnFocusChangeListener;
-import com.learnit.LearnIt.listeners.MyOnListItemClickListener;
-import com.learnit.LearnIt.listeners.MyOnListItemLongClickListener;
+import com.learnit.LearnIt.interfaces.IDictFragmentUpdate;
+import com.learnit.LearnIt.interfaces.IListenerDict;
+import com.learnit.LearnIt.listeners.DictController;
 
 import java.util.List;
 import java.util.Map;
 
-public class DictFragment extends MySmartFragment implements FragmentUiInterface<Map<String,String>>{
+public class DictFragment extends MySmartFragment
+		implements IDictFragmentUpdate{
     private EditText _edtWord;
     private ImageButton _btnClear;
+	protected IListenerDict _listener;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-	    _view = inflater.inflate(R.layout.dict_fragment, container, false);
+	    _v = inflater.inflate(R.layout.dict_fragment, container, false);
 
-        _edtWord = (EditText) _view.findViewById(R.id.edv_search_word);
+        _edtWord = (EditText) _v.findViewById(R.id.edv_search_word);
         _edtWord.clearFocus();
-        _edtWord.addTextChangedListener(new MyTextWatcher(_edtWord, _callback, this.getId()));
-	    _edtWord.setOnFocusChangeListener(new MyOnFocusChangeListener(_callback, this.getId()));
-        _btnClear = (ImageButton) _view.findViewById(R.id.btn_search_clear);
-        _btnClear.setOnClickListener(new MyButtonOnClickListener(_callback, this.getId()));
+        _edtWord.addTextChangedListener(_listener);
+	    _edtWord.setOnFocusChangeListener(_listener);
+        _btnClear = (ImageButton) _v.findViewById(R.id.btn_search_clear);
+        _btnClear.setOnClickListener(_listener);
         _btnClear.setVisibility(View.INVISIBLE);
-        final ListView listView = (ListView) _view.findViewById(R.id.list_of_words);
-        listView.setOnItemLongClickListener(new MyOnListItemLongClickListener(_callback, this.getId()));
-        listView.setOnItemClickListener(new MyOnListItemClickListener(_callback, this.getId()));
-	    return _view;
+        final ListView listView = (ListView) _v.findViewById(R.id.list_of_words);
+//        listView.setOnItemLongClickListener(new MyOnListItemLongClickListener(_callback, this.getId()));
+//        listView.setOnItemClickListener(new MyOnListItemClickListener(_callback, this.getId()));
+	    return _v;
     }
 
-	@Override
-	public void setViewFocused(int id) {
-
+	private DictFragment(WorkerFragment worker) {
+		super();
+		_listener = new DictController(this, worker);
 	}
 
-	@Override
+	public static DictFragment newInstance(WorkerFragment worker) {
+		DictFragment fragment = new DictFragment(worker);
+		Bundle args = new Bundle();
+		fragment.setArguments(args);
+		return fragment;
+	}
+
 	public void setViewText(int id, String text) {
-		TextView edit = (TextView) _view.findViewById(id);
+		TextView edit = (TextView) _v.findViewById(id);
 		edit.setText(text);
 	}
 
-	@Override
 	public void addTextToView(int id, String text) {
 
 	}
 
+	public void setViewVisibility(int id, int visibility) {
+		_btnClear.setVisibility(visibility);
+	}
+
+	public Integer getFocusedId() {
+		return null;
+	}
+
+	public String getTextFromView(int id) {
+		return _edtWord.getText().toString();
+	}
+
 	@Override
-	public void setListEntries(List<Map<String,String>> words, int id) {
-		if (id != R.id.list_of_words)
-			return;
+	public void setQueryWordText(String word) {
+
+	}
+
+	@Override
+	public void setListEntries(List<Map<String, String>> words) {
 		SimpleAdapter adapter;
 		if (words==null)
 		{
@@ -79,20 +98,5 @@ public class DictFragment extends MySmartFragment implements FragmentUiInterface
 				new int[]{android.R.id.text1, android.R.id.text2});
 		((ListView) this.getView().findViewById(R.id.list_of_words))
 				.setAdapter(adapter);
-	}
-
-	@Override
-	public void setViewVisibility(int id, int visibility) {
-		_btnClear.setVisibility(visibility);
-	}
-
-	@Override
-	public Integer getFocusedId() {
-		return null;
-	}
-
-	@Override
-	public String getTextFromView(int id) {
-		return _edtWord.getText().toString();
 	}
 }

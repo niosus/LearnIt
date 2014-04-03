@@ -6,14 +6,14 @@
 package com.learnit.LearnIt.activities;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -21,15 +21,10 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.async_tasks.GetMyWordsTask;
-import com.learnit.LearnIt.async_tasks.GetTranslationsTask;
-import com.learnit.LearnIt.async_tasks.GetWordsTask;
-import com.learnit.LearnIt.async_tasks.SaveNewEntryTask;
 import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
@@ -39,20 +34,14 @@ import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
-import com.learnit.LearnIt.interfaces.FragmentUiInterface;
-import com.learnit.LearnIt.interfaces.OnUiAction;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
-public class MainActivityController extends FragmentActivity implements
+public class MainActivityController extends Activity implements
 		ActionBar.TabListener,
 		ListOfFragments.OnFragmentSelectedListener,
-		WorkerFragment.OnTaskActionListener,
-		OnUiAction,
 		ActionMode.Callback{
 
     final String LOG_TAG = "my_logs";
@@ -79,7 +68,7 @@ public class MainActivityController extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         String currentLayout = getString(R.string.layout_current);
-	    FragmentManager fragmentManager = getSupportFragmentManager();
+	    FragmentManager fragmentManager = getFragmentManager();
 	    _worker = (WorkerFragment) fragmentManager.findFragmentByTag(WorkerFragment.TAG);
 	    if (_worker == null)
 	    {
@@ -90,18 +79,18 @@ public class MainActivityController extends FragmentActivity implements
 	    }
         if (currentLayout.equals(LAYOUT_XLARGE))
         {
-            MySmartFragment smart = (MySmartFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_dict_id);
+            MySmartFragment smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_dict_id);
 	        smart.identifier = DICTIONARY_FRAGMENT;
-	        smart = (MySmartFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_add_words_id);
+	        smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_add_words_id);
 	        smart.identifier = ADD_WORDS_FRAGMENT;
-	        smart = (MySmartFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_learn_id);
+	        smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_learn_id);
 	        smart.identifier = LEARN_WORDS_FRAGMENT;
         }
         else if (currentLayout.equals(LAYOUT_LARGE_LAND))
         {
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), this);
+            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
             //Do some special processing for large screen
-            ListOfFragments fragment = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+            ListOfFragments fragment = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
             fragment.getListView().setSelection(0);
         }
         else if (currentLayout.equals(LAYOUT_NORMAL))
@@ -109,7 +98,7 @@ public class MainActivityController extends FragmentActivity implements
             // Initialize the view pager
             // Create the adapter that will return a listOfFragments for each of the three primary sections
             // of the app.
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), this);
+            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
 
 	        final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
@@ -157,7 +146,7 @@ public class MainActivityController extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        _listOfFragments = (ListOfFragments) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+        _listOfFragments = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
         _viewPager = (ViewPager) findViewById(R.id.pager);
         // check which layout is shown
         if (null!= _listOfFragments && _listOfFragments.isInLayout())
@@ -200,16 +189,16 @@ public class MainActivityController extends FragmentActivity implements
         MySmartFragment fragment;
         switch(position)
         {
+	        case ADD_WORDS_FRAGMENT:
+		        fragment = AddWordFragment.newInstance(_worker);
+		        fragment.identifier = ADD_WORDS_FRAGMENT;
+		        Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
+		        break;
             case DICTIONARY_FRAGMENT:
-                fragment = new DictFragment();
+                fragment = DictFragment.newInstance(_worker);
 	            fragment.identifier = DICTIONARY_FRAGMENT;
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
-            case ADD_WORDS_FRAGMENT:
-                fragment = new AddWordFragment();
-	            fragment.identifier = ADD_WORDS_FRAGMENT;
-	            Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
-	            break;
             case LEARN_WORDS_FRAGMENT:
                 fragment = new LearnFragment();
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
@@ -218,11 +207,11 @@ public class MainActivityController extends FragmentActivity implements
             default: fragment = null;
         }
         // Update the layout
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getFragmentManager();
 
         if (fm.findFragmentByTag("android:switcher:" + 0 + ":" + position)==null)
         {
-            android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+            FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
 	        ft.replace(R.id.view_group_id, fragment, "android:switcher:" + 0 + ":" + position);
             Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + ((Object) fragment).getClass().getName());
@@ -310,7 +299,7 @@ public class MainActivityController extends FragmentActivity implements
 	private MySmartFragment getCurrentShownFragment(int id)
 	{
 		String currentLayout = getString(R.string.layout_current);
-		FragmentManager fm = getSupportFragmentManager();
+		FragmentManager fm = getFragmentManager();
 		if (currentLayout.equals(LAYOUT_NORMAL)) {
 			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
 		} else if (currentLayout.equals(LAYOUT_LARGE_LAND)) {
@@ -322,293 +311,293 @@ public class MainActivityController extends FragmentActivity implements
 		return null;
 	}
 
-	// Implementing OnUiAction interface
-	@Override
-	public void onUiClick(int fragmentId, int viewId) {
-		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
-		{
-			AddWordFragment frag = (AddWordFragment) currentFragment;
-			switch (viewId)
-			{
-				case R.id.btn_add_word_clear:
-					frag.setViewText(R.id.edv_add_word, "");
-					frag.setViewFocused(R.id.edv_add_word);
-					frag.setListEntries(null, R.id.list_of_add_words);
-					updateViewVisibility(
-							frag,
-							frag.getTextFromView(R.id.edv_add_word).isEmpty(),
-							R.id.btn_add_word_clear);
-					break;
-				case R.id.btn_add_trans_clear:
-					frag.setViewText(R.id.edv_add_translation, "");
-					frag.setViewFocused(R.id.edv_add_translation);
-					updateViewVisibility(
-							frag,
-							frag.getTextFromView(R.id.edv_add_translation).isEmpty(),
-							R.id.btn_add_trans_clear);
-					break;
-			}
-		}
-		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
-		{
-			DictFragment frag = (DictFragment) currentFragment;
-			frag.setViewText(R.id.edv_search_word, "");
-		}
-	}
-
-	@Override
-	public void onViewGotFocus(int fragmentId, int viewId) {
-		try {
-			MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-			if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
-			{
-				AddWordFragment frag = (AddWordFragment) currentFragment;
-				switch (viewId)
-				{
-					case R.id.edv_add_word:
-						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
-						{
-							_worker.addNewTask(this,
-									new GetWordsTask(frag.getTextFromView(R.id.edv_add_word)),
-									frag.getId());
-						}
-						break;
-					case R.id.edv_add_translation:
-						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
-						{
-							_worker.addNewTask(this,
-									new GetTranslationsTask(frag.getTextFromView(R.id.edv_add_word)),
-									frag.getId());
-						}
-						break;
-				}
-			}
-			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
-			{
-				DictFragment frag = (DictFragment) currentFragment;
-				switch (viewId)
-				{
-					case R.id.edv_search_word:
-						_worker.addNewTask(this,
-								new GetMyWordsTask(frag.getTextFromView(R.id.edv_add_word)),
-								frag.getId());
-						break;
-				}
-			}
-		}
-		catch (ClassCastException ex)
-		{
-			Log.e(LOG_TAG, ex.getMessage());
-		}
-	}
-
-	private <T extends FragmentUiInterface> void updateViewVisibility(
-			T frag,
-			boolean isCurrentWordEmpty,
-			int id)
-	{
-		if (isCurrentWordEmpty)
-		{
-			frag.setListEntries(null, R.id.list_of_add_words);
-			frag.setListEntries(null, R.id.list_of_words);
-			frag.setViewVisibility(id, View.INVISIBLE);
-		}
-		else
-		{
-			frag.setViewVisibility(id, View.VISIBLE);
-		}
-	}
-
-	private boolean isIdValid(Integer focusedId, int thisId)
-	{
-		if (focusedId==null) return false;
-		if (focusedId != thisId) return false;
-		return true;
-	}
-
-	@Override
-	public void onTextChange(int fragmentId, int viewId, boolean isEmpty) {
-		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-		if (currentFragment == null) return;
-		Log.d(LOG_TAG, "currentFragment.tag = " + currentFragment.getTag());
-		Log.d(LOG_TAG, ((Object) currentFragment).getClass().getName());
-		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
-		{
-			AddWordFragment frag = (AddWordFragment) currentFragment;
-			if (!isIdValid(frag.getFocusedId(), viewId))
-				return;
-			if (!frag.getTextFromView(R.id.edv_add_translation).isEmpty() &&
-					!frag.getTextFromView(R.id.edv_add_translation).isEmpty())
-				frag.setMenuItemVisible(true);
-			else
-				frag.setMenuItemVisible(false);
-			switch (viewId)
-			{
-				case R.id.edv_add_word:
-					updateViewVisibility(frag, isEmpty, R.id.btn_add_word_clear);
-					if (!isEmpty && frag.getTextFromView(R.id.edv_add_translation).isEmpty())
-						_worker.addNewTask(this,
-								new GetWordsTask(frag.getTextFromView(viewId)),
-								frag.getId());
-					break;
-				case R.id.edv_add_translation:
-					updateViewVisibility(frag, isEmpty, R.id.btn_add_trans_clear);
-					break;
-			}
-		}
-		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
-		{
-			DictFragment frag = (DictFragment) currentFragment;
-			if (viewId == R.id.edv_search_word)
-			{
-				updateViewVisibility(frag, isEmpty, R.id.btn_search_clear);
-				_worker.addNewTask(this,
-						new GetMyWordsTask(frag.getTextFromView(viewId)),
-						frag.getId());
-			}
-		}
-	}
-
-	@Override
-	public <T> void onListItemClick(int fragmentId, int viewId, T text) {
-		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
-		{
-			AddWordFragment frag = (AddWordFragment) currentFragment;
-			Integer focusedId = frag.getFocusedId();
-			switch (focusedId)
-			{
-				case R.id.edv_add_word:
-					frag.setViewText(focusedId, (String)text);
-					frag.setViewFocused(R.id.edv_add_translation);
-					break;
-				case R.id.edv_add_translation:
-					frag.addTextToView(R.id.edv_add_translation, (String)text);
-					break;
-			}
-		}
-		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
-		{
-			Pair<String,String> pair = (Pair)text;
-			showDialog(pair.first, pair.second, MyDialogFragment.DIALOG_SHOW_WORD);
-		}
-	}
-
-	@Override
-	public void onListItemLongClick(int fragmentId, int viewId, String text) {
-		ActionMode.Callback mActionModeCallback = this;
-		startActionMode(mActionModeCallback);
-		_wordForActionMode = text;
-	}
-
-	@Override
-	public void onMenuItemClick(int fragmentId, int viewId) {
-		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
-		{
-			AddWordFragment frag = (AddWordFragment) currentFragment;
-			switch (viewId)
-			{
-				case R.id.save_item:
-					_worker.addNewTask(this, new SaveNewEntryTask(
-							frag.getTextFromView(R.id.edv_add_word),
-							frag.getTextFromView(R.id.edv_add_translation)),
-							frag.getId());
-					frag.setViewText(R.id.edv_add_translation, "");
-					frag.setViewText(R.id.edv_add_word, "");
-					frag.setViewFocused(R.id.edv_add_word);
-					break;
-			}
-		}
-	}
-
-	@Override
-	public void onPreExecute() {
-
-	}
-
-	// Implementing OnTaskListener interface
-	@Override
-	public void onFail(int fragmentId) {
-		_worker.onTaskFinished();
-		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
-		{
-			((AddWordFragment) currentFragment).setListEntries(null, R.id.list_of_add_words);
-		}
-	}
-
-	@Override
-	public <T> void onSuccess(int fragmentId, T result) {
-		try
-		{
-			_worker.onTaskFinished();
-			MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
-			Log.d(LOG_TAG, "currentFragment.identifier = " + currentFragment.identifier);
-			if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
-			{
-				AddWordFragment frag = (AddWordFragment) currentFragment;
-				if (result instanceof List)
-				{
-					if (((List) result).isEmpty()) {
-						frag.setListEntries(null, R.id.list_of_add_words);
-						return;
-					}
-					if (!(((List) result).get(0) instanceof String)) return;
-					List<String> list = (List<String>)result;
-					frag.setListEntries(list, R.id.list_of_add_words);
-				}
-				if (result instanceof Pair)
-				{
-
-					Pair<String, List<String>> pair = (Pair)result;
-					if (StringUtils.isArticle(this, pair.first))
-					{
-						frag.addArticle(pair.first);
-					}
-					if (pair.second!=null)
-						frag.setListEntries(pair.second, R.id.list_of_add_words);
-				}
-				if (result instanceof Integer)
-				{
-					Integer exitCode = (Integer)result;
-					showMessage(exitCode);
-					frag.setViewText(R.id.edv_add_translation,"");
-					frag.setViewText(R.id.edv_add_word,"");
-				}
-			}
-			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
-			{
-				DictFragment frag = (DictFragment) currentFragment;
-				if (result instanceof List)
-				{
-					if (((List) result).isEmpty())
-					{
-						frag.setListEntries(null, R.id.list_of_words);
-						return;
-					}
-					if (!(((List) result).get(0) instanceof Map)) return;
-					List<Map<String,String>> list = (List<Map<String,String>>) result;
-					frag.setListEntries(list, R.id.list_of_words);
-				}
-			}
-		}
-		catch (NullPointerException ex)
-		{
-			Log.e(LOG_TAG, ex.getMessage() + " in onSuccess, while trying to process " + result.toString());
-		}
-	}
-
-	@Override
-	public void onProgressUpdate(Integer... values) {
-
-	}
-
-	@Override
-	public void noTaskSpecified() {
-
-	}
+//	// Implementing OnUiAction interface
+//	@Override
+//	public void onUiClick(int fragmentId, int viewId) {
+//		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
+//		{
+//			AddWordFragment frag = (AddWordFragment) currentFragment;
+//			switch (viewId)
+//			{
+//				case R.id.btn_add_word_clear:
+//					frag.setViewText(R.id.edv_add_word, "");
+//					frag.setViewFocused(R.id.edv_add_word);
+//					frag.setListEntries(null, R.id.list_of_add_words);
+//					updateViewVisibility(
+//							frag,
+//							frag.getTextFromView(R.id.edv_add_word).isEmpty(),
+//							R.id.btn_add_word_clear);
+//					break;
+//				case R.id.btn_add_trans_clear:
+//					frag.setViewText(R.id.edv_add_translation, "");
+//					frag.setViewFocused(R.id.edv_add_translation);
+//					updateViewVisibility(
+//							frag,
+//							frag.getTextFromView(R.id.edv_add_translation).isEmpty(),
+//							R.id.btn_add_trans_clear);
+//					break;
+//			}
+//		}
+//		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
+//		{
+//			DictFragment frag = (DictFragment) currentFragment;
+//			frag.setViewText(R.id.edv_search_word, "");
+//		}
+//	}
+//
+//	@Override
+//	public void onViewGotFocus(int fragmentId, int viewId) {
+//		try {
+//			MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//			if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
+//			{
+//				AddWordFragment frag = (AddWordFragment) currentFragment;
+//				switch (viewId)
+//				{
+//					case R.id.edv_add_word:
+//						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
+//						{
+//							_worker.addNewTask(this,
+//									new GetWordsTask(frag.getTextFromView(R.id.edv_add_word)),
+//									frag.getId());
+//						}
+//						break;
+//					case R.id.edv_add_translation:
+//						if (!frag.getTextFromView(R.id.edv_add_word).isEmpty())
+//						{
+//							_worker.addNewTask(this,
+//									new GetTranslationsTask(frag.getTextFromView(R.id.edv_add_word)),
+//									frag.getId());
+//						}
+//						break;
+//				}
+//			}
+//			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
+//			{
+//				DictFragment frag = (DictFragment) currentFragment;
+//				switch (viewId)
+//				{
+//					case R.id.edv_search_word:
+//						_worker.addNewTask(this,
+//								new GetMyWordsTask(frag.getTextFromView(R.id.edv_add_word)),
+//								frag.getId());
+//						break;
+//				}
+//			}
+//		}
+//		catch (ClassCastException ex)
+//		{
+//			Log.e(LOG_TAG, ex.getMessage());
+//		}
+//	}
+//
+//	private <T extends FragmentUiInterface> void updateViewVisibility(
+//			T frag,
+//			boolean isCurrentWordEmpty,
+//			int id)
+//	{
+//		if (isCurrentWordEmpty)
+//		{
+//			frag.setListEntries(null, R.id.list_of_add_words);
+//			frag.setListEntries(null, R.id.list_of_words);
+//			frag.setViewVisibility(id, View.INVISIBLE);
+//		}
+//		else
+//		{
+//			frag.setViewVisibility(id, View.VISIBLE);
+//		}
+//	}
+//
+//	private boolean isIdValid(Integer focusedId, int thisId)
+//	{
+//		if (focusedId==null) return false;
+//		if (focusedId != thisId) return false;
+//		return true;
+//	}
+//
+//	@Override
+//	public void onTextChange(int fragmentId, int viewId, boolean isEmpty) {
+//		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//		if (currentFragment == null) return;
+//		Log.d(LOG_TAG, "currentFragment.tag = " + currentFragment.getTag());
+//		Log.d(LOG_TAG, ((Object) currentFragment).getClass().getName());
+//		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
+//		{
+//			AddWordFragment frag = (AddWordFragment) currentFragment;
+//			if (!isIdValid(frag.getFocusedId(), viewId))
+//				return;
+//			if (!frag.getTextFromView(R.id.edv_add_translation).isEmpty() &&
+//					!frag.getTextFromView(R.id.edv_add_translation).isEmpty())
+//				frag.setMenuItemVisible(true);
+//			else
+//				frag.setMenuItemVisible(false);
+//			switch (viewId)
+//			{
+//				case R.id.edv_add_word:
+//					updateViewVisibility(frag, isEmpty, R.id.btn_add_word_clear);
+//					if (!isEmpty && frag.getTextFromView(R.id.edv_add_translation).isEmpty())
+//						_worker.addNewTask(this,
+//								new GetWordsTask(frag.getTextFromView(viewId)),
+//								frag.getId());
+//					break;
+//				case R.id.edv_add_translation:
+//					updateViewVisibility(frag, isEmpty, R.id.btn_add_trans_clear);
+//					break;
+//			}
+//		}
+//		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
+//		{
+//			DictFragment frag = (DictFragment) currentFragment;
+//			if (viewId == R.id.edv_search_word)
+//			{
+//				updateViewVisibility(frag, isEmpty, R.id.btn_search_clear);
+//				_worker.addNewTask(this,
+//						new GetMyWordsTask(frag.getTextFromView(viewId)),
+//						frag.getId());
+//			}
+//		}
+//	}
+//
+//	@Override
+//	public <T> void onListItemClick(int fragmentId, int viewId, T text) {
+//		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
+//		{
+//			AddWordFragment frag = (AddWordFragment) currentFragment;
+//			Integer focusedId = frag.getFocusedId();
+//			switch (focusedId)
+//			{
+//				case R.id.edv_add_word:
+//					frag.setViewText(focusedId, (String)text);
+//					frag.setViewFocused(R.id.edv_add_translation);
+//					break;
+//				case R.id.edv_add_translation:
+//					frag.addTextToView(R.id.edv_add_translation, (String)text);
+//					break;
+//			}
+//		}
+//		if (currentFragment.identifier == DICTIONARY_FRAGMENT)
+//		{
+//			Pair<String,String> pair = (Pair)text;
+//			showDialog(pair.first, pair.second, MyDialogFragment.DIALOG_SHOW_WORD);
+//		}
+//	}
+//
+//	@Override
+//	public void onListItemLongClick(int fragmentId, int viewId, String text) {
+//		ActionMode.Callback mActionModeCallback = this;
+//		startActionMode(mActionModeCallback);
+//		_wordForActionMode = text;
+//	}
+//
+//	@Override
+//	public void onMenuItemClick(int fragmentId, int viewId) {
+//		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//		if (currentFragment.identifier ==ADD_WORDS_FRAGMENT)
+//		{
+//			AddWordFragment frag = (AddWordFragment) currentFragment;
+//			switch (viewId)
+//			{
+//				case R.id.save_item:
+//					_worker.addNewTask(this, new SaveNewEntryTask(
+//							frag.getTextFromView(R.id.edv_add_word),
+//							frag.getTextFromView(R.id.edv_add_translation)),
+//							frag.getId());
+//					frag.setViewText(R.id.edv_add_translation, "");
+//					frag.setViewText(R.id.edv_add_word, "");
+//					frag.setViewFocused(R.id.edv_add_word);
+//					break;
+//			}
+//		}
+//	}
+//
+//	@Override
+//	public void onPreExecute() {
+//
+//	}
+//
+//	// Implementing OnTaskListener interface
+//	@Override
+//	public void onFail(int fragmentId) {
+//		_worker.onTaskFinished();
+//		MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//		if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
+//		{
+//			((AddWordFragment) currentFragment).setListEntries(null, R.id.list_of_add_words);
+//		}
+//	}
+//
+//	@Override
+//	public <T> void onSuccess(int fragmentId, T result) {
+//		try
+//		{
+//			_worker.onTaskFinished();
+//			MySmartFragment currentFragment = getCurrentShownFragment(fragmentId);
+//			Log.d(LOG_TAG, "currentFragment.identifier = " + currentFragment.identifier);
+//			if (currentFragment.identifier == ADD_WORDS_FRAGMENT)
+//			{
+//				AddWordFragment frag = (AddWordFragment) currentFragment;
+//				if (result instanceof List)
+//				{
+//					if (((List) result).isEmpty()) {
+//						frag.setListEntries(null, R.id.list_of_add_words);
+//						return;
+//					}
+//					if (!(((List) result).get(0) instanceof String)) return;
+//					List<String> list = (List<String>)result;
+//					frag.setListEntries(list, R.id.list_of_add_words);
+//				}
+//				if (result instanceof Pair)
+//				{
+//
+//					Pair<String, List<String>> pair = (Pair)result;
+//					if (StringUtils.isArticle(this, pair.first))
+//					{
+//						frag.addArticle(pair.first);
+//					}
+//					if (pair.second!=null)
+//						frag.setListEntries(pair.second, R.id.list_of_add_words);
+//				}
+//				if (result instanceof Integer)
+//				{
+//					Integer exitCode = (Integer)result;
+//					showMessage(exitCode);
+//					frag.setViewText(R.id.edv_add_translation,"");
+//					frag.setViewText(R.id.edv_add_word,"");
+//				}
+//			}
+//			if (currentFragment.identifier == DICTIONARY_FRAGMENT)
+//			{
+//				DictFragment frag = (DictFragment) currentFragment;
+//				if (result instanceof List)
+//				{
+//					if (((List) result).isEmpty())
+//					{
+//						frag.setListEntries(null, R.id.list_of_words);
+//						return;
+//					}
+//					if (!(((List) result).get(0) instanceof Map)) return;
+//					List<Map<String,String>> list = (List<Map<String,String>>) result;
+//					frag.setListEntries(list, R.id.list_of_words);
+//				}
+//			}
+//		}
+//		catch (NullPointerException ex)
+//		{
+//			Log.e(LOG_TAG, ex.getMessage() + " in onSuccess, while trying to process " + result.toString());
+//		}
+//	}
+//
+//	@Override
+//	public void onProgressUpdate(Integer... values) {
+//
+//	}
+//
+//	@Override
+//	public void noTaskSpecified() {
+//
+//	}
 
 	@Override
 	public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {

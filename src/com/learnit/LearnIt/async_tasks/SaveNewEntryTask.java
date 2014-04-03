@@ -3,7 +3,7 @@ package com.learnit.LearnIt.async_tasks;
 import android.content.Context;
 
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 
 public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 	String _word;
@@ -17,10 +17,9 @@ public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 	}
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
-	                                     int fragmentId)
+	                                     IWorkerEventListener taskActionCallback)
 	{
-		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
+		super.updateContextAndCallback(context, taskActionCallback);
 	}
 
 	@Override
@@ -29,14 +28,14 @@ public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 	}
 
 	@Override
-	protected void onPostExecute(Integer dictName) {
-		super.onPostExecute(dictName);
-		if (dictName == null)
+	protected void onPostExecute(Integer exitCode) {
+		super.onPostExecute(exitCode);
+		if (exitCode == null)
 		{
-			_taskActionCallback.onFail(_fragmentId);
+			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccess(_fragmentId, dictName);
+		_taskActionCallback.onSuccessCode(exitCode);
 
 	}
 

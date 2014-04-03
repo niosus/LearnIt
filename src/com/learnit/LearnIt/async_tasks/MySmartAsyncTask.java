@@ -3,18 +3,16 @@ package com.learnit.LearnIt.async_tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 
 public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Integer, S> {
 	protected int _fragmentId;
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
-	                                     int fragmentId)
+	                                     IWorkerEventListener taskActionCallback)
 	{
 		_context = context;
 		_taskActionCallback = taskActionCallback;
-		_fragmentId = fragmentId;
 	}
 
 	@Override
@@ -50,7 +48,6 @@ public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Integer, S> 
 	It needs to be called on every action children of this class
 	will perform.
 	*/
-	protected WorkerFragment.OnTaskActionListener _taskActionCallback;
-
+	protected IWorkerEventListener _taskActionCallback;
 	protected Context _context;
 }

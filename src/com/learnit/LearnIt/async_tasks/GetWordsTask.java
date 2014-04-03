@@ -1,9 +1,10 @@
 package com.learnit.LearnIt.async_tasks;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.utils.StringUtils;
 
 import java.util.List;
@@ -18,10 +19,9 @@ public class GetWordsTask extends MySmartAsyncTask<List<String>> {
 	}
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
-	                                     int fragmentId)
+	                                     IWorkerEventListener taskActionCallback)
 	{
-		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
+		super.updateContextAndCallback(context, taskActionCallback);
 	}
 
 	@Override
@@ -30,21 +30,21 @@ public class GetWordsTask extends MySmartAsyncTask<List<String>> {
 	}
 
 	@Override
-	protected void onPostExecute(List<String> dictName) {
-		super.onPostExecute(dictName);
-		if (dictName == null)
+	protected void onPostExecute(List<String> words) {
+		super.onPostExecute(words);
+		if (words == null)
 		{
-			_taskActionCallback.onFail(_fragmentId);
+			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccess(_fragmentId, dictName);
-
+		_taskActionCallback.onSuccessWords(words);
 	}
 
 	@Override
 	protected List<String> doInBackground(Object... unused) {
 		DBHelper dbHelperDict = new DBHelper(_context, DBHelper.DB_DICT_FROM);
 		String newWord = StringUtils.stripFromArticle(_context, _word);
+		Log.d("my_logs", "DB NAME is " + dbHelperDict.currentDBName);
 		return dbHelperDict.getHelpWords(newWord);
 	}
 }

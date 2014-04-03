@@ -8,7 +8,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
@@ -19,10 +19,9 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 	private String _langFrom, _langTo;
 
 	public void updateContextAndCallback(Context context,
-	                                     WorkerFragment.OnTaskActionListener taskActionCallback,
-	                                     int fragmentId)
+	                                     IWorkerEventListener taskActionCallback)
 	{
-		super.updateContextAndCallback(context, taskActionCallback, fragmentId);
+		super.updateContextAndCallback(context, taskActionCallback);
 		Pair<String, String> langPair = Utils.getCurrentLanguages(context);
 		if (langPair == null)
 		{
@@ -81,10 +80,10 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		super.onPostExecute(dictName);
 		if (dictName == null)
 		{
-			_taskActionCallback.onFail(_fragmentId);
+			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccess(_fragmentId, dictName);
+		_taskActionCallback.onSuccessString(dictName);
 
 	}
 

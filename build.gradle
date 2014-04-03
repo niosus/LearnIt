@@ -15,6 +15,7 @@ repositories {
 dependencies {
     compile project(':TabStrip')
     compile 'com.android.support:support-v4:13.0.+'
+    compile 'com.android.support:support-v13:+'
 }
 
 android {
@@ -50,7 +51,4 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-}
-
-dependencies {
 }

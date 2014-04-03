@@ -4,33 +4,20 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.interfaces.OnUiAction;
+import com.learnit.LearnIt.interfaces.IListener;
 import com.learnit.LearnIt.utils.Utils;
-public abstract class MySmartFragment extends Fragment{
-    protected static final String LOG_TAG = "my_logs";
-	protected View _view;
-	public int identifier;
-	protected OnUiAction _callback;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof OnUiAction)
-		{
-			_callback = (OnUiAction) activity;
-		}
-		else
-		{
-			throw new ClassCastException(activity.getClass().getName() + " should implement " + OnUiAction.class.getName());
-		}
-	}
+public abstract class MySmartFragment extends Fragment {
+    protected static final String LOG_TAG = "my_logs";
+	protected IListener _listener;
+	protected View _v;
+	public int identifier;
 
     @Override
     public void onResume() {

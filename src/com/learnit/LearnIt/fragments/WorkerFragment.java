@@ -1,15 +1,17 @@
 package com.learnit.LearnIt.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.learnit.LearnIt.async_tasks.MySmartAsyncTask;
+import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -18,38 +20,39 @@ import java.util.Queue;
 This class is a headless fragment with no GUI.
 It is used to carry out heavy async tasks
 */
-public class WorkerFragment extends Fragment {
+public class WorkerFragment extends Fragment
+		implements IWorkerJobInput {
     final String LOG_TAG = "my_logs";
     public static String TAG = "work_fragment";
-	private static int _fragmentId;
-
-	// Container Activity must implement this interface
-	public interface OnTaskActionListener {
-		public void onPreExecute();
-		public void onFail(int fragmentId);
-		public <T> void onSuccess (int fragmentId, T result);
-		public void onProgressUpdate(Integer... values);
-		public void noTaskSpecified();
-	}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		try {
-			_taskActionCallback = (OnTaskActionListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " has to implement _taskActionCallback");
-		}
-		for (MySmartAsyncTask task: _taskQueue)
-		{
-			task.updateContextAndCallback(activity, _taskActionCallback, _fragmentId);
-		}
+		_context = activity;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
+	}
+
+	// Defines a headless fragment with no GUI
+	public View onCreateView(
+			LayoutInflater inflater,
+			ViewGroup container,
+			Bundle savedInstanceState) {
+		return null;
+	}
+
+	public void attach(IWorkerEventListener listener) {
+		_taskActionCallback = listener;
+	}
+
+	public void addTask(MySmartAsyncTask task)
+	{
+		task.updateContextAndCallback(_context, _taskActionCallback);
+		_taskQueue.add(task);
 		startNextTaskIfNeeded();
 	}
 
@@ -65,23 +68,7 @@ public class WorkerFragment extends Fragment {
 		return _taskRunning;
 	}
 
-	public void addNewTask(MySmartAsyncTask task)
-	{
-		_taskQueue.add(task);
-		startNextTaskIfNeeded();
-	}
-
-	public void addNewTask(Context context,
-	                       MySmartAsyncTask task,
-	                       int fragmentId)
-	{
-		_taskQueue.add(task);
-		_fragmentId = fragmentId;
-		task.updateContextAndCallback(context, _taskActionCallback, fragmentId);
-		startNextTaskIfNeeded();
-	}
-
-	private boolean startNextTaskIfNeeded()
+	public boolean startNextTaskIfNeeded()
 	{
 		// if we are not yet attached to an activity do nothing
 		Log.d(LOG_TAG, "startNextTaskIfNeeded, queue size = " + _taskQueue.size());
@@ -101,14 +88,9 @@ public class WorkerFragment extends Fragment {
 		return true;
 	}
 
-	// Defines a headless fragment with no GUI
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return null;
-    }
-
 	private static Queue<MySmartAsyncTask> _taskQueue = new LinkedList<>();
 	private static boolean _taskRunning = false;
-	private OnTaskActionListener _taskActionCallback;
+	private IWorkerEventListener _taskActionCallback;
+	private Context _context;
 
 }
