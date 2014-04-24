@@ -6,10 +6,17 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/progress_load_dict"
+        android:indeterminate="false"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <TextView
             android:id="@+id/text_dict_to_sql_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:text="@string/toast_loading_dict"
             style="@style/MyTextViewLarge">
     </TextView>
     <TextView

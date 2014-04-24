@@ -13,7 +13,6 @@
     <string name="add_words_frag_help_text_trans">Possible translations</string>
 
     <string name="dictionary_frag_title">My Dictionary</string>
-    <string name="hello_world">Hello world!</string>
     <string name="add_word_hint">Input word</string>
     <string name="edit_dialog_title">Editing…</string>
     <string name="search_word_hint">Start typing to search</string>
@@ -171,6 +170,13 @@
         important for me.\n
     </string>
 
+    <!--Crouton strings-->
+    <string name="crouton_word_saved">New word ``%1$s`` saved.</string>
+    <string name="crouton_word_updated">New translation added to the word ``%1$s``.</string>
+    <string name="crouton_word_already_present">Word ``%1$s`` is already in your dictionary.</string>
+    <string name="crouton_word_deleted">Deleted ``%1$s``.</string>
+
+
 
     <!--dict to sql activity strings-->
     <string name="dict_sql_title">Help dictionary</string>
@@ -179,7 +185,6 @@
     <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
     <string name="dict_sql_progress_found">Dictionary found. \nIndexing…</string>
     <string name="dict_sql_progress_searching_indexing">Searching and indexing dictionary</string>
-    <string name="dict_sql_closing_window">This window will be closed in %s seconds…</string>
 
 
     <string-array name="time_entries">

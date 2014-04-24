@@ -4,7 +4,10 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +15,28 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.activities.EditWord;
+import com.learnit.LearnIt.controllers.DictController;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IDictFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerDict;
-import com.learnit.LearnIt.listeners.DictController;
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.StringUtils;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class DictFragment extends MySmartFragment
 		implements IDictFragmentUpdate{
     private EditText _edtWord;
     private ImageButton _btnClear;
+	private ListView _listView;
 	protected IListenerDict _listener;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,13 +50,20 @@ public class DictFragment extends MySmartFragment
         _btnClear = (ImageButton) _v.findViewById(R.id.btn_search_clear);
         _btnClear.setOnClickListener(_listener);
         _btnClear.setVisibility(View.INVISIBLE);
-        final ListView listView = (ListView) _v.findViewById(R.id.list_of_words);
-//        listView.setOnItemLongClickListener(new MyOnListItemLongClickListener(_callback, this.getId()));
-//        listView.setOnItemClickListener(new MyOnListItemClickListener(_callback, this.getId()));
+        _listView = (ListView) _v.findViewById(R.id.list_of_words);
+        _listView.setOnItemLongClickListener(_listener);
+		_listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 	    return _v;
     }
 
-	private DictFragment(WorkerFragment worker) {
+	@Override
+	public void onResume() {
+		super.onResume();
+		setWordText("");
+		setListEntries(null);
+	}
+
+	private DictFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new DictController(this, worker);
 	}
@@ -57,30 +75,49 @@ public class DictFragment extends MySmartFragment
 		return fragment;
 	}
 
-	public void setViewText(int id, String text) {
-		TextView edit = (TextView) _v.findViewById(id);
-		edit.setText(text);
-	}
-
-	public void addTextToView(int id, String text) {
-
-	}
-
-	public void setViewVisibility(int id, int visibility) {
-		_btnClear.setVisibility(visibility);
-	}
-
-	public Integer getFocusedId() {
-		return null;
-	}
-
-	public String getTextFromView(int id) {
-		return _edtWord.getText().toString();
+	public void startActionMode(ActionMode.Callback callback) {
+		if (this.isAdded()) {
+			this.getActivity().startActionMode(callback);
+		}
 	}
 
 	@Override
-	public void setQueryWordText(String word) {
+	public void startEditWordActivity(String word) {
+		Intent intent = new Intent(this.getActivity(), EditWord.class);
+		intent.putExtra("word", word);
+		startActivity(intent);
+		Log.d(LOG_TAG, "start info activity called");
+	}
 
+	@Override
+	public void deleteWord(String word) {
+		DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+		dbHelper.deleteWord(StringUtils.stripFromArticle(this.getActivity(), word));
+		Crouton.makeText(getActivity(),  "DUMMY " + word + " DELETED", Style.CONFIRM).show();
+	}
+
+	@Override
+	public void setWordClearButtonVisible(boolean state) {
+		if (state) { _btnClear.setVisibility(View.VISIBLE); }
+		else { _btnClear.setVisibility(View.INVISIBLE); }
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (null!=_v)
+		{
+			if (isVisibleToUser)
+			{
+				Utils.hideSoftKeyboard(this.getActivity());
+			}
+		}
+	}
+
+	@Override
+	public void setWordText(String word) {
+		_edtWord.setText(word);
+		_edtWord.setSelection(word.length());
 	}
 
 	@Override

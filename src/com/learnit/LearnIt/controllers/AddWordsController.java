@@ -1,4 +1,4 @@
-package com.learnit.LearnIt.listeners;
+package com.learnit.LearnIt.controllers;
 
 import android.text.Editable;
 import android.util.Log;
@@ -66,8 +66,7 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (hasFocus) { _focused = v; }
 		if (v.getId() == R.id.edv_add_translation) {
-			_worker.attach(this);
-			_worker.addTask(new GetTranslationsTask(_fragmentUpdate.getWord()));
+			_worker.addTask(new GetTranslationsTask(_fragmentUpdate.getWord()), this);
 		}
 	}
 
@@ -84,8 +83,7 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-					_worker.attach(this);
-					_worker.addTask(new GetWordsTask(s.toString()));
+					_worker.addTask(new GetWordsTask(s.toString()), this);
 					_fragmentUpdate.setWordClearButtonVisible(true);
 				}
 				else {
@@ -139,8 +137,8 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 			case R.id.edv_add_translation:
 				if (result.first != null) {
 					_fragmentUpdate.addArticle(result.first);
-					_fragmentUpdate.setListEntries(result.second);
 				}
+				_fragmentUpdate.setListEntries(result.second);
 				break;
 		}
 	}
@@ -158,6 +156,7 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 	public void onSuccessCode(Integer errorCode) {
 		_worker.onTaskFinished();
 		_fragmentUpdate.showMessage(errorCode);
+		_fragmentUpdate.toInitialState();
 	}
 
 	@Override
@@ -185,10 +184,9 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 		switch (item.getItemId())
 		{
 			case R.id.save_item:
-				_worker.attach(this);
 				_worker.addTask(new SaveNewEntryTask(
 						_fragmentUpdate.getWord(),
-						_fragmentUpdate.getTrans()));
+						_fragmentUpdate.getTrans()), this);
 				break;
 		}
 

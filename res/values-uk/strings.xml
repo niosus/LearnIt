@@ -17,7 +17,13 @@
     <string name="edit_dialog_title">Редагуємо</string>
     <string name="search_word_hint">Пошук</string>
     <string name="add_translation_hint">Переклад</string>
+    <string name="add_word_button_text">Додати</string>
     <string name="learn_no_words">Додайте слова в словник</string>
+    <string-array name="fragments_titles">
+        <item>Dummy</item>
+        <item>Dummy</item>
+        <item>Dummy</item>
+    </string-array>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Таймер запущено</string>
@@ -66,9 +72,17 @@
     <string name="pref_direction_of_trans">Напрямок перекладу</string>
     <string name="pref_notifications_enabled">Сповіщення активні</string>
     <string name="pref_notifications_disabled">Сповіщення не активні</string>
+    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
+    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
+        application has to update the help dictionary.
+    </string>
+    <string name="pref_dialog_update_dict_dismiss">Go back</string>
+
 
 
     <string name="db_exported">Словник успішно збережено в \n%s</string>
+    <string name="db_imported">Dictionary was imported from \n%s</string>
+    <string name="db_import_error">Error occurred while importing</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редагувати</string>
@@ -91,6 +105,13 @@
     <string name="quick_instructions">Просто натисніть на \"Налаштування\" знизу сторінки і виберіть мову, яку хочете
         вчити.
         Далі натисніть \"Назад\" і ви готові починати.
+    </string>
+    <string name="instructions">
+        Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
+        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
+        field you will get some possible translations, you may have wanted to use.\n
+        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the
+        other.
     </string>
     <string name="quick_start">Швидкий старт!</string>
     <string name="welcome">Привіт!</string>

@@ -18,6 +18,7 @@ import java.io.File;
 public class GetDictTask extends MySmartAsyncTask<String> {
 	private String _langFrom, _langTo;
 
+	@Override
 	public void updateContextAndCallback(Context context,
 	                                     IWorkerEventListener taskActionCallback)
 	{
@@ -25,7 +26,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		Pair<String, String> langPair = Utils.getCurrentLanguages(context);
 		if (langPair == null)
 		{
-			Log.d(Constants.LOG_TAG, "NULL!!!!!!!!!!!!!!!!");
+			Log.e(Constants.LOG_TAG, "NULL!!!!!!!!!!!!!!!!");
 		}
 		_langFrom = langPair.first;
 		_langTo = langPair.second;

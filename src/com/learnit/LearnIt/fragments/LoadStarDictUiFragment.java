@@ -7,27 +7,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 
 public class LoadStarDictUiFragment extends Fragment {
+	public final static String TAG = "ui_load_dict";
+
     private TextView _tvTitle;
     private TextView _tvDictName;
     private TextView _tvDictInfo;
     private TextView _tvLoaded;
     private TextView _tvCountdown;
-
-
+	private ProgressBar _progressBar;
 
     @Override
     public void onAttach(Activity activity) {
-        super.onAttach(activity);
+	    super.onAttach(activity);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dict_to_sql, container, false);
+	    _progressBar = (ProgressBar) v.findViewById(R.id.progress_load_dict);
         _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
 //        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
         _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
@@ -51,7 +54,8 @@ public class LoadStarDictUiFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	    super.onCreate(savedInstanceState);
+	    setRetainInstance(true);
     }
 
     @Override
@@ -59,9 +63,9 @@ public class LoadStarDictUiFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.e("blah", "saving state");
         outState.putString("Title", _tvTitle.getText().toString());
-        outState.putString("DictName", _tvDictName.getText().toString());
-        outState.putString("DictInfo", _tvDictInfo.getText().toString());
-        outState.putString("Loaded", _tvLoaded.getText().toString());
+//        outState.putString("DictName", _tvDictName.getText().toString());
+//        outState.putString("DictInfo", _tvDictInfo.getText().toString());
+//        outState.putString("Loaded", _tvLoaded.getText().toString());
     }
 
     protected void setTimerText(String text)
@@ -92,5 +96,9 @@ public class LoadStarDictUiFragment extends Fragment {
 //        if (_tvLoaded!=null)
 //            _tvLoaded.setText(text);
     }
+
+	public void setProgress(int i) {
+		_progressBar.setProgress(i);
+	}
 
 }

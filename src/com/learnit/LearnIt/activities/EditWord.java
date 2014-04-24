@@ -2,6 +2,7 @@ package com.learnit.LearnIt.activities;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,9 @@ import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class EditWord extends FragmentActivity {
     public static final String WORD_TAG = "word";
     public final String LOG_TAG = "my_logs";
@@ -33,7 +37,12 @@ public class EditWord extends FragmentActivity {
 
     DBHelper dbHelper;
 
-    @Override
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_menu_cancel:
@@ -47,8 +56,22 @@ public class EditWord extends FragmentActivity {
                 } else {
                     dbHelper.deleteWord(oldStrippedWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                    showMessage(exitCode);
+	                if (exitCode == DBHelper.EXIT_CODE_OK) {
+		                Crouton.makeText(this, getString(R.string.crouton_word_deleted, edtWord.getText().toString()), Style.CONFIRM).show();
+	                } else {
+		                showMessage(exitCode);
+	                }
                 }
+	            // TODO: this code is shitty. Rewrite when have time.
+	            new CountDownTimer(2000, 2000) {
+
+		            public void onTick(long millisUntilFinished) {
+		            }
+
+		            public void onFinish() {
+			            finishActivity();
+		            }
+	            }.start();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

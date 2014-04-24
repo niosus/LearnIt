@@ -18,6 +18,7 @@ public interface IAddWordsFragmentUpdate {
 	public void addArticle(String article);
 	public String getWord();
 	public String getTrans();
+	public void toInitialState();
 
 	public void showMessage(int exitCode);
 }

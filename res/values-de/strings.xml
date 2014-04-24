@@ -17,7 +17,13 @@
     <string name="edit_dialog_title">Bearbeiten</string>
     <string name="search_word_hint">Suchen</string>
     <string name="add_translation_hint">Übersetzen</string>
+    <string name="add_word_button_text">Add</string>
     <string name="learn_no_words">Bitte Wörter eingeben</string>
+    <string-array name="fragments_titles">
+        <item>Dummy</item>
+        <item>Dummy</item>
+        <item>Dummy</item>
+    </string-array>
 
     <!--toast texts-->
     <string name="toast_notif_start_text">Zeitgeber gestartet</string>
@@ -66,8 +72,15 @@
     <string name="pref_direction_of_trans">Übersetzung Richtung</string>
     <string name="pref_notifications_enabled">Benachrichtungen werden gezeigt</string>
     <string name="pref_notifications_disabled">Benachrichtungen werden nicht gezeigt</string>
+    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
+    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
+        application has to update the help dictionary.
+    </string>
+    <string name="pref_dialog_update_dict_dismiss">Go back</string>
 
 
+    <string name="db_imported">Dictionary was imported from \n%s</string>
+    <string name="db_import_error">Error occurred while importing</string>
     <string name="db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
 
     <!--context menu strings-->

@@ -7,7 +7,7 @@ import com.learnit.LearnIt.async_tasks.MySmartAsyncTask;
  */
 public interface IWorkerJobInput {
 	void attach(IWorkerEventListener listener);
-	void addTask(MySmartAsyncTask task);
+	void addTask(MySmartAsyncTask task, IWorkerEventListener listener);
 	void onTaskFinished();
 	boolean startNextTaskIfNeeded();
 	boolean taskRunning();

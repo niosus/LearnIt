@@ -70,6 +70,7 @@ public class Utils {
     public static Pair<String,String> getCurrentLanguages(Context context) {
         if (context == null)
         {
+	        Log.e(LOG_TAG, "well, there is no context to get languages");
             return null;
         }
         String currentLanguage;

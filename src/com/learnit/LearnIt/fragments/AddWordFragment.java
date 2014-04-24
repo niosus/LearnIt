@@ -9,7 +9,6 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +23,15 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.controllers.AddWordsController;
+import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
-import com.learnit.LearnIt.listeners.AddWordsController;
-import com.learnit.LearnIt.utils.StringUtils;
 
 import java.util.List;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class AddWordFragment extends MySmartFragment
 		implements IAddWordsFragmentUpdate {
@@ -40,9 +42,19 @@ public class AddWordFragment extends MySmartFragment
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
 
+	public static final int DIALOG_ADDED = 668;
+	public static final int DIALOG_WORD_UPDATED = 669;
+	public static final int DIALOG_WORD_EXISTS = 670;
+
 	private AddWordFragment(WorkerFragment worker) {
 		super();
 		_listener = new AddWordsController(this, worker);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		Crouton.cancelAllCroutons();
 	}
 
 	@Override
@@ -66,7 +78,9 @@ public class AddWordFragment extends MySmartFragment
 		if (_listener != null && _saveMenuItem != null) {
 			_saveMenuItem.setOnMenuItemClickListener(_listener);
 		}
-//		_saveMenuItem.setVisible(false);
+		if (_saveMenuItem != null) {
+			_saveMenuItem.setVisible(false);
+		}
     }
 
     @Override
@@ -114,7 +128,6 @@ public class AddWordFragment extends MySmartFragment
 		if (_translation != null) {
 			_translation.setText(translation);
 			_translation.setSelection(_translation.length());
-
 		}
 	}
 
@@ -174,26 +187,30 @@ public class AddWordFragment extends MySmartFragment
 
 	@Override
 	public String getWord() {
-		return StringUtils.stripFromArticle(this.getActivity(), _word.getText().toString());
+		return _word.getText().toString();
 	}
 
 	@Override
 	public String getTrans() {
-		return StringUtils.stripFromArticle(this.getActivity(), _translation.getText().toString());
+		return _translation.getText().toString();
+	}
+
+	@Override
+	public void toInitialState() {
+		setViewFocused(R.id.edv_add_word);
+		setWordText("");
+		setTranslationText("");
+		setListEntries(null);
+		setWordClearButtonVisible(false);
+		setTranslationClearButtonVisible(false);
+		setMenuItemVisible(false);
 	}
 
 	// ended implementing interface
 
 	public void setMenuItemVisible(boolean visible)
 	{
-		try
-		{
-			_saveMenuItem.setVisible(visible);
-		}
-		catch (NullPointerException ex)
-		{
-			Log.e(LOG_TAG, ex.getMessage() + "in setMenuItemVisible");
-		}
+		_saveMenuItem.setVisible(visible);
 	}
 
 	public void addArticle(String article)
@@ -211,7 +228,16 @@ public class AddWordFragment extends MySmartFragment
 	}
 
 	public void showMessage(int exitCode) {
-		DialogFragment frag = new MyDialogFragment();
-		frag.show(getFragmentManager(), String.valueOf(exitCode));
+		switch (exitCode) {
+			case DBHelper.EXIT_CODE_OK:
+				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_saved, getWord()), Style.CONFIRM).show();
+				break;
+			case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
+				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_already_present, getWord()), Style.ALERT).show();
+				break;
+			case DBHelper.EXIT_CODE_WORD_UPDATED:
+				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_updated, getWord()), Style.CONFIRM).show();
+				break;
+		}
 	}
 }

@@ -6,6 +6,7 @@
 package com.learnit.LearnIt.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,9 @@ import android.util.Pair;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
-import com.learnit.LearnIt.fragments.MyProgressDialogFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.List;
 import java.util.Map;
@@ -25,64 +26,58 @@ import java.util.Map;
 public class LoadStarDictActivity extends Activity implements IWorkerEventListener {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
-	WorkerFragment _taskFragment;
-    MyProgressDialogFragment _progressDialog;
+	IWorkerJobInput _jobStarter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _uiFragment = new LoadStarDictUiFragment();
 		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
         FragmentManager fragmentManager = getFragmentManager();
 
-        _taskFragment = (WorkerFragment) fragmentManager
+	    // add a ui fragment to stack
+	    _uiFragment = (LoadStarDictUiFragment) fragmentManager
+			    .findFragmentByTag(LoadStarDictUiFragment.TAG);
+	    if (_uiFragment == null) {
+		    _uiFragment = new LoadStarDictUiFragment();
+		    fragmentManager.beginTransaction()
+				    .add(android.R.id.content, _uiFragment, LoadStarDictUiFragment.TAG)
+				    .commit();
+	    }
+
+//	    add a headless worker fragment to stack if not yet there
+        Fragment worker = fragmentManager
                 .findFragmentByTag(WorkerFragment.TAG);
-        if (_taskFragment == null)
+        if (worker == null)
         {
-            _taskFragment = new WorkerFragment();
-	        _taskFragment.addTask(new GetDictTask());
+            worker = new WorkerFragment();
             fragmentManager.beginTransaction()
-                    .add(_taskFragment, WorkerFragment.TAG)
+		            .add(worker, WorkerFragment.TAG)
                     .commit();
         }
-        fragmentManager.beginTransaction()
-                .add(android.R.id.content, _uiFragment)
-                .commit();
-        addDialogIfNeeded();
+
+//		set _jobStarter from the worker fragment if possible
+//	    throw exception if the fragment is wrong
+	    if (worker instanceof IWorkerJobInput) {
+		    _jobStarter = (IWorkerJobInput) worker;
+	    } else {
+		    throw new ClassCastException(worker.getClass().getSimpleName() + "should implement" + IWorkerJobInput.class.getSimpleName());
+	    }
     }
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		addDialogIfNeeded();
+		if (!_jobStarter.taskRunning()) {
+			_jobStarter.addTask(new GetDictTask(), this);
+		} else {
+			_jobStarter.attach(this);
+		}
 	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	}
-
-	private void addDialogIfNeeded()
-    {
-        if (_taskFragment.taskRunning())
-        {
-            _progressDialog = (MyProgressDialogFragment) getFragmentManager().findFragmentByTag(MyProgressDialogFragment.TAG);
-            if (_progressDialog == null)
-            {
-                _progressDialog = new MyProgressDialogFragment();
-                _progressDialog.show(getFragmentManager(), MyProgressDialogFragment.TAG);
-            }
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (_progressDialog != null)
-        {
-            _progressDialog.dismiss();
-            _progressDialog = null;
-        }
-        if (!_taskFragment.taskRunning())
+        if (!_jobStarter.taskRunning())
         {
             this.finish();
         }
@@ -90,45 +85,31 @@ public class LoadStarDictActivity extends Activity implements IWorkerEventListen
 
 	@Override
 	public void onPreExecute() {
-		if (_progressDialog != null)
-		{
-			_progressDialog.setText(this.getString(R.string.dict_sql_progress_searching_indexing));
-			_progressDialog.setIndeterminate(false);
-		}
 	}
 
 	@Override
 	public void onFail() {
-		if (_progressDialog != null)
-		{
-			_progressDialog.dismiss();
-			_progressDialog = null;
-		}
 		if (_uiFragment != null)
 		{
 			_uiFragment.setTitleText(this.getString(R.string.dict_sql_no_dict));
 		}
-		if (_taskFragment != null)
+		if (_jobStarter != null)
 		{
-			_taskFragment.onTaskFinished();
+			_jobStarter.onTaskFinished();
 		}
 	}
 
 	@Override
 	public void onSuccessString(String result) {
-		if (_progressDialog != null)
-		{
-			_progressDialog.dismiss();
-			_progressDialog = null;
-		}
+		Log.e(LOG_TAG, "RESULT from loading dict");
 		if (_uiFragment != null)
 		{
 			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-			_uiFragment.setDictInfoText((String)result);
+			_uiFragment.setDictInfoText(result);
 		}
-		if (_taskFragment != null)
+		if (_jobStarter != null)
 		{
-			_taskFragment.onTaskFinished();
+			_jobStarter.onTaskFinished();
 		}
 	}
 
@@ -139,10 +120,7 @@ public class LoadStarDictActivity extends Activity implements IWorkerEventListen
 
 	@Override
 	public void onProgressUpdate(Integer... values) {
-		if (_progressDialog != null)
-		{
-			_progressDialog.setProgress(values[0]);
-		}
+		_uiFragment.setProgress(values[0]);
 	}
 
 	@Override
@@ -157,7 +135,6 @@ public class LoadStarDictActivity extends Activity implements IWorkerEventListen
 
 	@Override
 	public void onSuccessMyWords(List<Map<String, String>> result) {
-
 	}
 
 	@Override

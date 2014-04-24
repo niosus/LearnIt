@@ -4,5 +4,5 @@
   -->
 
 <resources>
-    <string name="layout_current">large_landscape</string>
+    <string name="layout_current" translatable="false">large_landscape</string>
 </resources>

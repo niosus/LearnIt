@@ -49,8 +49,9 @@ public class WorkerFragment extends Fragment
 		_taskActionCallback = listener;
 	}
 
-	public void addTask(MySmartAsyncTask task)
-	{
+	@Override
+	public void addTask(MySmartAsyncTask task, IWorkerEventListener listener) {
+		_taskActionCallback = listener;
 		task.updateContextAndCallback(_context, _taskActionCallback);
 		_taskQueue.add(task);
 		startNextTaskIfNeeded();

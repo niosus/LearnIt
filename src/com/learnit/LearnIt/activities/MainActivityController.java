@@ -17,9 +17,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
-import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -34,15 +32,13 @@ import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
-import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
 
 public class MainActivityController extends Activity implements
 		ActionBar.TabListener,
-		ListOfFragments.OnFragmentSelectedListener,
-		ActionMode.Callback{
+		ListOfFragments.OnFragmentSelectedListener{
 
     final String LOG_TAG = "my_logs";
     public static int NUMBER_OF_FRAGMENTS = 3;
@@ -221,11 +217,6 @@ public class MainActivityController extends Activity implements
 	    Log.d(LOG_TAG, "onArticleSelected current item set to " + _currentItemShown);
     }
 
-	public void showMessage(int exitCode) {
-		DialogFragment frag = new MyDialogFragment();
-		frag.show(getFragmentManager(), String.valueOf(exitCode));
-	}
-
 	private void showDialog(String queryWord, String translation, int dialogType) {
 		DialogFragment frag = new MyDialogFragment(queryWord, translation, dialogType);
 		Bundle args = new Bundle();
@@ -296,20 +287,20 @@ public class MainActivityController extends Activity implements
 		Log.d(LOG_TAG, "start info activity called");
 	}
 
-	private MySmartFragment getCurrentShownFragment(int id)
-	{
-		String currentLayout = getString(R.string.layout_current);
-		FragmentManager fm = getFragmentManager();
-		if (currentLayout.equals(LAYOUT_NORMAL)) {
-			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
-		} else if (currentLayout.equals(LAYOUT_LARGE_LAND)) {
-			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + "0" + ":" + _currentItemShown);
-		} else if (currentLayout.equals(LAYOUT_XLARGE)) {
-			// we do not have tags if we are in the xlarge mode
-			return (MySmartFragment) fm.findFragmentById(id);
-		}
-		return null;
-	}
+//	private MySmartFragment getCurrentShownFragment(int id)
+//	{
+//		String currentLayout = getString(R.string.layout_current);
+//		FragmentManager fm = getFragmentManager();
+//		if (currentLayout.equals(LAYOUT_NORMAL)) {
+//			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + _viewPager.getId() + ":" + _currentItemShown);
+//		} else if (currentLayout.equals(LAYOUT_LARGE_LAND)) {
+//			return (MySmartFragment) fm.findFragmentByTag("android:switcher:" + "0" + ":" + _currentItemShown);
+//		} else if (currentLayout.equals(LAYOUT_XLARGE)) {
+//			// we do not have tags if we are in the xlarge mode
+//			return (MySmartFragment) fm.findFragmentById(id);
+//		}
+//		return null;
+//	}
 
 //	// Implementing OnUiAction interface
 //	@Override
@@ -598,47 +589,47 @@ public class MainActivityController extends Activity implements
 //	public void noTaskSpecified() {
 //
 //	}
+//
+//	@Override
+//	public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+//		MenuInflater inflater = actionMode.getMenuInflater();
+//		inflater.inflate(R.menu.context_menu, menu);
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+//		String queryWord = _wordForActionMode;
+//		switch (menuItem.getItemId()) {
+//			case R.id.context_menu_edit:
+//				startEditWordActivity(queryWord);
+//				actionMode.finish(); // Action picked, so close the CAB
+//				return true;
+//			case R.id.context_menu_delete:
+//				DBHelper dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+//				dbHelper.deleteWord(StringUtils.stripFromArticle(this, queryWord));
+//				showDialog(queryWord, null, MyDialogFragment.DIALOG_WORD_DELETED);
+//				actionMode.finish();
+//				return true;
+//			default:
+//				return false;
+//		}
+//	}
 
-	@Override
-	public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-		MenuInflater inflater = actionMode.getMenuInflater();
-		inflater.inflate(R.menu.context_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-		return false;
-	}
-
-	@Override
-	public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-		String queryWord = _wordForActionMode;
-		switch (menuItem.getItemId()) {
-			case R.id.context_menu_edit:
-				startEditWordActivity(queryWord);
-				actionMode.finish(); // Action picked, so close the CAB
-				return true;
-			case R.id.context_menu_delete:
-				DBHelper dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
-				dbHelper.deleteWord(StringUtils.stripFromArticle(this, queryWord));
-				showDialog(queryWord, null, MyDialogFragment.DIALOG_WORD_DELETED);
-				actionMode.finish();
-				return true;
-			default:
-				return false;
-		}
-	}
-
-	@Override
-	public void onDestroyActionMode(ActionMode actionMode) {
-		MySmartFragment currentFragment = getCurrentShownFragment(R.id.fragment_dict_id);
-		if (currentFragment.identifier ==DICTIONARY_FRAGMENT)
-		{
-			DictFragment frag = (DictFragment) currentFragment;
-			if (!frag.getTextFromView(R.id.edv_search_word).isEmpty())
-				frag.setViewText(R.id.edv_search_word, "");
-			_wordForActionMode = null;
-		}
-	}
+//	@Override
+//	public void onDestroyActionMode(ActionMode actionMode) {
+//		MySmartFragment currentFragment = getCurrentShownFragment(R.id.fragment_dict_id);
+//		if (currentFragment.identifier ==DICTIONARY_FRAGMENT)
+//		{
+//			DictFragment frag = (DictFragment) currentFragment;
+//			if (!frag.getTextFromView(R.id.edv_search_word).isEmpty())
+//				frag.setViewText(R.id.edv_search_word, "");
+//			_wordForActionMode = null;
+//		}
+//	}
 }
