@@ -109,6 +109,16 @@ public class RandomWordsController implements
 	}
 
 	@Override
+	public void setCorrectWordIdFromPrefs(int num) {
+		_correctAnswerId = num;
+	}
+
+	@Override
+	public int getCorrectWordId() {
+		return _correctAnswerId;
+	}
+
+	@Override
 	public void onAnimationFinished(int id, boolean ignore) {
 		if (ignore)
 			return;

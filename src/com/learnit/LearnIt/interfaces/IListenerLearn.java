@@ -10,4 +10,6 @@ public interface IListenerLearn extends
 	public void fetchRandomWords(
 			int numOfWords,
 			String omitWord);
+	public void setCorrectWordIdFromPrefs(int num);
+	public int getCorrectWordId();
 }

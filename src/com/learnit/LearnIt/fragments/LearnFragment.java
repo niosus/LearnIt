@@ -50,10 +50,12 @@ public class LearnFragment
             R.id.right_top_button,
             R.id.left_bottom_button,
             R.id.right_bottom_button};
+	TextView _wordToAsk;
 
 	private LearnFragment(IWorkerJobInput worker) {
 		super();
 		_uiCallback = new RandomWordsController(this, worker);
+		setRetainInstance(true);
 	}
 
 	public static LearnFragment newInstance(WorkerFragment worker) {
@@ -89,8 +91,8 @@ public class LearnFragment
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
 		updateDirectionOfTranslation();
-	    TextView textView = (TextView) v.findViewById(R.id.word_to_ask);
-	    textView.setMovementMethod(new ScrollingMovementMethod());
+	    _wordToAsk = (TextView) v.findViewById(R.id.word_to_ask);
+		_wordToAsk.setMovementMethod(new ScrollingMovementMethod());
 		(v.findViewById(R.id.left_top_button))
 				.setOnClickListener(_uiCallback);
 		(v.findViewById(R.id.right_bottom_button))
@@ -99,9 +101,62 @@ public class LearnFragment
 				.setOnClickListener(_uiCallback);
 		(v.findViewById(R.id.right_top_button))
 				.setOnClickListener(_uiCallback);
-		_uiCallback.fetchRandomWords(btnIds.length, null);
         return v;
     }
+
+//	TODO: change the names of the strings to some constants !!! important
+	boolean restoreFromPreferences() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		String word = sp.getString("word", null);
+		String button1Text = sp.getString("button1", null);
+		String button2Text = sp.getString("button2", null);
+		String button3Text = sp.getString("button3", null);
+		String button4Text = sp.getString("button4", null);
+		int correctId = sp.getInt("correctId", 0);
+		if (word == null
+				|| button1Text == null
+				|| button2Text == null
+				|| button3Text == null
+				|| button4Text == null
+				|| correctId == 0) { return false; }
+		((TextView) v.findViewById(R.id.word_to_ask)).setText(word);
+		((TextView) v.findViewById(R.id.left_top_button)).setText(button1Text);
+		((TextView) v.findViewById(R.id.right_bottom_button)).setText(button2Text);
+		((TextView) v.findViewById(R.id.left_bottom_button)).setText(button3Text);
+		((TextView) v.findViewById(R.id.right_top_button)).setText(button4Text);
+		_uiCallback.setCorrectWordIdFromPrefs(correctId);
+		String[] split = word.split("\n");
+		queryWord = split[split.length - 1];
+		sp.edit().remove("word")
+				.remove("button1")
+				.remove("button2")
+				.remove("button3")
+				.remove("button4")
+				.remove("correctId")
+				.commit();
+		return true;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!restoreFromPreferences()) {
+			_uiCallback.fetchRandomWords(btnIds.length, null);
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		sp.edit().putString("word", _wordToAsk.getText().toString())
+				.putString("button1", ((TextView) v.findViewById(R.id.left_top_button)).getText().toString())
+				.putString("button2", ((TextView) v.findViewById(R.id.right_bottom_button)).getText().toString())
+				.putString("button3", ((TextView) v.findViewById(R.id.left_bottom_button)).getText().toString())
+				.putString("button4", ((TextView) v.findViewById(R.id.right_top_button)).getText().toString())
+				.putInt("correctId", _uiCallback.getCorrectWordId())
+				.commit();
+	}
 
 	@Override
 	public void updateDirectionOfTranslation() {
