@@ -4,7 +4,6 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,7 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetMyWordsTask;
 import com.learnit.LearnIt.interfaces.IDictFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerDict;
-import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerMyWords;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import java.util.Map;
  */
 public class DictController implements
 		IListenerDict,
-		IWorkerEventListener {
+		IWorkerEventListenerMyWords{
 	IDictFragmentUpdate _fragmentUpdate;
 	IWorkerJobInput _worker;
 
@@ -80,29 +79,9 @@ public class DictController implements
 	}
 
 	@Override
-	public void onSuccessWords(List<String> result) {
-
-	}
-
-	@Override
-	public void onSuccessTranslations(Pair<String, List<String>> result) {
-
-	}
-
-	@Override
 	public void onSuccessMyWords(List<Map<String,String>> result) {
 		_worker.onTaskFinished();
 		_fragmentUpdate.setListEntries(result);
-	}
-
-	@Override
-	public void onSuccessString(String result) {
-
-	}
-
-	@Override
-	public void onSuccessCode(Integer errorCode) {
-
 	}
 
 	@Override

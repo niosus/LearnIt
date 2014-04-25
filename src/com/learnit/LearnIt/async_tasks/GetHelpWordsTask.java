@@ -5,14 +5,15 @@ import android.util.Log;
 
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerHelpWords;
 import com.learnit.LearnIt.utils.StringUtils;
 
 import java.util.List;
 
-public class GetWordsTask extends MySmartAsyncTask<List<String>> {
+public class GetHelpWordsTask extends MySmartAsyncTask<List<String>> {
 	String _word;
 
-	public GetWordsTask(String word)
+	public GetHelpWordsTask(String word)
 	{
 		super();
 		_word = word;
@@ -37,7 +38,14 @@ public class GetWordsTask extends MySmartAsyncTask<List<String>> {
 			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccessWords(words);
+		if (_taskActionCallback instanceof IWorkerEventListenerHelpWords) {
+			((IWorkerEventListenerHelpWords) _taskActionCallback).onSuccessWords(words);
+		} else {
+			throw new ClassCastException(
+					_taskActionCallback.getClass().getSimpleName()
+							+ " must implement "
+							+ IWorkerEventListenerHelpWords.class.getSimpleName());
+		}
 	}
 
 	@Override

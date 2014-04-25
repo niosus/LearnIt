@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compile project(':TabStrip')
-    compile 'com.android.support:support-v4:13.0.+'
+    compile 'com.android.support:support-v4:+'
     compile 'com.android.support:support-v13:+'
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.4'
 }
@@ -36,7 +36,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 19
     }
 

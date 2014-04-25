@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 
 public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Integer, S> {
-	protected int _fragmentId;
 
 	public void updateContextAndCallback(Context context,
 	                                     IWorkerEventListener taskActionCallback)

@@ -33,7 +33,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class DictFragment extends MySmartFragment
-		implements IDictFragmentUpdate{
+		implements IDictFragmentUpdate {
     private EditText _edtWord;
     private ImageButton _btnClear;
 	private ListView _listView;

@@ -9,6 +9,7 @@ import android.util.Pair;
 
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.stardict.StarDict;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
@@ -84,8 +85,14 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccessString(dictName);
-
+		if (_taskActionCallback instanceof IWorkerEventListenerGetDict) {
+			((IWorkerEventListenerGetDict) _taskActionCallback).onSuccessDictName(dictName);
+		} else {
+			throw new ClassCastException(
+					_taskActionCallback.getClass().getSimpleName()
+							+ " must implement "
+							+ IWorkerEventListenerGetDict.class.getSimpleName());
+		}
 	}
 
 	@Override

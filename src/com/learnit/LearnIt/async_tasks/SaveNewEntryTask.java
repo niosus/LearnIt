@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerNewEntry;
 
 public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 	String _word;
@@ -35,8 +36,14 @@ public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccessCode(exitCode);
-
+		if (_taskActionCallback instanceof IWorkerEventListenerNewEntry) {
+			((IWorkerEventListenerNewEntry) _taskActionCallback).onSuccessCode(exitCode);
+		} else {
+			throw new ClassCastException(
+					_taskActionCallback.getClass().getSimpleName()
+							+ " must implement "
+							+ IWorkerEventListenerNewEntry.class.getSimpleName());
+		}
 	}
 
 	@Override

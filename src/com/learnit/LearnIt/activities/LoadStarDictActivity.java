@@ -10,20 +10,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
-import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
-import java.util.List;
-import java.util.Map;
 
-
-public class LoadStarDictActivity extends Activity implements IWorkerEventListener {
+public class LoadStarDictActivity extends Activity implements
+		IWorkerEventListenerGetDict {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
 	IWorkerJobInput _jobStarter;
@@ -100,41 +97,8 @@ public class LoadStarDictActivity extends Activity implements IWorkerEventListen
 	}
 
 	@Override
-	public void onSuccessString(String result) {
-		Log.e(LOG_TAG, "RESULT from loading dict");
-		if (_uiFragment != null)
-		{
-			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-			_uiFragment.setDictInfoText(result);
-		}
-		if (_jobStarter != null)
-		{
-			_jobStarter.onTaskFinished();
-		}
-	}
-
-	@Override
-	public void onSuccessCode(Integer errorCode) {
-
-	}
-
-	@Override
 	public void onProgressUpdate(Integer... values) {
 		_uiFragment.setProgress(values[0]);
-	}
-
-	@Override
-	public void onSuccessWords(List<String> result) {
-
-	}
-
-	@Override
-	public void onSuccessTranslations(Pair<String, List<String>> result) {
-
-	}
-
-	@Override
-	public void onSuccessMyWords(List<Map<String, String>> result) {
 	}
 
 	@Override
@@ -150,6 +114,20 @@ public class LoadStarDictActivity extends Activity implements IWorkerEventListen
 	@Override
 	public boolean taskRunning() {
 		return false;
+	}
+
+	@Override
+	public void onSuccessDictName(String result) {
+		Log.e(LOG_TAG, "RESULT from loading dict");
+		if (_uiFragment != null)
+		{
+			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
+			_uiFragment.setDictInfoText(result);
+		}
+		if (_jobStarter != null)
+		{
+			_jobStarter.onTaskFinished();
+		}
 	}
 }
 

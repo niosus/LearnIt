@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerTranslations;
 import com.learnit.LearnIt.stardict.DictFile;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -45,14 +46,21 @@ public class GetTranslationsTask extends MySmartAsyncTask<Pair<String, List<Stri
 	}
 
 	@Override
-	protected void onPostExecute(Pair<String, List<String>> dictName) {
-		super.onPostExecute(dictName);
-		if (dictName == null)
+	protected void onPostExecute(Pair<String, List<String>> articleTranslationsListPair) {
+		super.onPostExecute(articleTranslationsListPair);
+		if (articleTranslationsListPair == null)
 		{
 			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccessTranslations(dictName);
+		if (_taskActionCallback instanceof IWorkerEventListenerTranslations) {
+			((IWorkerEventListenerTranslations) _taskActionCallback).onSuccessTranslations(articleTranslationsListPair);
+		} else {
+			throw new ClassCastException(
+					_taskActionCallback.getClass().getSimpleName()
+							+ " must implement "
+							+ IWorkerEventListenerTranslations.class.getSimpleName());
+		}
 	}
 
 	@Override

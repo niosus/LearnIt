@@ -9,21 +9,26 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.async_tasks.GetHelpWordsTask;
 import com.learnit.LearnIt.async_tasks.GetTranslationsTask;
-import com.learnit.LearnIt.async_tasks.GetWordsTask;
 import com.learnit.LearnIt.async_tasks.SaveNewEntryTask;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
-import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerHelpWords;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerNewEntry;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerTranslations;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by igor on 4/2/14.
  */
-public class AddWordsController implements IListenerAddWords, IWorkerEventListener {
+public class AddWordsController implements
+		IListenerAddWords,
+		IWorkerEventListenerHelpWords,
+		IWorkerEventListenerTranslations,
+		IWorkerEventListenerNewEntry {
 	IAddWordsFragmentUpdate _fragmentUpdate;
 	IWorkerJobInput _worker;
 	View _focused;
@@ -83,7 +88,7 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-					_worker.addTask(new GetWordsTask(s.toString()), this);
+					_worker.addTask(new GetHelpWordsTask(s.toString()), this);
 					_fragmentUpdate.setWordClearButtonVisible(true);
 				}
 				else {
@@ -141,15 +146,6 @@ public class AddWordsController implements IListenerAddWords, IWorkerEventListen
 				_fragmentUpdate.setListEntries(result.second);
 				break;
 		}
-	}
-
-	@Override
-	public void onSuccessMyWords(List<Map<String, String>> result) {
-	}
-
-	@Override
-	public void onSuccessString(String result) {
-
 	}
 
 	@Override

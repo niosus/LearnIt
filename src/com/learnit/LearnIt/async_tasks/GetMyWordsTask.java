@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
+import com.learnit.LearnIt.interfaces.IWorkerEventListenerMyWords;
 import com.learnit.LearnIt.utils.StringUtils;
 
 import java.util.List;
@@ -30,14 +31,21 @@ public class GetMyWordsTask extends MySmartAsyncTask<List<Map<String,String>>>{
 	}
 
 	@Override
-	protected void onPostExecute(List<Map<String,String>> dictName) {
-		super.onPostExecute(dictName);
-		if (dictName == null)
+	protected void onPostExecute(List<Map<String,String>> words) {
+		super.onPostExecute(words);
+		if (words == null)
 		{
 			_taskActionCallback.onFail();
 			return;
 		}
-		_taskActionCallback.onSuccessMyWords(dictName);
+		if (_taskActionCallback instanceof IWorkerEventListenerMyWords) {
+			((IWorkerEventListenerMyWords) _taskActionCallback).onSuccessMyWords(words);
+		} else {
+			throw new ClassCastException(
+					_taskActionCallback.getClass().getSimpleName()
+							+ " must implement "
+							+ IWorkerEventListenerMyWords.class.getSimpleName());
+		}
 
 	}
 

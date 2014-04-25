@@ -9,13 +9,13 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +52,6 @@ public class LearnFragment extends MySmartFragment
 	@Override
     public void onResume() {
         super.onResume();
-        Pair<String, String> langPair = Utils.getCurrentLanguages(this.getActivity());
-        Log.d(LOG_TAG, "onResume learn fragment: from - " + langPair.first + " to " + langPair.second);
         if (null!=v)
         {
             openWord();
@@ -67,9 +65,9 @@ public class LearnFragment extends MySmartFragment
         v.findViewById(R.id.right_bottom_button).setVisibility(visibilityState);
         v.findViewById(R.id.left_bottom_button).setVisibility(visibilityState);
         v.findViewById(R.id.right_top_button).setVisibility(visibilityState);
-//        v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -81,25 +79,19 @@ public class LearnFragment extends MySmartFragment
                 {
                     openWord();
                     openButtons();
-//                    setAll(View.VISIBLE);
                 }
                 Utils.hideSoftKeyboard(this.getActivity());
             }
         }
     }
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
 	    TextView textView = (TextView) v.findViewById(R.id.word_to_ask);
 	    textView.setMovementMethod(new ScrollingMovementMethod());
         fetchNewWords();
-//        setAll(View.INVISIBLE);
         return v;
     }
 
