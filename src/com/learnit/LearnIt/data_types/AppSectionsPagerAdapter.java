@@ -44,7 +44,7 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 				Log.d(Constants.LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
-				fragment = new LearnFragment();
+				fragment = LearnFragment.newInstance(_worker);
 				fragment.identifier = MainActivityController.LEARN_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 				break;

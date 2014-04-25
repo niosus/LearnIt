@@ -1,9 +1,6 @@
 package com.learnit.LearnIt.utils;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,12 +29,12 @@ public class MyAnimationHelper {
 		return AnimationUtils.loadAnimation(_context, id);
 	}
 
-	public <T> void invokeForView(View v, int animationId, T fragment)
+	public <T> void invokeForView(View v, int animationId, T callback)
 	{
 		try {
-			_callback = (OnAnimationActionListener) fragment;
+			_callback = (OnAnimationActionListener) callback;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(fragment.toString() + " must implement OnAnimationActionListener");
+			throw new ClassCastException(callback.getClass().getSimpleName() + " must implement OnAnimationActionListener");
 		}
 		Animation anim = getAnimByType(animationId);
 		MyAnimationListener animListener = new MyAnimationListener(animationId);
@@ -46,12 +43,12 @@ public class MyAnimationHelper {
 	}
 
 
-	public <T> void invokeForAllViews(View[] views, int animationId, T fragment)
+	public <T> void invokeForAllViews(View[] views, int animationId, T callback)
 	{
 		try {
-			_callback = (OnAnimationActionListener) fragment;
+			_callback = (OnAnimationActionListener) callback;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(fragment.toString() + " must implement OnAnimationActionListener");
+			throw new ClassCastException(callback.getClass().getSimpleName() + " must implement OnAnimationActionListener");
 		}
 		Animation animWithListener = getAnimByType(animationId);
 		MyAnimationListener animListener = new MyAnimationListener(animationId, false);

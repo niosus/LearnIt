@@ -16,5 +16,7 @@
     android:fromYDelta="0"
     android:toYDelta="-100%"
     android:duration="300"
+    android:fillBefore="false"
+    android:fillEnabled="true"
     android:fillAfter="true"/>
 </set>

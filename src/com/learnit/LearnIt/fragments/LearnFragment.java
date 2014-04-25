@@ -10,7 +10,6 @@
 package com.learnit.LearnIt.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,8 +21,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.controllers.RandomWordsController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
+import com.learnit.LearnIt.interfaces.IListenerLearn;
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -33,38 +36,39 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class LearnFragment extends MySmartFragment
-		implements MyAnimationHelper.OnAnimationActionListener {
+public class LearnFragment
+		extends MySmartFragment
+		implements ILearnFragmentUpdate {
 
     View v;
     String queryWord = null;
-    int numOfWrongAnswers = 0;
     int direction = 0;
     final String LOG_TAG = "my_logs";
     DBHelper dbHelper;
+	IListenerLearn _uiCallback;
     int[] btnIds = {R.id.left_top_button,
             R.id.right_top_button,
             R.id.left_bottom_button,
             R.id.right_bottom_button};
 
+	private LearnFragment(IWorkerJobInput worker) {
+		super();
+		_uiCallback = new RandomWordsController(this, worker);
+	}
 
+	public static LearnFragment newInstance(WorkerFragment worker) {
+		LearnFragment fragment = new LearnFragment(worker);
+		Bundle args = new Bundle();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-	@Override
-    public void onResume() {
-        super.onResume();
-        if (null!=v)
-        {
-            openWord();
-            openButtons();
-        }
-    }
-
-    private void setAll(int visibilityState)
+    public void setAll(int visibilityState)
     {
-        v.findViewById(R.id.left_top_button).setVisibility(visibilityState);
-        v.findViewById(R.id.right_bottom_button).setVisibility(visibilityState);
-        v.findViewById(R.id.left_bottom_button).setVisibility(visibilityState);
-        v.findViewById(R.id.right_top_button).setVisibility(visibilityState);
+	    for (int id: btnIds) {
+		    v.findViewById(id).setVisibility(visibilityState);
+	    }
+	    v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
     }
 
     @SuppressLint("NewApi")
@@ -75,11 +79,6 @@ public class LearnFragment extends MySmartFragment
         {
             if (isVisibleToUser)
             {
-                if (View.INVISIBLE == v.findViewById(R.id.word_to_ask).getVisibility())
-                {
-                    openWord();
-                    openButtons();
-                }
                 Utils.hideSoftKeyboard(this.getActivity());
             }
         }
@@ -89,56 +88,36 @@ public class LearnFragment extends MySmartFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.homework, container, false);
+		updateDirectionOfTranslation();
 	    TextView textView = (TextView) v.findViewById(R.id.word_to_ask);
 	    textView.setMovementMethod(new ScrollingMovementMethod());
-        fetchNewWords();
+		(v.findViewById(R.id.left_top_button))
+				.setOnClickListener(_uiCallback);
+		(v.findViewById(R.id.right_bottom_button))
+				.setOnClickListener(_uiCallback);
+		(v.findViewById(R.id.left_bottom_button))
+				.setOnClickListener(_uiCallback);
+		(v.findViewById(R.id.right_top_button))
+				.setOnClickListener(_uiCallback);
+		_uiCallback.fetchRandomWords(btnIds.length, null);
         return v;
     }
 
-    private void fetchNewWords() {
-        Random random = new Random();
-        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
-        Log.d(LOG_TAG, "DB+WORDS=" + DBHelper.DB_WORDS);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
-        if (null != strDirection) {
-            direction = Integer.parseInt(strDirection);
-            if (direction == Constants.MIXED) {
-                direction = random.nextInt(2) + 1;
-            }
-        }
-        int nouns = random.nextInt(2) + 1;
-        ArrayList<ArticleWordId> words = dbHelper.getRandomWords(btnIds.length, null, nouns);
-        // in case we are learning english and alike where there are no nouns
-        // explicitly, we look another time
-        if (words.size()==0)
-        {
-            nouns = (nouns+1)%3 +1;
-            words = dbHelper.getRandomWords(btnIds.length, null, nouns);
-        }
-        int correctIdx = 0;
-        if (words.size() == 0) {
-            TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-            queryWordTextView.setText(getString(R.string.learn_no_words));
-        } else {
-            correctIdx = random.nextInt(words.size());
-            setQueryWordTxt(words.get(correctIdx));
-        }
+	@Override
+	public void updateDirectionOfTranslation() {
+		Random random = new Random();
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
+		if (null != strDirection) {
+			direction = Integer.parseInt(strDirection);
+			if (direction == Constants.MIXED) {
+				direction = random.nextInt(2) + 1;
+			}
+		}
+	}
 
-        MyButtonOnClick myButtonOnClick = new MyButtonOnClick();
-        myButtonOnClick.correct = btnIds[correctIdx];
-        (v.findViewById(R.id.left_top_button))
-                .setOnClickListener(myButtonOnClick);
-        (v.findViewById(R.id.right_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (v.findViewById(R.id.left_bottom_button))
-                .setOnClickListener(myButtonOnClick);
-        (v.findViewById(R.id.right_top_button))
-                .setOnClickListener(myButtonOnClick);
-        setBtnTexts(words);
-    }
-
-    private void setQueryWordTxt(ArticleWordId struct) {
+	@Override
+    public void setQueryWordText(ArticleWordId struct) {
         TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
         queryWord = struct.word;
         switch (direction) {
@@ -146,6 +125,7 @@ public class LearnFragment extends MySmartFragment
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
                 String learnLang = sp.getString(getString(R.string.key_language_from), "null");
                 if (null != struct.article) {
+	                // a small hack for German and capitalization of all nouns
                     if ("de".equals(learnLang)) {
                         queryWordTextView.setText(struct.article + "\n" + StringUtils.capitalize(queryWord));
                     } else {
@@ -164,7 +144,8 @@ public class LearnFragment extends MySmartFragment
 
     }
 
-    private void setBtnTexts(ArrayList<ArticleWordId> words) {
+	@Override
+    public void setButtonTexts(ArrayList<ArticleWordId> words) {
         int showOnButton;
         switch (direction) {
             case Constants.FROM_FOREIGN_TO_MY:
@@ -176,9 +157,11 @@ public class LearnFragment extends MySmartFragment
             default:
                 showOnButton = 0; //won't show anything on button
         }
-        for (int i = 0; i < 4; ++i) {
+
+		// actually set the texts to the buttons
+        for (int i = 0; i < btnIds.length; ++i) {
             WordButton tempButton = (WordButton) v.findViewById(btnIds[i]);
-            if (i < words.size()) {
+            if (i < words.size() && showOnButton > 0) {
                 tempButton.setEnabled(true);
                 tempButton.setText(words.get(i), showOnButton);
             } else {
@@ -188,24 +171,24 @@ public class LearnFragment extends MySmartFragment
         }
     }
 
-    private void closeWord() {
+    public void closeWord() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-	    animationHelper.invokeForView(queryWordTextView, R.anim.close_word, this);
+	    animationHelper.invokeForView(queryWordTextView, R.anim.close_word, _uiCallback);
     }
 
-    private void openWord() {
+    public void openWord() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
-	    animationHelper.invokeForView(queryWordTextView, R.anim.open_word, this);
+	    animationHelper.invokeForView(queryWordTextView, R.anim.open_word, _uiCallback);
     }
 
-	private void shakeView(View v) {
+	public void shakeView(View v) {
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
-		animationHelper.invokeForView(v, R.anim.shake, this);
+		animationHelper.invokeForView(v, R.anim.shake, _uiCallback);
 	}
 
-    private void openButtons() {
+    public void openButtons() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    View[] viewsBottom = {
 			    v.findViewById(R.id.second_button_layout),
@@ -215,11 +198,11 @@ public class LearnFragment extends MySmartFragment
 			    v.findViewById(R.id.first_button_layout),
 			    v.findViewById(R.id.left_top_button),
 			    v.findViewById(R.id.right_top_button)};
-	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_in_up_first_row, this);
-	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_in_up_second_row, this);
+	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_in_up_first_row, _uiCallback);
+	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_in_up_second_row, _uiCallback);
     }
 
-    private void closeButtons() {
+    public void closeButtons() {
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    View[] viewsBottom = {
 			    v.findViewById(R.id.second_button_layout),
@@ -229,50 +212,13 @@ public class LearnFragment extends MySmartFragment
 			    v.findViewById(R.id.first_button_layout),
 			    v.findViewById(R.id.left_top_button),
 			    v.findViewById(R.id.right_top_button)};
-	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_away_down_first_row, this);
-	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_away_down_second_row, this);
+	    animationHelper.invokeForAllViews(viewsBottom, R.anim.float_away_down_first_row, _uiCallback);
+	    animationHelper.invokeForAllViews(viewsTop, R.anim.float_away_down_second_row, _uiCallback);
     }
 
-	@Override
-	public void onAnimationFinished(int id, boolean ignore) {
-		if (ignore)
-			return;
-		Log.d(LOG_TAG,"got animation id = "+id);
-		switch (id)
-		{
-			case (R.anim.float_away_down_second_row):
-				setAll(View.INVISIBLE);
-				break;
-			case (R.anim.close_word):
-				fetchNewWords();
-				setAll(View.VISIBLE);
-				openButtons();
-				openWord();
-				break;
-		}
-	}
-
-	private class MyButtonOnClick implements View.OnClickListener {
-        public int correct = 0;
-
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            if (correct == id) {
-                updateWordWeight();
-                numOfWrongAnswers = 0;
-                closeWord();
-                closeButtons();
-            } else {
-                numOfWrongAnswers++;
-	            shakeView(v);
-//                showDialogWrong();
-            }
-        }
-    }
-
-    private void updateWordWeight() {
+    public void updateWordWeight(int numOfWrongAnswers) {
         Log.d(LOG_TAG, "word to be updated " + queryWord);
+	    dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         switch (numOfWrongAnswers) {
             case 0:
                 dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT);
@@ -287,10 +233,5 @@ public class LearnFragment extends MySmartFragment
                 dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_THREE_WRONG);
                 break;
         }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 }

@@ -85,6 +85,7 @@ public class AddWordsController implements
 
 	@Override
 	public void afterTextChanged(Editable s) {
+		if (_focused == null) return;
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {

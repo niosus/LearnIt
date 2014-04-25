@@ -93,7 +93,7 @@ public class DictFragment extends MySmartFragment
 	public void deleteWord(String word) {
 		DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
 		dbHelper.deleteWord(StringUtils.stripFromArticle(this.getActivity(), word));
-		Crouton.makeText(getActivity(),  "DUMMY " + word + " DELETED", Style.CONFIRM).show();
+		Crouton.makeText(getActivity(),  getString(R.string.crouton_word_deleted, word), Style.CONFIRM).show();
 	}
 
 	@Override
