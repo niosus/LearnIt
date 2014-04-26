@@ -182,17 +182,17 @@ public class MainActivityController extends Activity implements
         switch(position)
         {
 	        case ADD_WORDS_FRAGMENT:
-		        fragment = AddWordFragment.newInstance(_worker);
+		        fragment = new AddWordFragment(_worker);
 		        fragment.identifier = ADD_WORDS_FRAGMENT;
 		        Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 		        break;
             case DICTIONARY_FRAGMENT:
-                fragment = DictFragment.newInstance(_worker);
+                fragment = new DictFragment(_worker);
 	            fragment.identifier = DICTIONARY_FRAGMENT;
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = LearnFragment.newInstance(_worker);
+                fragment = new LearnFragment(_worker);
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
 	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 	            break;

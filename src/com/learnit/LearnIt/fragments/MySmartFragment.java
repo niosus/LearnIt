@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.interfaces.IListener;
 import com.learnit.LearnIt.utils.Utils;
 
 public abstract class MySmartFragment extends Fragment {
     protected static final String LOG_TAG = "my_logs";
-	protected IListener _listener;
 	protected View _v;
 	public int identifier;
 

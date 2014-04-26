@@ -34,17 +34,17 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 		MySmartFragment fragment = null;
 		switch (i) {
 			case MainActivityController.DICTIONARY_FRAGMENT:
-				fragment = DictFragment.newInstance(_worker);
+				fragment = new DictFragment(_worker);
 				fragment.identifier = MainActivityController.DICTIONARY_FRAGMENT;
 				Log.d(Constants.LOG_TAG, "Created Dictionary Fragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.ADD_WORDS_FRAGMENT:
-				fragment = AddWordFragment.newInstance(_worker);
+				fragment = new AddWordFragment(_worker);
 				fragment.identifier = MainActivityController.ADD_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
-				fragment = LearnFragment.newInstance(_worker);
+				fragment = new LearnFragment(_worker);
 				fragment.identifier = MainActivityController.LEARN_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 				break;

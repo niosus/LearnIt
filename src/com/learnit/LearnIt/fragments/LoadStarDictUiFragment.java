@@ -3,7 +3,6 @@ package com.learnit.LearnIt.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +60,6 @@ public class LoadStarDictUiFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e("blah", "saving state");
-        outState.putString("Title", _tvTitle.getText().toString());
 //        outState.putString("DictName", _tvDictName.getText().toString());
 //        outState.putString("DictInfo", _tvDictInfo.getText().toString());
 //        outState.putString("Loaded", _tvLoaded.getText().toString());

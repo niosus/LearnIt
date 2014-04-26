@@ -63,16 +63,9 @@ public class DictFragment extends MySmartFragment
 		setListEntries(null);
 	}
 
-	private DictFragment(IWorkerJobInput worker) {
+	public DictFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new DictController(this, worker);
-	}
-
-	public static DictFragment newInstance(WorkerFragment worker) {
-		DictFragment fragment = new DictFragment(worker);
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
-		return fragment;
 	}
 
 	public void startActionMode(ActionMode.Callback callback) {

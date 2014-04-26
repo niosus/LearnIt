@@ -27,6 +27,7 @@ import com.learnit.LearnIt.controllers.AddWordsController;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.List;
 
@@ -42,11 +43,7 @@ public class AddWordFragment extends MySmartFragment
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
 
-	public static final int DIALOG_ADDED = 668;
-	public static final int DIALOG_WORD_UPDATED = 669;
-	public static final int DIALOG_WORD_EXISTS = 670;
-
-	private AddWordFragment(WorkerFragment worker) {
+	public AddWordFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new AddWordsController(this, worker);
 	}
@@ -62,13 +59,6 @@ public class AddWordFragment extends MySmartFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
-	public static AddWordFragment newInstance(WorkerFragment worker) {
-		AddWordFragment fragment = new AddWordFragment(worker);
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
-		return fragment;
-	}
 
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
