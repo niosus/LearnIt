@@ -270,23 +270,23 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<ArticleWordId> getRandomWords(int numOfWords, String ommitWord, int noun) {
+    public ArrayList<ArticleWordId> getRandomWords(int numOfWords, String omitWord, int noun) {
         db = this.getReadableDatabase();
         ArrayList<ArticleWordId> structArray = new ArrayList<ArticleWordId>();
-        Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + ommitWord + "' and isnoun = " + noun + " from " + currentDBName);
+        Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + omitWord + "' and isnoun = " + noun + " from " + currentDBName);
         Cursor c;
         switch (noun) {
             case Constants.MIXED:
-                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + ommitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
                 break;
             case Constants.NOT_NOUNS:
-                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is null and " + WORD_COLUMN_NAME + "!='" + ommitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is null and " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
                 break;
             case Constants.ONLY_NOUNS:
-                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is not null and " + WORD_COLUMN_NAME + "!='" + ommitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is not null and " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
                 break;
             default:
-                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + ommitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
         }
         String word, translation;
         String article;

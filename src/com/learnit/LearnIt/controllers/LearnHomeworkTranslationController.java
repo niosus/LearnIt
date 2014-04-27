@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.async_tasks.GetRandomWordsTask;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.NotificationBuilder;
 import com.learnit.LearnIt.fragments.HomeworkFragment;
@@ -180,6 +181,19 @@ public class LearnHomeworkTranslationController extends LearnController {
 			if (_fragmentUpdate instanceof HomeworkFragment) {
 				((HomeworkFragment) _fragmentUpdate).stopActivity();
 			}
+		}
+	}
+
+	@Override
+	public void onFail() {
+		_worker.onTaskFinished();
+		_failCounter++;
+		if (_failCounter > 1) {
+			_fragmentUpdate.setQueryWordTextFail();
+			_fragmentUpdate.setButtonTexts(null, 0);
+			_fragmentUpdate.setAll(View.VISIBLE);
+		} else {
+			_worker.addTask(new GetRandomWordsTask(_correctEntry.word, _btnIds.length - 1, Constants.NOT_NOUNS), this);
 		}
 	}
 }

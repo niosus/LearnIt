@@ -175,7 +175,7 @@ public class HomeworkFragment extends LearnFragment {
 		// actually set the texts to the buttons
 		for (int i = 0; i < btnIds().length; ++i) {
 			WordButton tempButton = (WordButton) v.findViewById(btnIds()[i]);
-			if (i < words.size() && showOnButton > 0) {
+			if (words != null && i < words.size() && showOnButton > 0) {
 				tempButton.setEnabled(true);
 				tempButton.setText(words.get(i), showOnButton);
 			} else {

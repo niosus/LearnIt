@@ -1,11 +1,14 @@
 package com.learnit.LearnIt.controllers;
 
+import android.util.Log;
 import android.view.View;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.async_tasks.GetRandomWordsTask;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +25,9 @@ public class LearnOnTheGoController extends LearnController {
 	@Override
 	public void onSuccessRandomWords(ArrayList<ArticleWordId> articleWordIds) {
 		_worker.onTaskFinished();
+		_failCounter = 0;
+		Log.d("my_logs", "success random words LearnOnTheGo size " + articleWordIds.size());
+		if (articleWordIds.size() < 1) return;
 		Random rand = new Random();
 		_fragmentUpdate.updateDirectionOfTranslation();
 		_correctAnswerId = rand.nextInt(articleWordIds.size());
@@ -52,5 +58,17 @@ public class LearnOnTheGoController extends LearnController {
 	@Override
 	public void showNext() {
 		fetchRandomWords(_btnIds.length, null);
+	}
+
+	@Override
+	public void onFail() {
+		_worker.onTaskFinished();
+		_failCounter++;
+		if (_failCounter > 1) {
+			_fragmentUpdate.setQueryWordTextFail();
+			_fragmentUpdate.setButtonTexts(null, 0);
+		} else {
+			_worker.addTask(new GetRandomWordsTask(null, _btnIds.length, Constants.NOT_NOUNS), this);
+		}
 	}
 }

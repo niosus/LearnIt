@@ -72,6 +72,11 @@ public abstract class LearnFragment
     }
 
 	@Override
+	public void setQueryWordTextFail() {
+		_wordToAsk.setText(R.string.learn_no_words);
+	}
+
+	@Override
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState);
 
@@ -116,6 +121,7 @@ public abstract class LearnFragment
 
 	public void updateWordWeight(int numOfWrongAnswers) {
         Log.d(LOG_TAG, "word to be updated " + queryWord);
+		if (queryWord == null) return;
 	    DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
         switch (numOfWrongAnswers) {
             case 0:

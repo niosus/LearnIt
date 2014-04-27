@@ -24,7 +24,7 @@ public abstract class LearnController implements
 	int[] _btnIds;
 	int _correctAnswerId;
 	int _numOfWrongAnswers;
-
+	int _failCounter = 0;
 	public LearnController(ILearnFragmentUpdate target, IWorkerJobInput worker, int[] btnIds) {
 		_fragmentUpdate = target;
 		_worker = worker;
@@ -66,6 +66,7 @@ public abstract class LearnController implements
 
 	@Override
 	public void onFail() {
+		_failCounter++;
 		_worker.onTaskFinished();
 	}
 

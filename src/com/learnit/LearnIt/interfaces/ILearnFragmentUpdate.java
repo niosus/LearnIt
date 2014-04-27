@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public interface ILearnFragmentUpdate {
 	public void setQueryWordText(ArticleWordId struct, int direction);
+	public void setQueryWordTextFail();
 	public void setButtonTexts(ArrayList<ArticleWordId> words, int direction);
 	public void setAll(int visibilityState);
 	public void openButtons();
