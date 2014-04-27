@@ -8,22 +8,22 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.NotificationBuilder;
-import com.learnit.LearnIt.fragments.HomeworkFragment;
+import com.learnit.LearnIt.fragments.ArticlesHomeworkFragment;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by igor on 4/2/14.
  */
-public class LearnHomeworkTranslationController extends LearnController {
+public class LearnHomeworkArticlesController extends LearnController {
 	public static final String LOG_TAG = "my_logs";
 	private static final String ALIVE_IDS_TAG = "current_ids";
 	private ArrayList<Integer> _ids;
@@ -34,19 +34,19 @@ public class LearnHomeworkTranslationController extends LearnController {
 	private ArrayList<String> _articles;
 	private ArrayList<String> _prefixes;
 	private int _currentNotificationIndex;
-	ArticleWordId _correctEntry = null;
+	ArticleWordId correctEntry = null;
 	int _direction;
 	int _currentTypeOfHomework;
 	Context _context;
 
-	public LearnHomeworkTranslationController(ILearnFragmentUpdate target, IWorkerJobInput worker, int[] btnIds) {
+	public LearnHomeworkArticlesController(ILearnFragmentUpdate target, IWorkerJobInput worker, int[] btnIds) {
 		super(target, worker, btnIds);
 	}
 
 	public void getEverythingFromExtras(Bundle extras, Context context) {
-		if (context == null) { throw new NullPointerException("context is null in LearnHomeworkTranslationController"); }
+		if (context == null) { throw new NullPointerException("context is null in LearnHomeworkArticlesController"); }
 		_context = context;
-		if (extras == null) { throw new NullPointerException("extras are null in LearnHomeworkTranslationController"); }
+		if (extras == null) { throw new NullPointerException("extras are null in LearnHomeworkArticlesController"); }
 		_ids = extras.getIntegerArrayList(NotificationBuilder.IDS_TAG);
 		_words = extras.getStringArrayList(NotificationBuilder.WORDS_TAG);
 		_translations = extras.getStringArrayList(NotificationBuilder.TRANSLATIONS_TAG);
@@ -60,18 +60,17 @@ public class LearnHomeworkTranslationController extends LearnController {
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == _btnIds[_correctAnswerId]) {
-			NotificationManager notificationManager =
-					(NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.cancel(_correctEntry.id);
-			_fragmentUpdate.updateWordWeight(_numOfWrongAnswers);
-			_numOfWrongAnswers = 0;
-			_fragmentUpdate.closeWord();
-			_fragmentUpdate.closeButtons();
-			updateListOfAliveIds();
-
-		} else {
-			if (v instanceof Button) {
+		if (v instanceof Button) {
+			if (((TextView) v).getText().toString().equals(correctEntry.article)) {
+				NotificationManager notificationManager =
+						(NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+				notificationManager.cancel(correctEntry.id);
+				_fragmentUpdate.updateWordWeight(_numOfWrongAnswers);
+				_numOfWrongAnswers = 0;
+				updateListOfAliveIds();
+				_fragmentUpdate.closeWord();
+				_fragmentUpdate.closeButtons();
+			} else {
 				_numOfWrongAnswers++;
 				_fragmentUpdate.shakeView(v);
 			}
@@ -90,7 +89,7 @@ public class LearnHomeworkTranslationController extends LearnController {
 			if (counter++==_ids.size())
 				return false;
 		}
-		_correctEntry = new ArticleWordId(
+		correctEntry = new ArticleWordId(
 				_articles.get(_currentNotificationIndex),
 				_prefixes.get(_currentNotificationIndex),
 				_words.get(_currentNotificationIndex),
@@ -99,8 +98,8 @@ public class LearnHomeworkTranslationController extends LearnController {
 		);
 		_direction = _directionsOfTrans.get(_currentNotificationIndex);
 		_currentTypeOfHomework = _typesOfHomework.get(_currentNotificationIndex);
-		Log.d(LOG_TAG, "got intent word=" + _correctEntry.word + " id = "
-				+ _correctEntry.id);
+		Log.d(LOG_TAG, "got intent word=" + correctEntry.word + " id = "
+				+ correctEntry.id);
 		return true;
 	}
 
@@ -114,7 +113,7 @@ public class LearnHomeworkTranslationController extends LearnController {
 		String idsNew="";
 		for (Integer idInt: _ids)
 		{
-			if (idInt== _correctEntry.id)
+			if (idInt==correctEntry.id)
 				continue;
 			if (!idsOld.contains(idInt.toString()))
 				continue;
@@ -127,20 +126,6 @@ public class LearnHomeworkTranslationController extends LearnController {
 
 	@Override
 	public void onSuccessRandomWords(ArrayList<ArticleWordId> articleWordIds) {
-		_worker.onTaskFinished();
-		if (articleWordIds.size() != _btnIds.length - 1) {
-			Log.e("my_logs", "random words number is wrong in LearnHomeworkTranslationController");
-			return;
-		}
-		_fragmentUpdate.updateDirectionOfTranslation();
-		Random rand = new Random();
-		_correctAnswerId = rand.nextInt(_btnIds.length);
-		articleWordIds.add(_correctAnswerId, _correctEntry);
-		_fragmentUpdate.setQueryWordText(_correctEntry, _direction);
-		_fragmentUpdate.setButtonTexts(articleWordIds, _direction);
-		_fragmentUpdate.openButtons();
-		_fragmentUpdate.openWord();
-		_fragmentUpdate.setAll(View.VISIBLE);
 	}
 
 	@Override
@@ -149,9 +134,6 @@ public class LearnHomeworkTranslationController extends LearnController {
 			return;
 		switch (id)
 		{
-			case (R.anim.float_away_down_second_row):
-				_fragmentUpdate.setAll(View.INVISIBLE);
-				break;
 			case (R.anim.close_word):
 				_fragmentUpdate.setAll(View.INVISIBLE);
 				showNext();
@@ -160,9 +142,9 @@ public class LearnHomeworkTranslationController extends LearnController {
 	}
 
 	private boolean checkNextFragmentType() {
-		if (_currentTypeOfHomework == Constants.LEARN_ARTICLES) {
-			if (_fragmentUpdate instanceof HomeworkFragment) {
-				((HomeworkFragment) _fragmentUpdate)
+		if (_currentTypeOfHomework == Constants.LEARN_TRANSLATIONS) {
+			if (_fragmentUpdate instanceof ArticlesHomeworkFragment) {
+				((ArticlesHomeworkFragment) _fragmentUpdate)
 						.askActivityToSwitchFragments(_currentTypeOfHomework);
 				return false;
 			}
@@ -174,11 +156,14 @@ public class LearnHomeworkTranslationController extends LearnController {
 	public void showNext() {
 		if (findNextId()) {
 			if (checkNextFragmentType()) {
-				fetchRandomWords(_btnIds.length - 1, _correctEntry.word);
+				_fragmentUpdate.setQueryWordText(correctEntry, _direction);
+				_fragmentUpdate.openWord();
+				_fragmentUpdate.openButtons();
+				_fragmentUpdate.setAll(View.VISIBLE);
 			}
 		} else {
-			if (_fragmentUpdate instanceof HomeworkFragment) {
-				((HomeworkFragment) _fragmentUpdate).stopActivity();
+			if (_fragmentUpdate instanceof ArticlesHomeworkFragment) {
+				((ArticlesHomeworkFragment) _fragmentUpdate).stopActivity();
 			}
 		}
 	}

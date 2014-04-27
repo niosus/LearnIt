@@ -26,8 +26,8 @@ public class LearnOnTheGoController extends LearnController {
 		_fragmentUpdate.updateDirectionOfTranslation();
 		_correctAnswerId = rand.nextInt(articleWordIds.size());
 		_fragmentUpdate.setQueryWordText(
-				articleWordIds.get(_correctAnswerId));
-		_fragmentUpdate.setButtonTexts(articleWordIds);
+				articleWordIds.get(_correctAnswerId), 0);
+		_fragmentUpdate.setButtonTexts(articleWordIds, 0);
 		_fragmentUpdate.openButtons();
 		_fragmentUpdate.openWord();
 		_fragmentUpdate.setAll(View.VISIBLE);
@@ -44,8 +44,13 @@ public class LearnOnTheGoController extends LearnController {
 				break;
 			case (R.anim.close_word):
 				_fragmentUpdate.setAll(View.INVISIBLE);
-				fetchRandomWords(_btnIds.length, null);
+				showNext();
 				break;
 		}
+	}
+
+	@Override
+	public void showNext() {
+		fetchRandomWords(_btnIds.length, null);
 	}
 }

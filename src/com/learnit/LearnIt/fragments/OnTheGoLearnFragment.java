@@ -19,8 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.activities.HomeworkActivity;
-import com.learnit.LearnIt.controllers.LearnHomeworkTranslationController;
+import com.learnit.LearnIt.controllers.LearnOnTheGoController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -31,7 +30,7 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 
 
-public class HomeworkFragment extends LearnFragment {
+public class OnTheGoLearnFragment extends LearnFragment {
 	public static final String TAG = "homework_frag";
 
 	private int[] _btnIds = {
@@ -45,9 +44,9 @@ public class HomeworkFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public HomeworkFragment(IWorkerJobInput worker) {
+	public OnTheGoLearnFragment(IWorkerJobInput worker) {
 		super();
-		_listener = new LearnHomeworkTranslationController(this, worker, btnIds());
+		_listener = new LearnOnTheGoController(this, worker, btnIds());
 	}
 
 	//	TODO: change the names of the strings to some constants !!! important
@@ -114,17 +113,7 @@ public class HomeworkFragment extends LearnFragment {
 		for (int id: _btnIds) {
 			(v.findViewById(id)).setOnClickListener(_listener);
 		}
-		setAll(View.INVISIBLE);
 		return v;
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		Bundle extras = getArguments();
-		if (_listener instanceof LearnHomeworkTranslationController) {
-			((LearnHomeworkTranslationController) _listener).getEverythingFromExtras(extras, this.getActivity());
-		}
 	}
 
 	@Override
@@ -215,11 +204,5 @@ public class HomeworkFragment extends LearnFragment {
 
 	public void stopActivity() {
 		this.getActivity().finish();
-	}
-
-	public void askActivityToSwitchFragments(int homeworkType) {
-		if (this.getActivity() instanceof HomeworkActivity) {
-			((HomeworkActivity) this.getActivity()).replaceFragment(homeworkType);
-		}
 	}
 }

@@ -13,7 +13,6 @@ import android.util.Log;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
-import com.learnit.LearnIt.activities.HomeworkArticleActivity;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -28,6 +27,7 @@ public class NotificationBuilder {
 	public static final String ARTICLES_TAG = "articles";
 	public static final String PREFIXES_TAG = "prefixes";
 	public static final String TRANSLATIONS_TAG = "translations";
+	public static final String HOMEWORK_TYPE_TAG = "homework_type";
 	public static final String DIRECTIONS_OF_TRANS_TAG = "directions_of_trans";
 	public static final String CURRENT_NOTIFICATION_INDEX = "current_index";
 
@@ -158,7 +158,7 @@ public class NotificationBuilder {
 			case Constants.LEARN_TRANSLATIONS:
 				return new Intent(context, HomeworkActivity.class);
 			case Constants.LEARN_ARTICLES:
-				return new Intent(context, HomeworkArticleActivity.class);
+				return new Intent(context, HomeworkActivity.class);
 			default:
 				return null;
 		}
@@ -170,7 +170,7 @@ public class NotificationBuilder {
 			case Constants.LEARN_TRANSLATIONS:
 				return HomeworkActivity.class;
 			case Constants.LEARN_ARTICLES:
-				return HomeworkArticleActivity.class;
+				return HomeworkActivity.class;
 			default:
 				return null;
 		}
@@ -194,6 +194,7 @@ public class NotificationBuilder {
 		ArrayList<String> translations = new ArrayList<String>();
 		ArrayList<String> prefixes = new ArrayList<String>();
 		ArrayList<Integer> directionsOfTrans = new ArrayList<Integer>();
+		ArrayList<Integer> typesOfHomeworks = new ArrayList<Integer>();
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (ArticleWordId struct: randWords)
 		{
@@ -205,6 +206,7 @@ public class NotificationBuilder {
 			translations.add(struct.translation);
 			prefixes.add(struct.prefix);
 			intents.add(getIntentFromHomeworkType(context, homeworkActivityType));
+			typesOfHomeworks.add(homeworkActivityType);
 			classes.add(getStackTypeFromHomeworkType(homeworkActivityType));
 			directionsOfTrans.add(directionOfTranslation);
 		}
@@ -217,6 +219,7 @@ public class NotificationBuilder {
 			intent.putExtra(ARTICLES_TAG, articles);
 			intent.putExtra(PREFIXES_TAG, prefixes);
 			intent.putExtra(DIRECTIONS_OF_TRANS_TAG, directionsOfTrans);
+			intent.putExtra(HOMEWORK_TYPE_TAG, typesOfHomeworks);
 			intent.putExtra(CURRENT_NOTIFICATION_INDEX, i);
 			intent.setAction(ids.get(i) + " " + words.get(i) + " " + System.currentTimeMillis());
 			NotificationCompat.Builder mBuilder;

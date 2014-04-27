@@ -14,13 +14,18 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import com.learnit.LearnIt.data_types.NotificationBuilder;
+import com.learnit.LearnIt.fragments.ArticlesHomeworkFragment;
 import com.learnit.LearnIt.fragments.HomeworkFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Constants;
+
+import java.util.ArrayList;
 
 public class HomeworkActivity extends Activity {
-    int fromLearnToKnow = 0;
-    final String LOG_TAG = "my_logs";
+	Fragment _uiTranslationsFragment;
+	Fragment _uiArticlesFragment;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,57 +43,62 @@ public class HomeworkActivity extends Activity {
 		}
 
 		// add a ui fragment to stack
-		Fragment uiFragment = fragmentManager
+		_uiTranslationsFragment = fragmentManager
 				.findFragmentByTag(HomeworkFragment.TAG);
-		if (uiFragment == null) {
+		if (_uiTranslationsFragment == null) {
 			if (worker instanceof IWorkerJobInput) {
-				uiFragment = new HomeworkFragment((IWorkerJobInput) worker);
+				_uiTranslationsFragment = new HomeworkFragment((IWorkerJobInput) worker);
 				// extras contain words, translations and so on that we need to show
 				// the data in the homework fragment. We pass them on to the fragment.
-				uiFragment.setArguments(getIntent().getExtras());
-				fragmentManager.beginTransaction()
-						.add(android.R.id.content, uiFragment, HomeworkFragment.TAG)
-						.commit();
+				_uiTranslationsFragment.setArguments(getIntent().getExtras());
 			}
 		}
+
+		// add a ui fragment to stack
+		_uiArticlesFragment = fragmentManager
+				.findFragmentByTag(ArticlesHomeworkFragment.TAG);
+		if (_uiArticlesFragment == null) {
+			if (worker instanceof IWorkerJobInput) {
+				_uiArticlesFragment = new ArticlesHomeworkFragment((IWorkerJobInput) worker);
+				// extras contain words, translations and so on that we need to show
+				// the data in the homework fragment. We pass them on to the fragment.
+				_uiArticlesFragment.setArguments(getIntent().getExtras());
+			}
+		}
+
+		ArrayList<Integer> types = getIntent().getIntegerArrayListExtra(NotificationBuilder.HOMEWORK_TYPE_TAG);
+		if (types == null || types.isEmpty()) return;
+		switch (types.get(0)) {
+			case Constants.LEARN_TRANSLATIONS:
+				fragmentManager.beginTransaction()
+						.replace(android.R.id.content, _uiTranslationsFragment, HomeworkFragment.TAG)
+						.commit();
+				break;
+			case Constants.LEARN_ARTICLES:
+				fragmentManager.beginTransaction()
+						.replace(android.R.id.content, _uiArticlesFragment, ArticlesHomeworkFragment.TAG)
+						.commit();
+				break;
+		}
+
 	}
 
-
-
-//	private void setAllTexts()
-//	{
-//		Utils.updateCurrentDBName(this);
-//		dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
-//		Random random = new Random();
-//		int randIdx = random.nextInt(btnIds.length);
-//		_myBtnOnClick.correct = btnIds[randIdx];
-//		TextView queryWordTextView = (TextView) findViewById(R.id.word_to_ask);
-//		queryWordTextView.setMovementMethod(new ScrollingMovementMethod());
-//		setBtnTexts(randIdx);
-//		switch (fromLearnToKnow) {
-//			case Constants.FROM_FOREIGN_TO_MY:
-//				_sp = PreferenceManager.getDefaultSharedPreferences(this);
-//				String learnLang = _sp.getString(getString(R.string.key_language_from), "null");
-//				if (null != correctEntry.article) {
-//					if ("de".equals(learnLang)) {
-//						queryWordTextView.setText(correctEntry.article + " " + StringUtils.capitalize(correctEntry.word));
-//					} else {
-//						queryWordTextView.setText(correctEntry.article + " " + correctEntry.word);
-//					}
-//				} else if (null != correctEntry.prefix) {
-//					queryWordTextView.setText(correctEntry.prefix + " " + correctEntry.word);
-//				} else {
-//					queryWordTextView.setText(correctEntry.word);
-//				}
-//				break;
-//			case Constants.FROM_MY_TO_FOREIGN:
-//				queryWordTextView.setText(correctEntry.translation);
-//				break;
-//		}
-//	}
-
-    public void stopActivity() {
-        finish();
-    }
+	public void replaceFragment(int homeworkType) {
+		FragmentManager fragmentManager = getFragmentManager();
+		switch (homeworkType) {
+			case Constants.LEARN_TRANSLATIONS:
+				fragmentManager
+						.beginTransaction()
+						.replace(android.R.id.content, _uiTranslationsFragment, HomeworkFragment.TAG)
+						.commit();
+				break;
+			case Constants.LEARN_ARTICLES:
+				fragmentManager
+						.beginTransaction()
+						.replace(android.R.id.content, _uiArticlesFragment, ArticlesHomeworkFragment.TAG)
+						.commit();
+				break;
+		}
+	}
 
 }

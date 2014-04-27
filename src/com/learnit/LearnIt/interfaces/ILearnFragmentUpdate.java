@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * Created by igor on 4/2/14.
  */
 public interface ILearnFragmentUpdate {
-	public void setQueryWordText(ArticleWordId struct);
-	public void setButtonTexts(ArrayList<ArticleWordId> words);
+	public void setQueryWordText(ArticleWordId struct, int direction);
+	public void setButtonTexts(ArrayList<ArticleWordId> words, int direction);
 	public void setAll(int visibilityState);
 	public void openButtons();
 	public void openWord();

@@ -26,9 +26,9 @@ import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
-import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MySmartFragment;
+import com.learnit.LearnIt.fragments.OnTheGoLearnFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -192,7 +192,7 @@ public class MainActivityController extends Activity implements
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = new LearnFragment(_worker);
+                fragment = new OnTheGoLearnFragment(_worker);
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
 	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 	            break;

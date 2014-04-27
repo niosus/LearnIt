@@ -12,4 +12,5 @@ public interface IListenerLearn extends
 			String omitWord);
 	public void setCorrectWordIdFromPrefs(int num);
 	public int getCorrectWordId();
+	public void showNext();
 }

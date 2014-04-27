@@ -10,8 +10,8 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.MainActivityController;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
-import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.MySmartFragment;
+import com.learnit.LearnIt.fragments.OnTheGoLearnFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.utils.Constants;
 
@@ -44,7 +44,7 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 				Log.d(Constants.LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 				break;
 			case MainActivityController.LEARN_WORDS_FRAGMENT:
-				fragment = new LearnFragment(_worker);
+				fragment = new OnTheGoLearnFragment(_worker);
 				fragment.identifier = MainActivityController.LEARN_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 				break;
