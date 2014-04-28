@@ -29,6 +29,7 @@ import com.learnit.LearnIt.utils.Utils;
 import java.util.List;
 import java.util.Map;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -86,7 +87,9 @@ public class DictFragment extends MySmartFragment
 	public void deleteWord(String word) {
 		DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
 		dbHelper.deleteWord(StringUtils.stripFromArticle(this.getActivity(), word));
-		Crouton.makeText(getActivity(),  getString(R.string.crouton_word_deleted, word), Style.CONFIRM).show();
+		Crouton crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_deleted, word), Style.CONFIRM);
+		crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
+		crouton.show();
 	}
 
 	@Override

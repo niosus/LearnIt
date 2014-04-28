@@ -35,19 +35,22 @@ public abstract class LearnFragment
 		extends MySmartFragment
 		implements ILearnFragmentUpdate {
 	public static final String TAG = "learn_words_frag";
+	public static final String BUTTON_PREFIX_TAG = "button_";
+	public static final String WORD_TAG = "query_word";
+	public static final String CORRECT_INDEX_TAG = "correct_idx";
+	final String LOG_TAG = "my_logs";
 
-    View v;
-    String queryWord = null;
+
+	protected View v;
+    protected String queryWord = null;
     protected int _direction = 0;
-    final String LOG_TAG = "my_logs";
 	protected IListenerLearn _listener;
-	TextView _wordToAsk;
+	protected TextView _wordToAsk;
 
 	protected abstract int[] btnIds();
 
 	public LearnFragment() {
 		super();
-		setRetainInstance(true);
 	}
 
     public void setAll(int visibilityState)
@@ -138,4 +141,64 @@ public abstract class LearnFragment
                 break;
         }
     }
+
+	void removeOldSavedValues(SharedPreferences sp) {
+		SharedPreferences.Editor editor = sp.edit();
+		editor.remove(WORD_TAG);
+		editor.remove(CORRECT_INDEX_TAG);
+		for (int i = 0; i < btnIds().length; ++i) {
+			editor.remove(BUTTON_PREFIX_TAG + i);
+		}
+		editor.commit();
+	}
+
+	protected void saveToPreferences() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		SharedPreferences.Editor editor = sp.edit();
+		// add word text to shared preferences
+		if (_wordToAsk == null || _wordToAsk.getText() == null) { return; }
+		editor.putString(WORD_TAG, _wordToAsk.getText().toString());
+
+		// add correct id to shared preferences
+		editor.putInt(CORRECT_INDEX_TAG, _listener.getCorrectWordId());
+
+		// add all the button texts to shared preferences
+		TextView currentButtonText;
+		for (int i = 0; i < btnIds().length; ++i) {
+			currentButtonText = ((TextView) v.findViewById(btnIds()[i]));
+			if (currentButtonText == null || currentButtonText.getText() == null) { return; }
+			editor.putString(BUTTON_PREFIX_TAG + i, currentButtonText.getText().toString());
+		}
+
+		// commit the transaction
+		editor.commit();
+	}
+
+
+	protected boolean restoreFromPreferences() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		String word = sp.getString(WORD_TAG, null);
+		if (word == null) { return false; }
+		((TextView) v.findViewById(R.id.word_to_ask)).setText(word);
+		String[] split = word.split("\n");
+		queryWord = split[split.length - 1];
+
+		int correctId = sp.getInt(CORRECT_INDEX_TAG, 0);
+		if (correctId == 0) { return false; }
+		_listener.setCorrectWordIdFromPrefs(correctId);
+
+		String buttonText;
+		for (int i = 0; i < btnIds().length; ++i) {
+			buttonText = sp.getString(BUTTON_PREFIX_TAG + i, null);
+			if (buttonText == null || buttonText.isEmpty()) {
+				((TextView) v.findViewById(btnIds()[i])).setText("");
+				(v.findViewById(btnIds()[i])).setEnabled(false);
+			} else {
+				((TextView) v.findViewById(btnIds()[i])).setText(buttonText);
+			}
+		}
+		removeOldSavedValues(sp);
+		setAll(View.VISIBLE);
+		return true;
+	}
 }

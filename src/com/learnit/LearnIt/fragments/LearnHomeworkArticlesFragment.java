@@ -31,7 +31,7 @@ import com.learnit.LearnIt.utils.StringUtils;
 import java.util.ArrayList;
 
 
-public class ArticlesHomeworkFragment extends LearnFragment {
+public class LearnHomeworkArticlesFragment extends LearnFragment {
 	public static final String TAG = "articles_homework_frag";
 
 	private int[] _btnIds = {
@@ -44,7 +44,7 @@ public class ArticlesHomeworkFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public ArticlesHomeworkFragment(IWorkerJobInput worker) {
+	public LearnHomeworkArticlesFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new LearnHomeworkArticlesController(this, worker, btnIds());
 	}

@@ -31,6 +31,7 @@ import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 
 import java.util.List;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -218,16 +219,20 @@ public class AddWordFragment extends MySmartFragment
 	}
 
 	public void showMessage(int exitCode) {
+		Crouton crouton = null;
 		switch (exitCode) {
 			case DBHelper.EXIT_CODE_OK:
-				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_saved, getWord()), Style.CONFIRM).show();
+				crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_saved, getWord()), Style.CONFIRM);
 				break;
 			case DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB:
-				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_already_present, getWord()), Style.ALERT).show();
+				crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_already_present, getWord()), Style.ALERT);
 				break;
 			case DBHelper.EXIT_CODE_WORD_UPDATED:
-				Crouton.makeText(getActivity(),  getString(R.string.crouton_word_updated, getWord()), Style.CONFIRM).show();
+				crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_updated, getWord()), Style.CONFIRM);
 				break;
 		}
+		if (crouton == null) { return; }
+		crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
+		crouton.show();
 	}
 }

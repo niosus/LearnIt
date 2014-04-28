@@ -13,7 +13,7 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetRandomWordsTask;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.NotificationBuilder;
-import com.learnit.LearnIt.fragments.HomeworkFragment;
+import com.learnit.LearnIt.fragments.LearnHomeworkTranslationFragment;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -162,8 +162,8 @@ public class LearnHomeworkTranslationController extends LearnController {
 
 	private boolean checkNextFragmentType() {
 		if (_currentTypeOfHomework == Constants.LEARN_ARTICLES) {
-			if (_fragmentUpdate instanceof HomeworkFragment) {
-				((HomeworkFragment) _fragmentUpdate)
+			if (_fragmentUpdate instanceof LearnHomeworkTranslationFragment) {
+				((LearnHomeworkTranslationFragment) _fragmentUpdate)
 						.askActivityToSwitchFragments(_currentTypeOfHomework);
 				return false;
 			}
@@ -178,8 +178,8 @@ public class LearnHomeworkTranslationController extends LearnController {
 				fetchRandomWords(_btnIds.length - 1, _correctEntry.word);
 			}
 		} else {
-			if (_fragmentUpdate instanceof HomeworkFragment) {
-				((HomeworkFragment) _fragmentUpdate).stopActivity();
+			if (_fragmentUpdate instanceof LearnHomeworkTranslationFragment) {
+				((LearnHomeworkTranslationFragment) _fragmentUpdate).stopActivity();
 			}
 		}
 	}

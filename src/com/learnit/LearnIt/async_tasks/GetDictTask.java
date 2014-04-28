@@ -1,9 +1,11 @@
 package com.learnit.LearnIt.async_tasks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -28,6 +30,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		if (langPair == null)
 		{
 			Log.e(Constants.LOG_TAG, "NULL!!!!!!!!!!!!!!!!");
+			return;
 		}
 		_langFrom = langPair.first;
 		_langTo = langPair.second;
@@ -83,10 +86,14 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		if (dictName == null)
 		{
 			_taskActionCallback.onFail();
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_context);
+			sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
 			return;
 		}
 		if (_taskActionCallback instanceof IWorkerEventListenerGetDict) {
 			((IWorkerEventListenerGetDict) _taskActionCallback).onSuccessDictName(dictName);
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_context);
+			sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, _langFrom + " " + _langTo).commit();
 		} else {
 			throw new ClassCastException(
 					_taskActionCallback.getClass().getSimpleName()

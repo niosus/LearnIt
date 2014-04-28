@@ -15,8 +15,8 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.learnit.LearnIt.data_types.NotificationBuilder;
-import com.learnit.LearnIt.fragments.ArticlesHomeworkFragment;
-import com.learnit.LearnIt.fragments.HomeworkFragment;
+import com.learnit.LearnIt.fragments.LearnHomeworkArticlesFragment;
+import com.learnit.LearnIt.fragments.LearnHomeworkTranslationFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -44,10 +44,10 @@ public class HomeworkActivity extends Activity {
 
 		// add a ui fragment to stack
 		_uiTranslationsFragment = fragmentManager
-				.findFragmentByTag(HomeworkFragment.TAG);
+				.findFragmentByTag(LearnHomeworkTranslationFragment.TAG);
 		if (_uiTranslationsFragment == null) {
 			if (worker instanceof IWorkerJobInput) {
-				_uiTranslationsFragment = new HomeworkFragment((IWorkerJobInput) worker);
+				_uiTranslationsFragment = new LearnHomeworkTranslationFragment((IWorkerJobInput) worker);
 				// extras contain words, translations and so on that we need to show
 				// the data in the homework fragment. We pass them on to the fragment.
 				_uiTranslationsFragment.setArguments(getIntent().getExtras());
@@ -56,10 +56,10 @@ public class HomeworkActivity extends Activity {
 
 		// add a ui fragment to stack
 		_uiArticlesFragment = fragmentManager
-				.findFragmentByTag(ArticlesHomeworkFragment.TAG);
+				.findFragmentByTag(LearnHomeworkArticlesFragment.TAG);
 		if (_uiArticlesFragment == null) {
 			if (worker instanceof IWorkerJobInput) {
-				_uiArticlesFragment = new ArticlesHomeworkFragment((IWorkerJobInput) worker);
+				_uiArticlesFragment = new LearnHomeworkArticlesFragment((IWorkerJobInput) worker);
 				// extras contain words, translations and so on that we need to show
 				// the data in the homework fragment. We pass them on to the fragment.
 				_uiArticlesFragment.setArguments(getIntent().getExtras());
@@ -71,12 +71,12 @@ public class HomeworkActivity extends Activity {
 		switch (types.get(0)) {
 			case Constants.LEARN_TRANSLATIONS:
 				fragmentManager.beginTransaction()
-						.replace(android.R.id.content, _uiTranslationsFragment, HomeworkFragment.TAG)
+						.replace(android.R.id.content, _uiTranslationsFragment, LearnHomeworkTranslationFragment.TAG)
 						.commit();
 				break;
 			case Constants.LEARN_ARTICLES:
 				fragmentManager.beginTransaction()
-						.replace(android.R.id.content, _uiArticlesFragment, ArticlesHomeworkFragment.TAG)
+						.replace(android.R.id.content, _uiArticlesFragment, LearnHomeworkArticlesFragment.TAG)
 						.commit();
 				break;
 		}
@@ -89,13 +89,13 @@ public class HomeworkActivity extends Activity {
 			case Constants.LEARN_TRANSLATIONS:
 				fragmentManager
 						.beginTransaction()
-						.replace(android.R.id.content, _uiTranslationsFragment, HomeworkFragment.TAG)
+						.replace(android.R.id.content, _uiTranslationsFragment, LearnHomeworkTranslationFragment.TAG)
 						.commit();
 				break;
 			case Constants.LEARN_ARTICLES:
 				fragmentManager
 						.beginTransaction()
-						.replace(android.R.id.content, _uiArticlesFragment, ArticlesHomeworkFragment.TAG)
+						.replace(android.R.id.content, _uiArticlesFragment, LearnHomeworkArticlesFragment.TAG)
 						.commit();
 				break;
 		}

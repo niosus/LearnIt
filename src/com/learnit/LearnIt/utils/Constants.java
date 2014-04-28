@@ -18,6 +18,7 @@ public class Constants {
     public static final int LEARN_TRANSLATIONS = 1;
     public static final int LEARN_ARTICLES = 2;
     public static final int LEARN_MIXED = 3;
+	public static final String CURRENT_HELP_DICT_TAG = "current_help_dict";
 
 
 }

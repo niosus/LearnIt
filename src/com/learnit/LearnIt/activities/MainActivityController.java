@@ -7,12 +7,18 @@ package com.learnit.LearnIt.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -26,12 +32,14 @@ import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
+import com.learnit.LearnIt.fragments.LearnCasualFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MySmartFragment;
-import com.learnit.LearnIt.fragments.OnTheGoLearnFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class MainActivityController extends Activity implements
@@ -158,7 +166,26 @@ public class MainActivityController extends Activity implements
         if (!allLanguages.contains(pair.first)) {
             startShowWelcomeActivity();
         }
+	    if (isDictUpdateNeeded()) {
+		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
+				    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
+	    }
     }
+
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					startDictToSQLActivity();
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+			}
+		}
+	};
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -192,7 +219,7 @@ public class MainActivityController extends Activity implements
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = new OnTheGoLearnFragment(_worker);
+                fragment = new LearnCasualFragment(_worker);
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
 	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 	            break;
@@ -204,7 +231,7 @@ public class MainActivityController extends Activity implements
         if (fm.findFragmentByTag("android:switcher:" + 0 + ":" + position)==null)
         {
             FragmentTransaction ft = fm.beginTransaction();
-            ft.setCustomAnimations(R.anim.float_in_right, R.anim.float_away_left);
+            ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 	        ft.replace(R.id.view_group_id, fragment, "android:switcher:" + 0 + ":" + position);
             Log.d(LOG_TAG,"current fragment id = "+fragment.getId() + " and tag = " + fragment.getTag() + ((Object) fragment).getClass().getName());
             ft.commit();
@@ -242,6 +269,36 @@ public class MainActivityController extends Activity implements
         }
     }
 
+	boolean isDictUpdateNeeded() {
+		// check if there is a file on the disc that contains the needed dict
+		// for the current language pair
+		Pair<String,String> currentLanguages = Utils.getCurrentLanguages(this);
+		File sd = Environment.getExternalStorageDirectory();
+		sd = new File(sd, "LearnIt");
+		sd = new File(sd, currentLanguages.first + "-" + currentLanguages.second);
+		sd = new File(sd, "dict.ifo");
+		if (!sd.exists()) {
+			// this means there is no needed file present, so we clear the existing database
+			DBHelper dbHelper = new DBHelper(this, DBHelper.DB_DICT_FROM);
+			SQLiteDatabase db = dbHelper.getWritableDatabase();
+			// and set the state of this database to null
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+			sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
+			db.delete(DBHelper.DB_DICT_FROM, null, null);
+			return false;
+		}
+
+		// check if the saved in preferences languages for the help dictionary have changed
+		// if no change - then no need to reload. Otherwise - reload.
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String langString = sp.getString(Constants.CURRENT_HELP_DICT_TAG, "null");
+		Log.d(LOG_TAG, langString + " <> " + currentLanguages.first + " " + currentLanguages.second);
+		if (langString.equals(currentLanguages.first + " " + currentLanguages.second)) {
+			return false;
+		}
+		return true;
+	}
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -265,4 +322,9 @@ public class MainActivityController extends Activity implements
         startActivity(intent);
         Log.d(LOG_TAG, "start activity welcome");
     }
+
+	private void startDictToSQLActivity() {
+		Intent intent = new Intent(this, LoadStarDictActivity.class);
+		startActivity(intent);
+	}
 }

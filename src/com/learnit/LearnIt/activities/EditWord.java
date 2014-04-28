@@ -57,21 +57,21 @@ public class EditWord extends FragmentActivity {
                     dbHelper.deleteWord(oldStrippedWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
 	                if (exitCode == DBHelper.EXIT_CODE_OK) {
-		                Crouton.makeText(this, getString(R.string.crouton_word_deleted, edtWord.getText().toString()), Style.CONFIRM).show();
+		                Crouton.makeText(this, getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
+		                // TODO: this code is shitty. Rewrite when have time.
+		                new CountDownTimer(2000, 2000) {
+
+			                public void onTick(long millisUntilFinished) {
+			                }
+
+			                public void onFinish() {
+				                finishActivity();
+			                }
+		                }.start();
 	                } else {
 		                showMessage(exitCode);
 	                }
                 }
-	            // TODO: this code is shitty. Rewrite when have time.
-	            new CountDownTimer(2000, 2000) {
-
-		            public void onTick(long millisUntilFinished) {
-		            }
-
-		            public void onFinish() {
-			            finishActivity();
-		            }
-	            }.start();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.NotificationBuilder;
-import com.learnit.LearnIt.fragments.ArticlesHomeworkFragment;
+import com.learnit.LearnIt.fragments.LearnHomeworkArticlesFragment;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -143,8 +143,8 @@ public class LearnHomeworkArticlesController extends LearnController {
 
 	private boolean checkNextFragmentType() {
 		if (_currentTypeOfHomework == Constants.LEARN_TRANSLATIONS) {
-			if (_fragmentUpdate instanceof ArticlesHomeworkFragment) {
-				((ArticlesHomeworkFragment) _fragmentUpdate)
+			if (_fragmentUpdate instanceof LearnHomeworkArticlesFragment) {
+				((LearnHomeworkArticlesFragment) _fragmentUpdate)
 						.askActivityToSwitchFragments(_currentTypeOfHomework);
 				return false;
 			}
@@ -162,8 +162,8 @@ public class LearnHomeworkArticlesController extends LearnController {
 				_fragmentUpdate.setAll(View.VISIBLE);
 			}
 		} else {
-			if (_fragmentUpdate instanceof ArticlesHomeworkFragment) {
-				((ArticlesHomeworkFragment) _fragmentUpdate).stopActivity();
+			if (_fragmentUpdate instanceof LearnHomeworkArticlesFragment) {
+				((LearnHomeworkArticlesFragment) _fragmentUpdate).stopActivity();
 			}
 		}
 	}

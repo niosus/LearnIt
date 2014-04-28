@@ -30,7 +30,7 @@ import com.learnit.LearnIt.views.WordButton;
 import java.util.ArrayList;
 
 
-public class OnTheGoLearnFragment extends LearnFragment {
+public class LearnCasualFragment extends LearnFragment {
 	public static final String TAG = "homework_frag";
 
 	private int[] _btnIds = {
@@ -44,42 +44,9 @@ public class OnTheGoLearnFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public OnTheGoLearnFragment(IWorkerJobInput worker) {
+	public LearnCasualFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new LearnOnTheGoController(this, worker, btnIds());
-	}
-
-	//	TODO: change the names of the strings to some constants !!! important
-	boolean restoreFromPreferences() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-		String word = sp.getString("word", null);
-		String button1Text = sp.getString("button1", null);
-		String button2Text = sp.getString("button2", null);
-		String button3Text = sp.getString("button3", null);
-		String button4Text = sp.getString("button4", null);
-		int correctId = sp.getInt("correctId", 0);
-		if (word == null
-				|| button1Text == null
-				|| button2Text == null
-				|| button3Text == null
-				|| button4Text == null
-				|| correctId == 0) { return false; }
-		((TextView) v.findViewById(R.id.word_to_ask)).setText(word);
-		((TextView) v.findViewById(R.id.left_top_button)).setText(button1Text);
-		((TextView) v.findViewById(R.id.right_bottom_button)).setText(button2Text);
-		((TextView) v.findViewById(R.id.left_bottom_button)).setText(button3Text);
-		((TextView) v.findViewById(R.id.right_top_button)).setText(button4Text);
-		_listener.setCorrectWordIdFromPrefs(correctId);
-		String[] split = word.split("\n");
-		queryWord = split[split.length - 1];
-		sp.edit().remove("word")
-				.remove("button1")
-				.remove("button2")
-				.remove("button3")
-				.remove("button4")
-				.remove("correctId")
-				.commit();
-		return true;
 	}
 
 	@Override
@@ -93,14 +60,7 @@ public class OnTheGoLearnFragment extends LearnFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-		sp.edit().putString("word", _wordToAsk.getText().toString())
-				.putString("button1", ((TextView) v.findViewById(R.id.left_top_button)).getText().toString())
-				.putString("button2", ((TextView) v.findViewById(R.id.right_bottom_button)).getText().toString())
-				.putString("button3", ((TextView) v.findViewById(R.id.left_bottom_button)).getText().toString())
-				.putString("button4", ((TextView) v.findViewById(R.id.right_top_button)).getText().toString())
-				.putInt("correctId", _listener.getCorrectWordId())
-				.commit();
+		saveToPreferences();
 	}
 
 	@Override
@@ -113,6 +73,7 @@ public class OnTheGoLearnFragment extends LearnFragment {
 		for (int id: _btnIds) {
 			(v.findViewById(id)).setOnClickListener(_listener);
 		}
+		setAll(View.INVISIBLE);
 		return v;
 	}
 
