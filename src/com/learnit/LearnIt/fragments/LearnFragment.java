@@ -142,16 +142,6 @@ public abstract class LearnFragment
         }
     }
 
-	void removeOldSavedValues(SharedPreferences sp) {
-		SharedPreferences.Editor editor = sp.edit();
-		editor.remove(WORD_TAG);
-		editor.remove(CORRECT_INDEX_TAG);
-		for (int i = 0; i < btnIds().length; ++i) {
-			editor.remove(BUTTON_PREFIX_TAG + i);
-		}
-		editor.commit();
-	}
-
 	protected void saveToPreferences() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		SharedPreferences.Editor editor = sp.edit();
@@ -197,7 +187,7 @@ public abstract class LearnFragment
 				((TextView) v.findViewById(btnIds()[i])).setText(buttonText);
 			}
 		}
-		removeOldSavedValues(sp);
+		Utils.removeOldSavedValues(sp, btnIds());
 		setAll(View.VISIBLE);
 		return true;
 	}

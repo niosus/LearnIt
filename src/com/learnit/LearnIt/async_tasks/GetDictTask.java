@@ -65,10 +65,17 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 			stmt.execute();
 			stmt.clearBindings();
 			float ratio = (float) i / numOfWords;
-			int percent = (int) (ratio * 100);
+			Double percent = (ratio * 100.);
 			publishProgress(percent);
+			// stop the madness if someone has cancelled the task
+			if (isCancelled()) {
+				Log.d("my_logs", "oh maaan, seems I am being killed... :( so sad...");
+				break;
+			}
 		}
-		db.setTransactionSuccessful();
+		if (!isCancelled()) {
+			db.setTransactionSuccessful();
+		}
 		db.endTransaction();
 	}
 
@@ -78,6 +85,18 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.delete(DBHelper.DB_DICT_FROM, null, null);
+	}
+
+	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_context);
+		sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
+		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.delete(DBHelper.DB_DICT_FROM, null, null);
+		Log.d("my_logs", "cancelled getting the dictionary :(");
+		_taskActionCallback.onFail();
 	}
 
 	@Override

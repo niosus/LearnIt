@@ -11,4 +11,5 @@ public interface IWorkerJobInput {
 	void onTaskFinished();
 	boolean startNextTaskIfNeeded();
 	boolean taskRunning();
+	void cancelCurrentTask();
 }

@@ -8,7 +8,7 @@
               android:orientation="vertical">
     <ProgressBar
         android:id="@+id/progress_load_dict"
-        android:indeterminate="false"
+        android:indeterminate="true"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -16,7 +16,7 @@
             android:id="@+id/text_dict_to_sql_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/toast_loading_dict"
+            android:text="@string/dict_sql_progress_searching_indexing"
             style="@style/MyTextViewLarge">
     </TextView>
     <TextView
@@ -25,6 +25,22 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             style="@style/MyTextView">
+    </TextView>
+    <net.yscs.android.square_progressbar.SquareProgressBar
+        android:id="@+id/square_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp" >
+    </net.yscs.android.square_progressbar.SquareProgressBar>
+    <TextView
+        android:id="@+id/text_dict_to_sql_can_close_this"
+        android:text="@string/dict_sql_may_close_now"
+        style="@style/MyTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:gravity="right">
     </TextView>
 
 </LinearLayout>

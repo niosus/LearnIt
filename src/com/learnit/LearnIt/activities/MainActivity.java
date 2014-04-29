@@ -42,7 +42,7 @@ import com.learnit.LearnIt.utils.Utils;
 import java.io.File;
 import java.util.Arrays;
 
-public class MainActivityController extends Activity implements
+public class MainActivity extends Activity implements
 		ActionBar.TabListener,
 		ListOfFragments.OnFragmentSelectedListener{
 
@@ -168,7 +168,7 @@ public class MainActivityController extends Activity implements
         }
 	    if (isDictUpdateNeeded()) {
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		    builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
+		    builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_langs_mismatch_message).setPositiveButton(R.string.ok, dialogClickListener)
 				    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
 	    }
     }

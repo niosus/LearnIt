@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 
-public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Integer, S> {
+public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Double, S> {
 
 	public void updateContextAndCallback(Context context,
 	                                     IWorkerEventListener taskActionCallback)
@@ -34,10 +34,11 @@ public abstract class MySmartAsyncTask<S> extends AsyncTask<Object, Integer, S> 
 	@Override
 	protected void onPostExecute(S s) {
 		super.onPostExecute(s);
+		_taskActionCallback.onProgressUpdate(100.);
 	}
 
 	@Override
-	protected void onProgressUpdate(Integer... values) {
+	protected void onProgressUpdate(Double... values) {
 		super.onProgressUpdate(values);
 		_taskActionCallback.onProgressUpdate(values);
 	}

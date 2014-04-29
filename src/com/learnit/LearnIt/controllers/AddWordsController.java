@@ -120,7 +120,7 @@ public class AddWordsController implements
 	}
 
 	@Override
-	public void onProgressUpdate(Integer... values) {
+	public void onProgressUpdate(Double... values) {
 
 	}
 

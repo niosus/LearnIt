@@ -69,6 +69,13 @@ public class WorkerFragment extends Fragment
 		return _taskRunning;
 	}
 
+	@Override
+	public void cancelCurrentTask() {
+		if (_taskRunning) {
+			_taskQueue.peek().cancel(true);
+		}
+	}
+
 	public boolean startNextTaskIfNeeded()
 	{
 		// if we are not yet attached to an activity do nothing

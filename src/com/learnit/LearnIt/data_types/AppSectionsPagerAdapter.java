@@ -7,7 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.util.Log;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.activities.MainActivityController;
+import com.learnit.LearnIt.activities.MainActivity;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnCasualFragment;
@@ -33,19 +33,19 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int i) {
 		MySmartFragment fragment = null;
 		switch (i) {
-			case MainActivityController.DICTIONARY_FRAGMENT:
+			case MainActivity.DICTIONARY_FRAGMENT:
 				fragment = new DictFragment(_worker);
-				fragment.identifier = MainActivityController.DICTIONARY_FRAGMENT;
+				fragment.identifier = MainActivity.DICTIONARY_FRAGMENT;
 				Log.d(Constants.LOG_TAG, "Created Dictionary Fragment with tag " + fragment.identifier);
 				break;
-			case MainActivityController.ADD_WORDS_FRAGMENT:
+			case MainActivity.ADD_WORDS_FRAGMENT:
 				fragment = new AddWordFragment(_worker);
-				fragment.identifier = MainActivityController.ADD_WORDS_FRAGMENT;
+				fragment.identifier = MainActivity.ADD_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 				break;
-			case MainActivityController.LEARN_WORDS_FRAGMENT:
+			case MainActivity.LEARN_WORDS_FRAGMENT:
 				fragment = new LearnCasualFragment(_worker);
-				fragment.identifier = MainActivityController.LEARN_WORDS_FRAGMENT;
+				fragment.identifier = MainActivity.LEARN_WORDS_FRAGMENT;
 				Log.d(Constants.LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 				break;
 		}
@@ -54,17 +54,17 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return MainActivityController.NUMBER_OF_FRAGMENTS;
+		return MainActivity.NUMBER_OF_FRAGMENTS;
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
-			case MainActivityController.DICTIONARY_FRAGMENT:
+			case MainActivity.DICTIONARY_FRAGMENT:
 				return _context.getString(R.string.dictionary_frag_title);
-			case MainActivityController.ADD_WORDS_FRAGMENT:
+			case MainActivity.ADD_WORDS_FRAGMENT:
 				return _context.getString(R.string.add_words_frag_title);
-			case MainActivityController.LEARN_WORDS_FRAGMENT:
+			case MainActivity.LEARN_WORDS_FRAGMENT:
 				return _context.getString(R.string.learn_words_frag_title);
 		}
 		return null;

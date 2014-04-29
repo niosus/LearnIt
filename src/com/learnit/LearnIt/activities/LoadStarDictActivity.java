@@ -8,7 +8,9 @@ package com.learnit.LearnIt.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.learnit.LearnIt.R;
@@ -17,6 +19,7 @@ import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Utils;
 
 
 public class LoadStarDictActivity extends Activity implements
@@ -64,14 +67,24 @@ public class LoadStarDictActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!_jobStarter.taskRunning()) {
+		if (!_jobStarter.taskRunning() && !_uiFragment.isDictLoaded()) {
 			_jobStarter.addTask(new GetDictTask(), this);
 		} else {
 			_jobStarter.attach(this);
 		}
 	}
 
-    @Override
+	@Override
+	public void onBackPressed() {
+		if (_uiFragment.isDictLoaded()) {
+			super.onBackPressed();
+		} else {
+			_jobStarter.cancelCurrentTask();
+			super.onBackPressed();
+		}
+	}
+
+	@Override
     protected void onPause() {
         super.onPause();
         if (!_jobStarter.taskRunning())
@@ -88,7 +101,7 @@ public class LoadStarDictActivity extends Activity implements
 	public void onFail() {
 		if (_uiFragment != null)
 		{
-			_uiFragment.setTitleText(this.getString(R.string.dict_sql_no_dict));
+			_uiFragment.onFail();
 		}
 		if (_jobStarter != null)
 		{
@@ -97,7 +110,7 @@ public class LoadStarDictActivity extends Activity implements
 	}
 
 	@Override
-	public void onProgressUpdate(Integer... values) {
+	public void onProgressUpdate(Double... values) {
 		_uiFragment.setProgress(values[0]);
 	}
 
@@ -121,13 +134,19 @@ public class LoadStarDictActivity extends Activity implements
 		Log.e(LOG_TAG, "RESULT from loading dict");
 		if (_uiFragment != null)
 		{
-			_uiFragment.setTitleText(this.getString(R.string.dict_sql_success));
-			_uiFragment.setDictInfoText(result);
+			_uiFragment.onSuccess(result);
 		}
 		if (_jobStarter != null)
 		{
 			_jobStarter.onTaskFinished();
 		}
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		int[] btnIds = {
+				R.id.left_top_button,
+				R.id.right_top_button,
+				R.id.left_bottom_button,
+				R.id.right_bottom_button };
+		Utils.removeOldSavedValues(sp, btnIds);
 	}
 }
 

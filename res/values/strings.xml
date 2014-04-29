@@ -32,7 +32,6 @@
     <string name="toast_no_dict">There is no dict for language pair \"%s\".</string>
     <string name="toast_no_word">There is no such word in dictionary.</string>
     <string name="toast_loading_dict">Loading help dictionary.</string>
-    <string name="toast_loaded_dict">Dictionary loaded. Try to add a new word.</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Oops..</string>
@@ -74,9 +73,9 @@
 
     <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
     <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
-        application has to update the help dictionary.
-    </string>
-    <string name="pref_dialog_update_dict_dismiss">Go back</string>
+        application has to update the help dictionary.</string>
+    <string name="pref_dialog_update_dict_langs_mismatch_message">There is a help dictionary for the chosen language pair. Would you like to load it? It will then help you translate the words you add to your dictionary.</string>
+    <string name="pref_dialog_update_dict_dismiss">No</string>
 
 
     <string name="db_exported">Dictionary was exported to \n%s</string>
@@ -180,11 +179,12 @@
 
     <!--dict to sql activity strings-->
     <string name="dict_sql_title">Help dictionary</string>
-    <string name="dict_sql_no_dict">No help dictionary found for pair</string>
-    <string name="dict_sql_success">Successfully loaded</string>
+    <string name="dict_sql_no_dict">No help dictionary found current language pair.</string>
+    <string name="dict_sql_success">Successfully loaded.</string>
     <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
     <string name="dict_sql_progress_found">Dictionary found. \nIndexing…</string>
-    <string name="dict_sql_progress_searching_indexing">Searching and indexing dictionary</string>
+    <string name="dict_sql_progress_searching_indexing">Searching and indexing dictionary…</string>
+    <string name="dict_sql_may_close_now">You can now exit this screen.</string>
 
 
     <string-array name="time_entries">

@@ -9,6 +9,7 @@ import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerLearn;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerRandomWords;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -58,7 +59,7 @@ public abstract class LearnController implements
 	}
 
 	@Override
-	public void onProgressUpdate(Integer... values) {
+	public void onProgressUpdate(Double... values) {
 	}
 
 	@Override
@@ -81,12 +82,28 @@ public abstract class LearnController implements
 	}
 
 	@Override
-	public void fetchRandomWords(int numOfWords, String omitWord) {
+	public void fetchRandomWords(int numOfWords, ArticleWordId omitWord) {
+		int nouns;
+		if (omitWord == null) {
+			// if no word to omit we have all the freedom to choose any noun state
+			Random random = new Random();
+			nouns = random.nextInt(2) + 1;
+		} else if (omitWord.article == null || omitWord.article.isEmpty()) {
+			// if the word to omit is there, but no article, then we don't want the nouns
+			nouns = Constants.NOT_NOUNS;
+		} else {
+			// if there is an article, we want to search only for the nouns
+			nouns = Constants.ONLY_NOUNS;
+		}
+
 		// start fetching numOfWords random words by creating a task for that
 		// result comes as a callback from worker listener
-		Random random = new Random();
-		int nouns = random.nextInt(2) + 1;
-		_worker.addTask(new GetRandomWordsTask(omitWord, numOfWords, nouns), this);
+		if (omitWord == null) {
+			_worker.addTask(new GetRandomWordsTask(null, numOfWords, nouns), this);
+		} else {
+			_worker.addTask(new GetRandomWordsTask(omitWord.word, numOfWords, nouns), this);
+		}
+
 	}
 
 	@Override

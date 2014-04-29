@@ -11,15 +11,21 @@ import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 
+import net.yscs.android.square_progressbar.SquareProgressBar;
+
 public class LoadStarDictUiFragment extends Fragment {
 	public final static String TAG = "ui_load_dict";
 
     private TextView _tvTitle;
-    private TextView _tvDictName;
-    private TextView _tvDictInfo;
-    private TextView _tvLoaded;
-    private TextView _tvCountdown;
-	private ProgressBar _progressBar;
+	private TextView _tvDictInfo;
+	private TextView _tvMayClose;
+	ProgressBar _progressBar;
+	SquareProgressBar _squareProgressBar;
+	boolean dictLoaded = false;
+
+	public boolean isDictLoaded() {
+		return dictLoaded;
+	}
 
     @Override
     public void onAttach(Activity activity) {
@@ -31,10 +37,10 @@ public class LoadStarDictUiFragment extends Fragment {
         View v = inflater.inflate(R.layout.dict_to_sql, container, false);
 	    _progressBar = (ProgressBar) v.findViewById(R.id.progress_load_dict);
         _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
-//        _tvDictName = (TextView) v.findViewById(R.id.text_dictionary_name);
         _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
-//        _tvLoaded = (TextView) v.findViewById(R.id.text_loaded);
-//        _tvCountdown = (TextView) v.findViewById(R.id.text_countdown);
+	    _tvMayClose = (TextView) v.findViewById(R.id.text_dict_to_sql_can_close_this);
+	    _tvDictInfo.setVisibility(View.INVISIBLE);
+	    _tvMayClose.setVisibility(View.INVISIBLE);
         String title = null;
         String dictInfo = null;
         if (savedInstanceState!=null)
@@ -47,6 +53,14 @@ public class LoadStarDictUiFragment extends Fragment {
             _tvTitle.setText(title);
             _tvDictInfo.setText(dictInfo);
         }
+
+	    _squareProgressBar = (SquareProgressBar) v.findViewById(R.id.square_progress);
+	    _squareProgressBar.setImage(R.drawable.hourglass);
+	    _squareProgressBar.setColor(getString(R.color.highlight));
+	    _squareProgressBar.setProgress(0);
+	    _squareProgressBar.setWidth(10);
+	    _squareProgressBar.setOpacity(false);
+
         return v;
     }
 
@@ -57,45 +71,41 @@ public class LoadStarDictUiFragment extends Fragment {
 	    setRetainInstance(true);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putString("DictName", _tvDictName.getText().toString());
-//        outState.putString("DictInfo", _tvDictInfo.getText().toString());
-//        outState.putString("Loaded", _tvLoaded.getText().toString());
-    }
-
-    protected void setTimerText(String text)
-    {
-//        _tvCountdown.setText(text);
-    }
-
-    public void setTitleText(String text)
+    private void setTitleText(String text)
     {
         if (_tvTitle!=null)
             _tvTitle.setText(text);
     }
 
-    public void setDictNameText(String text)
+    private void setDictInfoText(String text)
     {
-//        if (_tvDictName!=null)
-//            _tvDictName.setText(text);
+        if (_tvDictInfo!=null) {
+	        _tvDictInfo.setText(text);
+        }
     }
 
-    public void setDictInfoText(String text)
-    {
-        if (_tvDictInfo!=null)
-            _tvDictInfo.setText(text);
-    }
+	public void onSuccess(String dictInfoText) {
+		if (isAdded()) {
+			setDictInfoText(dictInfoText);
+			setTitleText(this.getString(R.string.dict_sql_success));
+			_tvDictInfo.setVisibility(View.VISIBLE);
+			_tvMayClose.setVisibility(View.VISIBLE);
+			dictLoaded = true;
+		}
+	}
 
-    public void setLoadedText(String text)
-    {
-//        if (_tvLoaded!=null)
-//            _tvLoaded.setText(text);
-    }
+	public void onFail() {
+		if (isAdded()) {
+			setTitleText(this.getString(R.string.dict_sql_no_dict));
+			_squareProgressBar.setImage(R.drawable.stop);
+		}
+	}
 
-	public void setProgress(int i) {
-		_progressBar.setProgress(i);
+	public void setProgress(Double i) {
+		if (_progressBar.getVisibility() == View.VISIBLE) {
+			_progressBar.setVisibility(View.INVISIBLE);
+		}
+		_squareProgressBar.setProgress(i);
 	}
 
 }

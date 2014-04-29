@@ -5,7 +5,7 @@ package com.learnit.LearnIt.interfaces;
  */
 public interface IWorkerEventListener {
 	public void onPreExecute();
-	public void onProgressUpdate(Integer... values);
+	public void onProgressUpdate(Double... values);
 	public void onFail();
 	public void noTaskSpecified();
 	public void onTaskFinished();

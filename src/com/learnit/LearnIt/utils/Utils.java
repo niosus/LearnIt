@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.services.NotificationService;
 
 import java.util.Arrays;
@@ -65,6 +66,16 @@ public class Utils {
 				return R.drawable.ic_stat_ten;
 		}
 		return -1;
+	}
+
+	public static void removeOldSavedValues(SharedPreferences sp, int[] btnIds) {
+		SharedPreferences.Editor editor = sp.edit();
+		editor.remove(LearnFragment.WORD_TAG);
+		editor.remove(LearnFragment.CORRECT_INDEX_TAG);
+		for (int i = 0; i < btnIds.length; ++i) {
+			editor.remove(LearnFragment.BUTTON_PREFIX_TAG + i);
+		}
+		editor.commit();
 	}
 
     public static Pair<String,String> getCurrentLanguages(Context context) {

@@ -175,7 +175,7 @@ public class LearnHomeworkTranslationController extends LearnController {
 	public void showNext() {
 		if (findNextId()) {
 			if (checkNextFragmentType()) {
-				fetchRandomWords(_btnIds.length - 1, _correctEntry.word);
+				fetchRandomWords(_btnIds.length - 1, _correctEntry);
 			}
 		} else {
 			if (_fragmentUpdate instanceof LearnHomeworkTranslationFragment) {

@@ -74,7 +74,7 @@ public class DictController implements
 	}
 
 	@Override
-	public void onProgressUpdate(Integer... values) {
+	public void onProgressUpdate(Double... values) {
 
 	}
 

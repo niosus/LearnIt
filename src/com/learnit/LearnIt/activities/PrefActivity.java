@@ -9,10 +9,8 @@
 package com.learnit.LearnIt.activities;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -48,49 +46,9 @@ public class PrefActivity extends PreferenceActivity {
         selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
     }
 
-    @Override
-    public void onBackPressed() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String newSelectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
-        String newSelectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
-        if (newSelectedLanguageFrom.equals(selectedLanguageFrom) && newSelectedLanguageTo.equals(selectedLanguageTo)) {
-            this.finish();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_message).setPositiveButton(R.string.ok, dialogClickListener)
-                    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
-        }
-    }
-
     void finishActivity() {
         this.finish();
     }
-
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    startDictToSQLActivity();
-                    finishActivity();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	private void startDictToSQLActivity() {
-        Intent intent = new Intent(this, LoadStarDictActivity.class);
-        startActivity(intent);
-    }
-
 
     public static class PrefsFragment1 extends PreferenceFragment {
         private final String LOG_TAG = "my_logs";
