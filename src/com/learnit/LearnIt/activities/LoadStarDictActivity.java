@@ -13,12 +13,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
 
@@ -141,12 +141,7 @@ public class LoadStarDictActivity extends Activity implements
 			_jobStarter.onTaskFinished();
 		}
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		int[] btnIds = {
-				R.id.left_top_button,
-				R.id.right_top_button,
-				R.id.left_bottom_button,
-				R.id.right_bottom_button };
-		Utils.removeOldSavedValues(sp, btnIds);
+		Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
 	}
 }
 

@@ -269,10 +269,9 @@ public class MainActivity extends Activity implements
         }
     }
 
-	boolean isDictUpdateNeeded() {
+	boolean dictIsOnDisk(Pair<String, String> currentLanguages) {
 		// check if there is a file on the disc that contains the needed dict
 		// for the current language pair
-		Pair<String,String> currentLanguages = Utils.getCurrentLanguages(this);
 		File sd = Environment.getExternalStorageDirectory();
 		sd = new File(sd, "LearnIt");
 		sd = new File(sd, currentLanguages.first + "-" + currentLanguages.second);
@@ -287,7 +286,10 @@ public class MainActivity extends Activity implements
 			db.delete(DBHelper.DB_DICT_FROM, null, null);
 			return false;
 		}
+		return true;
+	}
 
+	boolean languagesHaveChanged(Pair<String,String> currentLanguages) {
 		// check if the saved in preferences languages for the help dictionary have changed
 		// if no change - then no need to reload. Otherwise - reload.
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -296,7 +298,16 @@ public class MainActivity extends Activity implements
 		if (langString.equals(currentLanguages.first + " " + currentLanguages.second)) {
 			return false;
 		}
+		// well, the languages changed, so no need to show old word and translations
+		Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
 		return true;
+	}
+
+	boolean isDictUpdateNeeded() {
+		Pair<String,String> currentLanguages = Utils.getCurrentLanguages(this);
+		boolean dictPresent = dictIsOnDisk(currentLanguages);
+		boolean languagesChanged = languagesHaveChanged(currentLanguages);
+		return (dictPresent && languagesChanged);
 	}
 
     @Override

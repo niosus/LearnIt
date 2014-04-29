@@ -34,10 +34,7 @@ import java.util.ArrayList;
 public class LearnHomeworkArticlesFragment extends LearnFragment {
 	public static final String TAG = "articles_homework_frag";
 
-	private int[] _btnIds = {
-			R.id.btn_first,
-			R.id.btn_second,
-			R.id.btn_third };
+	private int[] _btnIds = Constants.btnIdsArticles;
 
 	@Override
 	protected int[] btnIds() {
