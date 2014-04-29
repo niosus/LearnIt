@@ -39,6 +39,11 @@ public class DictFragment extends MySmartFragment
     private ImageButton _btnClear;
 	private ListView _listView;
 	protected IListenerDict _listener;
+	public static final String TAG = "dict_fragment";
+
+	public DictFragment() {
+		_listener = null;
+	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,12 +65,18 @@ public class DictFragment extends MySmartFragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		setWordText("");
-		setListEntries(null);
+		if (isAdded()) {
+			setWordText("");
+			setListEntries(null);
+		}
 	}
 
 	public DictFragment(IWorkerJobInput worker) {
 		super();
+		_listener = new DictController(this, worker);
+	}
+
+	public void attachWorker(IWorkerJobInput worker) {
 		_listener = new DictController(this, worker);
 	}
 
@@ -112,6 +123,9 @@ public class DictFragment extends MySmartFragment
 
 	@Override
 	public void setWordText(String word) {
+		if (_edtWord == null || word == null || _listener == null) { return; }
+		Log.e(LOG_TAG, "weird word is = " + word);
+		Log.e(LOG_TAG, "adding it to " + _edtWord);
 		_edtWord.setText(word);
 		_edtWord.setSelection(word.length());
 	}

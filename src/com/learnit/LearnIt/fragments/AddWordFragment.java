@@ -38,14 +38,23 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class AddWordFragment extends MySmartFragment
 		implements IAddWordsFragmentUpdate {
     protected static final String LOG_TAG = "my_logs";
+	public static final String TAG = "add_words_fragment";
 	private EditText _word;
 	private EditText _translation;
 	private ImageButton _clearButtonWord, _clearButtonTrans;
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
 
+	public AddWordFragment() {
+		_listener = null;
+	}
+
 	public AddWordFragment(IWorkerJobInput worker) {
 		super();
+		_listener = new AddWordsController(this, worker);
+	}
+
+	public void attachWorker(IWorkerJobInput worker) {
 		_listener = new AddWordsController(this, worker);
 	}
 

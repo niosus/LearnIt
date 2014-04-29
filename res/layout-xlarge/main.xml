@@ -37,14 +37,11 @@ limitations under the License.
             android:text="@string/dictionary_frag_title"
             style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
-        <fragment
-            android:name="com.learnit.LearnIt.fragments.DictFragment"
-            android:id="@+id/fragment_dict_id"
-            android:layout_below="@id/txtDictLabel"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"/>
+        <FrameLayout
+            android:id="@+id/dict_frame"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/txtDictLabel"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_height="fill_parent"
@@ -57,14 +54,11 @@ limitations under the License.
             android:text="@string/add_words_frag_title"
             style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
-        <fragment
-            android:name="com.learnit.LearnIt.fragments.AddWordFragment"
-            android:id="@+id/fragment_add_words_id"
-            android:layout_below="@id/txtAddWordLabel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"/>
+        <FrameLayout
+            android:id="@+id/add_words_frame"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/txtAddWordLabel"/>
     </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
@@ -78,14 +72,10 @@ limitations under the License.
             android:text="@string/learn_words_frag_title"
             style="@style/MyTextViewLarge"
             android:gravity="center_horizontal"/>
-        <fragment
-            android:name="com.learnit.LearnIt.fragments.LearnFragment"
-            android:id="@+id/fragment_learn_id"
-            android:layout_below="@id/txtLearnLabel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            />
+        <FrameLayout
+            android:id="@+id/learn_frame"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/txtLearnLabel"/>
     </RelativeLayout>
 </LinearLayout>

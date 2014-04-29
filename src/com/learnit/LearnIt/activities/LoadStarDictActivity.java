@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
 import com.learnit.LearnIt.fragments.WorkerFragment;
@@ -21,16 +22,23 @@ import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 
 public class LoadStarDictActivity extends Activity implements
 		IWorkerEventListenerGetDict {
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
 	IWorkerJobInput _jobStarter;
+	int _backPressedCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	    this.setFinishOnTouchOutside(false);
+	    _backPressedCounter = 0;
 		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -76,11 +84,17 @@ public class LoadStarDictActivity extends Activity implements
 
 	@Override
 	public void onBackPressed() {
+		_backPressedCounter++;
 		if (_uiFragment.isDictLoaded()) {
 			super.onBackPressed();
-		} else {
+		} else if (_backPressedCounter > 1) {
 			_jobStarter.cancelCurrentTask();
 			super.onBackPressed();
+		} else {
+			Crouton crouton;
+			crouton = Crouton.makeText(this, getString(R.string.crouton_back_pressed_once), Style.ALERT);
+			crouton.setConfiguration(new Configuration.Builder().setDuration(3000).build());
+			crouton.show();
 		}
 	}
 
@@ -89,6 +103,7 @@ public class LoadStarDictActivity extends Activity implements
         super.onPause();
         if (!_jobStarter.taskRunning())
         {
+	        Crouton.cancelAllCroutons();
             this.finish();
         }
     }

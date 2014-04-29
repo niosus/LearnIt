@@ -38,16 +38,13 @@ public class PrefActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	    this.setFinishOnTouchOutside(false);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment1())
                 .commit();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         selectedLanguageFrom = sp.getString(getString(R.string.key_language_from), "NONE");
         selectedLanguageTo = sp.getString(getString(R.string.key_language_to), "NONE");
-    }
-
-    void finishActivity() {
-        this.finish();
     }
 
     public static class PrefsFragment1 extends PreferenceFragment {

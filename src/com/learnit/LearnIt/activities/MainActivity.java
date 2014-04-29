@@ -77,49 +77,66 @@ public class MainActivity extends Activity implements
 				    .add(_worker, WorkerFragment.TAG)
 				    .commit();
 	    }
-        if (currentLayout.equals(LAYOUT_XLARGE))
-        {
-            MySmartFragment smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_dict_id);
-	        smart.identifier = DICTIONARY_FRAGMENT;
-	        smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_add_words_id);
-	        smart.identifier = ADD_WORDS_FRAGMENT;
-	        smart = (MySmartFragment) getFragmentManager().findFragmentById(R.id.fragment_learn_id);
-	        smart.identifier = LEARN_WORDS_FRAGMENT;
-        }
-        else if (currentLayout.equals(LAYOUT_LARGE_LAND))
-        {
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
-            //Do some special processing for large screen
-            ListOfFragments fragment = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
-            fragment.getListView().setSelection(0);
-        }
-        else if (currentLayout.equals(LAYOUT_NORMAL))
-        {
-            // Initialize the view pager
-            // Create the adapter that will return a listOfFragments for each of the three primary sections
-            // of the app.
-            _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
+	    switch (currentLayout) {
+		    case LAYOUT_XLARGE:
+			    MySmartFragment dictFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(DictFragment.TAG);
+			    if (dictFragment == null) {
+				    dictFragment = new DictFragment(_worker);
+				    dictFragment.identifier = DICTIONARY_FRAGMENT;
+				    fragmentManager.beginTransaction()
+						    .add(R.id.dict_frame, dictFragment, DictFragment.TAG)
+						    .commit();
+			    }
+			    MySmartFragment addWordFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(AddWordFragment.TAG);
+			    if (addWordFragment == null) {
+				    addWordFragment = new AddWordFragment(_worker);
+				    addWordFragment.identifier = ADD_WORDS_FRAGMENT;
+				    fragmentManager.beginTransaction()
+						    .add(R.id.add_words_frame, addWordFragment, AddWordFragment.TAG)
+						    .commit();
+			    }
+			    MySmartFragment learnFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(LearnCasualFragment.TAG);
+			    if (learnFragment == null) {
+				    learnFragment = new LearnCasualFragment(_worker);
+				    learnFragment.identifier = LEARN_WORDS_FRAGMENT;
+				    fragmentManager.beginTransaction()
+						    .add(R.id.learn_frame, learnFragment, LearnCasualFragment.TAG)
+						    .commit();
+			    }
+			    break;
+		    case LAYOUT_LARGE_LAND:
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
+			    //Do some special processing for large screen
+			    ListOfFragments fragment = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
+			    fragment.getListView().setSelection(0);
+			    break;
+		    case LAYOUT_NORMAL:
+			    // Initialize the view pager
+			    // Create the adapter that will return a listOfFragments for each of the three primary sections
+			    // of the app.
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
 
-	        final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+			    final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
-            // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-            // user swipes between sections.
-            _viewPager = (ViewPager) findViewById(R.id.pager);
-            _viewPager.setAdapter(_appSectionsPagerAdapter);
-            strip.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-	            @Override
-	            public void onPageSelected(int position) {
-		            _currentItemShown = position;
-		            Log.d(LOG_TAG, "current position updated");
-	            }
-            });
-	        strip.setViewPager(_viewPager);
-	        strip.setBackgroundColor(this.getResources().getColor(R.color.white));
-	        strip.setUnderlineColor(this.getResources().getColor(R.color.highlight));
-	        strip.setIndicatorColor(this.getResources().getColor(R.color.highlight_lighter));
-	        strip.setIndicatorHeight(100);
-            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        }
+			    // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+			    // user swipes between sections.
+			    _viewPager = (ViewPager) findViewById(R.id.pager);
+			    _viewPager.setAdapter(_appSectionsPagerAdapter);
+			    strip.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+				    @Override
+				    public void onPageSelected(int position) {
+					    _currentItemShown = position;
+					    Log.d(LOG_TAG, "current position updated");
+				    }
+			    });
+			    strip.setViewPager(_viewPager);
+			    strip.setBackgroundColor(this.getResources().getColor(R.color.white));
+			    strip.setUnderlineColor(this.getResources().getColor(R.color.highlight));
+			    strip.setIndicatorColor(this.getResources().getColor(R.color.highlight_lighter));
+			    strip.setIndicatorHeight(100);
+			    this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			    break;
+	    }
     }
 
     @Override

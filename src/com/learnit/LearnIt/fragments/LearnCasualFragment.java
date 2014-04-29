@@ -31,9 +31,13 @@ import java.util.ArrayList;
 
 
 public class LearnCasualFragment extends LearnFragment {
-	public static final String TAG = "homework_frag";
+	public static final String TAG = "learn_casual_fragment";
 
 	private int[] _btnIds = Constants.btnIdsTranslations;
+
+	public LearnCasualFragment() {
+		_listener = null;
+	}
 
 	@Override
 	protected int[] btnIds() {
@@ -42,6 +46,10 @@ public class LearnCasualFragment extends LearnFragment {
 
 	public LearnCasualFragment(IWorkerJobInput worker) {
 		super();
+		_listener = new LearnOnTheGoController(this, worker, btnIds());
+	}
+
+	public void attachWorker(IWorkerJobInput worker) {
 		_listener = new LearnOnTheGoController(this, worker, btnIds());
 	}
 

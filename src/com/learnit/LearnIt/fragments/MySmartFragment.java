@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Utils;
 
 public abstract class MySmartFragment extends Fragment {
@@ -22,6 +23,11 @@ public abstract class MySmartFragment extends Fragment {
         super.onResume();
         Utils.updateCurrentDBName(this.getActivity());
     }
+
+	public void attachWorker(IWorkerJobInput worker) {
+		// do nothing here, should be caught by children
+		// bad design?
+	}
 
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState);

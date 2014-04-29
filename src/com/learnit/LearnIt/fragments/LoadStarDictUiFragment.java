@@ -97,7 +97,6 @@ public class LoadStarDictUiFragment extends Fragment {
 	public void onFail() {
 		if (isAdded()) {
 			setTitleText(this.getString(R.string.dict_sql_no_dict));
-			_squareProgressBar.setImage(R.drawable.stop);
 		}
 	}
 
