@@ -1,6 +1,8 @@
-Copyright
+Licening
 ---------
-Most of the code is under the GPLv3 licence:
+Most of the code is under the GPLv3 licence ![alt text][logo]
+
+[logo]:http://www.gnu.org/graphics/gplv3-127x51.png "Logo Title Text 2"
 
 > Copyright (C) 2014  Igor Bogoslavskyi
 
