@@ -233,6 +233,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     translation = tempTranslation;
                     if (!anyNewValue) {
                         c.close();
+                        db.close();
                         return EXIT_CODE_WORD_ALREADY_IN_DB;
                     }
                     key = c.getLong(idColIndex);
@@ -249,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.d(LOG_TAG, "row inserted, ID = " + rowID + " rows total = "
                         + maxId);
                 c.close();
+                db.close();
                 return EXIT_CODE_OK;
             } else {
                 long rowID = db.update(currentDBName, cv,
@@ -257,6 +259,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.d(LOG_TAG, "row updated, ID = " + rowID + " rows total = "
                         + maxId);
                 c.close();
+                db.close();
                 return EXIT_CODE_WORD_UPDATED;
             }
         } catch (NullPointerException e) {
@@ -272,6 +275,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor c = db.rawQuery("UPDATE " + currentDBName + " SET " + WEIGHT_COLUMN_NAME + "=" + newWeight + " WHERE " + WORD_COLUMN_NAME + "='" + word + "'", null);
             c.moveToFirst();
             c.close();
+            db.close();
             Log.d(LOG_TAG, "word " + word + " updated weight to " + newWeight);
             return true;
         } catch (Exception e) {
@@ -319,6 +323,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return structArray;
     }
 
@@ -439,6 +444,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return null;
     }
 
@@ -459,6 +465,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return 0;
     }
 
@@ -498,6 +505,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return data;
     }
 
@@ -525,6 +533,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return data;
     }
 
@@ -547,11 +556,12 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 offset = c.getLong(offsetColIndex);
                 size = c.getLong(sizeColIndex);
-                pair = new Pair<Long, Long>(offset, size);
+                pair = new Pair<>(offset, size);
             } while (c.moveToNext());
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
+        db.close();
         return pair;
     }
 

@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements
 	    if (isDictUpdateNeeded()) {
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		    builder.setTitle(R.string.dialog_update_to_help_dict_needed_title).setMessage(R.string.dialog_update_to_help_dict_needed).setPositiveButton(R.string.dialog_button_ok, dialogClickListener)
-				    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
+				    .setNegativeButton(R.string.dialog_button_cancel, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
 	    }
     }
 
@@ -314,6 +314,7 @@ public class MainActivity extends Activity implements
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 			sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
 			db.delete(DBHelper.DB_DICT_FROM, null, null);
+            db.close();
 			return false;
 		}
 		return true;

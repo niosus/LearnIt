@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             style="@style/MyTextViewLarge"
+            android:text="@string/dictionary_frag_title"
             android:gravity="center_horizontal"/>
         <FrameLayout
             android:id="@+id/dict_frame"
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             style="@style/MyTextViewLarge"
+            android:text="@string/add_words_frag_title"
             android:gravity="center_horizontal"/>
         <FrameLayout
             android:id="@+id/add_words_frame"

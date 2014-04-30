@@ -18,82 +18,66 @@
 
 <resources>
 
-    <string name="app_name">LearnIt</string>
+    <!-- fragment titles -->
     <string name="learn_words_frag_title">Meine Wörter Lernen</string>
-    <string name="add_words_frag_title">Neue Wörter anpassen</string>
-    <string name="add_words_frag_help_text_words">Meinen Sie diese Wörter?</string>
-    <string name="add_words_frag_help_text_trans">Meinen Sie diese Übersetzungen?</string>
-
+    <string name="add_words_frag_title">Neue Wörter Eingeben</string>
     <string name="dictionary_frag_title">Mein Wörterbuch</string>
-    <string name="add_word_hint">Wort</string>
+
+    <!-- edit fragment texts -->
     <string name="edit_dialog_title">Bearbeiten</string>
+
+    <!-- add words fragment texts -->
+    <string name="add_word_hint">Eingabewort</string>
+    <string name="add_translation_hint">Übersetzung</string>
+    <string name="add_words_frag_help_text_words">Möglichen Wörter</string>
+    <string name="add_words_frag_help_text_trans">Möglichen Übersetzungen?</string>
+
+    <!-- my dictionary fragment texts -->
     <string name="search_word_hint">Suchen</string>
-    <string name="add_translation_hint">Übersetzen</string>
-    <string name="add_word_button_text">Add</string>
-    <string name="learn_no_words">Bitte Wörter eingeben</string>
-    <string-array name="fragments_titles">
-        <item>Dummy</item>
-        <item>Dummy</item>
-        <item>Dummy</item>
-    </string-array>
+
+    <!-- learn fragment texts -->
+    <string name="learn_no_words">Bitte Wörter eingeben.</string>
 
     <!--toast texts-->
-    <string name="toast_notif_start_text">Zeitgeber gestartet</string>
-    <string name="toast_notif_stop_text">Zeitgeber gestoppt</string>
-    <string name="toast_notif_update_text">Zeitgeber aktualisiert</string>
-    <string name="toast_no_dict">Es gibt kein Wörterbuch für den Wortpaar \"%s\".</string>
-    <string name="toast_no_word">Es gibt kein solches Wort in den Wörterbuch.</string>
-    <string name="toast_loading_dict">Wörterbuch wird geladen.</string>
-    <string name="toast_loaded_dict">Wörterbuch ist geladen. Versuchen Sie neue Wörter hinzufügen.</string>
+    <string name="toast_notif_start_text">Learnit Benachrichtigung Timer gestartet.\nDie Benachrichtigungen werden in geplanten Zeit angezeigt.</string>
+    <string name="toast_notif_stop_text">Timer gestoppt</string>
+    <string name="toast_db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
+    <string name="toast_db_imported">Das Wörterbuch ist erfolgreich importiert von \n%s</string>
+    <string name="toast_db_import_error">Leider beim Import wurde ein Fehler aufgetreten</string>
 
     <!--Dialog strings-->
     <string name="dialog_empty_title">Hoppla!</string>
     <string name="dialog_empty_text">Mindestens ein Eingabefeld ist leer.\nBitte korrigieren Sie es.</string>
-    <string name="dialog_added_title">Bereit!</string>
-    <string name="dialog_added_text">Wort erfolgreich hinzugefügt</string>
-    <string name="dialog_updated_title">Wort aktualiziert!</string>
-    <string name="dialog_updated_text">Neue Übersetzung hinzugefügt</string>
-    <string name="dialog_exists_title">Schon hier!</string>
-    <string name="dialog_exists_text">Dieses Wort ist schon in den Wörterbuch</string>
     <string name="dialog_format_title">Hoppla!</string>
-    <string name="dialog_format_text">Invalid format</string>
+    <string name="dialog_format_text">Falscher Format.\n Format `{Artikel} {Wort}` muss aufgepasst werden.</string>
     <string name="dialog_article_title">Hoppla!</string>
-    <string name="dialog_article_text">Тількі артіклі можуть бути першим словом</string>
-    <string name="dialog_wrong_guess_title">Nee</string>
-    <string name="dialog_wrong_guess_message">Versuchen Sie es nochmal!</string>
-    <string name="dialog_word_deleted_title">Bereit!</string>
-    <string name="dialog_word_deleted_message">Das Wort \"%s\" ist erfolgreich gelöscht</string>
-    <string name="dialog_progress_title">Im Gange</string>
-    <string name="dialog_progress_message">Erhalten Worte aus dem Wörterbuch</string>
-    <string name="notification_text">Klicken, um zu übersetzen</string>
+    <string name="dialog_article_text">Nur die Artikeln `der`,`die` and `das` dürfen das erste Wort sein.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_update">Aktualisieren</string>
     <string name="dialog_button_cancel">Stornieren</string>
     <string name="dialog_button_save">Speichern</string>
     <string name="dialog_button_clear">Löschen</string>
+    <string name="dialog_update_to_help_dict_needed">Es steht ein Hilfe-Wörterbuch für aktuelle Sprachpaar zur Verfügung. Wollen Sie es nutzen?</string>
+    <string name="dialog_update_to_help_dict_needed_title">Hilfe-Wörterbuch Aktualisieren</string>
 
+    <!-- notification strings -->
+    <string name="notification_text">Klicken, um zu übersetzen.</string>
+
+    <!--prefs categories-->
+    <string name="notification_group">Benachrichtigungen Einstellungen</string>
+    <string name="main_group">Haupteinstellungen</string>
 
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Häufigkeit der Benachrichtigungen</string>
     <string name="pref_language_to_learn">Sprache zu lernen</string>
-    <string name="pref_language_you_know">Sprache der Sie kennen</string>
-    <string name="pref_time_to_start">Wenn die Benachrichtigungen zeigen zu anfangen</string>
+    <string name="pref_language_you_know">Sprache, die Sie kennen</string>
+    <string name="pref_time_to_start">Die Zeit um die Benachrichtigungen zeigen anzufangen</string>
     <string name="pref_num_of_words">Worte in der Sitzung</string>
-    <string name="pref_way_to_learn">Methode</string>
+    <string name="pref_way_to_learn">Lernenmethode</string>
     <string name="pref_notifications">Benachrichtungen</string>
     <string name="pref_direction_of_trans">Übersetzung Richtung</string>
     <string name="pref_notifications_enabled">Benachrichtungen werden gezeigt</string>
     <string name="pref_notifications_disabled">Benachrichtungen werden nicht gezeigt</string>
-    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
-    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
-        application has to update the help dictionary.
-    </string>
-    <string name="pref_dialog_update_dict_dismiss">Go back</string>
-
-
-    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
-    <string name="toast_db_import_error">Error occurred while importing</string>
-    <string name="toast_db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Bearbeiten</string>
@@ -103,86 +87,77 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_export">Wörterbuch exportieren</string>
     <string name="menu_import">Wörterbuch importieren</string>
-    <string name="menu_show_all_words">Alle Wörter zeigen</string>
-    <string name="menu_info">Info</string>
-
-    <!--prefs categories-->
-    <string name="notification_group">Benachrichtigungen Einstellungen</string>
-    <string name="main_group">Haupteinstellungen</string>
+    <string name="menu_info">Über LearnIt</string>
 
     <!--welcome-->
-    <string name="text_guessing_translation">
-        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt.
-        \n
-        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die
-        mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
-        Das spart Ihnen Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten. \n
-    </string>
-    <string name="quick_instructions">einfach auf die "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu
-        lernen und klicken Sie auf "Zurück"
-    </string>
+    <string name="instr_go_to_settings">Einstellundgen</string>
+    <string name="quick_instructions">Einfach auf die Taste "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu
+        lernen und klicken Sie auf "Zurück". Da sind Sie bereit um LearnIt zu nutzen. </string>
     <string name="quick_start">Für Einen Schnellen Start</string>
     <string name="welcome">Willkommen!</string>
     <string name="instructions_title">Version %s</string>
     <string name="instructions_method_title">Konzept</string>
     <string name="instructions_method_text">
-        Diese App ermöglicht es Ihnen, die Wörter zu lernen, auch wenn Sie denken, dass Sie zu faul sind.\n\n
-        Das Verfahren ist einfach. \n\n
-        Sobald Sie neue Wörter zu Ihrem Wörterbuch hinzugefügt haben, beginnen sie erscheinen als Meldungen, um es
-        unmöglich für Sie zu machen, sie zu verpassen. \n\n
-        Der Klick auf eine Meldung zeigt die random Übersetzungen. \n\n
+        Diese App ermöglicht es Ihnen, die Wörter zu lernen, auch wenn Sie denken, dass Sie zu faul sind.
+        \n\n
+        Sobald Sie die neue Wörter zu Ihrem Wörterbuch hinzugefügt haben, LearnIt fängt Ihnen die Benachrichtigungen mit Wörter zu zeigen an.\n\n
+        Der Klick auf eine Benachrichtigung zeigt die random Übersetzungen. Ein von denen sollen Sie wählen um die Benachrichtigung zu löschen. \n\n
 
-        Die haupt Idee ist, dass die Meldungen nur durch die Auswahl der korrekten Übersetzung des Wortes löschen
-        könnten. \n\n
+        Die haupt Idee ist, dass die Meldungen nur durch die Auswahl der korrekten Übersetzung des Wortes gelöscht werden
+        können. \n\n
 
-        Dieses ganze System zwingt Sie die Wörter zu wiederholen, auch wenn Sie das nicht machen wollen. Es funktioniert
-        für mich jedenfalls. \n
+        Deswegen, zwingt LearnIt Sie die Wörter zu wiederholen, auch wenn Sie das nicht machen wollen.
     </string>
-    <string name="instructions_guess_trans_title">Übersetzung Erraten</string>
+    <string name="instructions_guess_trans_title">Hilfe mit Übersetzungen</string>
     <string name="instructions_guess_trans_text">
-        Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt.
-        \n
-        Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die
-        mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld. \n
-        Das spart Ihnen Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten.\n
+        LearnIt ist teilweise von offline Wörterbücher abhängig. Sie serden derzeit als Helfer genutzt.
+        \n\n
+        Das heißt - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die
+        mögliche Übersetzungsvarianten nach dem Klicken auf dem \"Übersetzen\" Feld.
+        \n\n
+        Das spart Ihnre Zeit und Sie müssen nicht der Tastatur von einer Sprache in die andere umschalten.\n
     </string>
-
-    <string name="instructions_dict_help_title">WICHTIGE Informationen über Wörterbücher</string>
+    <string name="instructions_dict_help_title">Informationen über Wörterbücher</string>
     <string name="instructions_dict_help_text">
-        To use the dictionary currently you would have to download and put it into your phone\'s memory manually as I
-        have still not developed any way to do that automatically.\n\n
-        The dictionaries should be put in the sd card, in the folder "LearnIt" (you may want to click "export
-        dictionary" inside the app - this will create the folder automatically)
-        If you have any ideas, I would love to hear them.\n\n
-        The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
-        StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name "dict".\n\n
-        So for German-English dict the path looks as follows:\n\n
+        Wenn Sie ein Hilf-Wörterbuch nutzen wollen sollen Sie es in den Speicher installieren.
+        Für mange Wörterbücher, können Sie die durch ein App machen.
+        Wenn es noch kein App für Ihre Sprachpaar gibt kontaktieren Sie mich persönlich und ich versuche Ihnen zu helfen.
+        \n\n
+        Wenn Sie selbst die Wörterbücher hinzugefügt haben und wollen die nutzen können Sie den einfach in eine Mappe reinmachen.
+        Zum Beispiel, für die Sprachpaar Deutsch-Englisch es muss 3 Filen sein: \n
         /SD_CARD/LearnIt/de-en/dict.ifo\n
         /SD_CARD/LearnIt/de-en/dict.idx\n
         /SD_CARD/LearnIt/de-en/dict.dict\n
     </string>
 
     <string name="instructions_edit_words_help_title">Bearbeiten bestehender Worte</string>
-    <string name="instructions_edit_words_help_text">
-        Während Sie auf "Würterbuch" Screen sind, und ein paar Wörte aus dem Wörterbuch werden gezeigt in der Liste,
-        können Sie einfach lange auf sie klicken und bearbeiten / löschen.\n
+       <string name="instructions_edit_words_help_text">
+        Während Sie auf "Mein Würterbuch" Screen sind, und ein paar Wörte aus dem Wörterbuch werden gezeigt in der Liste,
+        können Sie einfach lang auf ein von dem klicken und redaktieren / löschen.\n
     </string>
 
     <string name="instructions_thank_you_title">Vielen Dank!</string>
-    <string name="instructions_thank_you_text">
-        Diese App ist nur mein Hobby-Projekt trotzdem, bedeutet es wirklich viel für mich, dass die Leute es echt
+     <string name="instructions_thank_you_text">
+        Diese App ist nur mein Hobby-Projekt, trotzdem bedeutet es wirklich viel für mich, wenn die Leute es echt
         verwenden.
         Wenn Sie Feedback oder Anregungen haben, zögern Sie nicht mich zu kontaktieren. Es ist sehr wichtig für mich.\n
     </string>
-    <string name="instr_go_to_settings">Einstellundgen</string>
+
+    <!--Crouton strings-->
+    <string name="crouton_word_saved">Neues Wort ``%1$s`` wurde gespeichert.</string>
+    <string name="crouton_word_updated">Neue Übersetzung für ``%1$s`` wurde gespeichert.</string>
+    <string name="crouton_word_already_present">Das Wort ``%1$s`` ist schon in Ihrem Wörterbuch.</string>
+    <string name="crouton_word_deleted">Das Wort ``%1$s`` wurde gelöscht.</string>
+    <string name="crouton_back_pressed_once">Bitte noch mal zurück drucken um diese Aktivität zu verlassen.</string>
 
 
     <!--dict to sql activity strings-->
-    <string name="dict_sql_title">Hilfswörterbuch</string>
+    <string name="dict_sql_may_close_now">Sie können jetzt diese Aktivität lassen.</string>
+    <string name="dict_sql_title">Hilfe-Wörterbuch</string>
     <string name="dict_sql_no_dict">Kein Hilfswörterbuch für diese Paar</string>
-    <string name="dict_sql_success">ist erfolgreich gestattet</string>
+    <string name="dict_sql_success">Wird erfolgreich gestattet</string>
     <string name="dict_sql_version">%1$s-%2$s. Version: %3$s</string>
-    <string name="dict_sql_progress_found">Hilfswörterbuch wird gefunden. \nIndexing…</string>
+    <string name="dict_sql_progress_found">Hilfswörterbuch wurde gefunden. \nIndexing…</string>
     <string name="dict_sql_progress_searching_indexing">Suchen nach den Hilfswörterbuch</string>
 
     <string-array name="time_entries">
@@ -202,7 +177,7 @@
         <item>Polish</item>
         <item>Russisch</item>
         <item>Swedish</item>
-        <item>Ukrainian</item>
+        <item>Ukrainisch</item>
     </string-array>
 
     <string-array name="entries_languages_to">
@@ -215,7 +190,7 @@
         <item>Polish</item>
         <item>Russian</item>
         <item>Swedish</item>
-        <item>Ukrainian</item>
+        <item>Ukrainisch</item>
     </string-array>
 
     <string-array name="entries_way_to_learn">

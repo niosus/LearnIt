@@ -63,6 +63,12 @@
             <TextView
                 android:text="@string/instructions_thank_you_text"
                 style="@style/MyTextViewSmall"/>
+            <ImageView
+                android:src="@drawable/logo_blue"
+                android:contentDescription="@string/app_name"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

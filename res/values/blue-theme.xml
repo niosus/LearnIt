@@ -41,6 +41,8 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_blueredtheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.BlueTheme</item>
         <item name="android:windowBackground">@android:color/white</item>
+        b
+
         <item name="android:dialogTheme">@style/Dialog.BlueTheme</item>
     </style>
 

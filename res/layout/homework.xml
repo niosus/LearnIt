@@ -16,60 +16,73 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/background_color"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
-    <com.learnit.LearnIt.views.MyWordTextView
-        android:id="@+id/word_to_ask"
-        style="@style/MyQueryWordTextView"
-        android:layout_weight="2"
-        android:layout_height="0dp"/>
+    <ImageView
+        android:src="@drawable/logo_white"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:layout_alignParentTop="true"
+        android:paddingTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <LinearLayout
-        android:gravity="bottom|center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="2">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
+        <com.learnit.LearnIt.views.MyWordTextView
+            android:id="@+id/word_to_ask"
+            style="@style/MyQueryWordTextView"
+            android:layout_weight="2"
+            android:layout_height="0dp"/>
         <LinearLayout
-                android:id="@+id/first_button_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-            <com.learnit.LearnIt.views.WordButton
-                    style="@style/MyWordButton"
-                    android:id="@+id/left_top_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-            <com.learnit.LearnIt.views.WordButton
-                    style="@style/MyWordButton"
-                    android:id="@+id/right_top_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-        </LinearLayout>
-        <LinearLayout
-                android:id="@+id/second_button_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-            <com.learnit.LearnIt.views.WordButton
-                    style="@style/MyWordButton"
-                    android:id="@+id/left_bottom_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-            <com.learnit.LearnIt.views.WordButton
-                    style="@style/MyWordButton"
-                    android:id="@+id/right_bottom_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+            android:gravity="bottom|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <LinearLayout
+                    android:id="@+id/first_button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                <com.learnit.LearnIt.views.WordButton
+                        style="@style/MyWordButton"
+                        android:id="@+id/left_top_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                <com.learnit.LearnIt.views.WordButton
+                        style="@style/MyWordButton"
+                        android:id="@+id/right_top_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/second_button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                <com.learnit.LearnIt.views.WordButton
+                        style="@style/MyWordButton"
+                        android:id="@+id/left_bottom_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                <com.learnit.LearnIt.views.WordButton
+                        style="@style/MyWordButton"
+                        android:id="@+id/right_bottom_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

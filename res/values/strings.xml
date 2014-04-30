@@ -130,8 +130,7 @@
         If your language is still missing - contact me and we will try to solve the problem.
         \n\n
         However, if you want to do it manually:
-        The dictionaries should be put to the sd card, into the folder "LearnIt" (you may want to click "export
-        dictionary" inside the app - this will create the folder automatically)
+        The dictionaries should be put to the sd card, into the folder "LearnIt" (you may want to click "Export dictionary" inside the app - this will create the folder automatically)
         If you have any ideas, I would love to hear them.\n\n
         The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
         StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name "dict".\n\n

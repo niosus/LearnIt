@@ -29,7 +29,8 @@
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_launcher"
             android:theme="@style/Theme.BlueTheme"
-            android:label="@string/app_name">
+            android:label=""
+            android:logo="@drawable/logo_blue">
 
         <receiver android:name=".services.AutoStart">
             <intent-filter>
@@ -41,7 +42,6 @@
 
         <activity
                 android:name=".activities.MainActivity"
-                android:label="@string/app_name"
                 android:launchMode="standard"
                 android:screenOrientation="sensor">
             <intent-filter>
@@ -53,32 +53,32 @@
         <activity
                 android:name=".activities.HomeworkActivity"
                 android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                android:label="@string/app_name">
+                android:logo="@drawable/logo_blue">
         </activity>
         <activity
                 android:name=".activities.PrefActivity"
                 android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                android:label="@string/app_name">
+                android:logo="@drawable/logo_blue">
         </activity>
         <activity android:name=".activities.WelcomeActivity"
                   android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:screenOrientation="sensor"
-                  android:label="@string/app_name">
+                  android:logo="@drawable/logo_blue"
+                  android:screenOrientation="sensor">
         </activity>
         <activity android:name=".activities.InfoActivity"
                   android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:screenOrientation="sensor"
-                  android:label="@string/app_name">
+                  android:logo="@drawable/logo_blue"
+                  android:screenOrientation="sensor">
         </activity>
         <activity android:name=".activities.EditWord"
                   android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:screenOrientation="sensor"
-                  android:label="@string/app_name">
+                  android:logo="@drawable/logo_blue"
+                  android:screenOrientation="sensor">
         </activity>
         <activity android:name=".activities.LoadStarDictActivity"
                   android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:screenOrientation="sensor"
-                  android:label="@string/app_name">
+                  android:logo="@drawable/logo_blue"
+                  android:screenOrientation="sensor">
         </activity>
     </application>
 
