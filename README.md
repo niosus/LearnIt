@@ -1,9 +1,10 @@
 Licening
 ---------
 Most of the code is under the GPLv3 licence: 
-![logo][logo]
 
-[logo]:http://www.gnu.org/graphics/gplv3-127x51.png "GPL"
+![logo][logo1]
+
+[logo1]:http://www.gnu.org/graphics/gplv3-127x51.png "GPL"
 
 > Copyright (C) 2014  Igor Bogoslavskyi
 
@@ -22,10 +23,11 @@ GNU General Public License for more details.
 > You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Part responsible for StarDict interaction refers to https://code.google.com/p/open-ones/source/browse/trunk/ProjectList/InnoDict/Stardict-Core/src/openones/stardictcore/?r=418 and is therefore under the provided licence:
-![logo][logo]
+Part responsible for StarDict interaction refers to https://code.google.com/p/open-ones/source/browse/trunk/ProjectList/InnoDict/Stardict-Core/src/openones/stardictcore/?r=418 and is therefore under the provided Apache 2.0 licence:
 
-[logo]:http://www.apache.org/images/feather-small.gif "Apache"
+![logo][logo2]
+
+[logo2]:http://www.apache.org/images/feather-small.gif "Apache"
 
 
 > Licensed to Open-Ones Group under one or more contributor license
