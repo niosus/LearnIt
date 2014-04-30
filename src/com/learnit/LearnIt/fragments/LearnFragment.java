@@ -143,10 +143,11 @@ public abstract class LearnFragment
     }
 
 	protected void saveToPreferences() {
+		boolean problemOccured = false;
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		SharedPreferences.Editor editor = sp.edit();
 		// add word text to shared preferences
-		if (_wordToAsk == null || _wordToAsk.getText() == null) { return; }
+		if (_wordToAsk == null || _wordToAsk.getText() == null) { problemOccured = true; }
 		editor.putString(WORD_TAG, _wordToAsk.getText().toString());
 
 		// add correct id to shared preferences
@@ -156,12 +157,17 @@ public abstract class LearnFragment
 		TextView currentButtonText;
 		for (int i = 0; i < btnIds().length; ++i) {
 			currentButtonText = ((TextView) v.findViewById(btnIds()[i]));
-			if (currentButtonText == null || currentButtonText.getText() == null) { return; }
+			if (currentButtonText == null
+					|| currentButtonText.getText() == null
+					|| currentButtonText.getText().toString().isEmpty()) { problemOccured = true; }
 			editor.putString(BUTTON_PREFIX_TAG + i, currentButtonText.getText().toString());
 		}
 
 		// commit the transaction
 		editor.commit();
+		if (problemOccured) {
+			Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
+		}
 	}
 
 

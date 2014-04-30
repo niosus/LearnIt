@@ -43,7 +43,6 @@
                 android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
                 android:label="@string/app_name">
         </activity>
-
         <activity
                 android:name=".activities.PrefActivity"
                 android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
