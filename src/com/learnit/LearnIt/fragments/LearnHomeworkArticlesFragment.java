@@ -27,6 +27,7 @@ import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,12 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 	public LearnHomeworkArticlesFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new LearnHomeworkArticlesController(this, worker, btnIds());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
 	}
 
 	@Override
@@ -130,6 +137,8 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 	public void askActivityToSwitchFragments(int homeworkType) {
 		if (this.getActivity() instanceof HomeworkActivity) {
 			((HomeworkActivity) this.getActivity()).replaceFragment(homeworkType);
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+			Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
 		}
 	}
 }

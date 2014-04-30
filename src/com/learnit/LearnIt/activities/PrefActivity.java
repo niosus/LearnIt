@@ -101,7 +101,8 @@ public class PrefActivity extends PreferenceActivity {
             checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
             checkBoxPreference.setOnPreferenceChangeListener(listener);
 
-            timePreference = (TimePreference) findPreference(getString(R.string.key_time_to_start));     //TODO: change to R
+            timePreference = (TimePreference) findPreference(getString(R.string.key_time_to_start));
+	        timePreference.setOnPreferenceChangeListener(listener);
 
 
             updateAllSummaries();
@@ -250,6 +251,10 @@ public class PrefActivity extends PreferenceActivity {
                         Log.d(LOG_TAG, "changed!!!!");
                         return true;
                     }
+                } else if (pref instanceof TimePreference) {
+	                changed = true;
+	                updated = true;
+	                return true;
                 }
                 return false;
             }

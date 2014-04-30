@@ -45,10 +45,6 @@ public class AddWordFragment extends MySmartFragment
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
 
-	public AddWordFragment() {
-		_listener = null;
-	}
-
 	public AddWordFragment(IWorkerJobInput worker) {
 		super();
 		_listener = new AddWordsController(this, worker);

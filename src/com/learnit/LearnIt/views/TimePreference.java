@@ -2,10 +2,6 @@
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
  */
 
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
-
 package com.learnit.LearnIt.views;
 
 import android.content.Context;
@@ -15,6 +11,7 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
+
 import com.learnit.LearnIt.R;
 
 import java.util.Calendar;
@@ -27,7 +24,6 @@ public class TimePreference extends DialogPreference {
     private TimePicker picker = null;
 
     public TimePreference(Context context, AttributeSet attributeSet) {
-//        this(context, attributeSet, 0);
         super(context, attributeSet);
         setPositiveButtonText(R.string.ok);
         setNegativeButtonText(R.string.cancel);

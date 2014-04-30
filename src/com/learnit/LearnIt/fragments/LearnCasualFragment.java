@@ -35,10 +35,6 @@ public class LearnCasualFragment extends LearnFragment {
 
 	private int[] _btnIds = Constants.btnIdsTranslations;
 
-	public LearnCasualFragment() {
-		_listener = null;
-	}
-
 	@Override
 	protected int[] btnIds() {
 		return _btnIds;
@@ -165,9 +161,5 @@ public class LearnCasualFragment extends LearnFragment {
 				queryWordTextView.setText(StringUtils.splitOnRegex(struct.translation, ",|\\s"));
 				break;
 		}
-	}
-
-	public void stopActivity() {
-		this.getActivity().finish();
 	}
 }

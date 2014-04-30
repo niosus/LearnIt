@@ -117,6 +117,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingBottom">@dimen/small_shadow_size</item>
         <item name="android:layout_margin">5dp</item>
+        <item name="android:visible">false</item>
     </style>
 
     <style name="MyScrollView" parent="android:Widget.ListView">

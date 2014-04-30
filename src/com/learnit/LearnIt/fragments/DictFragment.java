@@ -41,10 +41,6 @@ public class DictFragment extends MySmartFragment
 	protected IListenerDict _listener;
 	public static final String TAG = "dict_fragment";
 
-	public DictFragment() {
-		_listener = null;
-	}
-
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 	    _v = inflater.inflate(R.layout.dict_fragment, container, false);
@@ -124,8 +120,6 @@ public class DictFragment extends MySmartFragment
 	@Override
 	public void setWordText(String word) {
 		if (_edtWord == null || word == null || _listener == null) { return; }
-		Log.e(LOG_TAG, "weird word is = " + word);
-		Log.e(LOG_TAG, "adding it to " + _edtWord);
 		_edtWord.setText(word);
 		_edtWord.setSelection(word.length());
 	}
