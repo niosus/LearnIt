@@ -1,9 +1,19 @@
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
 /*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+ * Copyright (C) 2014  Igor Bogoslavskyi
+ * This file is part of LearnIt.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.learnit.LearnIt.fragments;
@@ -70,49 +80,34 @@ public class MyDialogFragment extends DialogFragment {
                 String translation = getArguments().getString(TRANSLATION_TAG);
                 builder.setTitle(word)
                         .setMessage(translation)
-                        .setNeutralButton(R.string.ok, myDialogClickListener);
+                        .setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_EMPTY:
                 builder.setMessage(R.string.dialog_empty_text).setTitle(
                         R.string.dialog_empty_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 builder.setIcon(R.drawable.ic_action_alerts_and_states_warning);
-                return builder.create();
-            case DIALOG_ADDED:
-                builder.setTitle(R.string.dialog_added_title)
-                        .setMessage(R.string.dialog_added_text)
-                        .setNeutralButton(R.string.ok, myDialogClickListener);
-                return builder.create();
-            case DIALOG_WORD_EXISTS:
-                builder.setMessage(R.string.dialog_exists_text).setTitle(
-                        R.string.dialog_exists_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
-                return builder.create();
-            case DIALOG_WORD_UPDATED:
-                builder.setMessage(R.string.dialog_updated_text).setTitle(
-                        R.string.dialog_updated_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_WRONG_ARTICLE:
                 builder.setMessage(R.string.dialog_article_text).setTitle(
                         R.string.dialog_article_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_WRONG_FORMAT:
                 builder.setMessage(R.string.dialog_format_text).setTitle(
                         R.string.dialog_format_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_WRONG_GUESS:
                 builder.setMessage(R.string.dialog_wrong_guess_message).setTitle(
                         R.string.dialog_wrong_guess_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_WORD_DELETED:
                 word = getArguments().getString(WORD_TAG);
                 builder.setMessage(String.format(this.getString(R.string.dialog_word_deleted_message), word)).setTitle(
                         R.string.dialog_word_deleted_title);
-                builder.setNeutralButton(R.string.ok, myDialogClickListener);
+                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
             case DIALOG_PROGRESS:
                 ProgressDialog progDialog = new ProgressDialog(getActivity());

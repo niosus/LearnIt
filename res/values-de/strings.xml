@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  ~ Copyright (C) 2014  Igor Bogoslavskyi
+  ~ This file is part of LearnIt.
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 
 <resources>
 
@@ -53,12 +65,12 @@
     <string name="dialog_word_deleted_message">Das Wort \"%s\" ist erfolgreich gelöscht</string>
     <string name="dialog_progress_title">Im Gange</string>
     <string name="dialog_progress_message">Erhalten Worte aus dem Wörterbuch</string>
-    <string name="notif_text">Klicken, um zu übersetzen</string>
-    <string name="ok">OK</string>
-    <string name="update">Aktualisieren</string>
-    <string name="cancel">Stornieren</string>
-    <string name="save">Speichern</string>
-    <string name="clear">Löschen</string>
+    <string name="notification_text">Klicken, um zu übersetzen</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_update">Aktualisieren</string>
+    <string name="dialog_button_cancel">Stornieren</string>
+    <string name="dialog_button_save">Speichern</string>
+    <string name="dialog_button_clear">Löschen</string>
 
 
     <!--Pref Strings-->
@@ -79,9 +91,9 @@
     <string name="pref_dialog_update_dict_dismiss">Go back</string>
 
 
-    <string name="db_imported">Dictionary was imported from \n%s</string>
-    <string name="db_import_error">Error occurred while importing</string>
-    <string name="db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
+    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
+    <string name="toast_db_import_error">Error occurred while importing</string>
+    <string name="toast_db_exported">Das Wörterbuch ist erfolgreich gespeichert ins \n%s</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Bearbeiten</string>
@@ -99,7 +111,7 @@
     <string name="main_group">Haupteinstellungen</string>
 
     <!--welcome-->
-    <string name="instructions">
+    <string name="text_guessing_translation">
         Vor kurzem habe ich die externe offline Wörterbüchern hinzugefügt. Sie sind derzeit nur als Helfer eingesetzt.
         \n
         Das ist - wenn Sie ein neues Wort über \"Neue Wörter Anpassen\" Screen eingeben möchten, bekommen Sie die

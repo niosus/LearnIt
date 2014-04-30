@@ -1,7 +1,20 @@
-/*
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
- */
 
+/*
+ * Copyright (C) 2014  Igor Bogoslavskyi
+ * This file is part of LearnIt.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package com.learnit.LearnIt.activities;
 
@@ -185,7 +198,7 @@ public class MainActivity extends Activity implements
         }
 	    if (isDictUpdateNeeded()) {
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		    builder.setTitle(R.string.pref_dialog_update_dict_title).setMessage(R.string.pref_dialog_update_dict_langs_mismatch_message).setPositiveButton(R.string.ok, dialogClickListener)
+		    builder.setTitle(R.string.dialog_update_to_help_dict_needed_title).setMessage(R.string.dialog_update_to_help_dict_needed).setPositiveButton(R.string.dialog_button_ok, dialogClickListener)
 				    .setNegativeButton(R.string.pref_dialog_update_dict_dismiss, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
 	    }
     }

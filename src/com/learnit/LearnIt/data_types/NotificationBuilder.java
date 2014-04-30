@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2014  Igor Bogoslavskyi
+ * This file is part of LearnIt.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.learnit.LearnIt.data_types;
 
 import android.app.Notification;
@@ -179,9 +196,9 @@ public class NotificationBuilder {
 	private static NotificationCompat.Builder getBuilder(Context context, int currentDirection, ArticleWordId struct)
 	{
 		if (Constants.FROM_MY_TO_FOREIGN == currentDirection)
-			return new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notif_text));
+			return new NotificationCompat.Builder(context).setContentTitle(struct.translation).setContentText(context.getString(R.string.notification_text));
 		else if (Constants.FROM_FOREIGN_TO_MY == currentDirection)
-			return new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notif_text));
+			return new NotificationCompat.Builder(context).setContentTitle(struct.word).setContentText(context.getString(R.string.notification_text));
 		else return null;
 	}
 

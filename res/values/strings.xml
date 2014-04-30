@@ -1,63 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  ~ Copyright (C) 2014  Igor Bogoslavskyi
+  ~ This file is part of LearnIt.
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 
 <resources>
     <string name="app_name">LearnIt</string>
+
+    <!-- fragment titles -->
     <string name="learn_words_frag_title">Learn My Words</string>
     <string name="add_words_frag_title">Add New Words</string>
+    <string name="dictionary_frag_title">My Dictionary</string>
 
+    <!-- edit fragment texts -->
+    <string name="edit_dialog_title">Editing…</string>
+
+    <!-- add words fragment texts -->
+    <string name="add_word_hint">Input word</string>
+    <string name="add_translation_hint">Input translation</string>
     <string name="add_words_frag_help_text_words">Possible words</string>
     <string name="add_words_frag_help_text_trans">Possible translations</string>
 
-    <string name="dictionary_frag_title">My Dictionary</string>
-    <string name="add_word_hint">Input word</string>
-    <string name="edit_dialog_title">Editing…</string>
+    <!-- my dictionary fragment texts -->
     <string name="search_word_hint">Start typing to search</string>
-    <string name="add_translation_hint">Input translation</string>
-    <string name="add_word_button_text">Add</string>
-    <string name="learn_no_words">Please add words</string>
-    <string-array name="fragments_titles">
-        <item>Add New Words</item>
-        <item>My Dictionary</item>
-        <item>Learn My Words</item>
-    </string-array>
+
+    <!-- learn fragment texts -->
+    <string name="learn_no_words">No words to display yet.</string>
 
     <!--toast texts-->
-    <string name="toast_notif_start_text">LearnIt notification timer started</string>
-    <string name="toast_notif_stop_text">Notification timer stopped</string>
-    <string name="toast_notif_update_text">Notification timer updated</string>
-    <string name="toast_no_dict">There is no dict for language pair \"%s\".</string>
-    <string name="toast_no_word">There is no such word in dictionary.</string>
-    <string name="toast_loading_dict">Loading help dictionary.</string>
+    <string name="toast_notif_start_text">LearnIt notification timer started. \nThe notifications will appear in scheduled time.</string>
+    <string name="toast_notif_stop_text">Notification timer stopped.</string>
+    <string name="toast_db_exported">Dictionary was exported to \n%s</string>
+    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
+    <string name="toast_db_import_error">Error occurred while importing</string>
 
     <!--Dialog strings-->
-    <string name="dialog_empty_title">Oops..</string>
+    <string name="dialog_empty_title">Oops…</string>
     <string name="dialog_empty_text">One of the fields is empty. Please fill it.</string>
-    <string name="dialog_added_title">Done!</string>
-    <string name="dialog_added_text">The word was added to database successfully.</string>
-    <string name="dialog_updated_title">Updated</string>
-    <string name="dialog_updated_text">New translation added</string>
-    <string name="dialog_exists_title">Already there!</string>
-    <string name="dialog_exists_text">The word already has this translation!</string>
     <string name="dialog_format_title">Oops!</string>
     <string name="dialog_format_text">Wrong format.\n Format `{article} {word}` expected.</string>
     <string name="dialog_article_title">Oops!</string>
-    <string name="dialog_article_text">Only articles `der`,`die` and `das` are permited.</string>
-    <string name="dialog_wrong_guess_title">Nope</string>
-    <string name="dialog_wrong_guess_message">This one is wrong, please try again!</string>
-    <string name="dialog_word_deleted_title">Done</string>
-    <string name="dialog_word_deleted_message">The word \"%s\" was successfully deleted.</string>
-    <string name="dialog_progress_title">Working…</string>
-    <string name="dialog_progress_message">Please wait while the words are fetched from the dictionary.</string>
-    <string name="notif_text">Please click to translate the word.</string>
-    <string name="ok">OK</string>
-    <string name="update">Update</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
-    <string name="clear">Clear</string>
+    <string name="dialog_article_text">Only articles `der`,`die` and `das` are permitted.</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_update">Update</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_save">Save</string>
+    <string name="dialog_button_clear">Clear</string>
+    <string name="dialog_update_to_help_dict_needed">There is a help dictionary available for current language pair. Do you want to use it?</string>
+    <string name="dialog_update_to_help_dict_needed_title">Help Dictionary Update</string>
+
+    <!-- notification strings -->
+    <string name="notification_text">Please click to translate the word.</string>
+
+
+    <!--prefs categories-->
+    <string name="notification_group">Notification settings</string>
+    <string name="main_group">Main settings</string>
 
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Reminder frequency</string>
@@ -71,44 +81,20 @@
     <string name="pref_notifications_enabled">Notifications Enabled</string>
     <string name="pref_notifications_disabled">Notifications Disabled</string>
 
-    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
-    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
-        application has to update the help dictionary.</string>
-    <string name="pref_dialog_update_dict_langs_mismatch_message">There is a help dictionary for the chosen language pair. Would you like to load it? It will then help you translate the words you add to your dictionary.</string>
-    <string name="pref_dialog_update_dict_dismiss">No</string>
-
-
-    <string name="db_exported">Dictionary was exported to \n%s</string>
-    <string name="db_imported">Dictionary was imported from \n%s</string>
-    <string name="db_import_error">Error occurred while importing</string>
-
     <!--context menu strings-->
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_back">Back</string>
-
 
     <!--menu strings-->
     <string name="menu_settings">Settings</string>
     <string name="menu_export">Export dictionary</string>
     <string name="menu_import">Import dictionary</string>
-    <string name="menu_show_all_words">Show all words</string>
     <string name="menu_info">About</string>
 
-    <!--prefs categories-->
-    <string name="notification_group">Notification settings</string>
-    <string name="main_group">Main settings</string>
-
     <!--welcome-->
-    <string name="instructions">
-        Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
-        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
-        field you will get some possible translations, you may have wanted to use.\n
-        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the
-        other.
-    </string>
     <string name="instr_go_to_settings">Settings</string>
-    <string name="quick_instructions">just click on the \"Settings\" button below and pick a language you want to learn
-        there. Then just click the \"Back\" button and you are ready to go.
+    <string name="quick_instructions">Just click on the \"Settings\" button below and pick a language you want to learn
+        there. Then just click the \"Back\" button and you are ready to jump right in.
     </string>
     <string name="quick_start">For a Quick Start</string>
     <string name="welcome">Welcome!</string>
@@ -116,36 +102,35 @@
     <string name="instructions_method_title">Concept</string>
     <string name="instructions_method_text">
         This app allows you to learn the words even if you think that you are just too lazy to do it. \n\n
-        The method, used by LearnIt is simple. \n\n
         Once you have added new words to your dictionary, they start appearing as notifications,
-        making it impossible for you to miss them. \n\n
+        making it impossible for you to miss them.
+        \n\n
         The click on a notification shows the word you would want to translate and some possible translations from which
-        you have to pick a correct one.\n\n
-
-        The key idea is that the notifications can only be closed by picking the correct translation of the word.\n\n
-
+        you have to pick a correct one. The key idea is that the notifications can only be closed by picking the correct translation of the word.
+        \n\n
         This whole system makes you repeat the words you learn every day (at most), which ensures remembering the word,
         while putting nearly no effort in learning.\n
-        Basically, the app takes away all your responsibility to learn 5 or 10 new words every day. It works for me,
-        anyway.\n
+        Basically, the app takes away all your responsibility to learn 5 or 10 new words every day.
     </string>
     <string name="instructions_guess_trans_title">Guessing Translation</string>
     <string name="instructions_guess_trans_text">
-        Recently I have added the external offline dictionaries support. They are currently used only as a helper for
-        guessing translations you wanted to enter. \n\n
-
+        The app partially relies on the offline dictionaries support. They are used only as a helper.
+        \n\n
         That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
-        field you will get some possible translations, you may have wanted to use.\n\n
-
-        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the
-        other. \n
+        field you will get some possible translations, you may have wanted to use.
+        \n\n
+        This saves you time, you really don\'t want to spend on switching the keyboard layout from one language to the
+        other.
     </string>
 
-    <string name="instructions_dict_help_title">IMPORTANT Information About Dictionaries</string>
+    <string name="instructions_dict_help_title">Information About Dictionaries</string>
     <string name="instructions_dict_help_text">
-        To use the dictionary currently you would have to download and put it into your phone\'s memory manually as I
-        have still not developed any way to do that automatically.\n\n
-        The dictionaries should be put in the sd card, in the folder "LearnIt" (you may want to click "export
+        To use a helping dictionary you have to download it and put into your phone\'s memory.
+        I provide packages that do it for you at least for some languages. \n
+        If your language is still missing - contact me and we will try to solve the problem.
+        \n\n
+        However, if you want to do it manually:
+        The dictionaries should be put to the sd card, into the folder "LearnIt" (you may want to click "export
         dictionary" inside the app - this will create the folder automatically)
         If you have any ideas, I would love to hear them.\n\n
         The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
@@ -158,15 +143,15 @@
 
     <string name="instructions_edit_words_help_title">Editing Existing Words</string>
     <string name="instructions_edit_words_help_text">
-        While you are on "Dictionary" screen, and you have some words from your dictionary showing in the list, you may
-        long-click them and edit/delete them.\n
+        While you are on "My Dictionary" screen, and you have some words from your dictionary showing in the list, you may
+        long-click them and edit/delete them.
     </string>
 
     <string name="instructions_thank_you_title">Thank You!</string>
     <string name="instructions_thank_you_text">
         While this application is just my hobby project it really means a lot for me, that people use it.
         If you have any feedback or suggestions, feel free to contact me and tell what you think. It is really very
-        important for me.\n
+        important for me.
     </string>
 
     <!--Crouton strings-->
@@ -175,7 +160,6 @@
     <string name="crouton_word_already_present">Word ``%1$s`` is already in your dictionary.</string>
     <string name="crouton_word_deleted">Deleted ``%1$s``.</string>
     <string name="crouton_back_pressed_once">Press back once again to leave. \nThis will cancel the task.</string>
-
 
 
     <!--dict to sql activity strings-->

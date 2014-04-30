@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
+  ~ Copyright (C) 2014  Igor Bogoslavskyi
+  ~ This file is part of LearnIt.
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
-
 
 <resources>
 
@@ -58,12 +66,12 @@
     <string name="dialog_word_deleted_message">Слово \"%s\" успешно удалено</string>
     <string name="dialog_progress_title">Работаем…</string>
     <string name="dialog_progress_message">Пожалуйста подождите пока мы достаем слова из словаря</string>
-    <string name="notif_text">Клацните, чтобы перевести слово</string>
-    <string name="ok">OK</string>
-    <string name="update">Обновить</string>
-    <string name="cancel">Отмена</string>
-    <string name="save">Сохранить</string>
-    <string name="clear">Очистить</string>
+    <string name="notification_text">Клацните, чтобы перевести слово</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_update">Обновить</string>
+    <string name="dialog_button_cancel">Отмена</string>
+    <string name="dialog_button_save">Сохранить</string>
+    <string name="dialog_button_clear">Очистить</string>
 
     <!--Pref Strings-->
     <string name="pref_reminder_freq">Частота напоминаний</string>
@@ -83,9 +91,9 @@
     <string name="pref_dialog_update_dict_dismiss">Go back</string>
 
 
-    <string name="db_exported">Словарь успешно сохранен в \n%s</string>
-    <string name="db_imported">Dictionary was imported from \n%s</string>
-    <string name="db_import_error">Error occurred while importing</string>
+    <string name="toast_db_exported">Словарь успешно сохранен в \n%s</string>
+    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
+    <string name="toast_db_import_error">Error occurred while importing</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редактировать</string>
@@ -104,7 +112,7 @@
 
     <!--welcome-->
 
-    <string name="instructions">
+    <string name="text_guessing_translation">
         Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
         That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
         field you will get some possible translations, you may have wanted to use.\n

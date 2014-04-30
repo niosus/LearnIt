@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/3.0/.
-  -->
 
+<!--
+  ~ Copyright (C) 2014  Igor Bogoslavskyi
+  ~ This file is part of LearnIt.
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
 
 <resources>
 
@@ -53,12 +66,12 @@
     <string name="dialog_word_deleted_message">Слово \"%s\" успішно видалено</string>
     <string name="dialog_progress_title">Працюємо</string>
     <string name="dialog_progress_message">Витягуємо слова зі словника</string>
-    <string name="notif_text">Клацніть щоб перекласти</string>
-    <string name="ok">OK</string>
-    <string name="update">Оновити</string>
-    <string name="cancel">Відміна</string>
-    <string name="save">Зберегти</string>
-    <string name="clear">Скинути</string>
+    <string name="notification_text">Клацніть щоб перекласти</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_update">Оновити</string>
+    <string name="dialog_button_cancel">Відміна</string>
+    <string name="dialog_button_save">Зберегти</string>
+    <string name="dialog_button_clear">Скинути</string>
 
 
     <!--Pref Strings-->
@@ -80,9 +93,9 @@
 
 
 
-    <string name="db_exported">Словник успішно збережено в \n%s</string>
-    <string name="db_imported">Dictionary was imported from \n%s</string>
-    <string name="db_import_error">Error occurred while importing</string>
+    <string name="toast_db_exported">Словник успішно збережено в \n%s</string>
+    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
+    <string name="toast_db_import_error">Error occurred while importing</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редагувати</string>
@@ -106,7 +119,7 @@
         вчити.
         Далі натисніть \"Назад\" і ви готові починати.
     </string>
-    <string name="instructions">
+    <string name="text_guessing_translation">
         Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
         That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
         field you will get some possible translations, you may have wanted to use.\n
