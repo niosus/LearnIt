@@ -1,3 +1,18 @@
+About
+--------
+This is an Android application called LearnIt. 
+
+It is created to help learning foreign languages.
+
+This is my hobby project and should always remain free. However, if you want to help it evolve I would welcome forking. The code quality is sometimes poor, but I am improving on the go.
+
+References
+----------
+This project uses some third party libraries that I would like to mention:
+
+- PagerSlidingTabStrip by @astuetz at https://github.com/astuetz/PagerSlidingTabStrip
+- Crouton library by @keyboardsurfer at https://github.com/keyboardsurfer/Crouton
+
 Licening
 ---------
 Most of the code is under the GPLv3 licence: 
@@ -23,7 +38,7 @@ GNU General Public License for more details.
 > You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Part responsible for StarDict interaction refers to https://code.google.com/p/open-ones/source/browse/trunk/ProjectList/InnoDict/Stardict-Core/src/openones/stardictcore/?r=418 and is therefore under the provided Apache 2.0 licence:
+Part responsible for StarDict interaction refers to Open Ones group and their code at http://goo.gl/aGuKTk and is therefore under the provided Apache 2.0 licence:
 
 ![logo][logo2]
 
