@@ -63,5 +63,12 @@
                 style="@style/MyImageButtonWhite"/>
 
     </RelativeLayout>
+    <ImageView
+        android:src="@drawable/logo_blue"
+        android:contentDescription="@string/app_name"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
 
