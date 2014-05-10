@@ -361,15 +361,15 @@ containing a value of this type.
         public static final int btn_add_trans_clear=0x7f0c0005;
         public static final int btn_add_word_clear=0x7f0c0002;
         public static final int btn_first=0x7f0c0020;
-        public static final int btn_go_to_settings=0x7f0c0034;
+        public static final int btn_go_to_settings=0x7f0c0033;
         public static final int btn_search_clear=0x7f0c000a;
         public static final int btn_second=0x7f0c0021;
         public static final int btn_third=0x7f0c0022;
-        public static final int context_menu_delete=0x7f0c0037;
-        public static final int context_menu_edit=0x7f0c0036;
+        public static final int context_menu_delete=0x7f0c0036;
+        public static final int context_menu_edit=0x7f0c0035;
         public static final int dict_frame=0x7f0c0029;
-        public static final int edit_menu_cancel=0x7f0c0038;
-        public static final int edit_menu_done=0x7f0c0039;
+        public static final int edit_menu_cancel=0x7f0c0037;
+        public static final int edit_menu_done=0x7f0c0038;
         public static final int edtTrans=0x7f0c0015;
         public static final int edtWord=0x7f0c0013;
         public static final int edv_add_translation=0x7f0c0004;
@@ -389,18 +389,17 @@ containing a value of this type.
         public static final int linear_translation=0x7f0c0003;
         public static final int linear_word=0x7f0c0000;
         public static final int list_of_add_words=0x7f0c0006;
-        public static final int list_of_all_words=0x7f0c0030;
         public static final int list_of_words=0x7f0c000b;
-        public static final int menu_export=0x7f0c003a;
-        public static final int menu_import=0x7f0c003b;
-        public static final int menu_info=0x7f0c003d;
-        public static final int menu_settings=0x7f0c003c;
+        public static final int menu_export=0x7f0c0039;
+        public static final int menu_import=0x7f0c003a;
+        public static final int menu_info=0x7f0c003c;
+        public static final int menu_settings=0x7f0c003b;
         public static final int pager=0x7f0c0025;
         public static final int progress_load_dict=0x7f0c000c;
         public static final int relative_layout_dict=0x7f0c0007;
         public static final int right_bottom_button=0x7f0c001f;
         public static final int right_top_button=0x7f0c001c;
-        public static final int save_item=0x7f0c0035;
+        public static final int save_item=0x7f0c0034;
         public static final int second_button_layout=0x7f0c001d;
         public static final int squareProgressBar1=0x7f0c002e;
         public static final int square_progress=0x7f0c000f;
@@ -412,9 +411,9 @@ containing a value of this type.
         public static final int txtDictLabel=0x7f0c0028;
         public static final int txtLearnLabel=0x7f0c002c;
         public static final int txtViewEditDialog=0x7f0c0011;
-        public static final int txt_quick_instructions=0x7f0c0033;
-        public static final int txt_quick_start=0x7f0c0032;
-        public static final int txt_welcome=0x7f0c0031;
+        public static final int txt_quick_instructions=0x7f0c0032;
+        public static final int txt_quick_start=0x7f0c0031;
+        public static final int txt_welcome=0x7f0c0030;
         public static final int view_group_id=0x7f0c0027;
         public static final int word_to_ask=0x7f0c0019;
     }
@@ -429,8 +428,7 @@ containing a value of this type.
         public static final int info=0x7f030007;
         public static final int main=0x7f030008;
         public static final int progressbarview=0x7f030009;
-        public static final int show_all_words=0x7f03000a;
-        public static final int welcome=0x7f03000b;
+        public static final int welcome=0x7f03000a;
     }
     public static final class menu {
         public static final int actions_add_words=0x7f0b0000;

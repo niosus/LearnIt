@@ -17,7 +17,6 @@
   -->
 
 <resources>
-
     <!-- fragment titles -->
     <string name="learn_words_frag_title">Meine Wörter Lernen</string>
     <string name="add_words_frag_title">Neue Wörter Eingeben</string>

@@ -17,6 +17,7 @@
   -->
 
 <resources>
+    <string name="app_name">LearnIt</string>
     <string name="layout_current">normal</string>
     <string name="key_pref_notif_active">notification_enabled</string>
     <string name="key_notification_frequency">notification_frequency</string>

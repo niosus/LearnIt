@@ -17,8 +17,6 @@
   -->
 
 <resources>
-    <string name="app_name">LearnIt</string>
-
     <!-- fragment titles -->
     <string name="learn_words_frag_title">Learn My Words</string>
     <string name="add_words_frag_title">Add New Words</string>
@@ -50,9 +48,9 @@
     <string name="dialog_empty_title">Oops…</string>
     <string name="dialog_empty_text">One of the fields is empty. Please fill it.</string>
     <string name="dialog_format_title">Oops!</string>
-    <string name="dialog_format_text">Wrong format.\n Format `{article} {word}` expected.</string>
+    <string name="dialog_format_text">Wrong format.\n Format \"{article} {word}\" expected.</string>
     <string name="dialog_article_title">Oops!</string>
-    <string name="dialog_article_text">Only articles `der`,`die` and `das` are permitted.</string>
+    <string name="dialog_article_text">Only articles \"der\",\"die\" and \"das\" are permitted.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_update">Update</string>
     <string name="dialog_button_cancel">Cancel</string>
@@ -116,7 +114,7 @@
     <string name="instructions_guess_trans_text">
         The app partially relies on the offline dictionaries support. They are used only as a helper.
         \n\n
-        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
+        That is - when you want to enter a new word via \"Add New Words\" screen, once you click on the "Translation"
         field you will get some possible translations, you may have wanted to use.
         \n\n
         This saves you time, you really don\'t want to spend on switching the keyboard layout from one language to the
@@ -130,10 +128,11 @@
         If your language is still missing - contact me and we will try to solve the problem.
         \n\n
         However, if you want to do it manually:
-        The dictionaries should be put to the sd card, into the folder "LearnIt" (you may want to click "Export dictionary" inside the app - this will create the folder automatically)
+        The dictionaries should be put to the sd card, into the folder \"LearnIt\"
+        (you may want to click \"Export dictionary\" inside the app - this will create the folder automatically)
         If you have any ideas, I would love to hear them.\n\n
         The dictionaries should be put in the folder {language_from}-{language_to}. \n\n
-        StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name "dict".\n\n
+        StarDict usually is distributed with 3 files *.ifo, *.idx, *.dict. They all have to have name \"dict\".\n\n
         So for German-English dict the path looks as follows:\n\n
         /SD_CARD/LearnIt/de-en/dict.ifo\n
         /SD_CARD/LearnIt/de-en/dict.idx\n
@@ -142,7 +141,7 @@
 
     <string name="instructions_edit_words_help_title">Editing Existing Words</string>
     <string name="instructions_edit_words_help_text">
-        While you are on "My Dictionary" screen, and you have some words from your dictionary showing in the list, you may
+        While you are on \"My Dictionary\" screen, and you have some words from your dictionary showing in the list, you may
         long-click them and edit/delete them.
     </string>
 
@@ -154,10 +153,10 @@
     </string>
 
     <!--Crouton strings-->
-    <string name="crouton_word_saved">New word ``%1$s`` saved.</string>
-    <string name="crouton_word_updated">New translation added to the word ``%1$s``.</string>
-    <string name="crouton_word_already_present">Word ``%1$s`` is already in your dictionary.</string>
-    <string name="crouton_word_deleted">Deleted ``%1$s``.</string>
+    <string name="crouton_word_saved">New word \"%1$s\" saved.</string>
+    <string name="crouton_word_updated">New translation added to the word \"%1$s\".</string>
+    <string name="crouton_word_already_present">Word \"%1$s\" is already in your dictionary.</string>
+    <string name="crouton_word_deleted">Deleted \"%1$s\".</string>
     <string name="crouton_back_pressed_once">Press back once again to leave. \nThis will cancel the task.</string>
 
 
@@ -211,8 +210,8 @@
     </string-array>
 
     <string-array name="entries_direction_of_trans">
-        <item>From my language to foreign</item>
-        <item>From foreign to my language</item>
+        <item>Show word</item>
+        <item>Show translation</item>
         <item>Mixed</item>
     </string-array>
 

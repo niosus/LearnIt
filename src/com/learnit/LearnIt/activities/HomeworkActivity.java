@@ -38,7 +38,8 @@ public class HomeworkActivity extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		FragmentManager fragmentManager = getFragmentManager();
+        this.getActionBar().setTitle("");
+        FragmentManager fragmentManager = getFragmentManager();
 
 		// add a headless worker fragment to stack if not yet there
 		Fragment worker = fragmentManager

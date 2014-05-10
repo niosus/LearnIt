@@ -29,7 +29,7 @@
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_launcher"
             android:theme="@style/Theme.BlueTheme"
-            android:label=""
+            android:label="LearnIt"
             android:logo="@drawable/logo_blue">
 
         <receiver android:name=".services.AutoStart">

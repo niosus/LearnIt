@@ -80,6 +80,7 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        this.getActionBar().setTitle("");
         String currentLayout = getString(R.string.layout_current);
 	    FragmentManager fragmentManager = getFragmentManager();
 	    _worker = (WorkerFragment) fragmentManager.findFragmentByTag(WorkerFragment.TAG);

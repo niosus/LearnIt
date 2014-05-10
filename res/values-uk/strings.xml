@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (C) 2014  Igor Bogoslavskyi
   ~ This file is part of LearnIt.
@@ -18,84 +17,67 @@
   -->
 
 <resources>
-
-    <string name="app_name">LearnIt</string>
-    <string name="learn_words_frag_title">Вчити мої слова</string>
-    <string name="add_words_frag_title">Додати нові слова</string>
-    <string name="add_words_frag_help_text_words">Можливо ви щукаєте на ці слова?</string>
-    <string name="add_words_frag_help_text_trans">Можливо ви шукаєте на ці переклади?</string>
-
+    <!-- fragment titles -->
+    <string name="learn_words_frag_title">Вчити слова</string>
+    <string name="add_words_frag_title">Додати нове слово</string>
     <string name="dictionary_frag_title">Мій словник</string>
+
+    <!-- edit fragment texts -->
+    <string name="edit_dialog_title">Редагуємо…</string>
+
+    <!-- add words fragment texts -->
     <string name="add_word_hint">Слово</string>
-    <string name="edit_dialog_title">Редагуємо</string>
-    <string name="search_word_hint">Пошук</string>
     <string name="add_translation_hint">Переклад</string>
-    <string name="add_word_button_text">Додати</string>
-    <string name="learn_no_words">Додайте слова в словник</string>
-    <string-array name="fragments_titles">
-        <item>Dummy</item>
-        <item>Dummy</item>
-        <item>Dummy</item>
-    </string-array>
+    <string name="add_words_frag_help_text_words">Можливі слова</string>
+    <string name="add_words_frag_help_text_trans">Можливі переклади</string>
+
+    <!-- my dictionary fragment texts -->
+    <string name="search_word_hint">Пошук…</string>
+
+    <!-- learn fragment texts -->
+    <string name="learn_no_words">Ваш словник порожній, додайте нових слів.</string>
 
     <!--toast texts-->
-    <string name="toast_notif_start_text">Таймер запущено</string>
-    <string name="toast_notif_stop_text">Таймер зупинено</string>
-    <string name="toast_notif_update_text">Таймер оновлено</string>
-    <string name="toast_no_dict">Нажаль немає словника для пари \"%s\".</string>
-    <string name="toast_no_word">Нажаль такого слова в словнику немає.</string>
-    <string name="toast_loading_dict">Загружаємо словник-помічник.</string>
-    <string name="toast_loaded_dict">Словник готовий. Спробуйте додати нове слово.</string>
+    <string name="toast_notif_start_text">Таймер LearnIt запущено. \nСповіщення з’являться у заданий час.</string>
+    <string name="toast_notif_stop_text">Таймер зупинено.</string>
+    <string name="toast_db_exported">Словник збередений в папку:\n%s</string>
+    <string name="toast_db_imported">Словник відновлений з папки:\n%s</string>
+    <string name="toast_db_import_error">Нажаль, під час відновлення відбулася помилка.</string>
 
     <!--Dialog strings-->
-    <string name="dialog_empty_title">Ой лишенько!</string>
-    <string name="dialog_empty_text">Принаймні одне поле порожнє. Виправте будь ласка.</string>
-    <string name="dialog_added_title">Готово!</string>
-    <string name="dialog_added_text">Слово успішно додано!</string>
-    <string name="dialog_updated_title">Слово оновлено!</string>
-    <string name="dialog_updated_text">Новий переклад додано до існуючого слова</string>
-    <string name="dialog_exists_title">Вже тут!</string>
-    <string name="dialog_exists_text">В словнику вже існує слово з таким перекладом</string>
-    <string name="dialog_format_title">Ой лишенько!</string>
-    <string name="dialog_format_text">Неправильний формат</string>
-    <string name="dialog_article_title">Ой лишенько!</string>
-    <string name="dialog_article_text">Тількі артіклі можуть бути першим словом</string>
-    <string name="dialog_wrong_guess_title">Не правильно</string>
-    <string name="dialog_wrong_guess_message">Не панікуйте, спробуйте ще раз</string>
-    <string name="dialog_word_deleted_title">Готово!</string>
-    <string name="dialog_word_deleted_message">Слово \"%s\" успішно видалено</string>
-    <string name="dialog_progress_title">Працюємо</string>
-    <string name="dialog_progress_message">Витягуємо слова зі словника</string>
-    <string name="notification_text">Клацніть щоб перекласти</string>
+    <string name="dialog_empty_title">Отакої…</string>
+    <string name="dialog_empty_text">Одне з полів порожнє. Будь ласка, заповніть його.</string>
+    <string name="dialog_format_title">Отакої!</string>
+    <string name="dialog_format_text">Неправильний формат.\nПоки що підтримується тільки формат: `{артикль} {слово}`.</string>
+    <string name="dialog_article_title">Отакої!</string>
+    <string name="dialog_article_text">Тільки артиклі `der`,`die` і `das` поки що доступні.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_update">Оновити</string>
-    <string name="dialog_button_cancel">Відміна</string>
+    <string name="dialog_button_cancel">Скинути</string>
     <string name="dialog_button_save">Зберегти</string>
-    <string name="dialog_button_clear">Скинути</string>
+    <string name="dialog_button_clear">Очистити</string>
+    <string name="dialog_update_to_help_dict_needed">Для обраної пари мов є допоміжний словник. Хочете його використати?</string>
+    <string name="dialog_update_to_help_dict_needed_title">Оновлення допоміжного словника</string>
 
+    <!-- notification strings -->
+    <string name="notification_text">Клацніть, щоб перекласти!</string>
+
+
+    <!--prefs categories-->
+    <string name="notification_group">Налаштування сповіщень</string>
+    <string name="main_group">Основні налаштування</string>
 
     <!--Pref Strings-->
-    <string name="pref_reminder_freq">Частота нагадувань</string>
-    <string name="pref_language_to_learn">Яку мову вчимо</string>
-    <string name="pref_language_you_know">Яку мову знаємо</string>
-    <string name="pref_time_to_start">Коли почати показувати нагадування?</string>
-    <string name="pref_num_of_words">Слів у сесії</string>
+    <string name="pref_reminder_freq">Частота сповіщень</string>
+    <string name="pref_language_to_learn">Мова для вивчення</string>
+    <string name="pref_language_you_know">Мова, яку Ви знаєте</string>
+    <string name="pref_time_to_start">Час початку показу сповіщень</string>
+    <string name="pref_num_of_words">Кількість слів в сесії</string>
     <string name="pref_way_to_learn">Метод вивчення</string>
     <string name="pref_notifications">Сповіщення</string>
     <string name="pref_direction_of_trans">Напрямок перекладу</string>
-    <string name="pref_notifications_enabled">Сповіщення активні</string>
-    <string name="pref_notifications_disabled">Сповіщення не активні</string>
-    <string name="pref_dialog_update_dict_title">Need to update dictionary</string>
-    <string name="pref_dialog_update_dict_message">You have chosen a new language pair. To function correctly the
-        application has to update the help dictionary.
-    </string>
-    <string name="pref_dialog_update_dict_dismiss">Go back</string>
-
-
-
-    <string name="toast_db_exported">Словник успішно збережено в \n%s</string>
-    <string name="toast_db_imported">Dictionary was imported from \n%s</string>
-    <string name="toast_db_import_error">Error occurred while importing</string>
+    <string name="pref_notifications_enabled">Сповіщення увімкнено</string>
+    <string name="pref_notifications_disabled">Сповіщення вимкнено</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редагувати</string>
@@ -103,95 +85,87 @@
 
     <!--menu strings-->
     <string name="menu_settings">Налаштування</string>
-    <string name="menu_export">Експорт словнику</string>
-    <string name="menu_import">Імпорт словнику</string>
-    <string name="menu_show_all_words">Показати всі слова</string>
-    <string name="menu_info">Про додаток</string>
-
-    <!--prefs categories-->
-    <string name="notification_group">Налаштування нагадувань</string>
-    <string name="main_group">Основні налаштування</string>
+    <string name="menu_export">Експорт словника</string>
+    <string name="menu_import">Імпорт словника</string>
+    <string name="menu_info">Про LearnIt</string>
 
     <!--welcome-->
-
     <string name="instr_go_to_settings">Налаштування</string>
-    <string name="quick_instructions">Просто натисніть на \"Налаштування\" знизу сторінки і виберіть мову, яку хочете
-        вчити.
-        Далі натисніть \"Назад\" і ви готові починати.
+    <string name="quick_instructions">Просто натисніть кнопку \"Налаштування\" унизу сторінки. У вікні, що відкриється виберіть мову, який би Ви хотіли вчити.
+        Потім натисніть кнопку \"Назад\" і ви готові до роботи.
     </string>
-    <string name="text_guessing_translation">
-        Recently I have added the external offline dictionaries support. They are currently used only as a helper. \n
-        That is - when you want to enter a new word via "Add New Words" screen, once you click on the "Translation"
-        field you will get some possible translations, you may have wanted to use.\n
-        This saves you time, you really don\'t want to spend on just switching the keyboard from one language to the
-        other.
-    </string>
-    <string name="quick_start">Швидкий старт!</string>
-    <string name="welcome">Привіт!</string>
+    <string name="quick_start">Швидкий старт</string>
+    <string name="welcome">Вітаю!</string>
     <string name="instructions_title">Версія %s</string>
     <string name="instructions_method_title">Ідея</string>
     <string name="instructions_method_text">
-        Ця програма дозволяє Вам вивчати слова, навіть, якщо Ви самі впевнені, що Ви для цього занадто ліниві. \n\n
-        Метод, який я використовую простий. \n\n
-        Як тільки Ви додаєте слова в Ваш словник, вони починають з\'являтися як оповіщення,
-        так, що їх неможливо не помітити. \n\n
-        Натискання на оповіщення показує слово, яке Ви хочете перекласти і варіанти перекладу з яких Вам належить
-        вибрати правильний.\n\n
-
-        Основна ідея в тому, що закрити оповіщення можна тільки вибравши правильний варіант.\n\n
-
-        Вся ця система змушує Вас вчити слова як мінімум кожен день, а це гарантує запам\'ятовування слова, практично не
-        докладаючи зусиль.\n
+        LearnIt дозволяє Вам вивчати слова нової для Вас мови навіть якщо ви впевнені, що Ви задля цого занадто ліниві.\n\n
+        Як тільки ви додасте декілька слів до Вашого словника, вони почнуть з’являтися як сповіщення, змушуючи Вас їх повторювати.\n\n
+        Клацніть на сповіщення, щоб подивитись слово, яке Вам необхідно перекласти і декілька варіантів його перекладу. З 4-х варіантів є лише один вірний
+        Ідея цього процесу в тому, що сповіщення не закриється до того моменти, поки Ви не виберете правильний варіант перекладу.\n\n
+        Таким чином, LearnIt змущує Вас повторювати слова, які ви вчите як мінімум раз на день.
+        Це допомагає Вам практично без зусиль запам’ятовувати декілька слів на день.\n
+        Можна сказати, що LearnIt знімає з вас відповідальність за Ваше навчання і перекладає її на себе.
     </string>
-    <string name="instructions_guess_trans_title">Вгадуємо переклад</string>
+    <string name="instructions_guess_trans_title">Допомога в переладі</string>
     <string name="instructions_guess_trans_text">
-        Нещодавно я додав підтримку оффлайн словників StarDict. На даний момент вони використовуються тільки в якості
-        допомоги при введенні нового слова. \n\n
-        Коли ви набираєте нове слово на екрані "Нові слова" і клікаєте на поле "переклад", додаток спробує підказати Вам
-        варіанти перекладу.\n\n
-        Це часто позбавляє від необхідності перемикати розкладку на клавіатурі. \n
+        LearnIt використовує оффлайн словники, які потрібні для надання Вам допомоги в перекладі нових слів.\n\n
+        Коли ви додаєте нове слово, як тільки ви клацнете на поле для перекладу, Ви побачите декілька можливих перекладів слова, яке ви тільки що ввели.\n\n
+        Це економить Вам час, який ви, мабуть, не дуже хочете витрачати на перемикання клавіатури з однієї мови на іншу.
     </string>
 
-    <string name="instructions_dict_help_title">ВАЖЛИВО! Інформація про словники!</string>
+    <string name="instructions_dict_help_title">Трохи про оффлайн словники</string>
     <string name="instructions_dict_help_text">
-        На даний момент словники потрібно встановлювати вручну, так як метод автоматичної їх установки я ще не придумав.
-        \n\n
-        Словники необхідно помістити на карту пам\'яті, в папку \"LearnIt\" (її можна створити прямо з програми, просто
-        натиснувши \"експорт словника\"). Якщо у вас є ідеї як це можна реалізувати - буду радий їх усливать. \n\n
-        Словники потрібно покласти в папки з назвою {language_from} - {language_to}. \n\n
-        Формат StarDict зазвичай разспространятся як 3 файла: *. Ifo, *. Idx, *. Dict. Всі повинні мати ім\'я
-        "dict".\n\n
-        Отже для словника Німецький-Англійська усе має виглядати приблизно так: \n\n
+        Для того, щоб використовувати допоміжний словник, Вам потрібно зберегти його в пам’ять Вашого телефону.
+        Принаймні для декількох мов, я написав додатки, які все зроблять за Вас.
+        Якщо потрібної вам пари мов все ще нема, напишіть мені і ми з Вами разом спробуємо щось придумати.\n\n
+        Ви, також, можете додати словник вручну:
+        Для цього необхідно зберегти словник на sd карту Вашого телефону до папки \"LearnIt\"
+        (якщо ви клацнете "Експорт словнику" в самому додатку LearnIt, папка буде створена автоматично).\n\n
+        В цій папці, кожен словник повинен бути збережений до папки з назвою: {мова, яку вчимо}-{мова, яку знаємо}. \n\n
+        LearnIt використовує словники StarDict, які зазвичай складаються з 3-х файлів: *.ifo, *.idx, *.dict.
+        Щоб використовувати їх разом з LearnIt, Вам необхідно всі ці файли переіменувати в \"dict\".\n\n
+        Наприклад, для пари Німецька-Англійська, ці файли будуть мати наступний вигляд:\n\n
         /SD_CARD/LearnIt/de-en/dict.ifo\n
         /SD_CARD/LearnIt/de-en/dict.idx\n
         /SD_CARD/LearnIt/de-en/dict.dict\n
     </string>
 
-    <string name="instructions_edit_words_help_title">Редагування існуючих слів</string>
+    <string name="instructions_edit_words_help_title">Редагування слів</string>
     <string name="instructions_edit_words_help_text">
-        Коли ви перебуваєте на екрані "Мій Словник" і лист показує якісь слова, ви можете видалити або редагувати їх по
-        довгому тапу на відповідне слово.\n
+        Коли ви знаходитесь у вікні "Мій словник", і декілька слів з нього є на екрані, ви можете їх редагувати, або видалити.
+        Кожне слово реагує на довгий дотик, після якого Ви побачите меню для редагування.
     </string>
 
     <string name="instructions_thank_you_title">Дякую!</string>
     <string name="instructions_thank_you_text">
-        Не дивлячись на те, що цей додаток - просто моє хобі, для мене багато значить, що ним користуються живі люди.
-        Якщо у вас є думка, якою хочеться поділитися, або які небудь побажання - пишіть, я буду радий їх почути. \n
+        Не дивлячись на те, що цей додаток - лише мій хоббі проект, для мене багато означає той факт, що є люди, яким він є у нагоді.
+        Якщо у Вас є побажання, або критика, я буду дуже радий їх почути. Напишіть їх мені, або залиште їх у відгуках на Google Play Store.
+        Мені правда важлива Ваша думка!
     </string>
+
+    <!--Crouton strings-->
+    <string name="crouton_word_saved">Нове слово \"%1$s\" додано.</string>
+    <string name="crouton_word_updated">Новий переклад додано до слова \"%1$s\".</string>
+    <string name="crouton_word_already_present">Слово \"%1$s\" вже є в Вашому словнику.</string>
+    <string name="crouton_word_deleted">Слово \"%1$s\" видалено.</string>
+    <string name="crouton_back_pressed_once">Натисніть \"Назад\" ще раз, щоб вийти. \nЦе перерве процес.</string>
 
 
     <!--dict to sql activity strings-->
-    <string name="dict_sql_title">Словник</string>
-    <string name="dict_sql_no_dict">Не знайдено словника для пари</string>
-    <string name="dict_sql_success">був успішно завантажений</string>
+    <string name="dict_sql_title">Допоміжний словник</string>
+    <string name="dict_sql_no_dict">Для вибраної пари мов допоміжний словник не знайдено.</string>
+    <string name="dict_sql_success">Допоміжний словник проіндексовано.</string>
     <string name="dict_sql_version">%1$s-%2$s. Версія: %3$s</string>
-    <string name="dict_sql_progress_found">Словник знайдено. \nЙде індексація…</string>
-    <string name="dict_sql_progress_searching_indexing">Пошук словника.</string>
+    <string name="dict_sql_progress_found">Допоміжний словник знайдено. \nІндексуємо…</string>
+    <string name="dict_sql_progress_searching_indexing">Пошук і індуксування допоміжного словнику…</string>
+    <string name="dict_sql_may_close_now">Ви можете залишити це вікно.</string>
+
 
     <string-array name="time_entries">
         <item>Година</item>
         <item>Дві години</item>
-        <item>Три години</item>
+        <item>Чотири години</item>
         <item>Пів дня</item>
         <item>День</item>
     </string-array>
@@ -222,15 +196,15 @@
     </string-array>
 
     <string-array name="entries_way_to_learn">
-        <item>Лише переклад</item>
-        <item>Лише артіклі</item>
-        <item>Змішаний</item>
+        <item>Тільки переклад</item>
+        <item>Тільки артіклі</item>
+        <item>Змішанний</item>
     </string-array>
 
     <string-array name="entries_direction_of_trans">
-        <item>З моєї мови на іноземну</item>
-        <item>З іноземної мови на мою</item>
-        <item>Змішаний</item>
+        <item>Показувати слово</item>
+        <item>Показувати переклад</item>
+        <item>Змішанний</item>
     </string-array>
 
 </resources>
