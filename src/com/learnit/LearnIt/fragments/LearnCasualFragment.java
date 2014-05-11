@@ -49,12 +49,14 @@ public class LearnCasualFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public LearnCasualFragment(IWorkerJobInput worker) {
-		super();
-		_listener = new LearnOnTheGoController(this, worker, btnIds());
-	}
+    public static LearnCasualFragment newInstance(IWorkerJobInput worker) {
+        LearnCasualFragment learnCasualFragment = new LearnCasualFragment();
+        learnCasualFragment.attachWorker(worker);
+        return learnCasualFragment;
+    }
 
-	public void attachWorker(IWorkerJobInput worker) {
+
+    public void attachWorker(IWorkerJobInput worker) {
 		_listener = new LearnOnTheGoController(this, worker, btnIds());
 	}
 

@@ -49,6 +49,7 @@ public class PrefActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	    this.setFinishOnTouchOutside(false);
+        this.getActionBar().setTitle("");
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment1())
                 .commit();

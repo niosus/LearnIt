@@ -21,6 +21,11 @@
     <string name="learn_words_frag_title">Вчити слова</string>
     <string name="add_words_frag_title">Додати нове слово</string>
     <string name="dictionary_frag_title">Мій словник</string>
+    <string-array name="fragments_titles">
+        <item>Вчити слова</item>
+        <item>Додати нове слово</item>
+        <item>Мій словник</item>
+    </string-array>
 
     <!-- edit fragment texts -->
     <string name="edit_dialog_title">Редагуємо…</string>

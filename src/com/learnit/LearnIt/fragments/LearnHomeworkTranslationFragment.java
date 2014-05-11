@@ -51,10 +51,16 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public LearnHomeworkTranslationFragment(IWorkerJobInput worker) {
-		super();
-		_listener = new LearnHomeworkTranslationController(this, worker, btnIds());
-	}
+    public static LearnHomeworkTranslationFragment newInstance(IWorkerJobInput worker) {
+        LearnHomeworkTranslationFragment learnHomeworkTranslationFragment =
+                new LearnHomeworkTranslationFragment();
+        learnHomeworkTranslationFragment.attachWorker(worker);
+        return learnHomeworkTranslationFragment;
+    }
+
+    public void attachWorker(IWorkerJobInput worker) {
+        _listener = new LearnHomeworkTranslationController(this, worker, btnIds());
+    }
 
 	@Override
 	public void onResume() {

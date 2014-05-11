@@ -30,6 +30,7 @@ public class InfoActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info);
+        this.getActionBar().setTitle("");
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);
         String currentStr = txtVersion.getText().toString();
         Log.d(Constants.LOG_TAG, currentStr);

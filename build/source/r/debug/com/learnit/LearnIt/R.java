@@ -26,13 +26,13 @@ public final class R {
         public static final int entries_languages_from=0x7f060002;
         public static final int entries_languages_to=0x7f060003;
         public static final int entries_way_to_learn=0x7f060004;
-        public static final int fragments_titles=0x7f06000b;
-        public static final int time_entries=0x7f060005;
-        public static final int values_direction_of_trans=0x7f060006;
-        public static final int values_freq=0x7f060007;
-        public static final int values_languages_from=0x7f060008;
-        public static final int values_languages_to=0x7f060009;
-        public static final int values_way_to_learn=0x7f06000a;
+        public static final int fragments_titles=0x7f060005;
+        public static final int time_entries=0x7f060006;
+        public static final int values_direction_of_trans=0x7f060007;
+        public static final int values_freq=0x7f060008;
+        public static final int values_languages_from=0x7f060009;
+        public static final int values_languages_to=0x7f06000a;
+        public static final int values_way_to_learn=0x7f06000b;
     }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -438,7 +438,6 @@ containing a value of this type.
     }
     public static final class string {
         public static final int add_translation_hint=0x7f090000;
-        public static final int add_word_button_text=0x7f090058;
         public static final int add_word_hint=0x7f090001;
         public static final int add_words_frag_help_text_trans=0x7f090002;
         public static final int add_words_frag_help_text_words=0x7f090003;
@@ -453,8 +452,6 @@ containing a value of this type.
         public static final int crouton_word_saved=0x7f09000c;
         public static final int crouton_word_updated=0x7f09000d;
         public static final int description=0x7f09000e;
-        public static final int dialog_added_text=0x7f090059;
-        public static final int dialog_added_title=0x7f09005a;
         public static final int dialog_article_text=0x7f09000f;
         public static final int dialog_article_title=0x7f090010;
         public static final int dialog_button_cancel=0x7f090011;
@@ -464,20 +461,10 @@ containing a value of this type.
         public static final int dialog_button_update=0x7f090015;
         public static final int dialog_empty_text=0x7f090016;
         public static final int dialog_empty_title=0x7f090017;
-        public static final int dialog_exists_text=0x7f09005b;
-        public static final int dialog_exists_title=0x7f09005c;
         public static final int dialog_format_text=0x7f090018;
         public static final int dialog_format_title=0x7f090019;
-        public static final int dialog_progress_message=0x7f09005d;
-        public static final int dialog_progress_title=0x7f09005e;
         public static final int dialog_update_to_help_dict_needed=0x7f09001a;
         public static final int dialog_update_to_help_dict_needed_title=0x7f09001b;
-        public static final int dialog_updated_text=0x7f09005f;
-        public static final int dialog_updated_title=0x7f090060;
-        public static final int dialog_word_deleted_message=0x7f090061;
-        public static final int dialog_word_deleted_title=0x7f090062;
-        public static final int dialog_wrong_guess_message=0x7f090063;
-        public static final int dialog_wrong_guess_title=0x7f090064;
         public static final int dict_sql_may_close_now=0x7f09001c;
         public static final int dict_sql_no_dict=0x7f09001d;
         public static final int dict_sql_progress_found=0x7f09001e;
@@ -487,7 +474,6 @@ containing a value of this type.
         public static final int dict_sql_version=0x7f090022;
         public static final int dictionary_frag_title=0x7f090023;
         public static final int edit_dialog_title=0x7f090024;
-        public static final int hello_world=0x7f090065;
         public static final int help_words_de=0x7f090025;
         public static final int instr_go_to_settings=0x7f090026;
         public static final int instructions_dict_help_text=0x7f090027;
@@ -517,12 +503,8 @@ containing a value of this type.
         public static final int menu_import=0x7f09003f;
         public static final int menu_info=0x7f090040;
         public static final int menu_settings=0x7f090041;
-        public static final int menu_show_all_words=0x7f090066;
         public static final int notification_group=0x7f090042;
         public static final int notification_text=0x7f090043;
-        public static final int pref_dialog_update_dict_dismiss=0x7f090067;
-        public static final int pref_dialog_update_dict_message=0x7f090068;
-        public static final int pref_dialog_update_dict_title=0x7f090069;
         public static final int pref_direction_of_trans=0x7f090044;
         public static final int pref_language_to_learn=0x7f090045;
         public static final int pref_language_you_know=0x7f090046;
@@ -536,17 +518,11 @@ containing a value of this type.
         public static final int quick_instructions=0x7f09004e;
         public static final int quick_start=0x7f09004f;
         public static final int search_word_hint=0x7f090050;
-        public static final int text_guessing_translation=0x7f09006a;
         public static final int toast_db_exported=0x7f090051;
         public static final int toast_db_import_error=0x7f090052;
         public static final int toast_db_imported=0x7f090053;
-        public static final int toast_loaded_dict=0x7f09006b;
-        public static final int toast_loading_dict=0x7f09006c;
-        public static final int toast_no_dict=0x7f09006d;
-        public static final int toast_no_word=0x7f09006e;
         public static final int toast_notif_start_text=0x7f090054;
         public static final int toast_notif_stop_text=0x7f090055;
-        public static final int toast_notif_update_text=0x7f09006f;
         public static final int version=0x7f090056;
         public static final int welcome=0x7f090057;
     }

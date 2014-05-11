@@ -21,6 +21,11 @@
     <string name="learn_words_frag_title">Learn My Words</string>
     <string name="add_words_frag_title">Add New Words</string>
     <string name="dictionary_frag_title">My Dictionary</string>
+    <string-array name="fragments_titles">
+        <item>Learn My Words</item>
+        <item>Add New Words</item>
+        <item>My Dictionary</item>
+    </string-array>
 
     <!-- edit fragment texts -->
     <string name="edit_dialog_title">Editing…</string>

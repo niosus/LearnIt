@@ -55,10 +55,11 @@ public class AddWordFragment extends MySmartFragment
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
 
-	public AddWordFragment(IWorkerJobInput worker) {
-		super();
-		_listener = new AddWordsController(this, worker);
-	}
+    public static AddWordFragment newInstance(IWorkerJobInput worker) {
+        AddWordFragment addWordFragment = new AddWordFragment();
+        addWordFragment.attachWorker(worker);
+        return addWordFragment;
+    }
 
 	public void attachWorker(IWorkerJobInput worker) {
 		_listener = new AddWordsController(this, worker);

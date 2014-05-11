@@ -27,10 +27,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.utils.MyAnimationHelper;
 
 import net.yscs.android.square_progressbar.SquareProgressBar;
 
-public class LoadStarDictUiFragment extends Fragment {
+public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelper.OnAnimationActionListener {
 	public final static String TAG = "ui_load_dict";
 
     private TextView _tvTitle;
@@ -38,6 +39,7 @@ public class LoadStarDictUiFragment extends Fragment {
 	private TextView _tvMayClose;
 	ProgressBar _progressBar;
 	SquareProgressBar _squareProgressBar;
+    MyAnimationHelper _animationHelper;
 	boolean dictLoaded = false;
 
 	public boolean isDictLoaded() {
@@ -72,11 +74,12 @@ public class LoadStarDictUiFragment extends Fragment {
         }
 
 	    _squareProgressBar = (SquareProgressBar) v.findViewById(R.id.square_progress);
-	    _squareProgressBar.setImage(R.drawable.hourglass);
+	    _squareProgressBar.setImage(R.drawable.logo_blue);
 	    _squareProgressBar.setColor(getString(R.color.highlight));
 	    _squareProgressBar.setProgress(0);
 	    _squareProgressBar.setWidth(10);
 	    _squareProgressBar.setOpacity(false);
+        _animationHelper = null;
 
         return v;
     }
@@ -118,10 +121,16 @@ public class LoadStarDictUiFragment extends Fragment {
 	}
 
 	public void setProgress(Double i) {
-		if (_progressBar.getVisibility() == View.VISIBLE) {
-			_progressBar.setVisibility(View.INVISIBLE);
+		if (_animationHelper == null) {
+            _animationHelper = new MyAnimationHelper(getActivity());
+            _animationHelper.invokeForView(_progressBar, R.anim.close_word, this);
+
 		}
 		_squareProgressBar.setProgress(i);
 	}
 
+    @Override
+    public void onAnimationFinished(int id, boolean ignore) {
+        _progressBar.setVisibility(View.INVISIBLE);
+    }
 }

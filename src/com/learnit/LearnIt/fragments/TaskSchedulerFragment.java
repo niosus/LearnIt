@@ -37,7 +37,7 @@ import java.util.Queue;
 * This class is a headless fragment with no GUI.
 * It is used to carry out heavy async tasks
 */
-public class WorkerFragment extends Fragment
+public class TaskSchedulerFragment extends Fragment
 		implements IWorkerJobInput {
     final String LOG_TAG = "my_logs";
     public static String TAG = "work_fragment";

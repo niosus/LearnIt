@@ -40,6 +40,7 @@ public class WelcomeActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
+        this.getActionBar().setTitle("");
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);

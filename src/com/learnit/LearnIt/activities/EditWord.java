@@ -105,6 +105,7 @@ public class EditWord extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+        this.getActionBar().setTitle("");
         utils = new Utils();
         oldWord = getIntent().getStringExtra(WORD_TAG);
         oldStrippedWord = StringUtils.stripFromArticle(this, oldWord);

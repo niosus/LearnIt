@@ -21,6 +21,11 @@
     <string name="learn_words_frag_title">Meine Wörter Lernen</string>
     <string name="add_words_frag_title">Neue Wörter Eingeben</string>
     <string name="dictionary_frag_title">Mein Wörterbuch</string>
+    <string-array name="fragments_titles">
+        <item>Meine Wörter Lernen</item>
+        <item>Neue Wörter Eingeben</item>
+        <item>Mein Wörterbuch</item>
+    </string-array>
 
     <!-- edit fragment texts -->
     <string name="edit_dialog_title">Bearbeiten</string>

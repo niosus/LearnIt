@@ -48,7 +48,7 @@ import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnCasualFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MySmartFragment;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements
     private AppSectionsPagerAdapter _appSectionsPagerAdapter;
     private ViewPager _viewPager;
     private ListFragment _listOfFragments;
-	private WorkerFragment _worker;
+	private TaskSchedulerFragment _taskScheduler;
 
     private static int _currentItemShown = 0;
 
@@ -83,19 +83,12 @@ public class MainActivity extends Activity implements
         this.getActionBar().setTitle("");
         String currentLayout = getString(R.string.layout_current);
 	    FragmentManager fragmentManager = getFragmentManager();
-	    _worker = (WorkerFragment) fragmentManager.findFragmentByTag(WorkerFragment.TAG);
-	    if (_worker == null)
-	    {
-		    _worker = new WorkerFragment();
-		    fragmentManager.beginTransaction()
-				    .add(_worker, WorkerFragment.TAG)
-				    .commit();
-	    }
+	    _taskScheduler = Utils.getCurrentTaskScheduler(this);
 	    switch (currentLayout) {
 		    case LAYOUT_XLARGE:
 			    MySmartFragment dictFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(DictFragment.TAG);
 			    if (dictFragment == null) {
-				    dictFragment = new DictFragment(_worker);
+				    dictFragment = DictFragment.newInstance(_taskScheduler);
 				    dictFragment.identifier = DICTIONARY_FRAGMENT;
 				    fragmentManager.beginTransaction()
 						    .add(R.id.dict_frame, dictFragment, DictFragment.TAG)
@@ -103,7 +96,7 @@ public class MainActivity extends Activity implements
 			    }
 			    MySmartFragment addWordFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(AddWordFragment.TAG);
 			    if (addWordFragment == null) {
-				    addWordFragment = new AddWordFragment(_worker);
+				    addWordFragment = AddWordFragment.newInstance(_taskScheduler);
 				    addWordFragment.identifier = ADD_WORDS_FRAGMENT;
 				    fragmentManager.beginTransaction()
 						    .add(R.id.add_words_frame, addWordFragment, AddWordFragment.TAG)
@@ -111,7 +104,7 @@ public class MainActivity extends Activity implements
 			    }
 			    MySmartFragment learnFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(LearnCasualFragment.TAG);
 			    if (learnFragment == null) {
-				    learnFragment = new LearnCasualFragment(_worker);
+				    learnFragment = LearnCasualFragment.newInstance(_taskScheduler);
 				    learnFragment.identifier = LEARN_WORDS_FRAGMENT;
 				    fragmentManager.beginTransaction()
 						    .add(R.id.learn_frame, learnFragment, LearnCasualFragment.TAG)
@@ -119,7 +112,7 @@ public class MainActivity extends Activity implements
 			    }
 			    break;
 		    case LAYOUT_LARGE_LAND:
-			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _taskScheduler);
 			    //Do some special processing for large screen
 			    ListOfFragments fragment = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
 			    fragment.getListView().setSelection(0);
@@ -128,7 +121,7 @@ public class MainActivity extends Activity implements
 			    // Initialize the view pager
 			    // Create the adapter that will return a listOfFragments for each of the three primary sections
 			    // of the app.
-			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _worker);
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _taskScheduler);
 
 			    final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
@@ -240,17 +233,17 @@ public class MainActivity extends Activity implements
         switch(position)
         {
 	        case ADD_WORDS_FRAGMENT:
-		        fragment = new AddWordFragment(_worker);
+		        fragment = AddWordFragment.newInstance(_taskScheduler);
 		        fragment.identifier = ADD_WORDS_FRAGMENT;
 		        Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 		        break;
             case DICTIONARY_FRAGMENT:
-                fragment = new DictFragment(_worker);
+                fragment = DictFragment.newInstance(_taskScheduler);
 	            fragment.identifier = DICTIONARY_FRAGMENT;
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = new LearnCasualFragment(_worker);
+                fragment = LearnCasualFragment.newInstance(_taskScheduler);
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
 	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 	            break;

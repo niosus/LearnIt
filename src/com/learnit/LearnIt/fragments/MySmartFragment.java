@@ -24,10 +24,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.interfaces.IAttachWorkerToFragment;
 import com.learnit.LearnIt.utils.Utils;
 
-public abstract class MySmartFragment extends Fragment {
+public abstract class MySmartFragment
+        extends Fragment
+        implements IAttachWorkerToFragment {
     protected static final String LOG_TAG = "my_logs";
 	protected View _v;
 	public int identifier;
@@ -37,11 +39,6 @@ public abstract class MySmartFragment extends Fragment {
         super.onResume();
         Utils.updateCurrentDBName(this.getActivity());
     }
-
-	public void attachWorker(IWorkerJobInput worker) {
-		// do nothing here, should be caught by children
-		// bad design?
-	}
 
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState);

@@ -22,7 +22,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -43,9 +42,6 @@ public class MyDialogFragment extends DialogFragment {
     public static final int DIALOG_WORD_EXISTS = 670;
     public static final int DIALOG_WRONG_FORMAT = 671;
     public static final int DIALOG_WRONG_ARTICLE = 672;
-    public static final int DIALOG_WRONG_GUESS = 673;
-    public static final int DIALOG_WORD_DELETED = 674;
-    public static final int DIALOG_PROGRESS = 675;
 
 	private int _type;
 
@@ -98,33 +94,9 @@ public class MyDialogFragment extends DialogFragment {
                         R.string.dialog_format_title);
                 builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
                 return builder.create();
-            case DIALOG_WRONG_GUESS:
-                builder.setMessage(R.string.dialog_wrong_guess_message).setTitle(
-                        R.string.dialog_wrong_guess_title);
-                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
-                return builder.create();
-            case DIALOG_WORD_DELETED:
-                word = getArguments().getString(WORD_TAG);
-                builder.setMessage(String.format(this.getString(R.string.dialog_word_deleted_message), word)).setTitle(
-                        R.string.dialog_word_deleted_title);
-                builder.setNeutralButton(R.string.dialog_button_ok, myDialogClickListener);
-                return builder.create();
-            case DIALOG_PROGRESS:
-                ProgressDialog progDialog = new ProgressDialog(getActivity());
-                progDialog.setMessage(this.getString(R.string.dialog_progress_message));
-                progDialog.setTitle(R.string.dialog_progress_title);
-                progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progDialog.setOnCancelListener(myOnCancelListener);
-                return progDialog;
         }
         return null;
     }
-
-    DialogInterface.OnCancelListener myOnCancelListener = new DialogInterface.OnCancelListener() {
-        @Override
-        public void onCancel(DialogInterface dialogInterface) {
-        }
-    };
 
     OnClickListener myDialogClickListener = new OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {

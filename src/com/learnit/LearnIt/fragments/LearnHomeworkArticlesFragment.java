@@ -51,10 +51,16 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-	public LearnHomeworkArticlesFragment(IWorkerJobInput worker) {
-		super();
-		_listener = new LearnHomeworkArticlesController(this, worker, btnIds());
-	}
+    public static LearnHomeworkArticlesFragment newInstance(IWorkerJobInput worker) {
+        LearnHomeworkArticlesFragment learnHomeworkArticlesFragment =
+                new LearnHomeworkArticlesFragment();
+        learnHomeworkArticlesFragment.attachWorker(worker);
+        return learnHomeworkArticlesFragment;
+    }
+
+    public void attachWorker(IWorkerJobInput worker) {
+        _listener = new LearnHomeworkArticlesController(this, worker, btnIds());
+    }
 
 	@Override
 	public void onPause() {

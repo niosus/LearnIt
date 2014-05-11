@@ -16,37 +16,42 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/relative_layout_dict"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical">
     <ProgressBar
+        android:layout_alignParentTop="true"
         android:id="@+id/progress_load_dict"
         android:indeterminate="true"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-            android:id="@+id/text_dict_to_sql_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dict_sql_progress_searching_indexing"
-            style="@style/MyTextViewLarge">
+        android:layout_below="@id/progress_load_dict"
+        android:id="@+id/text_dict_to_sql_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dict_sql_progress_searching_indexing"
+        style="@style/MyTextViewLarge">
     </TextView>
     <TextView
-            android:id="@+id/text_dictionary_info"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            style="@style/MyTextView">
+        android:layout_below="@id/text_dict_to_sql_title"
+        android:id="@+id/text_dictionary_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        style="@style/MyTextView">
     </TextView>
     <net.yscs.android.square_progressbar.SquareProgressBar
+        android:layout_below="@id/text_dictionary_info"
         android:id="@+id/square_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:padding="20dp" >
+        android:layout_centerInParent="true"
+        android:paddingBottom="40dp"
+        android:paddingTop="40dp">
     </net.yscs.android.square_progressbar.SquareProgressBar>
     <TextView
         android:id="@+id/text_dict_to_sql_can_close_this"
@@ -54,8 +59,8 @@
         style="@style/MyTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:paddingLeft="20dp"
         android:gravity="right">
     </TextView>
-
-</LinearLayout>
+</RelativeLayout>

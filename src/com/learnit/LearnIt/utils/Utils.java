@@ -19,6 +19,8 @@ package com.learnit.LearnIt.utils;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +35,7 @@ import android.widget.Toast;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.fragments.LearnFragment;
+import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.services.NotificationService;
 
 import java.util.Arrays;
@@ -40,6 +43,20 @@ import java.util.Locale;
 
 public class Utils {
     public static final String LOG_TAG = "my_logs";
+
+    public static TaskSchedulerFragment getCurrentTaskScheduler(Activity activity) {
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        Fragment taskScheduler = fragmentManager
+                .findFragmentByTag(TaskSchedulerFragment.TAG);
+        if (taskScheduler == null)
+        {
+            taskScheduler = new TaskSchedulerFragment();
+            fragmentManager.beginTransaction()
+                    .add(taskScheduler, TaskSchedulerFragment.TAG)
+                    .commit();
+        }
+        return (TaskSchedulerFragment) taskScheduler;
+    }
 
     public static void updateCurrentDBName(Context context) {
         String currentLanguage;

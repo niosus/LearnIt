@@ -81,13 +81,14 @@ public class DictFragment extends MySmartFragment
 		}
 	}
 
-	public DictFragment(IWorkerJobInput worker) {
-		super();
-		_listener = new DictController(this, worker);
-	}
+    public static DictFragment newInstance(IWorkerJobInput worker) {
+        DictFragment dictFragment = new DictFragment();
+        dictFragment.attachWorker(worker);
+        return dictFragment;
+    }
 
 	public void attachWorker(IWorkerJobInput worker) {
-		_listener = new DictController(this, worker);
+        _listener = new DictController(this, worker);
 	}
 
 	public void startActionMode(ActionMode.Callback callback) {

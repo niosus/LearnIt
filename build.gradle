@@ -57,6 +57,22 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebugBuild true
+            signingConfig signingConfigs.debug
+        }
+    }
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
@@ -67,10 +83,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
+    if(project.hasProperty("learnit.signing")
+            && new File(project.property("learnit.signing") + ".gradle").exists()) {
+        apply from: project.property("learnit.signing") + ".gradle";
     }
+
+
 }

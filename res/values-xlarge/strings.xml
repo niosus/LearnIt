@@ -18,5 +18,5 @@
   -->
 
 <resources>
-    <string name="layout_current">xlarge</string>
+    <string name="layout_current" translatable="false">xlarge</string>
 </resources>

@@ -28,7 +28,7 @@ import android.util.Log;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetDictTask;
 import com.learnit.LearnIt.fragments.LoadStarDictUiFragment;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -50,6 +50,7 @@ public class LoadStarDictActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	    this.setFinishOnTouchOutside(false);
+        this.getActionBar().setTitle("");
 	    _backPressedCounter = 0;
 		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
         FragmentManager fragmentManager = getFragmentManager();
@@ -66,12 +67,12 @@ public class LoadStarDictActivity extends Activity implements
 
 //	    add a headless worker fragment to stack if not yet there
         Fragment worker = fragmentManager
-                .findFragmentByTag(WorkerFragment.TAG);
+                .findFragmentByTag(TaskSchedulerFragment.TAG);
         if (worker == null)
         {
-            worker = new WorkerFragment();
+            worker = new TaskSchedulerFragment();
             fragmentManager.beginTransaction()
-		            .add(worker, WorkerFragment.TAG)
+		            .add(worker, TaskSchedulerFragment.TAG)
                     .commit();
         }
 

@@ -26,7 +26,7 @@ import android.os.Bundle;
 import com.learnit.LearnIt.data_types.NotificationBuilder;
 import com.learnit.LearnIt.fragments.LearnHomeworkArticlesFragment;
 import com.learnit.LearnIt.fragments.LearnHomeworkTranslationFragment;
-import com.learnit.LearnIt.fragments.WorkerFragment;
+import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 
@@ -43,12 +43,12 @@ public class HomeworkActivity extends Activity {
 
 		// add a headless worker fragment to stack if not yet there
 		Fragment worker = fragmentManager
-				.findFragmentByTag(WorkerFragment.TAG);
+				.findFragmentByTag(TaskSchedulerFragment.TAG);
 		if (worker == null)
 		{
-			worker = new WorkerFragment();
+			worker = new TaskSchedulerFragment();
 			fragmentManager.beginTransaction()
-					.add(worker, WorkerFragment.TAG)
+					.add(worker, TaskSchedulerFragment.TAG)
 					.commit();
 		}
 
@@ -57,7 +57,8 @@ public class HomeworkActivity extends Activity {
 				.findFragmentByTag(LearnHomeworkTranslationFragment.TAG);
 		if (_uiTranslationsFragment == null) {
 			if (worker instanceof IWorkerJobInput) {
-				_uiTranslationsFragment = new LearnHomeworkTranslationFragment((IWorkerJobInput) worker);
+				_uiTranslationsFragment = LearnHomeworkTranslationFragment
+                        .newInstance((IWorkerJobInput) worker);
 				// extras contain words, translations and so on that we need to show
 				// the data in the homework fragment. We pass them on to the fragment.
 				_uiTranslationsFragment.setArguments(getIntent().getExtras());
@@ -69,7 +70,8 @@ public class HomeworkActivity extends Activity {
 				.findFragmentByTag(LearnHomeworkArticlesFragment.TAG);
 		if (_uiArticlesFragment == null) {
 			if (worker instanceof IWorkerJobInput) {
-				_uiArticlesFragment = new LearnHomeworkArticlesFragment((IWorkerJobInput) worker);
+				_uiArticlesFragment = LearnHomeworkArticlesFragment
+                        .newInstance((IWorkerJobInput) worker);
 				// extras contain words, translations and so on that we need to show
 				// the data in the homework fragment. We pass them on to the fragment.
 				_uiArticlesFragment.setArguments(getIntent().getExtras());
