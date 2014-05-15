@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -119,11 +120,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean deleteWord(String word) {
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         Log.d(LOG_TAG, "delete word = " + word);
         db = this.getWritableDatabase();
         int id = this.getId(word);
-        db.delete(currentDBName, WORD_COLUMN_NAME + "='" + word + "'", null);
+        db.delete(currentDBName, WORD_COLUMN_NAME + "=?", new String[] { word });
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(id + NotificationBuilder.idModificator);
         return true;
@@ -168,8 +169,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int writeToDB(String word, String translation) {
         try {
-            word = word.toLowerCase();
-            translation = translation.toLowerCase();
+            word = StringUtils.prepareForDatabaseQuery(word);
+            translation = StringUtils.prepareForDatabaseQuery(translation);
             List<String> wordsList = Arrays.asList(word.split("\\s"));
             ContentValues cv = new ContentValues();
             switch (wordsList.size()) {
@@ -202,23 +203,21 @@ public class DBHelper extends SQLiteOpenHelper {
             long key = -1;
             boolean updatedFlag = false;
             db = this.getWritableDatabase();
-            Cursor c = db.query(currentDBName, new String[]{ID_COLUMN_NAME,
-                    ARTICLE_COLUMN_NAME, WORD_COLUMN_NAME,
-                    TRANSLATION_COLUMN_NAME}, WORD_COLUMN_NAME + " like "
-                    + "'" + cv.getAsString(WORD_COLUMN_NAME) + "'", null, null,
-                    null, null);
+            Cursor c = db.query(currentDBName,
+                    new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
+                            WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
+                    WORD_COLUMN_NAME + " like ?",
+                    new String[] { cv.getAsString(WORD_COLUMN_NAME) },
+                    null, null, null);
             if (c.getCount() != 0) {
                 if (c.moveToFirst()) {
                     int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
-                    int translationColIndex = c
-                            .getColumnIndex(TRANSLATION_COLUMN_NAME);
+                    int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
                     int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
                     String tempWord = (c.getString(wordColIndex));
                     String trans = (c.getString(translationColIndex));
-                    List<String> transInDBList = Arrays.asList(trans
-                            .split(", "));
-                    List<String> inputTransList = Arrays.asList(translation
-                            .split(", "));
+                    List<String> transInDBList = Arrays.asList(trans.split(", "));
+                    List<String> inputTransList = Arrays.asList(translation.split(", "));
                     String tempTranslation = trans;
                     boolean anyNewValue = false;
                     for (String anInputTransList : inputTransList) {
@@ -255,7 +254,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } else {
                 long rowID = db.update(currentDBName, cv,
                         String.format("%s = ?", ID_COLUMN_NAME),
-                        new String[]{"" + key});
+                        new String[]{String.valueOf(key)});
                 Log.d(LOG_TAG, "row updated, ID = " + rowID + " rows total = "
                         + maxId);
                 c.close();
@@ -271,10 +270,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean updateWordWeight(String word, int newWeight) {
         try {
+            word = StringUtils.prepareForDatabaseQuery(word);
+            ContentValues valuesToUpdate = new ContentValues();
+            valuesToUpdate.put(WEIGHT_COLUMN_NAME, newWeight);
+            String whereClause = WORD_COLUMN_NAME + "=?";
+            String[] whereArgs = new String[] { word };
             db = this.getWritableDatabase();
-            Cursor c = db.rawQuery("UPDATE " + currentDBName + " SET " + WEIGHT_COLUMN_NAME + "=" + newWeight + " WHERE " + WORD_COLUMN_NAME + "='" + word + "'", null);
-            c.moveToFirst();
-            c.close();
+            db.update(currentDBName, valuesToUpdate, whereClause, whereArgs);
             db.close();
             Log.d(LOG_TAG, "word " + word + " updated weight to " + newWeight);
             return true;
@@ -286,22 +288,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<ArticleWordId> getRandomWords(int numOfWords, String omitWord, int noun) {
         db = this.getReadableDatabase();
+        omitWord = StringUtils.prepareForDatabaseQuery(omitWord);
         ArrayList<ArticleWordId> structArray = new ArrayList<ArticleWordId>();
         Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + omitWord + "' and isnoun = " + noun + " from " + currentDBName);
+        String[] columns = new String[]{
+                ID_COLUMN_NAME,
+                WORD_COLUMN_NAME,
+                TRANSLATION_COLUMN_NAME,
+                ARTICLE_COLUMN_NAME,
+                PREFIX_COLUMN_NAME,
+                WEIGHT_COLUMN_NAME};
+        String queryMixed = WORD_COLUMN_NAME + " != ?";
+        String queryNouns = ARTICLE_COLUMN_NAME + " is not null and " + queryMixed;
+        String queryNotNouns = ARTICLE_COLUMN_NAME + " is null and " + queryMixed;
+        String[] queryParameters = new String[] { omitWord };
+        String orderBy = WEIGHT_COLUMN_NAME + "*random() desc";
+        String limit = String.valueOf(numOfWords);
+        String chosenQuery;
         Cursor c;
         switch (noun) {
             case Constants.MIXED:
-                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                chosenQuery = queryMixed;
                 break;
             case Constants.NOT_NOUNS:
-                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is null and " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                chosenQuery = queryNotNouns;
                 break;
             case Constants.ONLY_NOUNS:
-                c = db.rawQuery("select * from " + currentDBName + " where " + ARTICLE_COLUMN_NAME + " is not null and " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                chosenQuery = queryNouns;
                 break;
             default:
-                c = db.rawQuery("select * from " + currentDBName + " where " + WORD_COLUMN_NAME + "!='" + omitWord + "' order by " + WEIGHT_COLUMN_NAME + "*random() desc limit " + numOfWords, null);
+                chosenQuery = queryMixed;
         }
+        c = db.query(currentDBName, columns, chosenQuery, queryParameters, null, null, orderBy, limit);
         String word, translation;
         String article;
         int id;
@@ -370,7 +388,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean importDB() {
         try {
-
             File sd = Environment.getExternalStorageDirectory();
             sd = new File(sd, "LearnIt");
             String backupDBPath = "DB_Backup.db";
@@ -406,12 +423,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     cv.put(WEIGHT_COLUMN_NAME, weight);
                     if (db_local.query(currentDBName,
                             new String[]{TRANSLATION_COLUMN_NAME},
-                            WORD_COLUMN_NAME + " like " + "'" + word + "'", null, null,
+                            WORD_COLUMN_NAME + " like ? ",
+                            new String[] { word }, null, null,
                             null, null).getCount() == 0) {
                         db_local.insert(currentDBName, null, cv);
                     }
                 } while (c.moveToNext());
             }
+            db_local.close();
+            db.close();
             Toast toast = Toast.makeText(mContext, String.format(mContext.getString(R.string.toast_db_imported), dbfile.getPath()), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -428,11 +448,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public String getTranslation(String word) {
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         db = this.getReadableDatabase();
         Cursor c = db.query(currentDBName,
                 new String[]{TRANSLATION_COLUMN_NAME, WORD_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
+                WORD_COLUMN_NAME + " like ? ",
+                new String[] { "%" + word + "%" }, null, null,
                 null, null);
         if (c.moveToFirst()) {
             int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
@@ -449,11 +470,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int getId(String word) {
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         db = this.getReadableDatabase();
         Cursor c = db.query(currentDBName,
                 new String[]{ID_COLUMN_NAME, WORD_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like " + "'%" + word + "%'", null, null,
+                WORD_COLUMN_NAME + " like ? ",
+                new String[] { "%" + word + "%" }, null, null,
                 null, null);
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
@@ -471,15 +493,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public List<Map<String, String>> getWords(String word) {
 	    if (word==null) word = "";
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         db = this.getReadableDatabase();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
         Cursor c = db.query(currentDBName,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME,
                         PREFIX_COLUMN_NAME, WEIGHT_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like '%" + word + "%' or " + TRANSLATION_COLUMN_NAME + " like '%" + word + "%'", null, null,
-                null, WORD_COLUMN_NAME);
+                WORD_COLUMN_NAME + " like ? or " + TRANSLATION_COLUMN_NAME + " like ?",
+                new String[] { "%" + word + "%",  "%" + word + "%" }, null, null,
+                WORD_COLUMN_NAME, null);
         String tempWord;
         String tempTrans;
         if (c.moveToFirst()) {
@@ -515,14 +538,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 	    Log.d(LOG_TAG, "getHelpWords word is " + word);
 	    if (word == null) return null;
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         db = this.getReadableDatabase();
         List<String> data = new ArrayList<String>();
         Cursor c = db.query(currentDBName,
                 new String[]{WORD_COLUMN_NAME, DICT_OFFSET_COLUMN_NAME,
                         DICT_CHUNK_SIZE_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like '" + word + "%' limit 20 ", null, null,
-                null, null);
+                WORD_COLUMN_NAME + " like ?", new String[] { word + "%" }, null, null,
+                WORD_COLUMN_NAME, "20");
         String tempWord;
         if (c.moveToFirst()) {
             int wordColIndex = c.getColumnIndex(WORD_COLUMN_NAME);
@@ -541,12 +564,12 @@ public class DBHelper extends SQLiteOpenHelper {
         if (!currentDBName.equals(DB_DICT_FROM)) {
             return null;
         }
-        word = word.toLowerCase();
+        word = StringUtils.prepareForDatabaseQuery(word);
         db = this.getReadableDatabase();
         Cursor c = db.query(currentDBName,
                 new String[]{WORD_COLUMN_NAME, DICT_OFFSET_COLUMN_NAME,
                         DICT_CHUNK_SIZE_COLUMN_NAME},
-                WORD_COLUMN_NAME + " like '" + word + "'", null, null,
+                WORD_COLUMN_NAME + " like ?", new String[] { word }, null, null,
                 null, null);
         Long offset, size;
         Pair<Long, Long> pair = null;

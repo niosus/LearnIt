@@ -60,6 +60,15 @@ public class StringUtils {
         return res;
     }
 
+    public static String prepareForDatabaseQuery(final String inputWord) {
+        if (inputWord == null || inputWord.isEmpty()) {
+            return "";
+        }
+        String result;
+        result = inputWord.toLowerCase();
+        return result;
+    }
+
 	public static Pair<String, List<String>> parseDictOutput(String str, String langFrom) {
 		Log.d(Constants.LOG_TAG, "input = " + str);
 		List<String> tagValues = StringUtils.getHelpWordsFromDictOutput(str);
