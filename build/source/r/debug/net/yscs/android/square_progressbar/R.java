@@ -19,7 +19,7 @@ public final class R {
 	}
 	public static final class string {
 		public static final int app_name = 0x7f090005;
-		public static final int description = 0x7f09000e;
+		public static final int description = 0x7f09000f;
 	}
 	public static final class style {
 		public static final int AppBaseTheme = 0x7f0a0002;

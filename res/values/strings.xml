@@ -163,6 +163,7 @@
     <string name="crouton_word_already_present">Word \"%1$s\" is already in your dictionary.</string>
     <string name="crouton_word_deleted">Deleted \"%1$s\".</string>
     <string name="crouton_back_pressed_once">Press back once again to leave. \nThis will cancel the task.</string>
+    <string name="crouton_empty_input">One of the input fields is empty, please fill both.</string>
 
 
     <!--dict to sql activity strings-->

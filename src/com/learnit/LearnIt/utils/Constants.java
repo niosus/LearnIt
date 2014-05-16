@@ -39,6 +39,8 @@ public class Constants {
     public static final int LEARN_MIXED = 3;
 	public static final String CURRENT_HELP_DICT_TAG = "current_help_dict";
 
+    public static final int NONE = -1;
+
 	public static int[] btnIdsTranslations = {
 			R.id.left_top_button,
 			R.id.right_top_button,

@@ -153,6 +153,8 @@
     <string name="crouton_word_already_present">Das Wort ``%1$s`` ist schon in Ihrem Wörterbuch.</string>
     <string name="crouton_word_deleted">Das Wort ``%1$s`` wurde gelöscht.</string>
     <string name="crouton_back_pressed_once">Bitte noch mal zurück drucken um diese Aktivität zu verlassen.</string>
+    <string name="crouton_empty_input">Ein von den Eingabefelde ist leer, bitte beide eingeben.</string>
+
 
 
     <!--dict to sql activity strings-->

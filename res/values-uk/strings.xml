@@ -155,6 +155,8 @@
     <string name="crouton_word_already_present">Слово \"%1$s\" вже є в Вашому словнику.</string>
     <string name="crouton_word_deleted">Слово \"%1$s\" видалено.</string>
     <string name="crouton_back_pressed_once">Натисніть \"Назад\" ще раз, щоб вийти. \nЦе перерве процес.</string>
+    <string name="crouton_empty_input">Одне з полів для вводу порожнє. Будь ласка, заповніть обидва.</string>
+
 
 
     <!--dict to sql activity strings-->

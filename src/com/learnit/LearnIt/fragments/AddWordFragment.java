@@ -246,9 +246,13 @@ public class AddWordFragment extends MySmartFragment
 			case DBHelper.EXIT_CODE_WORD_UPDATED:
 				crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_updated, getWord()), Style.CONFIRM);
 				break;
+            case DBHelper.EXIT_CODE_EMPTY_INPUT:
+                crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_empty_input), Style.ALERT);
+                break;
 		}
 		if (crouton == null) { return; }
-		crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
+        final int duration_half_second = 500;
+		crouton.setConfiguration(new Configuration.Builder().setDuration(3 * duration_half_second).build());
 		crouton.show();
 	}
 }
