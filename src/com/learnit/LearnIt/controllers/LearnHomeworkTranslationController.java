@@ -205,12 +205,15 @@ public class LearnHomeworkTranslationController extends LearnController {
         // which means that we have already tried also not nouns, but still failed,
         // so no words present to show to the user.
 		_worker.onTaskFinished();
-        Log.e(LOG_TAG, "onfail");
 		_failCounter++;
 		if (_failCounter > 1) {
 			_fragmentUpdate.setQueryWordTextFail();
 			_fragmentUpdate.setButtonTexts(null, 0);
 			_fragmentUpdate.setAll(View.VISIBLE);
+            NotificationManager notificationManager =
+                    (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(_correctEntry.id);
+            updateListOfAliveIds();
 		} else {
 			_worker.addTask(new GetRandomWordsTask(_correctEntry.word, _btnIds.length - 1, Constants.NOT_NOUNS), this);
 		}
