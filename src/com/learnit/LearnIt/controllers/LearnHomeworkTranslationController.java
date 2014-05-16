@@ -146,13 +146,9 @@ public class LearnHomeworkTranslationController extends LearnController {
 	@Override
 	public void onSuccessRandomWords(ArrayList<ArticleWordId> articleWordIds) {
 		_worker.onTaskFinished();
-		if (articleWordIds.size() != _btnIds.length - 1) {
-			Log.e("my_logs", "random words number is wrong in LearnHomeworkTranslationController");
-			return;
-		}
 		_fragmentUpdate.updateDirectionOfTranslation();
 		Random rand = new Random();
-		_correctAnswerId = rand.nextInt(_btnIds.length);
+		_correctAnswerId = rand.nextInt(articleWordIds.size() + 1);
 		articleWordIds.add(_correctAnswerId, _correctEntry);
 		_fragmentUpdate.setQueryWordText(_correctEntry, _direction);
 		_fragmentUpdate.setButtonTexts(articleWordIds, _direction);
@@ -203,7 +199,13 @@ public class LearnHomeworkTranslationController extends LearnController {
 
 	@Override
 	public void onFail() {
+        // the fail means that we have failed to fetch the random words
+        // this can be either for the first time (can be caused by the fact that
+        // we are looking for nouns and there are none) or for the second time,
+        // which means that we have already tried also not nouns, but still failed,
+        // so no words present to show to the user.
 		_worker.onTaskFinished();
+        Log.e(LOG_TAG, "onfail");
 		_failCounter++;
 		if (_failCounter > 1) {
 			_fragmentUpdate.setQueryWordTextFail();

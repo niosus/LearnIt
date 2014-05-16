@@ -36,11 +36,13 @@ import com.learnit.LearnIt.utils.Utils;
 
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.LifecycleCallback;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class LoadStarDictActivity extends Activity implements
-		IWorkerEventListenerGetDict {
+		IWorkerEventListenerGetDict,
+        LifecycleCallback{
     protected static final String LOG_TAG = "my_logs";
     LoadStarDictUiFragment _uiFragment;
 	IWorkerJobInput _jobStarter;
@@ -104,9 +106,11 @@ public class LoadStarDictActivity extends Activity implements
 			_jobStarter.cancelCurrentTask();
 			super.onBackPressed();
 		} else {
+            final int one_second = 1000;
 			Crouton crouton;
 			crouton = Crouton.makeText(this, getString(R.string.crouton_back_pressed_once), Style.ALERT);
-			crouton.setConfiguration(new Configuration.Builder().setDuration(3000).build());
+			crouton.setConfiguration(new Configuration.Builder().setDuration(3 * one_second).build());
+            crouton.setLifecycleCallback(this);
 			crouton.show();
 		}
 	}
@@ -171,5 +175,15 @@ public class LoadStarDictActivity extends Activity implements
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
 	}
+
+    @Override
+    public void onDisplayed() {
+
+    }
+
+    @Override
+    public void onRemoved() {
+        _backPressedCounter = 0;
+    }
 }
 

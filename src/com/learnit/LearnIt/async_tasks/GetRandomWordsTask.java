@@ -53,7 +53,7 @@ public class GetRandomWordsTask extends MySmartAsyncTask<ArrayList<ArticleWordId
 	@Override
 	protected void onPostExecute(ArrayList<ArticleWordId> words) {
 		super.onPostExecute(words);
-		if (words == null || words.isEmpty())
+		if (words == null)
 		{
 			_taskActionCallback.onFail();
 			return;
