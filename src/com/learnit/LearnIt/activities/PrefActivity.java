@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.activities;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -49,7 +50,8 @@ public class PrefActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	    this.setFinishOnTouchOutside(false);
-        this.getActionBar().setTitle("");
+        ActionBar actionBar = this.getActionBar();
+        if (actionBar != null) { actionBar.setTitle(""); }
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment1())
                 .commit();

@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -38,7 +39,8 @@ public class HomeworkActivity extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        this.getActionBar().setTitle("");
+        ActionBar actionBar = this.getActionBar();
+        if (actionBar != null) { actionBar.setTitle(""); }
         FragmentManager fragmentManager = getFragmentManager();
 
 		// add a headless worker fragment to stack if not yet there

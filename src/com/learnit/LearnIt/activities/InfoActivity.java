@@ -18,6 +18,7 @@
 package com.learnit.LearnIt.activities;
 
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -30,7 +31,8 @@ public class InfoActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info);
-        this.getActionBar().setTitle("");
+        ActionBar actionBar = this.getActionBar();
+        if (actionBar != null) { actionBar.setTitle(""); }
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);
         String currentStr = txtVersion.getText().toString();
         Log.d(Constants.LOG_TAG, currentStr);

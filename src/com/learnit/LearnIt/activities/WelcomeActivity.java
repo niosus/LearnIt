@@ -17,6 +17,7 @@
 
 package com.learnit.LearnIt.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -40,7 +41,8 @@ public class WelcomeActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-        this.getActionBar().setTitle("");
+        ActionBar actionBar = this.getActionBar();
+        if (actionBar != null) { actionBar.setTitle(""); }
         btnSettings = (Button) findViewById(R.id.btn_go_to_settings);
         btnSettings.setOnClickListener(onClickListener);
         TextView txtVersion = (TextView) findViewById(R.id.instructions_title);

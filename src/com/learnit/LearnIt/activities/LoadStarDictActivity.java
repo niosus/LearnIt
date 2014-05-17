@@ -17,6 +17,7 @@
 
 package com.learnit.LearnIt.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -52,7 +53,8 @@ public class LoadStarDictActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	    this.setFinishOnTouchOutside(false);
-        this.getActionBar().setTitle("");
+        ActionBar actionBar = this.getActionBar();
+        if (actionBar != null) { actionBar.setTitle(""); }
 	    _backPressedCounter = 0;
 		Log.d(LOG_TAG, "onCreate LoadStarDictActivity");
         FragmentManager fragmentManager = getFragmentManager();
