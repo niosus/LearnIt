@@ -66,6 +66,7 @@ public class StringUtils {
         }
         String result;
         result = inputWord.toLowerCase();
+        result = result.trim();
         return result;
     }
 
