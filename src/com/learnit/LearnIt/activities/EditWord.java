@@ -75,19 +75,19 @@ public class EditWord extends FragmentActivity {
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
 	                if (exitCode == DBHelper.EXIT_CODE_OK) {
 		                Crouton.makeText(this, getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
-		                // TODO: this code is shitty. Rewrite when have time.
-		                new CountDownTimer(2000, 2000) {
+	                } else if (exitCode == DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB) {
+                        Crouton.makeText(this, getString(R.string.crouton_word_already_present, edtWord.getText().toString()), Style.ALERT).show();
+                    }
+                    // TODO: this code is shitty. Rewrite when have time.
+                    new CountDownTimer(2000, 2000) {
 
-			                public void onTick(long millisUntilFinished) {
-			                }
+                        public void onTick(long millisUntilFinished) {
+                        }
 
-			                public void onFinish() {
-				                finishActivity();
-			                }
-		                }.start();
-	                } else {
-		                showMessage(exitCode);
-	                }
+                        public void onFinish() {
+                            finishActivity();
+                        }
+                    }.start();
                 }
                 return true;
             default:
@@ -207,6 +207,7 @@ public class EditWord extends FragmentActivity {
     }
 
     private void showMessage(int exitCode) {
+        Log.e(LOG_TAG, "trying to show any window with exit code = " + exitCode);
 	    DialogFragment frag = new MyDialogFragment();
 	    frag.show(getFragmentManager(), String.valueOf(exitCode));
     }
