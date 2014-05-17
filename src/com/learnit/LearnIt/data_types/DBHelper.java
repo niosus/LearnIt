@@ -453,7 +453,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor c = db.query(currentDBName,
                 new String[]{TRANSLATION_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ? ",
-                new String[] { "%" + word + "%" }, null, null,
+                new String[] { word }, null, null,
                 null, null);
         if (c.moveToFirst()) {
             int translationColIndex = c.getColumnIndex(TRANSLATION_COLUMN_NAME);
@@ -475,7 +475,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor c = db.query(currentDBName,
                 new String[]{ID_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ? ",
-                new String[] { "%" + word + "%" }, null, null,
+                new String[] { word }, null, null,
                 null, null);
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(ID_COLUMN_NAME);
