@@ -18,13 +18,13 @@
 
 <resources>
     <!-- fragment titles -->
-    <string name="learn_words_frag_title">Учить Слова</string>
     <string name="add_words_frag_title">Добавить Слово</string>
     <string name="dictionary_frag_title">Мой Словарь</string>
+    <string name="learn_words_frag_title">Учить Слова</string>
     <string-array name="fragments_titles">
-        <item>Учить Слов</item>
-        <item>Добавить Слов</item>
+        <item>Добавить Слово</item>
         <item>Мой Словарь</item>
+        <item>Учить Слова</item>
     </string-array>
 
     <!-- edit fragment texts -->
