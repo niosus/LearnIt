@@ -20,7 +20,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 apply plugin: 'android'
@@ -35,15 +35,17 @@ repositories {
 
 dependencies {
     compile project(':TabStrip')
-    compile 'com.android.support:support-v4:+'
-    compile 'com.android.support:support-v13:+'
-    compile 'de.keyboardsurfer.android.widget:crouton:1.8.4'
+    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v13:19.+'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
     compile 'net.yscs.android:square_progressbar:1.3.0'
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.1.0"
 
     sourceSets {
         main {
