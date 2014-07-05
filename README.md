@@ -6,6 +6,10 @@ It is created to help learning foreign languages.
 
 This is my hobby project and should always remain free. However, if you want to help it evolve I would welcome forking. The code quality is sometimes poor, but I am improving on the go.
 
+If you by any chance want to appreciate all the time spent for the development - you may want to consider bying me a beer:
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W22SBEL95FT94"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="[paypal]" /></a>
+
 References
 ----------
 This project uses some third party libraries that I would like to mention:
