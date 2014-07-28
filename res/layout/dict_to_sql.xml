@@ -17,6 +17,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/relative_layout_dict"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
@@ -44,15 +45,19 @@
         android:paddingLeft="20dp"
         style="@style/MyTextView">
     </TextView>
-    <net.yscs.android.square_progressbar.SquareProgressBar
+    <com.dd.CircularProgressButton
+        android:id="@+id/circularProgressButton"
         android:layout_below="@id/text_dictionary_info"
-        android:id="@+id/square_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="40dp"
-        android:paddingTop="40dp">
-    </net.yscs.android.square_progressbar.SquareProgressBar>
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:padding="30dp"
+        android:layout_marginTop="20dp"
+        app:cpb_cornerRadius="48dp"
+        app:cpb_iconComplete="@drawable/ic_action_accept"
+        app:cpb_iconError="@drawable/ic_action_cancel"
+        app:cpb_textIdle="@string/please_wait" />
     <TextView
         android:id="@+id/text_dict_to_sql_can_close_this"
         android:text="@string/dict_sql_may_close_now"

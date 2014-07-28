@@ -26,10 +26,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.dd.CircularProgressButton;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
-
-import net.yscs.android.square_progressbar.SquareProgressBar;
 
 public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelper.OnAnimationActionListener {
 	public final static String TAG = "ui_load_dict";
@@ -38,7 +37,7 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
 	private TextView _tvDictInfo;
 	private TextView _tvMayClose;
 	ProgressBar _progressBar;
-	SquareProgressBar _squareProgressBar;
+    CircularProgressButton _circularProgressButton;
     MyAnimationHelper _animationHelper;
 	boolean dictLoaded = false;
 
@@ -73,12 +72,8 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
             _tvDictInfo.setText(dictInfo);
         }
 
-	    _squareProgressBar = (SquareProgressBar) v.findViewById(R.id.square_progress);
-	    _squareProgressBar.setImage(R.drawable.logo_blue);
-	    _squareProgressBar.setColor(getString(R.color.highlight));
-	    _squareProgressBar.setProgress(0);
-	    _squareProgressBar.setWidth(10);
-	    _squareProgressBar.setOpacity(false);
+        _circularProgressButton = (CircularProgressButton) v.findViewById(R.id.circularProgressButton);
+        _circularProgressButton.setProgress(0);
         _animationHelper = null;
 
         return v;
@@ -126,7 +121,7 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
             _animationHelper.invokeForView(_progressBar, R.anim.close_word, this);
 
 		}
-		_squareProgressBar.setProgress(i);
+        _circularProgressButton.setProgress((int) Math.floor(i));
 	}
 
     @Override

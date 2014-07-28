@@ -17,6 +17,8 @@
   -->
 
 <resources>
+    <string name="please_wait">Bitte warten…</string>
+
     <!-- fragment titles -->
     <string name="add_words_frag_title">Neue Wörter Eingeben</string>
     <string name="dictionary_frag_title">Mein Wörterbuch</string>
