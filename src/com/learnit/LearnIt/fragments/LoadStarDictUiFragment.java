@@ -30,15 +30,13 @@ import com.dd.CircularProgressButton;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 
-public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelper.OnAnimationActionListener {
+public class LoadStarDictUiFragment extends Fragment {
 	public final static String TAG = "ui_load_dict";
 
     private TextView _tvTitle;
 	private TextView _tvDictInfo;
 	private TextView _tvMayClose;
-	ProgressBar _progressBar;
     CircularProgressButton _circularProgressButton;
-    MyAnimationHelper _animationHelper;
 	boolean dictLoaded = false;
 
 	public boolean isDictLoaded() {
@@ -53,7 +51,6 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dict_to_sql, container, false);
-	    _progressBar = (ProgressBar) v.findViewById(R.id.progress_load_dict);
         _tvTitle = (TextView) v.findViewById(R.id.text_dict_to_sql_title);
         _tvDictInfo = (TextView) v.findViewById(R.id.text_dictionary_info);
 	    _tvMayClose = (TextView) v.findViewById(R.id.text_dict_to_sql_can_close_this);
@@ -72,9 +69,10 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
             _tvDictInfo.setText(dictInfo);
         }
 
+        int SOME_VAL = 50;
         _circularProgressButton = (CircularProgressButton) v.findViewById(R.id.circularProgressButton);
-        _circularProgressButton.setProgress(0);
-        _animationHelper = null;
+        _circularProgressButton.setIndeterminateProgressMode(true);
+        _circularProgressButton.setProgress(SOME_VAL);
 
         return v;
     }
@@ -112,20 +110,20 @@ public class LoadStarDictUiFragment extends Fragment implements MyAnimationHelpe
 	public void onFail() {
 		if (isAdded()) {
 			setTitleText(this.getString(R.string.dict_sql_no_dict));
-		}
+            _circularProgressButton.setProgress(CircularProgressButton.ERROR_STATE_PROGRESS);
+        }
 	}
 
 	public void setProgress(Double i) {
-		if (_animationHelper == null) {
-            _animationHelper = new MyAnimationHelper(getActivity());
-            _animationHelper.invokeForView(_progressBar, R.anim.close_word, this);
-
-		}
+        if (_circularProgressButton == null)
+        {
+            return;
+        }
+        int intProgress = (int) Math.floor(i);
+        if (intProgress < 1) { return; }
+		if (_circularProgressButton.isIndeterminateProgressMode()) {
+            _circularProgressButton.setIndeterminateProgressMode(false);
+        }
         _circularProgressButton.setProgress((int) Math.floor(i));
 	}
-
-    @Override
-    public void onAnimationFinished(int id, boolean ignore) {
-        _progressBar.setVisibility(View.INVISIBLE);
-    }
 }

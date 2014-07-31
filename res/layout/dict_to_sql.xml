@@ -22,15 +22,8 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical">
-    <ProgressBar
-        android:layout_alignParentTop="true"
-        android:id="@+id/progress_load_dict"
-        android:indeterminate="true"
-        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <TextView
-        android:layout_below="@id/progress_load_dict"
+        android:layout_alignParentTop="true"
         android:id="@+id/text_dict_to_sql_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -53,8 +46,8 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:padding="30dp"
-        android:layout_marginTop="20dp"
-        app:cpb_cornerRadius="48dp"
+        android:layout_margin="20dp"
+        app:cpb_cornerRadius="6dp"
         app:cpb_iconComplete="@drawable/ic_action_accept"
         app:cpb_iconError="@drawable/ic_action_cancel"
         app:cpb_textIdle="@string/please_wait" />
