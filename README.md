@@ -16,6 +16,7 @@ This project uses some third party libraries that I would like to mention:
 
 - PagerSlidingTabStrip by @astuetz at https://github.com/astuetz/PagerSlidingTabStrip
 - Crouton library by @keyboardsurfer at https://github.com/keyboardsurfer/Crouton
+- CirculaProgressButton by @dmytrodanylyk at https://github.com/dmytrodanylyk/circular-progress-button
 
 Licening
 ---------
