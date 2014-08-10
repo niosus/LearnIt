@@ -48,6 +48,9 @@ import java.util.TreeSet;
 public class GetHelpWordsGoogleTask extends MySmartAsyncTask<List<String>> {
     final static String GOOGLE_COMPLETE_URL
             = "http://google.com/complete/search?q=%s&output=toolbar&hl=%s";
+    final static String ENCODING = "UTF-8";
+    final static String SUGGESTION_TAG = "suggestion";
+    final static String DATA_TAG = "data";
     String _word;
     private HttpClient client = new DefaultHttpClient();
 
@@ -92,7 +95,7 @@ public class GetHelpWordsGoogleTask extends MySmartAsyncTask<List<String>> {
         try {
             fullUrl = String.format(
                     GOOGLE_COMPLETE_URL,
-                    URLEncoder.encode(newWord, "UTF-8"),
+                    URLEncoder.encode(newWord, ENCODING),
                     Utils.getCurrentLanguages(_context).first);
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
@@ -118,8 +121,8 @@ public class GetHelpWordsGoogleTask extends MySmartAsyncTask<List<String>> {
                             case XmlPullParser.START_TAG:
                                 break;
                             case XmlPullParser.END_TAG:
-                                if (name.equals("suggestion")) {
-                                    String tempStr = parser.getAttributeValue(null, "data");
+                                if (name.equals(SUGGESTION_TAG)) {
+                                    String tempStr = parser.getAttributeValue(null, DATA_TAG);
                                     String[] strArray = tempStr.split(" ");
                                     if (strArray.length > 0) {
                                         words.add(strArray[0]);
