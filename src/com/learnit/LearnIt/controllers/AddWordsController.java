@@ -106,7 +106,8 @@ public class AddWordsController implements
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-					_worker.addTask(new GetHelpWordsTask(s.toString()), this);
+                    _worker.addTask(new GetHelpWordsTask(s.toString()), this);
+//                    _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
 					_fragmentUpdate.setWordClearButtonVisible(true);
 				}
 				else {
