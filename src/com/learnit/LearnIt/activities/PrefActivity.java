@@ -87,11 +87,11 @@ public class PrefActivity extends PreferenceActivity {
             lstLanguageToLearn.setOnPreferenceChangeListener(listener);
 
             try {
-                if (!lstLanguageToLearn.getValue().equals("de")) {
+                if (!lstLanguageToLearn.getValue().equals(getString(R.string.tag_german))) {
                     showArticlesOption = false;
                 }
             } catch (Exception ex) {
-                Log.d(LOG_TAG, "cought exception on pref start");
+                Log.d(LOG_TAG, "caught exception on pref start");
             }
 
             lstDirectionOfTrans = (ListPreference) findPreference(getString(R.string.key_direction_of_trans));
@@ -104,8 +104,10 @@ public class PrefActivity extends PreferenceActivity {
             if (showArticlesOption) {
                 lstWayToLearn.setOnPreferenceChangeListener(listener);
             } else {
-                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");    //TODO: change to R
+                PreferenceCategory mCategory
+                        = (PreferenceCategory) findPreference(getString(R.string.key_prefs_main));
                 mCategory.removePreference(lstWayToLearn);
+                lstWayToLearn.setValue(getString(R.string.val_way_to_learn_trans_only));
             }
 
             lstNumOfWords = (ListPreference) findPreference(getString(R.string.key_num_of_words));
@@ -122,7 +124,8 @@ public class PrefActivity extends PreferenceActivity {
         }
 
         void updateAllSummaries() {
-	        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+	        SharedPreferences sp
+                    = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
             if (checkBoxPreference.isChecked()) {
 	            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), true);
                 checkBoxPreference.setSummary(R.string.pref_notifications_enabled);
@@ -142,13 +145,14 @@ public class PrefActivity extends PreferenceActivity {
                 lstNumOfWords.setSummary(lstNumOfWords.getEntry().toString());
             if (lstDirectionOfTrans.getEntry() != null)
                 lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntry().toString());
-            if (lstWayToLearn.getValue().equals("2")) {
-                lstDirectionOfTrans.setValue("2");
-                lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
-            } else
-            {
-	            lstDirectionOfTrans.setValue("3");
+            if (lstWayToLearn.getValue().equals(getString(R.string.val_way_to_learn_articles_only))) {
+                lstDirectionOfTrans.setValue(getString(R.string.val_direction_of_trans_show_word));
+                lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[0]);
+                lstDirectionOfTrans.setEnabled(false);
+            } else {
+	            lstDirectionOfTrans.setValue(getString(R.string.val_direction_of_trans_mixed));
 	            lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[2]);
+                lstDirectionOfTrans.setEnabled(true);
             }
         }
 
@@ -227,12 +231,14 @@ public class PrefActivity extends PreferenceActivity {
                         lstLanguageToLearn = (ListPreference) pref;
                         if (!newValue.toString().equals(lstLanguageToLearn.getValue())) {
                             pref.setSummary(lstLanguageToLearn.getEntries()[lstLanguageToLearn.findIndexOfValue(newValue.toString())]);
-                            if (!newValue.toString().equals("de")) {
-                                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
-                                lstWayToLearn.setValue("1");
+                            if (!newValue.toString().equals(getString(R.string.tag_german))) {
+                                PreferenceCategory mCategory
+                                        = (PreferenceCategory) findPreference(getString(R.string.key_prefs_main));
+                                lstWayToLearn.setValue(getString(R.string.val_way_to_learn_trans_only));
                                 mCategory.removePreference(lstWayToLearn);
                             } else {
-                                PreferenceCategory mCategory = (PreferenceCategory) findPreference("prefs_main");
+                                PreferenceCategory mCategory
+                                        = (PreferenceCategory) findPreference(getString(R.string.key_prefs_main));
                                 mCategory.addPreference(lstWayToLearn);
                             }
                             m_languages_changed = true;
@@ -248,9 +254,9 @@ public class PrefActivity extends PreferenceActivity {
                     } else if (pref.getKey().equals(getString(R.string.key_way_to_learn))) {
                         lstWayToLearn = (ListPreference) pref;
                         pref.setSummary(lstWayToLearn.getEntries()[lstWayToLearn.findIndexOfValue(newValue.toString())]);
-                        if (newValue.toString().equals("2")) {
-                            lstDirectionOfTrans.setValue("2");
-                            lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[1]);
+                        if (newValue.toString().equals(getString(R.string.val_way_to_learn_articles_only))) {
+                            lstDirectionOfTrans.setValue(getString(R.string.val_way_to_learn_articles_only));
+                            lstDirectionOfTrans.setSummary(lstDirectionOfTrans.getEntries()[0]);
                             lstDirectionOfTrans.setEnabled(false);
                         } else {
                             lstDirectionOfTrans.setEnabled(true);
@@ -261,7 +267,6 @@ public class PrefActivity extends PreferenceActivity {
                     } else if (pref.getKey().equals(getString(R.string.key_direction_of_trans))) {
                         lstDirectionOfTrans = (ListPreference) pref;
                         pref.setSummary(lstDirectionOfTrans.getEntries()[lstDirectionOfTrans.findIndexOfValue(newValue.toString())]);
-                        Log.d(LOG_TAG, "changed!!!!");
                         return true;
                     }
                 } else if (pref instanceof TimePreference) {

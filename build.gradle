@@ -35,8 +35,8 @@ repositories {
 
 dependencies {
     compile project(':TabStrip')
-    compile 'com.android.support:support-v4:19.0.0'
-    compile 'com.android.support:support-v13:19.+'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v13:20.0.0'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }

@@ -27,6 +27,7 @@
     <string name="key_language_from">language_to_learn</string>
     <string name="key_language_to">language_you_know</string>
     <string name="key_time_to_start">time_to_start</string>
+    <string name="key_prefs_main">prefs_main</string>
     <string name="version">0.9.21</string>
 
     <string-array name="values_freq">
@@ -51,28 +52,41 @@
     </string-array>
 
     <string-array name="values_languages_from">
-        <item>de</item>
-        <item>en</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>it</item>
-        <item>pl</item>
-        <item>ru</item>
-        <item>swe</item>
-        <item>uk</item>
+        <item>@string/tag_german</item>
+        <item>@string/tag_english</item>
+        <item>@string/tag_spanish</item>
+        <item>@string/tag_french</item>
+        <item>@string/tag_italian</item>
+        <item>@string/tag_polish</item>
+        <item>@string/tag_russian</item>
+        <item>@string/tag_swedish</item>
+        <item>@string/tag_ukrainian</item>
     </string-array>
 
+    <string name="tag_german">de</string>
+    <string name="tag_english">en</string>
+    <string name="tag_spanish">es</string>
+    <string name="tag_french">fr</string>
+    <string name="tag_italian">it</string>
+    <string name="tag_polish">pl</string>
+    <string name="tag_russian">ru</string>
+    <string name="tag_swedish">swe</string>
+    <string name="tag_ukrainian">uk</string>
+    <string name="tag_auto">auto</string>
+
+
+
     <string-array name="values_languages_to">
-        <item>auto</item>
-        <item>de</item>
-        <item>en</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>it</item>
-        <item>pl</item>
-        <item>ru</item>
-        <item>swe</item>
-        <item>uk</item>
+        <item>@string/tag_auto</item>
+        <item>@string/tag_german</item>
+        <item>@string/tag_english</item>
+        <item>@string/tag_spanish</item>
+        <item>@string/tag_french</item>
+        <item>@string/tag_italian</item>
+        <item>@string/tag_polish</item>
+        <item>@string/tag_russian</item>
+        <item>@string/tag_swedish</item>
+        <item>@string/tag_ukrainian</item>
     </string-array>
 
     <string-array name="values_way_to_learn">
@@ -81,11 +95,22 @@
         <item>3</item>
     </string-array>
 
+    <string name="val_way_to_learn_trans_only">1</string>
+    <string name="val_way_to_learn_articles_only">2</string>
+    <string name="val_way_to_learn_mixed">3</string>
+
     <string-array name="values_direction_of_trans">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string name="val_direction_of_trans_show_word">1</string>
+    <string name="val_direction_of_trans_show_trans">2</string>
+    <string name="val_direction_of_trans_mixed">3</string>
+
+    <string name="val_default_direction_of_trans">@string/val_direction_of_trans_mixed</string>
+    <string name="val_default_way_to_learn">@string/val_way_to_learn_trans_only</string>
 
     <string name="articles_de">der die das</string>
     <string name="help_words_de">sich</string>

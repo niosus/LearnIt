@@ -39,7 +39,7 @@
                 android:key="@string/key_way_to_learn"
                 android:summary=""
                 android:title="@string/pref_way_to_learn"
-                android:defaultValue="1"
+                android:defaultValue="@string/val_default_way_to_learn"
                 android:entries="@array/entries_way_to_learn"
                 android:entryValues="@array/values_way_to_learn"/>
 
@@ -47,7 +47,7 @@
                 android:key="@string/key_direction_of_trans"
                 android:summary=""
                 android:title="@string/pref_direction_of_trans"
-                android:defaultValue="3"
+                android:defaultValue="@string/val_default_direction_of_trans"
                 android:entries="@array/entries_direction_of_trans"
                 android:entryValues="@array/values_direction_of_trans"/>
 

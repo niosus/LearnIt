@@ -26,8 +26,8 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.async_tasks.GetHelpWordsTask;
-import com.learnit.LearnIt.async_tasks.GetTranslationsTask;
+import com.learnit.LearnIt.async_tasks.GetHelpWordsGoogleTask;
+import com.learnit.LearnIt.async_tasks.GetTranslationsWebTask;
 import com.learnit.LearnIt.async_tasks.SaveNewEntryTask;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
@@ -88,7 +88,7 @@ public class AddWordsController implements
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (hasFocus) { _focused = v; }
 		if (v.getId() == R.id.edv_add_translation) {
-			_worker.addTask(new GetTranslationsTask(_fragmentUpdate.getWord()), this);
+			_worker.addTask(new GetTranslationsWebTask(_fragmentUpdate.getWord()), this);
 		}
 	}
 
@@ -106,8 +106,8 @@ public class AddWordsController implements
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-                    _worker.addTask(new GetHelpWordsTask(s.toString()), this);
-//                    _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
+//                    _worker.addTask(new GetHelpWordsTask(s.toString()), this);
+                    _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
 					_fragmentUpdate.setWordClearButtonVisible(true);
 				}
 				else {
