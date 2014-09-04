@@ -23,6 +23,7 @@ import android.widget.Button;
 
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.utils.StringUtils;
+import com.learnit.LearnIt.utils.Utils;
 
 public class WordButton extends Button {
     public static final int SHOW_WORD = 1;
@@ -58,16 +59,14 @@ public class WordButton extends Button {
                 return;
             case SHOW_WORD:
                 textToSet=StringUtils.splitOnRegex(entry.word, ",");
-                if (null==entry.article)
-                {
+                if (null==entry.article) {
                     this.setText(textToSet);
-                }
-                else if ("".equals(entry.article))
-                {
+                } else if ("".equals(entry.article)) {
                     this.setText(textToSet);
-                }
-                else
-                {
+                } else {
+                    if (Utils.getCurrentLanguages(this.getContext()).first.equals("de")) {
+                        textToSet = StringUtils.capitalize(textToSet);
+                    }
                     this.setText(entry.article + "\n" + textToSet);
                 }
                 return;
