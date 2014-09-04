@@ -19,23 +19,26 @@ package com.learnit.LearnIt.views;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 
-public class MyWordTextView extends TextView {
+public class FittingTextView extends TextView {
 
-	public MyWordTextView(Context context) {
+	public FittingTextView(Context context) {
 		super(context);
 	}
 
-	public MyWordTextView(Context context, AttributeSet attrs) {
+	public FittingTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public MyWordTextView(Context context, AttributeSet attrs, int defStyle) {
+	public FittingTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -76,6 +79,7 @@ public class MyWordTextView extends TextView {
 
 	private void updateScale(final float widgetWidth, final String longestWord) {
 		float margin = getContext().getResources().getDimension(R.dimen.my_query_word_margin);
+
 		Paint mPaint;
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -86,11 +90,7 @@ public class MyWordTextView extends TextView {
 		if (longestWord != null)
 		{
 			float w = mPaint.measureText(longestWord, 0, longestWord.length());
-			float scale = (widgetWidth - margin)/ w;
-			Log.d("my_logs", "scale is " + scale);
-			Log.d("my_logs", "widget width " + widgetWidth);
-			Log.d("my_logs", "margin width " + margin);
-			Log.d("my_logs", "longest word width " + w);
+			float scale = (widgetWidth - margin * 3)/ w;
 			if (scale < 1) {this.setTextScaleX(scale);}
 			Log.d("my_logs", "current scale is " + this.getTextScaleX());
 		}
