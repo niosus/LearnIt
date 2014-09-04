@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 /*
  * Copyright (C) 2014  Igor Bogoslavskyi
  * This file is part of LearnIt.
@@ -90,6 +92,42 @@ android {
             && new File(project.property("learnit.signing") + ".gradle").exists()) {
         apply from: project.property("learnit.signing") + ".gradle";
     }
+}
 
 
+
+task('increaseVersionCode') << {
+    def manifestFile = file("AndroidManifest.xml")
+    def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcher = pattern.matcher(manifestText)
+    matcher.find()
+    def versionCode = Integer.parseInt(matcher.group(1))
+    def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
+    manifestFile.write(manifestContent)
+}
+
+task('increaseBuildVersion') << {
+    def stringsSource = file("res/values/donottranslate.xml")
+    def pattern = Pattern.compile("<string name=\"version\">(\\d+)\\.(\\d+)\\.(\\d+)</string>")
+    def versionText = stringsSource.getText()
+    def matcher = pattern.matcher(versionText)
+    matcher.find()
+    def majorVersion = Integer.parseInt(matcher.group(1))
+    def minorVersion = Integer.parseInt(matcher.group(2))
+    def buildVersion = Integer.parseInt(matcher.group(3))
+    def mNextVersionName = majorVersion + "." + minorVersion + "." + (buildVersion + 1)
+    def newStrings = matcher.replaceAll("<string name=\"version\">" + mNextVersionName + "</string>")
+    stringsSource.write(newStrings)
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'generateReleaseBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+        task.dependsOn 'increaseBuildVersion'
+    }
+    if (task.name == 'generateDebugBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+        task.dependsOn 'increaseBuildVersion'
+    }
 }
