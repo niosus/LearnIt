@@ -191,7 +191,7 @@ public class MainActivity extends Activity implements
         if (!allLanguages.contains(pair.first)) {
             startShowWelcomeActivity();
         }
-	    if (isDictUpdateNeeded()) {
+	    if (Utils.isDictUpdateNeeded(this)) {
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		    builder.setTitle(R.string.dialog_update_to_help_dict_needed_title).setMessage(R.string.dialog_update_to_help_dict_needed).setPositiveButton(R.string.dialog_button_ok, dialogClickListener)
 				    .setNegativeButton(R.string.dialog_button_cancel, dialogClickListener).setIcon(R.drawable.ic_action_alerts_and_states_warning).show();
@@ -293,48 +293,6 @@ public class MainActivity extends Activity implements
                 return super.onOptionsItemSelected(item);
         }
     }
-
-	boolean dictIsOnDisk(Pair<String, String> currentLanguages) {
-		// check if there is a file on the disc that contains the needed dict
-		// for the current language pair
-		File sd = Environment.getExternalStorageDirectory();
-		sd = new File(sd, "LearnIt");
-		sd = new File(sd, currentLanguages.first + "-" + currentLanguages.second);
-		sd = new File(sd, "dict.ifo");
-		if (!sd.exists()) {
-			// this means there is no needed file present, so we clear the existing database
-			DBHelper dbHelper = new DBHelper(this, DBHelper.DB_DICT_FROM);
-			SQLiteDatabase db = dbHelper.getWritableDatabase();
-			// and set the state of this database to null
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-			sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
-			db.delete(DBHelper.DB_DICT_FROM, null, null);
-            db.close();
-			return false;
-		}
-		return true;
-	}
-
-	boolean languagesHaveChanged(Pair<String,String> currentLanguages) {
-		// check if the saved in preferences languages for the help dictionary have changed
-		// if no change - then no need to reload. Otherwise - reload.
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		String langString = sp.getString(Constants.CURRENT_HELP_DICT_TAG, "null");
-		Log.d(LOG_TAG, langString + " <> " + currentLanguages.first + " " + currentLanguages.second);
-		if (langString.equals(currentLanguages.first + " " + currentLanguages.second)) {
-			return false;
-		}
-		// well, the languages changed, so no need to show old word and translations
-		Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
-		return true;
-	}
-
-	boolean isDictUpdateNeeded() {
-		Pair<String,String> currentLanguages = Utils.getCurrentLanguages(this);
-		boolean dictPresent = dictIsOnDisk(currentLanguages);
-		boolean languagesChanged = languagesHaveChanged(currentLanguages);
-		return (dictPresent && languagesChanged);
-	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

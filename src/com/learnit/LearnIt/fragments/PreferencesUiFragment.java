@@ -31,7 +31,8 @@ public class PreferencesUiFragment extends PreferenceFragment {
     ListPreference lstNumOfWords;
     ListPreference lstLanguageToLearn;
     ListPreference lstLanguageYouKnow;
-    CheckBoxPreference checkBoxPreference;
+    CheckBoxPreference notifEnabledPreference;
+    CheckBoxPreference onlineDictPreference;
     TimePreference timePreference;
     boolean changed = false;
 
@@ -76,8 +77,11 @@ public class PreferencesUiFragment extends PreferenceFragment {
         lstNumOfWords = (ListPreference) findPreference(getString(R.string.key_num_of_words));
         lstNumOfWords.setOnPreferenceChangeListener(listener);
 
-        checkBoxPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
-        checkBoxPreference.setOnPreferenceChangeListener(listener);
+        notifEnabledPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_notif_active));
+        notifEnabledPreference.setOnPreferenceChangeListener(listener);
+
+        onlineDictPreference = (CheckBoxPreference) findPreference(getString(R.string.key_pref_use_online_dict));
+        onlineDictPreference.setOnPreferenceChangeListener(listener);
 
         timePreference = (TimePreference) findPreference(getString(R.string.key_time_to_start));
         timePreference.setOnPreferenceChangeListener(listener);
@@ -89,12 +93,19 @@ public class PreferencesUiFragment extends PreferenceFragment {
     void updateAllSummaries() {
         SharedPreferences sp
                 = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        if (checkBoxPreference.isChecked()) {
+        if (notifEnabledPreference.isChecked()) {
             sp.edit().putBoolean(getString(R.string.key_pref_notif_active), true);
-            checkBoxPreference.setSummary(R.string.pref_notifications_enabled);
+            notifEnabledPreference.setSummary(R.string.pref_notifications_enabled);
         } else {
             sp.edit().putBoolean(getString(R.string.key_pref_notif_active), false);
-            checkBoxPreference.setSummary(R.string.pref_notifications_disabled);
+            notifEnabledPreference.setSummary(R.string.pref_notifications_disabled);
+        }
+        if (onlineDictPreference.isChecked()) {
+            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), true);
+            onlineDictPreference.setSummary(R.string.pref_use_online_dict_enabled);
+        } else {
+            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), false);
+            onlineDictPreference.setSummary(R.string.pref_use_online_dict_disabled);
         }
         if (lstNotifFreq.getEntry() != null)
             lstNotifFreq.setSummary(lstNotifFreq.getEntry().toString());
@@ -133,7 +144,7 @@ public class PreferencesUiFragment extends PreferenceFragment {
     }
 
     void updateEnabled() {
-        boolean enabled = checkBoxPreference.isChecked();
+        boolean enabled = notifEnabledPreference.isChecked();
         lstNotifFreq.setEnabled(enabled);
         lstNumOfWords.setEnabled(enabled);
         timePreference.setEnabled(enabled);
@@ -175,6 +186,13 @@ public class PreferencesUiFragment extends PreferenceFragment {
                         pref.setSummary(R.string.pref_notifications_disabled);
                     }
                     changed = true;
+                    return true;
+                } else if (pref.getKey().equals(getString(R.string.key_pref_use_online_dict))) {
+                    if ((Boolean) newValue) {
+                        pref.setSummary(R.string.pref_use_online_dict_enabled);
+                    } else {
+                        pref.setSummary(R.string.pref_use_online_dict_disabled);
+                    }
                     return true;
                 }
             } else if (pref instanceof ListPreference) {

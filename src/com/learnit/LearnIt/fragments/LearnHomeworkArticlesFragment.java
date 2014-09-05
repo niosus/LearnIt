@@ -114,7 +114,7 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 
 	@Override
 	public void setButtonTexts(ArrayList<ArticleWordId> words, int direction) {
-		String[] articles = getString(R.string.articles_de).split("\\s");
+		String[] articles = getString(R.string.articles).split("\\s");
 		for (int i = 0; i < _btnIds.length; ++i) {
 			((TextView) v.findViewById(_btnIds[i])).setText(articles[i]);
 		}

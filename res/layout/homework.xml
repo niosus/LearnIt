@@ -35,7 +35,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <com.learnit.LearnIt.views.MyWordTextView
+        <com.learnit.LearnIt.views.FittingTextView
             android:id="@+id/word_to_ask"
             style="@style/MyQueryWordTextView"
             android:layout_weight="2"

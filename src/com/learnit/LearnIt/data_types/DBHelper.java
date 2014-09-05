@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -146,11 +147,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    boolean isArticle(String article) {
-        String articles = this.mContext.getString(R.string.articles_de);
-        return articles.contains(article.toLowerCase());
-    }
-
     boolean isPrefix(String word) {
         String prefix = this.mContext.getString(R.string.help_words_de);
         return prefix.contains(word.toLowerCase());
@@ -185,7 +181,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     cv.put(PREFIX_COLUMN_NAME, (String) null);
                     break;
                 default:
-                    if (isArticle(wordsList.get(0))) {
+                    if (StringUtils.isArticle(mContext, wordsList.get(0))) {
                         cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
                         cv.put(ARTICLE_COLUMN_NAME, wordsList.get(0));
                         cv.put(PREFIX_COLUMN_NAME, (String) null);

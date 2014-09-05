@@ -17,6 +17,8 @@
   -->
 
 <resources>
+    <string name="articles"></string>
+
     <string name="please_wait">Будь ласка, зачекайте…</string>
 
     <!-- fragment titles -->
@@ -85,6 +87,9 @@
     <string name="pref_direction_of_trans">Напрямок перекладу</string>
     <string name="pref_notifications_enabled">Сповіщення увімкнено</string>
     <string name="pref_notifications_disabled">Сповіщення вимкнено</string>
+    <string name="pref_use_online_dict">Використання онлайн словника</string>
+    <string name="pref_use_online_dict_enabled">Онлайн сервіс Glosbe використовується, якщо офлайн словник не знайдено</string>
+    <string name="pref_use_online_dict_disabled">Онлайн словник не використовується</string>
 
     <!--context menu strings-->
     <string name="context_menu_edit">Редагувати</string>

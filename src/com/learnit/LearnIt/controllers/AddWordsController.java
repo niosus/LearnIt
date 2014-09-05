@@ -17,6 +17,10 @@
 
 package com.learnit.LearnIt.controllers;
 
+import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.util.Log;
 import android.util.Pair;
@@ -27,6 +31,8 @@ import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.async_tasks.GetHelpWordsGoogleTask;
+import com.learnit.LearnIt.async_tasks.GetHelpWordsTask;
+import com.learnit.LearnIt.async_tasks.GetTranslationsTask;
 import com.learnit.LearnIt.async_tasks.GetTranslationsWebTask;
 import com.learnit.LearnIt.async_tasks.SaveNewEntryTask;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
@@ -35,6 +41,7 @@ import com.learnit.LearnIt.interfaces.IWorkerEventListenerHelpWords;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerNewEntry;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerTranslations;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.List;
 
@@ -50,7 +57,12 @@ public class AddWordsController implements
 	IWorkerJobInput _worker;
 	View _focused;
 
+    Fragment _context = null;
+
 	public AddWordsController(IAddWordsFragmentUpdate target, IWorkerJobInput worker) {
+        if (target instanceof Fragment) {
+            _context = (Fragment) target;
+        } else { _context = null; }
 		_fragmentUpdate = target;
 		_worker = worker;
 	}
@@ -88,7 +100,18 @@ public class AddWordsController implements
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (hasFocus) { _focused = v; }
 		if (v.getId() == R.id.edv_add_translation) {
-			_worker.addTask(new GetTranslationsWebTask(_fragmentUpdate.getWord()), this);
+            if (_context != null) {
+                SharedPreferences sp
+                        = PreferenceManager.getDefaultSharedPreferences(_context.getActivity().getApplicationContext());
+                if (sp.getBoolean(_context.getString(R.string.key_pref_use_online_dict), false)
+                        && !Utils.dictIsOnDisk(_context.getActivity().getApplicationContext(),
+                        Utils.getCurrentLanguages(_context.getActivity().getApplicationContext()))) {
+                    _worker.addTask(new GetTranslationsWebTask(_fragmentUpdate.getWord()), this);
+                } else {
+                    _worker.addTask(new GetTranslationsTask(_fragmentUpdate.getWord()), this);
+                }
+            }
+
 		}
 	}
 
@@ -106,8 +129,17 @@ public class AddWordsController implements
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-//                    _worker.addTask(new GetHelpWordsTask(s.toString()), this);
-                    _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
+                    if (_context != null) {
+                        SharedPreferences sp
+                                = PreferenceManager.getDefaultSharedPreferences(_context.getActivity().getApplicationContext());
+                        if (sp.getBoolean(_context.getString(R.string.key_pref_use_online_dict), false)
+                                && !Utils.dictIsOnDisk(_context.getActivity().getApplicationContext(),
+                                Utils.getCurrentLanguages(_context.getActivity().getApplicationContext()))) {
+                            _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
+                        } else {
+                            _worker.addTask(new GetHelpWordsTask(s.toString()), this);
+                        }
+                    }
 					_fragmentUpdate.setWordClearButtonVisible(true);
 				}
 				else {

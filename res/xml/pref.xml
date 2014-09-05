@@ -51,6 +51,12 @@
                 android:entries="@array/entries_direction_of_trans"
                 android:entryValues="@array/values_direction_of_trans"/>
 
+        <CheckBoxPreference
+            android:key="@string/key_pref_use_online_dict"
+            android:summary="@string/pref_use_online_dict_enabled"
+            android:title="@string/pref_use_online_dict">
+        </CheckBoxPreference>
+
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/notification_group">

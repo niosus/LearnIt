@@ -94,6 +94,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 			db.setTransactionSuccessful();
 		}
 		db.endTransaction();
+        db.close();
 	}
 
 	@Override
@@ -102,6 +103,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.delete(DBHelper.DB_DICT_FROM, null, null);
+        db.close();
 	}
 
 	@Override
@@ -112,6 +114,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.delete(DBHelper.DB_DICT_FROM, null, null);
+        db.close();
 		Log.d("my_logs", "cancelled getting the dictionary :(");
 		_taskActionCallback.onFail();
 	}

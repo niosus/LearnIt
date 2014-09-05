@@ -19,6 +19,9 @@
 <resources>
     <string name="app_name">LearnIt</string>
     <string name="layout_current">normal</string>
+
+
+    <string name="key_pref_use_online_dict">use_online_dict</string>
     <string name="key_pref_notif_active">notification_enabled</string>
     <string name="key_notification_frequency">notification_frequency</string>
     <string name="key_way_to_learn">way_to_learn</string>
@@ -28,7 +31,7 @@
     <string name="key_language_to">language_you_know</string>
     <string name="key_time_to_start">time_to_start</string>
     <string name="key_prefs_main">prefs_main</string>
-    <string name="version">0.9.21</string>
+    <string name="version">0.9.54</string>
 
     <string-array name="values_freq">
         <item>1</item>
@@ -89,29 +92,29 @@
         <item>@string/tag_ukrainian</item>
     </string-array>
 
-    <string-array name="values_way_to_learn">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
     <string name="val_way_to_learn_trans_only">1</string>
     <string name="val_way_to_learn_articles_only">2</string>
     <string name="val_way_to_learn_mixed">3</string>
 
-    <string-array name="values_direction_of_trans">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+    <string-array name="values_way_to_learn">
+        <item>@string/val_way_to_learn_trans_only</item>
+        <item>@string/val_way_to_learn_articles_only</item>
+        <item>@string/val_way_to_learn_mixed</item>
     </string-array>
+
 
     <string name="val_direction_of_trans_show_word">1</string>
     <string name="val_direction_of_trans_show_trans">2</string>
     <string name="val_direction_of_trans_mixed">3</string>
 
+    <string-array name="values_direction_of_trans">
+        <item>@string/val_direction_of_trans_show_word</item>
+        <item>@string/val_direction_of_trans_show_trans</item>
+        <item>@string/val_direction_of_trans_mixed</item>
+    </string-array>
+
     <string name="val_default_direction_of_trans">@string/val_direction_of_trans_mixed</string>
     <string name="val_default_way_to_learn">@string/val_way_to_learn_trans_only</string>
 
-    <string name="articles_de">der die das</string>
     <string name="help_words_de">sich</string>
 </resources>

@@ -26,6 +26,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
@@ -38,6 +40,7 @@ import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.services.NotificationService;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -179,6 +182,48 @@ public class Utils {
 	    catch (NullPointerException ex)
 	    {
 	    }
+    }
+
+    public static boolean dictIsOnDisk(Context context, Pair<String, String> currentLanguages) {
+        // check if there is a file on the disc that contains the needed dict
+        // for the current language pair
+        File sd = Environment.getExternalStorageDirectory();
+        sd = new File(sd, "LearnIt");
+        sd = new File(sd, currentLanguages.first + "-" + currentLanguages.second);
+        sd = new File(sd, "dict.ifo");
+        if (!sd.exists()) {
+            // this means there is no needed file present, so we clear the existing database
+            DBHelper dbHelper = new DBHelper(context, DBHelper.DB_DICT_FROM);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            // and set the state of this database to null
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
+            db.delete(DBHelper.DB_DICT_FROM, null, null);
+            db.close();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isDictUpdateNeeded(Context context) {
+        Pair<String,String> currentLanguages = Utils.getCurrentLanguages(context);
+        boolean dictPresent = dictIsOnDisk(context, currentLanguages);
+        boolean languagesChanged = languagesHaveChanged(context, currentLanguages);
+        return (dictPresent && languagesChanged);
+    }
+
+    public static boolean languagesHaveChanged(Context context, Pair<String,String> currentLanguages) {
+        // check if the saved in preferences languages for the help dictionary have changed
+        // if no change - then no need to reload. Otherwise - reload.
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String langString = sp.getString(Constants.CURRENT_HELP_DICT_TAG, "null");
+        Log.d(LOG_TAG, langString + " <> " + currentLanguages.first + " " + currentLanguages.second);
+        if (langString.equals(currentLanguages.first + " " + currentLanguages.second)) {
+            return false;
+        }
+        // well, the languages changed, so no need to show old word and translations
+        Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
+        return true;
     }
 
 }

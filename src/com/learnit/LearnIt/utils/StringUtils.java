@@ -33,8 +33,13 @@ public class StringUtils {
 
     public static boolean isArticle(Context context, String article) {
 		if (article==null) return false;
-        String articles = context.getString(R.string.articles_de);
-        return articles.contains(article.toLowerCase());
+        article = article.toLowerCase();
+        String articles = context.getString(R.string.articles);
+        String[] articlesArray = articles.split("\\s");
+        for (String tempArticle: articlesArray) {
+            if (article.contains(tempArticle)) { return true; }
+        }
+        return false;
     }
 
     static boolean isPrefix(Context context, String word) {
@@ -79,14 +84,17 @@ public class StringUtils {
 
     public static String stripFromArticle(Context context, String str) {
 	    if (str == null) return null;
+        str = str.trim();
         String[] tempArray = str.split("\\s");
         Log.d(LOG_TAG, "str = " + str + ", array length = " + tempArray.length);
         if (tempArray.length == 1) {
             return str;
         } else if (tempArray.length > 1) {
             if (isArticle(context, tempArray[0])) {
+                Log.d(LOG_TAG, "cutting away article: " + tempArray[0]);
                 return cutAwayFirstWord(str);
             } else if (isPrefix(context, tempArray[0])) {
+                Log.d(LOG_TAG, "cutting away prefix: " + tempArray[0]);
                 return cutAwayFirstWord(str);
             }
             return str;
