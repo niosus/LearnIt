@@ -31,7 +31,7 @@
     <string name="key_language_to">language_you_know</string>
     <string name="key_time_to_start">time_to_start</string>
     <string name="key_prefs_main">prefs_main</string>
-    <string name="version">0.9.54</string>
+    <string name="version">0.92.54</string>
 
     <string-array name="values_freq">
         <item>1</item>
