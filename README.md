@@ -1,5 +1,7 @@
 About
 --------
+![alt text](https://lh6.googleusercontent.com/Ienm-_GuSgxPLFCU_EfeLFS1bBXraXi-vyTpaiBAlCRI=w1431-h950-no "LearnIt")
+
 This is an Android application called LearnIt. 
 
 It is created to help learning foreign languages.
@@ -10,13 +12,14 @@ If you by any chance want to appreciate all the time spent for the development -
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W22SBEL95FT94"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="[paypal]" /></a>
 
-References
+References and Credits
 ----------
 This project uses some third party libraries that I would like to mention:
 
 - PagerSlidingTabStrip by @astuetz at https://github.com/astuetz/PagerSlidingTabStrip
 - Crouton library by @keyboardsurfer at https://github.com/keyboardsurfer/Crouton
 - CirculaProgressButton by @dmytrodanylyk at https://github.com/dmytrodanylyk/circular-progress-button
+- Big thanks go to Olena Myshanska, who did the design of LearnIt logo writing. Be sure to check out the [cool stuff] (https://www.behance.net/Olena_Myshanska) that she is doing.
 
 Licening
 ---------
