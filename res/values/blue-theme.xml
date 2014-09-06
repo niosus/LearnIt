@@ -41,14 +41,13 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_blueredtheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.BlueTheme</item>
         <item name="android:windowBackground">@android:color/white</item>
-        b
-
         <item name="android:dialogTheme">@style/Dialog.BlueTheme</item>
     </style>
 
 
     <style name="Dialog.BlueTheme" parent="android:Theme.Holo.Light.Dialog">
-        <item name="android:background">@color/highlight</item>
+        <item name="android:editTextStyle">@style/MyEditTextOnWhite</item>
+        <item name="android:imageButtonStyle">@style/MyImageButtonWhite</item>
     </style>
 
     <style name="Theme.BlueTheme.TextView" parent="android:Widget.TextView">

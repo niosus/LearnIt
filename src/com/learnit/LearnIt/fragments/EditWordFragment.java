@@ -15,40 +15,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.learnit.LearnIt.activities;
+package com.learnit.LearnIt.fragments;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
-import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class EditWord extends FragmentActivity {
+public class EditWordFragment extends DialogFragment {
     public static final String WORD_TAG = "word";
     public final String LOG_TAG = "my_logs";
     EditText edtWord;
     EditText edtTrans;
     String oldWord;
     String oldStrippedWord;
-    Utils utils;
 
     private ImageButton btnClearWord;
     private ImageButton btnClearTrans;
@@ -56,15 +62,9 @@ public class EditWord extends FragmentActivity {
     DBHelper dbHelper;
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_menu_cancel:
-                finishActivity();
                 return true;
             case R.id.edit_menu_done:
                 Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
@@ -75,20 +75,10 @@ public class EditWord extends FragmentActivity {
                     dbHelper.deleteWord(oldStrippedWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
 	                if (exitCode == DBHelper.EXIT_CODE_OK) {
-		                Crouton.makeText(this, getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
+		                Crouton.makeText(this.getActivity(), getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
 	                } else if (exitCode == DBHelper.EXIT_CODE_WORD_ALREADY_IN_DB) {
-                        Crouton.makeText(this, getString(R.string.crouton_word_already_present, edtWord.getText().toString()), Style.ALERT).show();
+                        Crouton.makeText(this.getActivity(), getString(R.string.crouton_word_already_present, edtWord.getText().toString()), Style.ALERT).show();
                     }
-                    // TODO: this code is shitty. Rewrite when have time.
-                    new CountDownTimer(2000, 2000) {
-
-                        public void onTick(long millisUntilFinished) {
-                        }
-
-                        public void onFinish() {
-                            finishActivity();
-                        }
-                    }.start();
                 }
                 return true;
             default:
@@ -96,43 +86,55 @@ public class EditWord extends FragmentActivity {
         }
     }
 
+    /** The system calls this only when creating the layout in a dialog. */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_menu, menu);
-        return true;
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // The only reason you might override this method when using onCreateView() is
+        // to modify any dialog characteristics. For example, the dialog includes a
+        // title by default, but your custom layout might not need it. So here you can
+        // remove the dialog title, but you must call the superclass to get the Dialog.
+//        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        return new AlertDialog.Builder(getActivity())
+                .setTitle("blah")
+                .setPositiveButton(R.string.dialog_button_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Log.d(LOG_TAG, "positive button clicked");
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.dialog_button_cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Log.d(LOG_TAG, "negative button clicked");
+                            }
+                        }
+                )
+                .create();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        removeActionBarLabelIfNeeded();
-        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
-        utils = new Utils();
-        oldWord = getIntent().getStringExtra(WORD_TAG);
-        oldStrippedWord = StringUtils.stripFromArticle(this, oldWord);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout to use as dialog or embedded fragment
+        Log.d(LOG_TAG, "inflating view");
+        View v = inflater.inflate(R.layout.edit_word, container, false);
+
+        edtWord = (EditText) v.findViewById(R.id.edtWord);
+        edtTrans = (EditText) v.findViewById(R.id.edtTrans);
+        edtWord.setText(oldWord);
+        oldStrippedWord = StringUtils.stripFromArticle(this.getActivity(), oldWord);
         String translation = dbHelper.getTranslation(oldStrippedWord);
         Log.d(LOG_TAG, "got word to edit = " + oldStrippedWord + ", trans = " + translation);
-
-        setContentView(R.layout.edit_word);
-
-        edtWord = (EditText) findViewById(R.id.edtWord);
-        edtTrans = (EditText) findViewById(R.id.edtTrans);
-        edtWord.setText(oldWord);
         edtTrans.setText(translation);
 
-        btnClearWord = (ImageButton) findViewById(R.id.btn_add_word_clear);
-        btnClearTrans = (ImageButton) findViewById(R.id.btn_add_trans_clear);
+        btnClearWord = (ImageButton) v.findViewById(R.id.btn_add_word_clear);
+        btnClearTrans = (ImageButton) v.findViewById(R.id.btn_add_trans_clear);
         MyBtnTouchListener myBtnTouchListener = new MyBtnTouchListener();
         btnClearTrans.setOnClickListener(myBtnTouchListener);
         btnClearWord.setOnClickListener(myBtnTouchListener);
-
-        Button btnOk = (Button) findViewById(R.id.btnOk);
-        Button btnCancel = (Button) findViewById(R.id.btnCancel);
-        if (btnOk!=null && btnCancel!=null)
-        {
-            btnOk.setOnClickListener(myBtnTouchListener);
-            btnCancel.setOnClickListener(myBtnTouchListener);
-        }
 
         edtWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,17 +174,23 @@ public class EditWord extends FragmentActivity {
                 }
             }
         });
+
+        return v;
     }
 
-    private void finishActivity() {
-        this.finish();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        removeActionBarLabelIfNeeded();
+        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+        oldWord = this.getArguments().getString(WORD_TAG);
     }
 
-    private void removeActionBarLabelIfNeeded() {
-        ActionBar actionBar = this.getActionBar();
-        if (actionBar == null) { return; }
-        actionBar.setTitle("");
-    }
+//    private void removeActionBarLabelIfNeeded() {
+//        ActionBar actionBar = this.getActionBar();
+//        if (actionBar == null) { return; }
+//        actionBar.setTitle("");
+//    }
 
     private class MyBtnTouchListener implements View.OnClickListener {
         public void onClick(View v) {
@@ -196,20 +204,15 @@ public class EditWord extends FragmentActivity {
                     v.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.btnCancel:
-                    finishActivity();
                     break;
                 case R.id.btnOk:
-
-                    Log.d(LOG_TAG, "button ok clicked");
                     Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
                     if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
                             || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
                         showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
                     } else {
                         dbHelper.deleteWord(oldStrippedWord);
-                        Log.d(LOG_TAG, "button ok clicked");
                         dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                        finishActivity();
                     }
                     break;
             }

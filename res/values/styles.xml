@@ -42,6 +42,7 @@
     </style>
 
     <style name="MyImageButton" parent="android:Widget.ImageButton">
+        <item name="android:contentDescription">clear</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
@@ -147,13 +148,5 @@
         <item name="android:paddingBottom">@dimen/small_shadow_size</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="BlackTheme.DialogWhenLarge" parent="android:Theme.Holo.DialogWhenLarge">
-        <item name="android:background">@android:color/black</item>
-    </style>
-
-    <style name="LightTheme" parent="android:Theme.Light">
-        <item name="android:background">@android:color/white</item>
     </style>
 </resources>
