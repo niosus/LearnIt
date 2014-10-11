@@ -16,14 +16,17 @@ References and Credits
 ----------
 This project uses some third party libraries that I would like to mention:
 
-- PagerSlidingTabStrip by @astuetz at https://github.com/astuetz/PagerSlidingTabStrip
-- Crouton library by @keyboardsurfer at https://github.com/keyboardsurfer/Crouton
-- CirculaProgressButton by @dmytrodanylyk at https://github.com/dmytrodanylyk/circular-progress-button
-- Big thanks go to Olena Myshanska, who did the design of LearnIt logo writing. Be sure to check out the [cool stuff] (https://www.behance.net/Olena_Myshanska) that she is doing.
+- PagerSlidingTabStrip at https://github.com/astuetz/PagerSlidingTabStrip
+- Crouton library at https://github.com/keyboardsurfer/Crouton
+- CircularProgressButton at https://github.com/dmytrodanylyk/circular-progress-button
+- StarDict parser at http://goo.gl/aGuKTk
+- Additionaly, big thanks go to Olena Myshanska, who did the design of LearnIt logo writing. Be sure to check out the [cool stuff] (https://www.behance.net/Olena_Myshanska) that she is doing.
 
 Licening
 ---------
-Most of the code is under the GPLv3 licence: 
+Third party software is licened under respective licences.
+
+Most of the code in this repository is under the GPLv3 licence: 
 
 ![logo][logo1]
 
