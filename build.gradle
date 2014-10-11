@@ -75,6 +75,7 @@ android {
         debug {
             debuggable true
             jniDebugBuild true
+            runProguard false
             signingConfig signingConfigs.debug
         }
     }

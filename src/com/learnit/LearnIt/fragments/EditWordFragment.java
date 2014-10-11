@@ -62,7 +62,7 @@ public class EditWordFragment extends DialogFragment {
                 Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
                 if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
                         || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
-                    showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+                    Crouton.makeText(this.getActivity(), getString(R.string.crouton_empty_input), Style.ALERT).show();
                 } else {
                     dbHelper.deleteWord(oldStrippedWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
@@ -209,11 +209,5 @@ public class EditWordFragment extends DialogFragment {
 //                    break;
             }
         }
-    }
-
-    private void showMessage(int exitCode) {
-        Log.e(LOG_TAG, "trying to show any window with exit code = " + exitCode);
-	    DialogFragment frag = new MyDialogFragment();
-	    frag.show(getFragmentManager(), String.valueOf(exitCode));
     }
 }

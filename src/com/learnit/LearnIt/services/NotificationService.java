@@ -38,18 +38,8 @@ public class NotificationService extends Service {
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
         mWakeLock.acquire();
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (!cm.getBackgroundDataSetting()) {
-            stopSelf();
-            return;
-        }
         NotificationBuilder.show(getApplicationContext());
 	    stopSelf();
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        handleIntent(intent);
     }
 
     @Override
