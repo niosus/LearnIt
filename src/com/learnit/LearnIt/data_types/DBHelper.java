@@ -99,29 +99,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String getCurrentDBName() {
-        return currentDBName;
-    }
-
     public boolean tableExists() {
-        if(_database == null || !_database.isOpen()) {
-            _database = getReadableDatabase();
-        }
-        if(!_database.isReadOnly()) {
-            _database.close();
-            _database = getReadableDatabase();
-        }
-        Cursor cursor =
-                _database.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"
-                        + currentDBName + "'", null);
-        if(cursor!=null) {
-            if(cursor.getCount()>0) {
-                cursor.close();
-                return true;
-            }
-            cursor.close();
-        }
-        return false;
+        _database = this.getReadableDatabase();
+        Cursor mCount= _database.rawQuery("select count(*) from " + currentDBName, null);
+        mCount.moveToFirst();
+        int count= mCount.getInt(0);
+        mCount.close();
+        _database.close();
+        return count > 0;
     }
 
     @Override
@@ -376,7 +361,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sd.mkdirs();
             Log.d(LOG_TAG, "searching file in " + sd.getPath());
             if (sd.canWrite()) {
-                String backupDBPath = "DB_Backup._database";
+                String backupDBPath = "DB_Backup.db";
                 File currentDB = mContext.getDatabasePath(currentDBName);
                 Log.d(LOG_TAG, "current _database path = " + currentDB.getPath());
                 File backupDB = new File(sd, backupDBPath);
@@ -407,7 +392,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             File sd = Environment.getExternalStorageDirectory();
             sd = new File(sd, "LearnIt");
-            String backupDBPath = "DB_Backup._database";
+            String backupDBPath = "DB_Backup.db";
             File dbfile = new File(sd, backupDBPath);
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
             Log.d(LOG_TAG, "Its open? " + db.isOpen());

@@ -73,7 +73,7 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 		SQLiteDatabase db = _dbHelper.getWritableDatabase();
         Log.d("my_logs", "real database name is: " + _dbHelper.getDatabaseName());
 		int numOfWords = dict.getTotalWords();
-		String sql = "INSERT INTO " + _dbHelper.getCurrentDBName()
+		String sql = "INSERT INTO " + _dbHelper.getDatabaseName()
                 + " (" + _dbHelper.DICT_OFFSET_COLUMN_NAME + ", "
                 + _dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", "
                 + _dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
