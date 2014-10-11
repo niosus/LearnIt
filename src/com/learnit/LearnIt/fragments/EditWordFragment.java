@@ -17,33 +17,25 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.utils.StringUtils;
-import com.learnit.LearnIt.utils.Utils;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -182,7 +174,7 @@ public class EditWordFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        removeActionBarLabelIfNeeded();
-        dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+        dbHelper = FactoryDbHelper.createDbHelper(this.getActivity(), DBHelper.DB_WORDS);
         oldWord = this.getArguments().getString(WORD_TAG);
     }
 
@@ -203,18 +195,18 @@ public class EditWordFragment extends DialogFragment {
                     edtWord.setText("");
                     v.setVisibility(View.INVISIBLE);
                     break;
-                case R.id.btnCancel:
-                    break;
-                case R.id.btnOk:
-                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
-                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
-                    } else {
-                        dbHelper.deleteWord(oldStrippedWord);
-                        dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                    }
-                    break;
+//                case R.id.btnCancel:
+//                    break;
+//                case R.id.btnOk:
+//                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+//                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
+//                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+//                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+//                    } else {
+//                        dbHelper.deleteWord(oldStrippedWord);
+//                        dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+//                    }
+//                    break;
             }
         }
     }

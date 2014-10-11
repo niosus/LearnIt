@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
@@ -35,7 +36,6 @@ import android.widget.Toast;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
-import com.learnit.LearnIt.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,7 +51,7 @@ import java.util.Map;
 public class DBHelper extends SQLiteOpenHelper {
     final static int DB_VERSION = 1;
     public static final String LOG_TAG = "my_logs";
-    public static String DB_WORDS = "myDB"; //gets changed when the languages are updated
+    public static String DB_WORDS = "myDB";
     final public static String DB_DICT_FROM = "dictFROM";
     final public String WORD_COLUMN_NAME = "word";
     final public String ID_COLUMN_NAME = "id";
@@ -63,8 +63,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     final public String DICT_OFFSET_COLUMN_NAME = "start_offset";
     final public String DICT_CHUNK_SIZE_COLUMN_NAME = "end_offset";
-
-    public String currentDBName;
 
     public static final int EXIT_CODE_EMPTY_INPUT = -10;
     public static final int EXIT_CODE_WORD_ALREADY_IN_DB = -11;
@@ -80,20 +78,50 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int WEIGHT_THREE_WRONG = 10000;
 
     public static final int WEIGHT_CORRECT = 10;
-//    public static final int WEIGHT_NO_MORE_LEARNING=0;
-//    public static final int WEIGHT_CORRECT_INPUT=1;
 
 
     long maxId = 0;
 
     private Context mContext;
+    public String currentDBName;
 
-    SQLiteDatabase db;
+    SQLiteDatabase _database;
 
-    public DBHelper(Context context, String dbName) {
+    // This method should never be called separately.
+    // It should only be constructed from factory
+    public DBHelper(Context context, String dbName, boolean localized) {
         super(context, dbName, null, DB_VERSION);
         currentDBName = dbName;
         mContext = context;
+        if (!localized) {
+            Log.e(LOG_TAG, "DBHelper constructor database name not localized. "
+                    + "Use Factory initialization!");
+        }
+    }
+
+    public String getCurrentDBName() {
+        return currentDBName;
+    }
+
+    public boolean tableExists() {
+        if(_database == null || !_database.isOpen()) {
+            _database = getReadableDatabase();
+        }
+        if(!_database.isReadOnly()) {
+            _database.close();
+            _database = getReadableDatabase();
+        }
+        Cursor cursor =
+                _database.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"
+                        + currentDBName + "'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
     }
 
     @Override
@@ -123,9 +151,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean deleteWord(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
         Log.d(LOG_TAG, "delete word = " + word);
-        db = this.getWritableDatabase();
+        _database = this.getWritableDatabase();
         int id = this.getId(word);
-        db.delete(currentDBName, WORD_COLUMN_NAME + "=?", new String[] { word });
+        _database.delete(currentDBName, WORD_COLUMN_NAME + "=?", new String[]{word});
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(id + NotificationBuilder.idModificator);
         return true;
@@ -198,8 +226,8 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             long key = -1;
             boolean updatedFlag = false;
-            db = this.getWritableDatabase();
-            Cursor c = db.query(currentDBName,
+            _database = this.getWritableDatabase();
+            Cursor c = _database.query(currentDBName,
                     new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                             WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME},
                     WORD_COLUMN_NAME + " like ?",
@@ -228,7 +256,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     translation = tempTranslation;
                     if (!anyNewValue) {
                         c.close();
-                        db.close();
+                        _database.close();
                         return EXIT_CODE_WORD_ALREADY_IN_DB;
                     }
                     key = c.getLong(idColIndex);
@@ -241,20 +269,20 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(TRANSLATION_COLUMN_NAME, translation);
             cv.put(WEIGHT_COLUMN_NAME, WEIGHT_NEW);
             if (!updatedFlag) {
-                long rowID = db.insert(currentDBName, null, cv);
+                long rowID = _database.insert(currentDBName, null, cv);
                 Log.d(LOG_TAG, "row inserted, ID = " + rowID + " rows total = "
                         + maxId);
                 c.close();
-                db.close();
+                _database.close();
                 return EXIT_CODE_OK;
             } else {
-                long rowID = db.update(currentDBName, cv,
+                long rowID = _database.update(currentDBName, cv,
                         String.format("%s = ?", ID_COLUMN_NAME),
                         new String[]{String.valueOf(key)});
                 Log.d(LOG_TAG, "row updated, ID = " + rowID + " rows total = "
                         + maxId);
                 c.close();
-                db.close();
+                _database.close();
                 return EXIT_CODE_WORD_UPDATED;
             }
         } catch (NullPointerException e) {
@@ -271,9 +299,9 @@ public class DBHelper extends SQLiteOpenHelper {
             valuesToUpdate.put(WEIGHT_COLUMN_NAME, newWeight);
             String whereClause = WORD_COLUMN_NAME + "=?";
             String[] whereArgs = new String[] { word };
-            db = this.getWritableDatabase();
-            db.update(currentDBName, valuesToUpdate, whereClause, whereArgs);
-            db.close();
+            _database = this.getWritableDatabase();
+            _database.update(currentDBName, valuesToUpdate, whereClause, whereArgs);
+            _database.close();
             Log.d(LOG_TAG, "word " + word + " updated weight to " + newWeight);
             return true;
         } catch (Exception e) {
@@ -283,7 +311,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<ArticleWordId> getRandomWords(int numOfWords, String omitWord, int noun) {
-        db = this.getReadableDatabase();
+        _database = this.getReadableDatabase();
         omitWord = StringUtils.prepareForDatabaseQuery(omitWord);
         ArrayList<ArticleWordId> structArray = new ArrayList<ArticleWordId>();
         Log.d(LOG_TAG, "trying to get " + numOfWords + " random words != '" + omitWord + "' and isnoun = " + noun + " from " + currentDBName);
@@ -315,7 +343,7 @@ public class DBHelper extends SQLiteOpenHelper {
             default:
                 chosenQuery = queryMixed;
         }
-        c = db.query(currentDBName, columns, chosenQuery, queryParameters, null, null, orderBy, limit);
+        c = _database.query(currentDBName, columns, chosenQuery, queryParameters, null, null, orderBy, limit);
         String word, translation;
         String article;
         int id;
@@ -337,15 +365,8 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return structArray;
-    }
-
-    private String capitalize(String str) {
-        if (str.length() > 0)
-            return str.substring(0, 1).toUpperCase() + str.substring(1);
-        else
-            return null;
     }
 
     public boolean exportDB() {
@@ -355,9 +376,9 @@ public class DBHelper extends SQLiteOpenHelper {
             sd.mkdirs();
             Log.d(LOG_TAG, "searching file in " + sd.getPath());
             if (sd.canWrite()) {
-                String backupDBPath = "DB_Backup.db";
+                String backupDBPath = "DB_Backup._database";
                 File currentDB = mContext.getDatabasePath(currentDBName);
-                Log.d(LOG_TAG, "current db path = " + currentDB.getPath());
+                Log.d(LOG_TAG, "current _database path = " + currentDB.getPath());
                 File backupDB = new File(sd, backupDBPath);
 
                 if (currentDB.exists()) {
@@ -367,10 +388,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     src.close();
                     dst.close();
                 } else {
-                    Log.d(LOG_TAG, "db not exist");
+                    Log.d(LOG_TAG, "_database not exist");
                 }
 
-                Log.d(LOG_TAG, "db exported to " + backupDB.getPath());
+                Log.d(LOG_TAG, "_database exported to " + backupDB.getPath());
                 Toast toast = Toast.makeText(mContext, String.format(mContext.getString(R.string.toast_db_exported), backupDB.getPath()), Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
@@ -386,7 +407,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             File sd = Environment.getExternalStorageDirectory();
             sd = new File(sd, "LearnIt");
-            String backupDBPath = "DB_Backup.db";
+            String backupDBPath = "DB_Backup._database";
             File dbfile = new File(sd, backupDBPath);
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
             Log.d(LOG_TAG, "Its open? " + db.isOpen());
@@ -442,11 +463,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public String getTranslation(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
-        db = this.getReadableDatabase();
-        Cursor c = db.query(currentDBName,
+        _database = this.getReadableDatabase();
+        Cursor c = _database.query(currentDBName,
                 new String[]{TRANSLATION_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ? ",
                 new String[] { word }, null, null,
@@ -461,14 +481,14 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return null;
     }
 
     public int getId(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
-        db = this.getReadableDatabase();
-        Cursor c = db.query(currentDBName,
+        _database = this.getReadableDatabase();
+        Cursor c = _database.query(currentDBName,
                 new String[]{ID_COLUMN_NAME, WORD_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ? ",
                 new String[] { word }, null, null,
@@ -483,16 +503,16 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return 0;
     }
 
     public List<Map<String, String>> getWords(String word) {
 	    if (word==null) word = "";
         word = StringUtils.prepareForDatabaseQuery(word);
-        db = this.getReadableDatabase();
+        _database = this.getReadableDatabase();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-        Cursor c = db.query(currentDBName,
+        Cursor c = _database.query(currentDBName,
                 new String[]{ID_COLUMN_NAME, ARTICLE_COLUMN_NAME,
                         WORD_COLUMN_NAME, TRANSLATION_COLUMN_NAME,
                         PREFIX_COLUMN_NAME, WEIGHT_COLUMN_NAME},
@@ -510,7 +530,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 tempWord = c.getString(wordColIndex);
                 tempTrans = c.getString(translationColIndex);
                 if (null != (c.getString(articleColIndex))) {
-                    tempWord = capitalize(tempWord);
+                    tempWord = StringUtils.capitalize(tempWord);
                     tempWord = String.format("%s %s", c.getString(articleColIndex), tempWord);
                 }
                 if (null != (c.getString(prefixColIndex))) {
@@ -524,20 +544,17 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return data;
     }
 
     public List<String> getHelpWords(String word) {
-        if (!currentDBName.equals(DB_DICT_FROM)) {
-            return null;
-        }
 	    Log.d(LOG_TAG, "getHelpWords word is " + word);
 	    if (word == null) return null;
         word = StringUtils.prepareForDatabaseQuery(word);
-        db = this.getReadableDatabase();
+        _database = this.getReadableDatabase();
         List<String> data = new ArrayList<String>();
-        Cursor c = db.query(currentDBName,
+        Cursor c = _database.query(currentDBName,
                 new String[]{WORD_COLUMN_NAME, DICT_OFFSET_COLUMN_NAME,
                         DICT_CHUNK_SIZE_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ?", new String[] { word + "%" }, null, null,
@@ -552,17 +569,14 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return data;
     }
 
     public Pair<Long, Long> getDictOffsetAndSize(String word) {
-        if (!currentDBName.equals(DB_DICT_FROM)) {
-            return null;
-        }
         word = StringUtils.prepareForDatabaseQuery(word);
-        db = this.getReadableDatabase();
-        Cursor c = db.query(currentDBName,
+        _database = this.getReadableDatabase();
+        Cursor c = _database.query(currentDBName,
                 new String[]{WORD_COLUMN_NAME, DICT_OFFSET_COLUMN_NAME,
                         DICT_CHUNK_SIZE_COLUMN_NAME},
                 WORD_COLUMN_NAME + " like ?", new String[] { word }, null, null,
@@ -580,11 +594,26 @@ public class DBHelper extends SQLiteOpenHelper {
         } else
             Log.d(LOG_TAG, "0 rows");
         c.close();
-        db.close();
+        _database.close();
         return pair;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
+
+    public void deleteDatabase() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (db == null) {
+                return;
+            }
+            db.delete(currentDBName, null, null);
+            db.close();
+        } catch (SQLiteException e) {
+            // cannot delete. Usually means the database is not there yet.
+            // do nothing.
+            Log.e(LOG_TAG, "database cannot be deleted" + e.getMessage());
+        }
     }
 }

@@ -18,7 +18,6 @@
 package com.learnit.LearnIt.controllers;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Editable;

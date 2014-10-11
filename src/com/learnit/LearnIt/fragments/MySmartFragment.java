@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.learnit.LearnIt.interfaces.IAttachWorkerToFragment;
-import com.learnit.LearnIt.utils.Utils;
 
 public abstract class MySmartFragment
         extends Fragment
@@ -37,7 +36,6 @@ public abstract class MySmartFragment
     @Override
     public void onResume() {
         super.onResume();
-        Utils.updateCurrentDBName(this.getActivity());
     }
 
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,

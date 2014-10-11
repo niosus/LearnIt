@@ -26,12 +26,8 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -43,16 +39,15 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.AppSectionsPagerAdapter;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.fragments.AddWordFragment;
 import com.learnit.LearnIt.fragments.DictFragment;
 import com.learnit.LearnIt.fragments.LearnCasualFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
-import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
-import java.io.File;
 import java.util.Arrays;
 
 public class MainActivity extends Activity implements
@@ -275,15 +270,15 @@ public class MainActivity extends Activity implements
                 return true;
             case R.id.menu_export:
                 Log.d(LOG_TAG, "export DB");
-                dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+                dbHelper = FactoryDbHelper.createDbHelper(this, DBHelper.DB_WORDS);
                 dbHelper.exportDB();
+                dbHelper.close();
                 return true;
             case R.id.menu_import:
                 Log.d(LOG_TAG, "import DB");
-                dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+                dbHelper = FactoryDbHelper.createDbHelper(this, DBHelper.DB_WORDS);
                 dbHelper.importDB();
                 dbHelper.close();
-                Utils.getCurrentLanguages(this);
                 return true;
             case R.id.menu_info:
                 Log.d(LOG_TAG, "show about");

@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerLearn;
 import com.learnit.LearnIt.utils.Constants;
@@ -134,7 +135,7 @@ public abstract class LearnFragment
 	public void updateWordWeight(int numOfWrongAnswers) {
         Log.d(LOG_TAG, "word to be updated " + queryWord);
 		if (queryWord == null) return;
-	    DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+	    DBHelper dbHelper = FactoryDbHelper.createDbHelper(this.getActivity(), DBHelper.DB_WORDS);
         switch (numOfWrongAnswers) {
             case 0:
                 dbHelper.updateWordWeight(queryWord.toLowerCase(), DBHelper.WEIGHT_CORRECT);

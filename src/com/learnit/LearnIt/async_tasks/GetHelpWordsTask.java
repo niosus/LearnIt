@@ -21,8 +21,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerHelpWords;
+import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.StringUtils;
 
 import java.util.List;
@@ -52,10 +54,16 @@ public class GetHelpWordsTask extends MySmartAsyncTask<List<String>> {
 		super.onPostExecute(words);
 		if (words == null)
 		{
+            Log.e(Constants.LOG_TAG,
+                    this.getClass().getSimpleName() + ".onPostExecute, no words fetched");
 			_taskActionCallback.onFail();
 			return;
 		}
 		if (_taskActionCallback instanceof IWorkerEventListenerHelpWords) {
+            Log.d(Constants.LOG_TAG,
+                    this.getClass().getSimpleName()
+                            + ".onPostExecute, success. #words = "
+                            + words.size());
 			((IWorkerEventListenerHelpWords) _taskActionCallback).onSuccessWords(words);
 		} else {
 			throw new ClassCastException(
@@ -67,9 +75,10 @@ public class GetHelpWordsTask extends MySmartAsyncTask<List<String>> {
 
 	@Override
 	protected List<String> doInBackground(Object... unused) {
-		DBHelper dbHelperDict = new DBHelper(_context, DBHelper.DB_DICT_FROM);
+		DBHelper dbHelperDict = FactoryDbHelper.createDbHelper(_context, DBHelper.DB_DICT_FROM);
 		String newWord = StringUtils.stripFromArticle(_context, _word);
-		Log.d("my_logs", "DB NAME is " + dbHelperDict.currentDBName);
+		Log.d(Constants.LOG_TAG, this.getClass().getSimpleName()
+                + " DB NAME is " + dbHelperDict.currentDBName);
 		return dbHelperDict.getHelpWords(newWord);
 	}
 }

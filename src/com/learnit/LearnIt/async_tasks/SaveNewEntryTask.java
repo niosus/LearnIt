@@ -20,6 +20,7 @@ package com.learnit.LearnIt.async_tasks;
 import android.content.Context;
 
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerNewEntry;
 
@@ -65,7 +66,7 @@ public class SaveNewEntryTask extends MySmartAsyncTask<Integer> {
 
 	@Override
 	protected Integer doInBackground(Object... unused) {
-		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_WORDS);
+		DBHelper dbHelper = FactoryDbHelper.createDbHelper(_context, DBHelper.DB_WORDS);
 		int exitCode = dbHelper.writeToDB(_word, _translation);
 		return exitCode;
 	}

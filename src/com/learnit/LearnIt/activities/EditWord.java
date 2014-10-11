@@ -28,12 +28,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.fragments.MyDialogFragment;
 import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
@@ -106,7 +106,7 @@ public class EditWord extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         removeActionBarLabelIfNeeded();
-        dbHelper = new DBHelper(this, DBHelper.DB_WORDS);
+        dbHelper = FactoryDbHelper.createDbHelper(this, DBHelper.DB_WORDS);
         utils = new Utils();
         oldWord = getIntent().getStringExtra(WORD_TAG);
         oldStrippedWord = StringUtils.stripFromArticle(this, oldWord);
@@ -125,14 +125,6 @@ public class EditWord extends FragmentActivity {
         MyBtnTouchListener myBtnTouchListener = new MyBtnTouchListener();
         btnClearTrans.setOnClickListener(myBtnTouchListener);
         btnClearWord.setOnClickListener(myBtnTouchListener);
-
-        Button btnOk = (Button) findViewById(R.id.btnOk);
-        Button btnCancel = (Button) findViewById(R.id.btnCancel);
-        if (btnOk!=null && btnCancel!=null)
-        {
-            btnOk.setOnClickListener(myBtnTouchListener);
-            btnCancel.setOnClickListener(myBtnTouchListener);
-        }
 
         edtWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -195,23 +187,23 @@ public class EditWord extends FragmentActivity {
                     edtWord.setText("");
                     v.setVisibility(View.INVISIBLE);
                     break;
-                case R.id.btnCancel:
-                    finishActivity();
-                    break;
-                case R.id.btnOk:
-
-                    Log.d(LOG_TAG, "button ok clicked");
-                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
-                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
-                    } else {
-                        dbHelper.deleteWord(oldStrippedWord);
-                        Log.d(LOG_TAG, "button ok clicked");
-                        dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-                        finishActivity();
-                    }
-                    break;
+//                case R.id.btnCancel:
+//                    finishActivity();
+//                    break;
+//                case R.id.btnOk:
+//
+//                    Log.d(LOG_TAG, "button ok clicked");
+//                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
+//                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
+//                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+//                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
+//                    } else {
+//                        dbHelper.deleteWord(oldStrippedWord);
+//                        Log.d(LOG_TAG, "button ok clicked");
+//                        dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
+//                        finishActivity();
+//                    }
+//                    break;
             }
         }
     }

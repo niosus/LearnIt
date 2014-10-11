@@ -20,6 +20,7 @@ package com.learnit.LearnIt.async_tasks;
 import android.content.Context;
 
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerMyWords;
 import com.learnit.LearnIt.utils.StringUtils;
@@ -68,7 +69,7 @@ public class GetMyWordsTask extends MySmartAsyncTask<List<Map<String,String>>>{
 
 	@Override
 	protected List<Map<String,String>> doInBackground(Object... unused) {
-		DBHelper dbHelperDict = new DBHelper(_context, DBHelper.DB_WORDS);
+		DBHelper dbHelperDict = FactoryDbHelper.createDbHelper(_context, DBHelper.DB_WORDS);
 		String newWord = StringUtils.stripFromArticle(_context, _word);
 		return dbHelperDict.getWords(newWord);
 	}

@@ -56,7 +56,7 @@ public class NotificationBuilder {
 
 
     private static ArrayList<ArticleWordId> getRandWordsFromDB(int waytoLearn, int numOfNotif, Context context) {
-        DBHelper dbHelper = new DBHelper(context, DBHelper.DB_WORDS);
+        DBHelper dbHelper = FactoryDbHelper.createDbHelper(context, DBHelper.DB_WORDS);
 	    int isNoun;
 	    switch (waytoLearn)
 	    {

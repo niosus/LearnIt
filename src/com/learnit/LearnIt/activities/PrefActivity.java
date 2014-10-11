@@ -19,28 +19,10 @@
 package com.learnit.LearnIt.activities;
 
 import android.app.ActionBar;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.fragments.PreferencesUiFragment;
-import com.learnit.LearnIt.services.NotificationService;
-import com.learnit.LearnIt.utils.Utils;
-import com.learnit.LearnIt.views.TimePreference;
 
 public class PrefActivity extends PreferenceActivity {
     @Override

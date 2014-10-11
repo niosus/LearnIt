@@ -23,12 +23,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dd.CircularProgressButton;
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.utils.MyAnimationHelper;
 
 public class LoadStarDictUiFragment extends Fragment {
 	public final static String TAG = "ui_load_dict";

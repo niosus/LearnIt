@@ -23,6 +23,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerTranslations;
 import com.learnit.LearnIt.stardict.DictFile;
@@ -89,7 +90,7 @@ public class GetTranslationsTask extends MySmartAsyncTask<Pair<String, List<Stri
 		DictFile dictFile = new DictFile(sd.getPath());
 		if (null != _word) {
 			String newWord = StringUtils.stripFromArticle(_context, _word);
-			DBHelper dbHelperDict = new DBHelper(_context, DBHelper.DB_DICT_FROM);
+			DBHelper dbHelperDict = FactoryDbHelper.createDbHelper(_context, DBHelper.DB_DICT_FROM);
 			Pair<Long, Long> pair = dbHelperDict.getDictOffsetAndSize(newWord);
 			if (pair == null)
 				return null;

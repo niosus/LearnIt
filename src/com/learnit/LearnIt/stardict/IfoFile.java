@@ -22,7 +22,11 @@ package com.learnit.LearnIt.stardict;
 
 import android.util.Log;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 /**

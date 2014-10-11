@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerRandomWords;
 
@@ -71,7 +72,7 @@ public class GetRandomWordsTask extends MySmartAsyncTask<ArrayList<ArticleWordId
 
 	@Override
 	protected ArrayList<ArticleWordId> doInBackground(Object... unused) {
-		DBHelper dbHelperDict = new DBHelper(_context, DBHelper.DB_WORDS);
+		DBHelper dbHelperDict = FactoryDbHelper.createDbHelper(_context, DBHelper.DB_WORDS);
 		return dbHelperDict.getRandomWords(_numOfWords, _omitWord, _nounsOnlyIndicator);
 	}
 }

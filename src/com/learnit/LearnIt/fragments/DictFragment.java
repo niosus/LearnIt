@@ -18,11 +18,8 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +33,7 @@ import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.EditWord;
 import com.learnit.LearnIt.controllers.DictController;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IDictFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerDict;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
@@ -108,7 +106,7 @@ public class DictFragment extends MySmartFragment
 
 	@Override
 	public void deleteWord(String word) {
-		DBHelper dbHelper = new DBHelper(this.getActivity(), DBHelper.DB_WORDS);
+		DBHelper dbHelper = FactoryDbHelper.createDbHelper(this.getActivity(), DBHelper.DB_WORDS);
 		dbHelper.deleteWord(StringUtils.stripFromArticle(this.getActivity(), word));
 		Crouton crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_deleted, word), Style.CONFIRM);
 		crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());

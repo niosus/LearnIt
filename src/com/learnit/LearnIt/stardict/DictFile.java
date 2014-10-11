@@ -19,7 +19,11 @@
  */
 package com.learnit.LearnIt.stardict;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  * @author kien This class is used to read .dict file.

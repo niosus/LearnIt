@@ -27,6 +27,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.IWorkerEventListener;
 import com.learnit.LearnIt.interfaces.IWorkerEventListenerGetDict;
 import com.learnit.LearnIt.stardict.StarDict;
@@ -37,16 +38,18 @@ import java.io.File;
 
 public class GetDictTask extends MySmartAsyncTask<String> {
 	private String _langFrom, _langTo;
+    DBHelper _dbHelper;
 
 	@Override
 	public void updateContextAndCallback(Context context,
 	                                     IWorkerEventListener taskActionCallback)
 	{
 		super.updateContextAndCallback(context, taskActionCallback);
+        _dbHelper = FactoryDbHelper.createDbHelper(context, DBHelper.DB_DICT_FROM);
 		Pair<String, String> langPair = Utils.getCurrentLanguages(context);
 		if (langPair == null)
 		{
-			Log.e(Constants.LOG_TAG, "NULL!!!!!!!!!!!!!!!!");
+			Log.e(Constants.LOG_TAG, "Languages are not defined");
 			return;
 		}
 		_langFrom = langPair.first;
@@ -67,10 +70,13 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 
 	private void updateDatabaseFromDict(StarDict dict)
 	{
-		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        Log.d("my_logs", "real database name is: " + _dbHelper.getDatabaseName());
 		int numOfWords = dict.getTotalWords();
-		String sql = "INSERT INTO " + DBHelper.DB_DICT_FROM + " (" + dbHelper.DICT_OFFSET_COLUMN_NAME + ", " + dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", " + dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
+		String sql = "INSERT INTO " + _dbHelper.getCurrentDBName()
+                + " (" + _dbHelper.DICT_OFFSET_COLUMN_NAME + ", "
+                + _dbHelper.DICT_CHUNK_SIZE_COLUMN_NAME + ", "
+                + _dbHelper.WORD_COLUMN_NAME + ")  VALUES (?, ?, ?)";
 		SQLiteStatement stmt = db.compileStatement(sql);
 		db.beginTransaction();
 		for (int i = 0; i < numOfWords; ++i) {
@@ -98,23 +104,11 @@ public class GetDictTask extends MySmartAsyncTask<String> {
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.delete(DBHelper.DB_DICT_FROM, null, null);
-        db.close();
-	}
-
-	@Override
 	protected void onCancelled() {
 		super.onCancelled();
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_context);
 		sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
-		DBHelper dbHelper = new DBHelper(_context, DBHelper.DB_DICT_FROM);
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.delete(DBHelper.DB_DICT_FROM, null, null);
-        db.close();
+        _dbHelper.deleteDatabase();
 		Log.d("my_logs", "cancelled getting the dictionary :(");
 		_taskActionCallback.onFail();
 	}

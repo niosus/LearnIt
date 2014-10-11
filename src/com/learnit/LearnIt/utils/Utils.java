@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -36,6 +35,7 @@ import android.widget.Toast;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.data_types.DBHelper;
+import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.fragments.LearnFragment;
 import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
 import com.learnit.LearnIt.services.NotificationService;
@@ -61,21 +61,9 @@ public class Utils {
         return (TaskSchedulerFragment) taskScheduler;
     }
 
-    public static void updateCurrentDBName(Context context) {
-        String currentLanguage;
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
-        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to), "NONE");
-        Resources res = context.getResources();
-        String[] languages = res.getStringArray(R.array.values_languages_from);
-        String allLanguages = Arrays.toString(languages);
-        if (allLanguages.contains(selectedLanguageTo)) {
-            currentLanguage = selectedLanguageTo;
-        } else {
-            currentLanguage = Locale.getDefault().getLanguage();
-        }
-        DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
-        Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
+    public static String localizeDBName(Context context, String name) {
+        Pair<String, String> langs = Utils.getCurrentLanguages(context);
+        return name + langs.first + langs.second;
     }
 
 	public static int getIconForWordNumber(int wordNum)
@@ -133,8 +121,6 @@ public class Utils {
         } else {
             currentLanguage = Locale.getDefault().getLanguage();
         }
-        DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
-        Log.d(LOG_TAG, "current db name is " + DBHelper.DB_WORDS);
         return new Pair<>(selectedLanguageFrom, currentLanguage);
     }
 
@@ -163,10 +149,7 @@ public class Utils {
 	    Log.d(LOG_TAG, "SET TIME IS " + timeInMs);
         String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
         long frequency = Utils.getFreqFromId(frequency_id);
-	    while (timeInMs<System.currentTimeMillis())
-	    {
-		    timeInMs+=frequency;
-	    }
+	    while (timeInMs<System.currentTimeMillis()) { timeInMs+=frequency; }
         AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         Intent i = new Intent(context, NotificationService.class);
         PendingIntent pi = PendingIntent.getService(context.getApplicationContext(), 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -192,14 +175,12 @@ public class Utils {
         sd = new File(sd, currentLanguages.first + "-" + currentLanguages.second);
         sd = new File(sd, "dict.ifo");
         if (!sd.exists()) {
-            // this means there is no needed file present, so we clear the existing database
-            DBHelper dbHelper = new DBHelper(context, DBHelper.DB_DICT_FROM);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            // and set the state of this database to null
+            // set the state of this database to null
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             sp.edit().putString(Constants.CURRENT_HELP_DICT_TAG, "null").commit();
-            db.delete(DBHelper.DB_DICT_FROM, null, null);
-            db.close();
+            // there is no needed file present, so we clear the existing database
+            DBHelper dbHelper = FactoryDbHelper.createDbHelper(context, DBHelper.DB_DICT_FROM);
+            dbHelper.deleteDatabase();
             return false;
         }
         return true;
@@ -209,6 +190,8 @@ public class Utils {
         Pair<String,String> currentLanguages = Utils.getCurrentLanguages(context);
         boolean dictPresent = dictIsOnDisk(context, currentLanguages);
         boolean languagesChanged = languagesHaveChanged(context, currentLanguages);
+        DBHelper helper = FactoryDbHelper.createDbHelper(context, DBHelper.DB_DICT_FROM);
+        if (helper.tableExists()) { return false; }
         return (dictPresent && languagesChanged);
     }
 
