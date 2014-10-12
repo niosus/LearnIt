@@ -17,6 +17,18 @@
   -->
 
 <resources>
+    <string name="intro_button">Далее</string>
+    <string name="intro_button_finish">Закрыть</string>
+    <string name="intro_choose_langs">Выберите языки!</string>
+    <string name="intro_lang_know">Вы знаете:</string>
+    <string name="intro_lang_learn">Вы изучаете:</string>
+    <string name="intro_nearly_done">Nearly done</string>
+    <string name="intro_what_next">Что дальше?</string>
+    <string name="intro_enjoy">Наслаждайтесь!</string>
+    <string name="intro_check_settings">Загляните в настройки!</string>
+    <string name="intro_enable_notifications">Включите уведомления!</string>
+    <string name="intro_add_words">Добавьте новых слов!</string>
+
     <string name="articles"></string>
 
     <string name="please_wait">Пожалуйста, подождите…</string>

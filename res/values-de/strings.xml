@@ -17,6 +17,18 @@
   -->
 
 <resources>
+    <string name="intro_button">Weiter</string>
+    <string name="intro_button_finish">Schließen</string>
+    <string name="intro_choose_langs">Wählen Sie die Sprachen!</string>
+    <string name="intro_lang_know">Sie kennen:</string>
+    <string name="intro_lang_learn">Sie lernen:</string>
+    <string name="intro_nearly_done">Fast am Ende!</string>
+    <string name="intro_what_next">Was sonst?</string>
+    <string name="intro_enjoy">Learn it!</string>
+    <string name="intro_check_settings">Sehen Sie Ihnen Einstellungen ein!</string>
+    <string name="intro_enable_notifications">Machen Sie Notifikationen an!</string>
+    <string name="intro_add_words">Geben Sie ein Paar Neue Wörter ein!</string>
+
     <string name="articles">der die das</string>
 
     <string name="please_wait">Bitte warten…</string>

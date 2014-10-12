@@ -25,7 +25,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
@@ -37,13 +37,13 @@ repositories {
 
 dependencies {
     compile project(':TabStrip')
-    compile 'com.android.support:support-v4:20.0.0'
-    compile 'com.android.support:support-v13:20.0.0'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v13:20.0.0'
     compile 'net.yscs.android:square_progressbar:1.3.0'
-    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.0'
+    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
 }
 
 android {
@@ -80,7 +80,7 @@ android {
         }
     }
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 19
     }
 
@@ -89,7 +89,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-    if(project.hasProperty("learnit.signing")
+    if (project.hasProperty("learnit.signing")
             && new File(project.property("learnit.signing") + ".gradle").exists()) {
         apply from: project.property("learnit.signing") + ".gradle";
     }

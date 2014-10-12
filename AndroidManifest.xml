@@ -14,73 +14,83 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.learnit.LearnIt"
-          android:versionCode="242"
-          android:versionName="@string/version">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    package="com.learnit.LearnIt"
+    android:versionCode="318"
+    android:versionName="@string/version" >
 
-    <application xmlns:tools="http://schemas.android.com/tools"
-            tools:replace="android:theme,android:label"
-            android:allowBackup="true"
-            android:hardwareAccelerated="true"
-            android:icon="@drawable/ic_launcher"
-            android:theme="@style/Theme.BlueTheme"
-            android:label="LearnIt"
-            android:logo="@drawable/logo_blue">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-        <receiver android:name=".services.AutoStart">
+    <application
+        xmlns:tools="http://schemas.android.com/tools"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="LearnIt"
+        android:logo="@drawable/logo_blue"
+        android:theme="@style/Theme.BlueTheme"
+        tools:replace="android:theme,android:label" >
+        <receiver android:name=".services.AutoStart" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <service android:enabled="true" android:name=".services.NotificationService"/>
+        <service
+            android:name=".services.NotificationService"
+            android:enabled="true" />
 
         <activity
-                android:name=".activities.MainActivity"
-                android:launchMode="standard"
-                android:screenOrientation="sensor">
+            android:name=".activities.MainActivity"
+            android:launchMode="standard"
+            android:screenOrientation="sensor" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.HomeworkActivity"
-                android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                android:logo="@drawable/logo_blue">
+            android:name=".activities.HomeworkActivity"
+            android:logo="@drawable/logo_blue"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
         <activity
-                android:name=".activities.PrefActivity"
-                android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                android:logo="@drawable/logo_blue">
+            android:name=".activities.PrefActivity"
+            android:logo="@drawable/logo_blue"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
-        <activity android:name=".activities.WelcomeActivity"
-                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:logo="@drawable/logo_blue"
-                  android:screenOrientation="sensor">
+        <activity
+            android:name=".activities.WelcomeActivity"
+            android:logo="@drawable/logo_blue"
+            android:screenOrientation="sensor"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
-        <activity android:name=".activities.InfoActivity"
-                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:logo="@drawable/logo_blue"
-                  android:screenOrientation="sensor">
+        <activity
+            android:name=".activities.InfoActivity"
+            android:logo="@drawable/logo_blue"
+            android:screenOrientation="sensor"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
-        <activity android:name=".activities.EditWord"
-                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:logo="@drawable/logo_blue"
-                  android:screenOrientation="sensor">
+        <activity
+            android:name=".activities.EditWord"
+            android:logo="@drawable/logo_blue"
+            android:screenOrientation="sensor"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
-        <activity android:name=".activities.LoadStarDictActivity"
-                  android:theme="@style/Theme.BlueTheme.DialogWhenLarge"
-                  android:logo="@drawable/logo_blue"
-                  android:screenOrientation="sensor">
+        <activity
+            android:name=".activities.LoadStarDictActivity"
+            android:logo="@drawable/logo_blue"
+            android:screenOrientation="sensor"
+            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
+        </activity>
+        <activity
+            android:name=".activities.IntroActivity"
+            android:label="@string/title_activity_intro" >
         </activity>
     </application>
 

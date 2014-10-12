@@ -26,8 +26,10 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
@@ -63,6 +65,8 @@ public class MainActivity extends Activity implements
     public static final String LAYOUT_XLARGE = "xlarge";
     public static final String LAYOUT_LARGE_LAND = "large_landscape";
 
+    final static String YES = "yes";
+    final static String NO = "no";
 
     private AppSectionsPagerAdapter _appSectionsPagerAdapter;
     private ViewPager _viewPager;
@@ -166,6 +170,14 @@ public class MainActivity extends Activity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String firstRun = sp.getString(getString(R.string.key_first_run), YES);
+        if (firstRun.equals(YES)) {
+            sp.edit().putString(getString(R.string.key_first_run), NO).apply();
+            startShowWelcomeActivity();
+        }
+
         _listOfFragments = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
         _viewPager = (ViewPager) findViewById(R.id.pager);
         // check which layout is shown
@@ -178,14 +190,7 @@ public class MainActivity extends Activity implements
         {
             _viewPager.setCurrentItem(_currentItemShown, true);
         }
-        Pair<String, String> pair = Utils.getCurrentLanguages(this);
-        Resources res = getResources();
-        String[] languages = res.getStringArray(R.array.values_languages_from);
-        String allLanguages = Arrays.toString(languages);
-        Log.d(LOG_TAG, "possible languages = " + allLanguages);
-        if (!allLanguages.contains(pair.first)) {
-            startShowWelcomeActivity();
-        }
+
 	    if (Utils.isDictUpdateNeeded(this)) {
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		    builder.setTitle(R.string.dialog_update_to_help_dict_needed_title).setMessage(R.string.dialog_update_to_help_dict_needed).setPositiveButton(R.string.dialog_button_ok, dialogClickListener)
@@ -308,7 +313,7 @@ public class MainActivity extends Activity implements
     }
 
     private void startShowWelcomeActivity() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
+        Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
         Log.d(LOG_TAG, "start activity welcome");
     }

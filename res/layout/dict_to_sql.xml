@@ -48,8 +48,8 @@
         android:padding="30dp"
         android:layout_margin="20dp"
         app:cpb_cornerRadius="6dp"
-        app:cpb_iconComplete="@drawable/ic_action_accept"
-        app:cpb_iconError="@drawable/ic_action_cancel"
+        app:cpb_iconComplete="@drawable/ic_navigation_accept"
+        app:cpb_iconError="@drawable/ic_navigation_cancel"
         app:cpb_textIdle="@string/please_wait" />
     <TextView
         android:id="@+id/text_dict_to_sql_can_close_this"

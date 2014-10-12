@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.learnit.LearnIt.activities.IntroActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/txt_try_it"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_try_it"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        style="@style/MyTextViewLarge"/>
+    <TextView
+        android:id="@+id/txt_love_it"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_love_it"
+        android:gravity="center"
+        android:layout_below="@id/txt_try_it"
+        style="@style/MyTextViewLarge"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/txt_learn_it"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_learn_it"
+        android:gravity="center"
+        android:layout_below="@id/txt_love_it"
+        style="@style/MyTextViewLarge"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

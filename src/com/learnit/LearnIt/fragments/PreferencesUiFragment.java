@@ -94,17 +94,17 @@ public class PreferencesUiFragment extends PreferenceFragment {
         SharedPreferences sp
                 = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (notifEnabledPreference.isChecked()) {
-            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), true);
+            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), true).apply();
             notifEnabledPreference.setSummary(R.string.pref_notifications_enabled);
         } else {
-            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), false);
+            sp.edit().putBoolean(getString(R.string.key_pref_notif_active), false).apply();
             notifEnabledPreference.setSummary(R.string.pref_notifications_disabled);
         }
         if (onlineDictPreference.isChecked()) {
-            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), true);
+            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), true).apply();
             onlineDictPreference.setSummary(R.string.pref_use_online_dict_enabled);
         } else {
-            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), false);
+            sp.edit().putBoolean(getString(R.string.key_pref_use_online_dict), false).apply();
             onlineDictPreference.setSummary(R.string.pref_use_online_dict_disabled);
         }
         if (lstNotifFreq.getEntry() != null)

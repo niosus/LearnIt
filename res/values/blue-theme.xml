@@ -29,6 +29,7 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.BlueTheme</item>
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:dialogTheme">@style/Dialog.BlueTheme</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem.BlueTheme</item>
     </style>
 
     <style name="Theme.BlueTheme.DialogWhenLarge" parent="android:Theme.Holo.Light.DialogWhenLarge">
@@ -42,6 +43,7 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.BlueTheme</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:dialogTheme">@style/Dialog.BlueTheme</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem.BlueTheme</item>
     </style>
 
 
@@ -73,6 +75,11 @@
         <item name="android:background">@drawable/spinner_background_ab_blue_theme</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_blueredtheme</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_blue_theme</item>
+    </style>
+
+    <style name="SpinnerItem.BlueTheme" parent="android:Widget.Holo.Light.TextView.SpinnerItem">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="ProgressBar.BlueTheme" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">

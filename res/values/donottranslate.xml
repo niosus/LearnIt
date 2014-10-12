@@ -17,10 +17,14 @@
   -->
 
 <resources>
+    <string name="str_learn_it">Learn it!</string>
+    <string name="str_love_it">Love it!</string>
+    <string name="str_try_it">Try it!</string>
+
     <string name="app_name">LearnIt</string>
     <string name="layout_current">normal</string>
 
-
+    <string name="key_first_run">first_run</string>
     <string name="key_pref_use_online_dict">use_online_dict</string>
     <string name="key_pref_notif_active">notification_enabled</string>
     <string name="key_notification_frequency">notification_frequency</string>
@@ -31,7 +35,7 @@
     <string name="key_language_to">language_you_know</string>
     <string name="key_time_to_start">time_to_start</string>
     <string name="key_prefs_main">prefs_main</string>
-    <string name="version">0.93.170</string>
+    <string name="version">0.93.246</string>
 
     <string-array name="values_freq">
         <item>1</item>

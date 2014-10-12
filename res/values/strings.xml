@@ -14,17 +14,29 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
+-->
 <resources>
-    <string name="articles"></string>
 
+    <string name="intro_button">Next</string>
+    <string name="intro_button_finish">Finish</string>
+    <string name="intro_choose_langs">Choose languages!</string>
+    <string name="intro_lang_know">You know:</string>
+    <string name="intro_lang_learn">You learn:</string>
+    <string name="intro_nearly_done">Nearly done!</string>
+    <string name="intro_what_next">What to do next?</string>
+    <string name="intro_enjoy">Enjoy!</string>
+    <string name="intro_check_settings">Check out the settings!</string>
+    <string name="intro_enable_notifications">Enable notifications!</string>
+    <string name="intro_add_words">Add some words!</string>
+
+    <string name="articles"></string>
     <string name="please_wait">Please wait…</string>
 
     <!-- fragment titles -->
     <string name="add_words_frag_title">Add New Words</string>
     <string name="dictionary_frag_title">My Dictionary</string>
     <string name="learn_words_frag_title">Learn My Words</string>
+
     <string-array name="fragments_titles">
         <item>Add New Words</item>
         <item>My Dictionary</item>
@@ -46,14 +58,14 @@
     <!-- learn fragment texts -->
     <string name="learn_no_words">No words to display yet.</string>
 
-    <!--toast texts-->
+    <!-- toast texts -->
     <string name="toast_notif_start_text">LearnIt notification timer started. \nThe notifications will appear in scheduled time.</string>
     <string name="toast_notif_stop_text">Notification timer stopped.</string>
     <string name="toast_db_exported">Dictionary was exported to \n%s</string>
     <string name="toast_db_imported">Dictionary was imported from \n%s</string>
     <string name="toast_db_import_error">Error occurred while importing</string>
 
-    <!--Dialog strings-->
+    <!-- Dialog strings -->
     <string name="dialog_empty_title">Oops…</string>
     <string name="dialog_empty_text">One of the fields is empty. Please fill it.</string>
     <string name="dialog_format_title">Oops!</string>
@@ -71,12 +83,11 @@
     <!-- notification strings -->
     <string name="notification_text">Please click to translate the word.</string>
 
-
-    <!--prefs categories-->
+    <!-- prefs categories -->
     <string name="notification_group">Notification settings</string>
     <string name="main_group">Main settings</string>
 
-    <!--Pref Strings-->
+    <!-- Pref Strings -->
     <string name="pref_reminder_freq">Reminder frequency</string>
     <string name="pref_language_to_learn">Language to learn</string>
     <string name="pref_language_you_know">Language you know</string>
@@ -91,27 +102,25 @@
     <string name="pref_use_online_dict_enabled">Glosbe online dictionary will be used if no offline dictionary is found</string>
     <string name="pref_use_online_dict_disabled">Online dictionary will not be used</string>
 
-    <!--context menu strings-->
+    <!-- context menu strings -->
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_back">Back</string>
 
-    <!--menu strings-->
+    <!-- menu strings -->
     <string name="menu_settings">Settings</string>
     <string name="menu_export">Export dictionary</string>
     <string name="menu_import">Import dictionary</string>
     <string name="menu_info">About</string>
 
-    <!--welcome-->
+    <!-- welcome -->
     <string name="instr_go_to_settings">Settings</string>
     <string name="quick_instructions">Just click on the \"Settings\" button below and pick a language you want to learn
-        there. Then just click the \"Back\" button and you are ready to jump right in.
-    </string>
+        there. Then just click the \"Back\" button and you are ready to jump right in.</string>
     <string name="quick_start">For a Quick Start</string>
     <string name="welcome">Welcome!</string>
     <string name="instructions_title">Version %s</string>
     <string name="instructions_method_title">Concept</string>
-    <string name="instructions_method_text">
-        This app allows you to learn the words even if you think that you are just too lazy to do it. \n\n
+    <string name="instructions_method_text">        This app allows you to learn the words even if you think that you are just too lazy to do it. \n\n
         Once you have added new words to your dictionary, they start appearing as notifications,
         making it impossible for you to miss them.
         \n\n
@@ -120,22 +129,17 @@
         \n\n
         This whole system makes you repeat the words you learn every day (at most), which ensures remembering the word,
         while putting nearly no effort in learning.\n
-        Basically, the app takes away all your responsibility to learn 5 or 10 new words every day.
-    </string>
+        Basically, the app takes away all your responsibility to learn 5 or 10 new words every day.</string>
     <string name="instructions_guess_trans_title">Guessing Translation</string>
-    <string name="instructions_guess_trans_text">
-        The app partially relies on the offline dictionaries support. They are used only as a helper.
+    <string name="instructions_guess_trans_text">        The app partially relies on the offline dictionaries support. They are used only as a helper.
         \n\n
         That is - when you want to enter a new word via \"Add New Words\" screen, once you click on the "Translation"
         field you will get some possible translations, you may have wanted to use.
         \n\n
         This saves you time, you really don\'t want to spend on switching the keyboard layout from one language to the
-        other.
-    </string>
-
+        other.</string>
     <string name="instructions_dict_help_title">Information About Dictionaries</string>
-    <string name="instructions_dict_help_text">
-        To use a helping dictionary you have to download it and put into your phone\'s memory.
+    <string name="instructions_dict_help_text">        To use a helping dictionary you have to download it and put into your phone\'s memory.
         I provide packages that do it for you at least for some languages. \n
         If your language is still missing - contact me and we will try to solve the problem.
         \n\n
@@ -148,23 +152,16 @@
         So for German-English dict the path looks as follows:\n\n
         /SD_CARD/LearnIt/de-en/dict.ifo\n
         /SD_CARD/LearnIt/de-en/dict.idx\n
-        /SD_CARD/LearnIt/de-en/dict.dict\n
-    </string>
-
+        /SD_CARD/LearnIt/de-en/dict.dict\n</string>
     <string name="instructions_edit_words_help_title">Editing Existing Words</string>
-    <string name="instructions_edit_words_help_text">
-        While you are on \"My Dictionary\" screen, and you have some words from your dictionary showing in the list, you may
-        long-click them and edit/delete them.
-    </string>
-
+    <string name="instructions_edit_words_help_text">        While you are on \"My Dictionary\" screen, and you have some words from your dictionary showing in the list, you may
+        long-click them and edit/delete them.</string>
     <string name="instructions_thank_you_title">Thank You!</string>
-    <string name="instructions_thank_you_text">
-        While this application is just my hobby project it really means a lot for me, that people use it.
+    <string name="instructions_thank_you_text">        While this application is just my hobby project it really means a lot for me, that people use it.
         If you have any feedback or suggestions, feel free to contact me and tell what you think. It is really very
-        important for me.
-    </string>
+        important for me.</string>
 
-    <!--Crouton strings-->
+    <!-- Crouton strings -->
     <string name="crouton_word_saved">New word \"%1$s\" saved.</string>
     <string name="crouton_word_updated">New translation added to the word \"%1$s\".</string>
     <string name="crouton_word_already_present">Word \"%1$s\" is already in your dictionary.</string>
@@ -172,8 +169,7 @@
     <string name="crouton_back_pressed_once">Press back once again to leave. \nThis will cancel the task.</string>
     <string name="crouton_empty_input">One of the input fields is empty, please fill both.</string>
 
-
-    <!--dict to sql activity strings-->
+    <!-- dict to sql activity strings -->
     <string name="dict_sql_title">Help dictionary</string>
     <string name="dict_sql_no_dict">No help dictionary found current language pair.</string>
     <string name="dict_sql_success">Successfully loaded.</string>
@@ -182,7 +178,6 @@
     <string name="dict_sql_progress_searching_indexing">Searching and indexing dictionary…</string>
     <string name="dict_sql_may_close_now">You can now exit this screen.</string>
 
-
     <string-array name="time_entries">
         <item>Hour</item>
         <item>Two Hours</item>
@@ -190,7 +185,6 @@
         <item>Half-day</item>
         <item>Day</item>
     </string-array>
-
     <string-array name="entries_languages_from">
         <item>German</item>
         <item>English</item>
@@ -202,7 +196,6 @@
         <item>Swedish</item>
         <item>Ukrainian</item>
     </string-array>
-
     <string-array name="entries_languages_to">
         <item>Auto</item>
         <item>German</item>
@@ -215,17 +208,22 @@
         <item>Swedish</item>
         <item>Ukrainian</item>
     </string-array>
-
     <string-array name="entries_way_to_learn">
         <item>Translation only</item>
         <item>Articles only</item>
         <item>Mixed</item>
     </string-array>
-
     <string-array name="entries_direction_of_trans">
         <item>Show word</item>
         <item>Show translation</item>
         <item>Mixed</item>
     </string-array>
+
+    <string name="title_activity_intro">Intro</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
