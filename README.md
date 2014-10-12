@@ -6,11 +6,19 @@ This is an Android application called LearnIt.
 
 It is created to help learning foreign languages.
 
-This is my hobby project and should always remain free. However, if you want to help it evolve I would welcome forking. The code quality is sometimes poor, but I am improving on the go.
+This is my hobby project and should always remain free. 
 
-If you by any chance want to appreciate all the time spent for the development - you may want to consider bying me a beer:
+If you want to help it evolve I would welcome forking and/or submitting issues (and there will be) to a tracker. 
+The code quality is sometimes poor, but I am improving on the go.
+
+If you by any chance want to appreciate all the time spent for the development - buy me a beer!
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W22SBEL95FT94"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="[paypal]" /></a>
+
+![gpl_badge][gpl_badge_green]
+
+[gpl_badge_green]:http://img.shields.io/badge/licence-GPL--v3-green.svg "GPL"
+
 
 References and Credits
 ----------
