@@ -24,27 +24,38 @@ import android.util.Pair;
 import com.learnit.LearnIt.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
     public static final String LOG_TAG = "my_logs";
 
+    private static final Map<String, String> mArticlesMap;
+    static
+    {
+        mArticlesMap = new HashMap<>();
+        mArticlesMap.put("de", "der die das");
+    }
+
     public static boolean isArticle(Context context, String article) {
 		if (article==null) return false;
         article = article.toLowerCase();
-        String articles = context.getString(R.string.articles);
+        Pair<String, String> langs = Utils.getCurrentLanguages(context);
+        String articles = mArticlesMap.get(langs.first);
+        if (articles == null) { return false; }
         String[] articlesArray = articles.split("\\s");
         for (String tempArticle: articlesArray) {
-            if (article.contains(tempArticle)) { return true; }
+            if (article.equals(tempArticle)) { return true; }
         }
         return false;
     }
 
     static boolean isPrefix(Context context, String word) {
         String prefix = context.getString(R.string.help_words_de);
-        return prefix.contains(word.toLowerCase());
+        return prefix.equals(word.toLowerCase());
     }
 
     public static String cutAwayFirstWord(String input) {

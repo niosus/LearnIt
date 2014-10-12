@@ -17,7 +17,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.learnit.LearnIt"
-    android:versionCode="318"
+    android:versionCode="342"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -83,8 +83,7 @@
             android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
         <activity
-            android:name=".activities.IntroActivity"
-            android:label="@string/title_activity_intro" >
+            android:name=".activities.IntroActivity">
         </activity>
     </application>
 

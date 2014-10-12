@@ -83,27 +83,6 @@ public class IntroActivity extends Activity {
     private void finishActivity() {
         this.finish();
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.intro, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     
 
     /**
@@ -143,11 +122,11 @@ public class IntroActivity extends Activity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return "";
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return "";
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return "";
             }
             return null;
         }

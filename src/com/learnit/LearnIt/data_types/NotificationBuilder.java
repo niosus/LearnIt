@@ -111,7 +111,6 @@ public class NotificationBuilder {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         String old_ids = sp.getString("current_ids", "");
         deleteOldNotifications(context, old_ids);
-        DBHelper.updateDBName(context, sp);
         int wayToLearn = getWayToLearn(context, sp);
         int numberOfWords = setNumberOfWords(context, sp);
         Log.d(LOG_TAG, "number of notifications = " + numberOfWords);

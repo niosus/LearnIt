@@ -51,7 +51,7 @@ import java.util.Map;
 public class DBHelper extends SQLiteOpenHelper {
     final static int DB_VERSION = 1;
     public static final String LOG_TAG = "my_logs";
-    public static String DB_WORDS = "myDB";
+    final public static String DB_WORDS = "myDB";
     final public static String DB_DICT_FROM = "dictFROM";
     final public String WORD_COLUMN_NAME = "word";
     final public String ID_COLUMN_NAME = "id";
@@ -68,8 +68,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int EXIT_CODE_WORD_ALREADY_IN_DB = -11;
     public static final int EXIT_CODE_WORD_UPDATED = 1;
     public static final int EXIT_CODE_OK = 0;
-    public static final int EXIT_CODE_WRONG_ARTICLE = -12;
-    public static final int EXIT_CODE_WRONG_FORMAT = -13;
 
     public static final int WEIGHT_NEW = 100;
 
@@ -135,29 +133,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean deleteWord(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
-        Log.d(LOG_TAG, "delete word = " + word);
-        _database = this.getWritableDatabase();
+        Log.d(LOG_TAG, this.getClass().getSimpleName() + " delete word = " + word);
         int id = this.getId(word);
-        _database.delete(currentDBName, WORD_COLUMN_NAME + "=?", new String[]{word});
-        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        _database = this.getWritableDatabase();
+        _database.delete(currentDBName, WORD_COLUMN_NAME + "= ?", new String[]{word});
+        _database.close();
+
+        // if this word is currently shown - remove it from notifications
+        NotificationManager mNotificationManager
+                = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(id + NotificationBuilder.idModificator);
         return true;
-    }
-
-    public static void updateDBName(Context context, SharedPreferences sp) {
-        String selectedLanguageFrom = sp.getString(context.getString(R.string.key_language_from), "NONE");
-        String selectedLanguageTo = sp.getString(context.getString(R.string.key_language_to), "NONE");
-        Resources res = context.getResources();
-        String[] languages = res.getStringArray(R.array.values_languages_from);
-        String allLanguages = Arrays.toString(languages);
-        String currentLanguage;
-        if (allLanguages.contains(selectedLanguageTo)) {
-            currentLanguage = selectedLanguageTo;
-        } else {
-            currentLanguage = Locale.getDefault().getLanguage();
-        }
-        DBHelper.DB_WORDS = "myDB" + selectedLanguageFrom + currentLanguage;
-
     }
 
     boolean isPrefix(String word) {
@@ -178,9 +164,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int writeToDB(String word, String translation) {
         try {
+            word = word.trim();
+            translation = translation.trim();
+            Log.d(LOG_TAG, "DBHelper, word to be saved: " + word);
             word = StringUtils.prepareForDatabaseQuery(word);
+            Log.d(LOG_TAG, "DBHelper, word prepared for DB: " + word);
             translation = StringUtils.prepareForDatabaseQuery(translation);
             List<String> wordsList = Arrays.asList(word.split("\\s"));
+            Log.d(LOG_TAG, "DBHelper, words split on space: " + wordsList.toString());
             ContentValues cv = new ContentValues();
             switch (wordsList.size()) {
                 case 0:
@@ -195,6 +186,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     break;
                 default:
                     if (StringUtils.isArticle(mContext, wordsList.get(0))) {
+                        Log.d(LOG_TAG, "DBHelper, words has a valid article: " + wordsList.toString());
                         cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
                         cv.put(ARTICLE_COLUMN_NAME, wordsList.get(0));
                         cv.put(PREFIX_COLUMN_NAME, (String) null);
@@ -483,6 +475,7 @@ public class DBHelper extends SQLiteOpenHelper {
             int id = c.getInt(idColIndex);
             if (id != 0) {
                 c.close();
+                _database.close();
                 return id;
             }
         } else
