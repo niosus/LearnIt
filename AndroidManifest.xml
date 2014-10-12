@@ -65,12 +65,6 @@
             android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
         </activity>
         <activity
-            android:name=".activities.WelcomeActivity"
-            android:logo="@drawable/logo_blue"
-            android:screenOrientation="sensor"
-            android:theme="@style/Theme.BlueTheme.DialogWhenLarge" >
-        </activity>
-        <activity
             android:name=".activities.InfoActivity"
             android:logo="@drawable/logo_blue"
             android:screenOrientation="sensor"
