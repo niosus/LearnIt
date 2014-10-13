@@ -81,11 +81,13 @@ public class LearnOnTheGoController extends LearnController {
 	public void onFail() {
 		_worker.onTaskFinished();
 		_failCounter++;
-		if (_failCounter > 1) {
+		if (_failCounter > 2) {
 			_fragmentUpdate.setQueryWordTextFail();
 			_fragmentUpdate.setButtonTexts(null, 0);
-		} else {
+		} else if (_failCounter == 1) {
 			_worker.addTask(new GetRandomWordsTask(null, _btnIds.length, Constants.NOT_NOUNS), this);
-		}
+		} else {
+            _worker.addTask(new GetRandomWordsTask(null, _btnIds.length, Constants.ONLY_NOUNS), this);
+        }
 	}
 }
