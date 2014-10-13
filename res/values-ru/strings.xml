@@ -17,6 +17,8 @@
   -->
 
 <resources>
+
+    <string name="intro_get_help_dict">Доступен \n оффлайн \n словарь</string>
     <string name="intro_button">Далее</string>
     <string name="intro_button_finish">Закрыть</string>
     <string name="intro_choose_langs">Выберите языки!</string>

@@ -48,6 +48,7 @@
         android:padding="30dp"
         android:layout_margin="20dp"
         app:cpb_cornerRadius="6dp"
+        app:cpb_colorIndicatorBackground="@color/cpb_grey"
         app:cpb_iconComplete="@drawable/ic_navigation_accept"
         app:cpb_iconError="@drawable/ic_navigation_cancel"
         app:cpb_textIdle="@string/please_wait" />

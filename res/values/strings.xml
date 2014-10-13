@@ -17,6 +17,7 @@
 -->
 <resources>
 
+    <string name="intro_get_help_dict">Help \n dictionary \n available</string>
     <string name="intro_button">Next</string>
     <string name="intro_button_finish">Finish</string>
     <string name="intro_choose_langs">Choose languages!</string>

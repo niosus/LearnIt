@@ -7,12 +7,15 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.utils.Constants;
+import com.learnit.LearnIt.utils.Utils;
 
 public class IntroActivity extends Activity {
 
@@ -69,7 +74,8 @@ public class IntroActivity extends Activity {
                 if (mViewPager.getCurrentItem() == 1) {
                     // if we are on the second screen - after pushing button
                     // change its caption to 'finish'
-                    mNextButton.setText(R.string.intro_button_finish); }
+                    mNextButton.setText(R.string.intro_button_finish);
+                }
                 if (mViewPager.getCurrentItem() == 2) {
                     // if we are on the third screen - after pushing the button
                     // we need to exit as intro is over
@@ -261,6 +267,8 @@ public class IntroActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class Intro3 extends Fragment {
+        private Button mButton;
+
         public static Intro3 newInstance() {
             return new Intro3();
         }
@@ -269,9 +277,50 @@ public class IntroActivity extends Activity {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+        }
+
+        private boolean needToShowButton() {
+            Pair<String, String> langs = Utils.getCurrentLanguages(getActivity());
+            String key = langs.first + "-" + langs.second;
+            Log.d(Constants.LOG_TAG, "searching for a dict app in market: " + key);
+            return Constants.existingDictionaries.containsKey(key);
+        }
+
+        public void showMarketForDict() {
+            Pair<String, String> langs = Utils.getCurrentLanguages(getActivity());
+            String key = langs.first + "-" + langs.second;
+            Log.d(Constants.LOG_TAG, "searching for a dict app in market: " + key);
+            if (Constants.existingDictionaries.containsKey(key)) {
+                // means that in the market there is a correct dict.
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.existingDictionaries.get(key))));
+            }
+        }
+
+        @Override
+        public void setUserVisibleHint(boolean isVisibleToUser) {
+            super.setUserVisibleHint(isVisibleToUser);
+            if (isVisibleToUser) {
+                if (needToShowButton()) {
+                    mButton.setVisibility(View.VISIBLE);
+                } else {
+                    mButton.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_intro3, container, false);
+            mButton = (Button) rootView.findViewById(R.id.btn_go_to_market);
+            mButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showMarketForDict();
+                }
+            });
             return rootView;
         }
     }
