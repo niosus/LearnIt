@@ -175,6 +175,7 @@
     <string name="crouton_word_updated">Новый перевод добавлен к существующему слову \"%1$s\".</string>
     <string name="crouton_word_already_present">Слово \"%1$s\" уже в Вашем словаре.</string>
     <string name="crouton_word_deleted">Слово \"%1$s\" удалено.</string>
+    <string name="crouton_word_not_deleted">Ошибка при удалении слова \"%1$s\".</string>
     <string name="crouton_back_pressed_once">Нажмите \"Назад\" еще раз, чтобы выйти. \nЭто действие остановит процесс.</string>
     <string name="crouton_empty_input">Одно из полей не заполнено. Пожалуйста, заполните оба.</string>
 

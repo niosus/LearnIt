@@ -70,9 +70,9 @@
     <string name="dialog_empty_title">Hoppla!</string>
     <string name="dialog_empty_text">Mindestens ein Eingabefeld ist leer.\nBitte korrigieren Sie es.</string>
     <string name="dialog_format_title">Hoppla!</string>
-    <string name="dialog_format_text">Falscher Format.\n Format `{Artikel} {Wort}` muss aufgepasst werden.</string>
+    <string name="dialog_format_text">Falscher Format.\n Format \"{Artikel} {Wort}\" muss aufgepasst werden.</string>
     <string name="dialog_article_title">Hoppla!</string>
-    <string name="dialog_article_text">Nur die Artikeln `der`,`die` and `das` dürfen das erste Wort sein.</string>
+    <string name="dialog_article_text">Nur die Artikeln \"der\",\"die\" and \"das\" dürfen das erste Wort sein.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_update">Aktualisieren</string>
     <string name="dialog_button_cancel">Stornieren</string>
@@ -115,7 +115,7 @@
 
     <!--welcome-->
     <string name="instr_go_to_settings">Einstellundgen</string>
-    <string name="quick_instructions">Einfach auf die Taste "Einstellungen" klicken. Wählen Sie die gewünschte Sprache zu
+    <string name="quick_instructions">Einfach auf die Taste \"Einstellungen\" klicken. Wählen Sie die gewünschte Sprache zu
         lernen und klicken Sie auf "Zurück". Da sind Sie bereit um LearnIt zu nutzen. </string>
     <string name="quick_start">Für Einen Schnellen Start</string>
     <string name="welcome">Willkommen!</string>
@@ -168,10 +168,11 @@
     </string>
 
     <!--Crouton strings-->
-    <string name="crouton_word_saved">Neues Wort ``%1$s`` wurde gespeichert.</string>
-    <string name="crouton_word_updated">Neue Übersetzung für ``%1$s`` wurde gespeichert.</string>
-    <string name="crouton_word_already_present">Das Wort ``%1$s`` ist schon in Ihrem Wörterbuch.</string>
-    <string name="crouton_word_deleted">Das Wort ``%1$s`` wurde gelöscht.</string>
+    <string name="crouton_word_saved">Neues Wort \"%1$s\" wurde gespeichert.</string>
+    <string name="crouton_word_updated">Neue Übersetzung für \"%1$s\" wurde gespeichert.</string>
+    <string name="crouton_word_already_present">Das Wort \"%1$s\" ist schon in Ihrem Wörterbuch.</string>
+    <string name="crouton_word_deleted">Das Wort \"%1$s\" wurde gelöscht.</string>
+    <string name="crouton_word_not_deleted">Konnte nicht das Wort \"%1$s\" löschen.</string>
     <string name="crouton_back_pressed_once">Bitte noch mal zurück drucken um diese Aktivität zu verlassen.</string>
     <string name="crouton_empty_input">Ein von den Eingabefelde ist leer, bitte beide eingeben.</string>
 

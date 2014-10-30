@@ -134,9 +134,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean deleteWord(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
         Log.d(LOG_TAG, this.getClass().getSimpleName() + " delete word = " + word);
-        int id = this.getId(word);
+        String strippedWord = StringUtils.stripFromArticle(mContext, word);
+        int id = this.getId(strippedWord);
+        if (id < 0) { strippedWord = word; }
+        id = this.getId(strippedWord);
+        if (id < 0) { return false; }
+        Log.d(LOG_TAG, this.getClass().getSimpleName() + " id of deleting = " + id);
         _database = this.getWritableDatabase();
-        _database.delete(currentDBName, WORD_COLUMN_NAME + "= ?", new String[]{word});
+        _database.delete(currentDBName, WORD_COLUMN_NAME + "= ?", new String[]{strippedWord});
         _database.close();
 
         // if this word is currently shown - remove it from notifications
@@ -430,6 +435,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String getTranslation(String word) {
         word = StringUtils.prepareForDatabaseQuery(word);
+        word = StringUtils.stripFromArticle(mContext, word);
         _database = this.getReadableDatabase();
         Cursor c = _database.query(currentDBName,
                 new String[]{TRANSLATION_COLUMN_NAME, WORD_COLUMN_NAME},
@@ -470,7 +476,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d(LOG_TAG, "0 rows");
         c.close();
         _database.close();
-        return 0;
+        return -1;
     }
 
     public List<Map<String, String>> getWords(String word) {

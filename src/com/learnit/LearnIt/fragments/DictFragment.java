@@ -107,10 +107,16 @@ public class DictFragment extends MySmartFragment
 	@Override
 	public void deleteWord(String word) {
 		DBHelper dbHelper = FactoryDbHelper.createDbHelper(this.getActivity(), DBHelper.DB_WORDS);
-		dbHelper.deleteWord(StringUtils.stripFromArticle(this.getActivity(), word));
-		Crouton crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_deleted, word), Style.CONFIRM);
-		crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
-		crouton.show();
+		boolean status = dbHelper.deleteWord(word);
+        if (!status) {
+            Crouton crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_not_deleted, word), Style.ALERT);
+            crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
+            crouton.show();
+        } else {
+            Crouton crouton = Crouton.makeText(getActivity(), getString(R.string.crouton_word_deleted, word), Style.CONFIRM);
+            crouton.setConfiguration(new Configuration.Builder().setDuration(1000).build());
+            crouton.show();
+        }
 	}
 
 	@Override

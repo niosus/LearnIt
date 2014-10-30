@@ -46,7 +46,6 @@ public class EditWordFragment extends DialogFragment {
     EditText edtWord;
     EditText edtTrans;
     String oldWord;
-    String oldStrippedWord;
 
     private ImageButton btnClearWord;
     private ImageButton btnClearTrans;
@@ -64,7 +63,7 @@ public class EditWordFragment extends DialogFragment {
                         || StringUtils.isStringEmpty(edtTrans.getText().toString())) {
                     Crouton.makeText(this.getActivity(), getString(R.string.crouton_empty_input), Style.ALERT).show();
                 } else {
-                    dbHelper.deleteWord(oldStrippedWord);
+                    dbHelper.deleteWord(oldWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
 	                if (exitCode == DBHelper.EXIT_CODE_OK) {
 		                Crouton.makeText(this.getActivity(), getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
@@ -117,9 +116,8 @@ public class EditWordFragment extends DialogFragment {
         edtWord = (EditText) v.findViewById(R.id.edtWord);
         edtTrans = (EditText) v.findViewById(R.id.edtTrans);
         edtWord.setText(oldWord);
-        oldStrippedWord = StringUtils.stripFromArticle(this.getActivity(), oldWord);
-        String translation = dbHelper.getTranslation(oldStrippedWord);
-        Log.d(LOG_TAG, "got word to edit = " + oldStrippedWord + ", trans = " + translation);
+        String translation = dbHelper.getTranslation(oldWord);
+        Log.d(LOG_TAG, "got word to edit = " + oldWord + ", trans = " + translation);
         edtTrans.setText(translation);
 
         btnClearWord = (ImageButton) v.findViewById(R.id.btn_add_word_clear);

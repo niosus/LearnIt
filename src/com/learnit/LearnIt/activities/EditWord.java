@@ -46,7 +46,6 @@ public class EditWord extends FragmentActivity {
     EditText edtWord;
     EditText edtTrans;
     String oldWord;
-    String oldStrippedWord;
     Utils utils;
 
     private ImageButton btnClearWord;
@@ -71,7 +70,7 @@ public class EditWord extends FragmentActivity {
                         || StringUtils.isStringEmpty(edtTrans.getText().toString())) {
                     Crouton.makeText(this, getString(R.string.crouton_empty_input), Style.ALERT).show();
                 } else {
-                    dbHelper.deleteWord(oldStrippedWord);
+                    dbHelper.deleteWord(oldWord);
                     int exitCode = dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
 	                if (exitCode == DBHelper.EXIT_CODE_OK) {
 		                Crouton.makeText(this, getString(R.string.crouton_word_saved, edtWord.getText().toString()), Style.CONFIRM).show();
@@ -108,9 +107,8 @@ public class EditWord extends FragmentActivity {
         dbHelper = FactoryDbHelper.createDbHelper(this, DBHelper.DB_WORDS);
         utils = new Utils();
         oldWord = getIntent().getStringExtra(WORD_TAG);
-        oldStrippedWord = StringUtils.stripFromArticle(this, oldWord);
-        String translation = dbHelper.getTranslation(oldStrippedWord);
-        Log.d(LOG_TAG, "got word to edit = " + oldStrippedWord + ", trans = " + translation);
+        String translation = dbHelper.getTranslation(oldWord);
+        Log.d(LOG_TAG, "got word to edit = " + oldWord + ", trans = " + translation);
 
         setContentView(R.layout.edit_word);
 
