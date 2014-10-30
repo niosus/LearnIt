@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':TabStrip')
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
