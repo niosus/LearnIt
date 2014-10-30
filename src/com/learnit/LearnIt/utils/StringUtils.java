@@ -33,18 +33,11 @@ import java.util.regex.Pattern;
 public class StringUtils {
     public static final String LOG_TAG = "my_logs";
 
-    private static final Map<String, String> mArticlesMap;
-    static
-    {
-        mArticlesMap = new HashMap<>();
-        mArticlesMap.put("de", "der die das");
-    }
-
     public static boolean isArticle(Context context, String article) {
 		if (article==null) return false;
         article = article.toLowerCase();
         Pair<String, String> langs = Utils.getCurrentLanguages(context);
-        String articles = mArticlesMap.get(langs.first);
+        String articles = Constants.mArticlesMap.get(langs.first);
         if (articles == null) { return false; }
         String[] articlesArray = articles.split("\\s");
         for (String tempArticle: articlesArray) {

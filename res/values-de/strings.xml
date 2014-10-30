@@ -17,6 +17,7 @@
   -->
 
 <resources>
+    <string name="intro_get_help_dict">Hilfswörterbuch \n ferfügbar</string>
     <string name="intro_button">Weiter</string>
     <string name="intro_button_finish">Schließen</string>
     <string name="intro_choose_langs">Wählen Sie die Sprachen!</string>

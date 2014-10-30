@@ -17,9 +17,11 @@
   -->
 
 <resources>
+
+    <string name="intro_get_help_dict">Доступний \nофлайн \nсловник</string>
     <string name="intro_button">Далі</string>
     <string name="intro_button_finish">Закрити</string>
-    <string name="intro_choose_langs">Вибаріть мови!</string>
+    <string name="intro_choose_langs">Виберіть мови!</string>
     <string name="intro_lang_know">Ви знаєте:</string>
     <string name="intro_lang_learn">Ви вчите:</string>
     <string name="intro_nearly_done">Майже готово!</string>
