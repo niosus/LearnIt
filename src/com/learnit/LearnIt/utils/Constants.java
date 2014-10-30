@@ -39,6 +39,14 @@ public class Constants {
         mArticlesMap.put("de", "der die das");
     }
 
+    public static final Map<String, String> mPrefixesMap;
+    static
+    {
+        mPrefixesMap = new HashMap<>();
+        mPrefixesMap.put("de", "sich");
+        mPrefixesMap.put("en", "to");
+    }
+
     public static final Map<String, String> existingDictionaries;
     static
     {

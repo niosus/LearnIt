@@ -67,8 +67,8 @@ public class EditWord extends FragmentActivity {
                 return true;
             case R.id.edit_menu_done:
                 Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-                        || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+                if (StringUtils.isStringEmpty(edtWord.getText().toString())
+                        || StringUtils.isStringEmpty(edtTrans.getText().toString())) {
                     Crouton.makeText(this, getString(R.string.crouton_empty_input), Style.ALERT).show();
                 } else {
                     dbHelper.deleteWord(oldStrippedWord);

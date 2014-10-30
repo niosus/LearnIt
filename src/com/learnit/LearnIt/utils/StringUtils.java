@@ -46,9 +46,21 @@ public class StringUtils {
         return false;
     }
 
-    static boolean isPrefix(Context context, String word) {
-        String prefix = context.getString(R.string.help_words_de);
-        return prefix.equals(word.toLowerCase());
+    public static boolean isStringEmpty(String string) {
+        if (string == null) { return true; }
+        return string.isEmpty();
+    }
+
+    public static boolean isPrefix(Context context, String prefix) {
+        prefix = prefix.toLowerCase();
+        Pair<String, String> langs = Utils.getCurrentLanguages(context);
+        String prefixes = Constants.mPrefixesMap.get(langs.first);
+        if (prefixes == null) { return false; }
+        String[] prefixesArray = prefixes.split("\\s");
+        for (String tempPrefix: prefixesArray) {
+            if (prefix.equals(tempPrefix)) { return true; }
+        }
+        return false;
     }
 
     public static String cutAwayFirstWord(String input) {

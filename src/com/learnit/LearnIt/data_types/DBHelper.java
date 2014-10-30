@@ -146,18 +146,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    boolean isPrefix(String word) {
-        String prefix = this.mContext.getString(R.string.help_words_de);
-        return prefix.contains(word.toLowerCase());
-    }
-
-    public int checkEmptyString(String str) {
-        if ("".equals(str)) {
-            return EXIT_CODE_EMPTY_INPUT;
-        } else
-            return EXIT_CODE_OK;
-    }
-
     private String cutAwayFirstWord(String input) {
         return input.split("\\s", 2)[1];
     }
@@ -190,7 +178,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
                         cv.put(ARTICLE_COLUMN_NAME, wordsList.get(0));
                         cv.put(PREFIX_COLUMN_NAME, (String) null);
-                    } else if (isPrefix(wordsList.get(0))) {
+                    } else if (StringUtils.isPrefix(mContext, wordsList.get(0))) {
                         cv.put(WORD_COLUMN_NAME, cutAwayFirstWord(word));
                         cv.put(ARTICLE_COLUMN_NAME, (String) null);
                         cv.put(PREFIX_COLUMN_NAME, wordsList.get(0));

@@ -164,10 +164,8 @@ public class Utils {
     }
 
     public static void startRepeatingTimer(Context context) {
-        Log.d(LOG_TAG, "context setalarm = " + context.getClass().getName());
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 	    long timeInMs = sp.getLong(context.getString(R.string.key_time_to_start), 0);
-	    Log.d(LOG_TAG, "SET TIME IS " + timeInMs);
         String frequency_id = sp.getString(context.getString(R.string.key_notification_frequency), "-1");
         long frequency = Utils.getFreqFromId(frequency_id);
 	    while (timeInMs<System.currentTimeMillis()) { timeInMs+=frequency; }

@@ -60,8 +60,8 @@ public class EditWordFragment extends DialogFragment {
                 return true;
             case R.id.edit_menu_done:
                 Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-                if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-                        || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
+                if (StringUtils.isStringEmpty(edtWord.getText().toString())
+                        || StringUtils.isStringEmpty(edtTrans.getText().toString())) {
                     Crouton.makeText(this.getActivity(), getString(R.string.crouton_empty_input), Style.ALERT).show();
                 } else {
                     dbHelper.deleteWord(oldStrippedWord);
@@ -178,12 +178,6 @@ public class EditWordFragment extends DialogFragment {
         oldWord = this.getArguments().getString(WORD_TAG);
     }
 
-//    private void removeActionBarLabelIfNeeded() {
-//        ActionBar actionBar = this.getActionBar();
-//        if (actionBar == null) { return; }
-//        actionBar.setTitle("");
-//    }
-
     private class MyBtnTouchListener implements View.OnClickListener {
         public void onClick(View v) {
             switch (v.getId()) {
@@ -195,18 +189,6 @@ public class EditWordFragment extends DialogFragment {
                     edtWord.setText("");
                     v.setVisibility(View.INVISIBLE);
                     break;
-//                case R.id.btnCancel:
-//                    break;
-//                case R.id.btnOk:
-//                    Log.d(LOG_TAG, "update word = " + edtWord.getText().toString() + " trans = " + edtTrans.getText().toString());
-//                    if (dbHelper.checkEmptyString(edtWord.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT
-//                            || dbHelper.checkEmptyString(edtTrans.getText().toString()) == DBHelper.EXIT_CODE_EMPTY_INPUT) {
-//                        showMessage(DBHelper.EXIT_CODE_EMPTY_INPUT);
-//                    } else {
-//                        dbHelper.deleteWord(oldStrippedWord);
-//                        dbHelper.writeToDB(edtWord.getText().toString(), edtTrans.getText().toString());
-//                    }
-//                    break;
             }
         }
     }
