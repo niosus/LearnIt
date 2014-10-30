@@ -54,7 +54,8 @@
         <CheckBoxPreference
             android:key="@string/key_pref_use_online_dict"
             android:summary="@string/pref_use_online_dict_enabled"
-            android:title="@string/pref_use_online_dict">
+            android:title="@string/pref_use_online_dict"
+            android:defaultValue="true">
         </CheckBoxPreference>
 
     </PreferenceCategory>

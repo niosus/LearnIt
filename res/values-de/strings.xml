@@ -48,8 +48,8 @@
     <string name="edit_dialog_title">Bearbeiten</string>
 
     <!-- add words fragment texts -->
-    <string name="add_word_hint">Eingabewort</string>
-    <string name="add_translation_hint">Übersetzung</string>
+    <string name="add_word_hint">Eingabewort auf %s</string>
+    <string name="add_translation_hint">Übersetzung auf %s</string>
     <string name="add_words_frag_help_text_words">Möglichen Wörter</string>
     <string name="add_words_frag_help_text_trans">Möglichen Übersetzungen?</string>
 
@@ -198,9 +198,21 @@
         <item>Deutsch</item>
         <item>Englisch</item>
         <item>Spanisch</item>
-        <item>French</item>
+        <item>Französisch</item>
         <item>Italienisch</item>
-        <item>Polish</item>
+        <item>Polnisch</item>
+        <item>Russisch</item>
+        <item>Swedish</item>
+        <item>Ukrainisch</item>
+    </string-array>
+
+    <string-array name="add_words_language_hint">
+        <item>Deutsch</item>
+        <item>Englisch</item>
+        <item>Spanisch</item>
+        <item>Französisch</item>
+        <item>Italienisch</item>
+        <item>Polnisch</item>
         <item>Russisch</item>
         <item>Swedish</item>
         <item>Ukrainisch</item>
@@ -208,13 +220,13 @@
 
     <string-array name="entries_languages_to">
         <item>Automatisch</item>
-        <item>German</item>
-        <item>English</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Italian</item>
-        <item>Polish</item>
-        <item>Russian</item>
+        <item>Deutsch</item>
+        <item>Englisch</item>
+        <item>Spanisch</item>
+        <item>Französisch</item>
+        <item>Italienisch</item>
+        <item>Polnisch</item>
+        <item>Russisch</item>
         <item>Swedish</item>
         <item>Ukrainisch</item>
     </string-array>

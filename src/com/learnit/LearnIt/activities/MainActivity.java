@@ -31,8 +31,10 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -48,6 +50,7 @@ import com.learnit.LearnIt.fragments.LearnCasualFragment;
 import com.learnit.LearnIt.fragments.ListOfFragments;
 import com.learnit.LearnIt.fragments.MySmartFragment;
 import com.learnit.LearnIt.fragments.TaskSchedulerFragment;
+import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.Arrays;
@@ -139,8 +142,12 @@ public class MainActivity extends Activity implements
 			    strip.setViewPager(_viewPager);
 			    strip.setBackgroundColor(this.getResources().getColor(R.color.white));
 			    strip.setUnderlineColor(this.getResources().getColor(R.color.highlight));
-			    strip.setIndicatorColor(this.getResources().getColor(R.color.highlight_lighter));
-			    strip.setIndicatorHeight(100);
+			    strip.setIndicatorColor(this.getResources().getColor(R.color.highlight));
+                DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+                float dp = Constants.TAB_SELECTOR_HEIGHT_DP;
+                float fpixels = metrics.density * dp;
+                int pixels = (int) fpixels;
+			    strip.setIndicatorHeight(pixels);
 			    this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			    break;
 	    }

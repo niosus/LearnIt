@@ -49,8 +49,8 @@
     <string name="edit_dialog_title">Редагуємо…</string>
 
     <!-- add words fragment texts -->
-    <string name="add_word_hint">Слово</string>
-    <string name="add_translation_hint">Переклад</string>
+    <string name="add_word_hint">Введіть слово %s</string>
+    <string name="add_translation_hint">Введіть переклад %s</string>
     <string name="add_words_frag_help_text_words">Можливі слова</string>
     <string name="add_words_frag_help_text_trans">Можливі переклади</string>
 
@@ -186,7 +186,7 @@
     <string name="dict_sql_success">Допоміжний словник проіндексовано.</string>
     <string name="dict_sql_version">%1$s-%2$s. Версія: %3$s</string>
     <string name="dict_sql_progress_found">Допоміжний словник знайдено. \nІндексуємо…</string>
-    <string name="dict_sql_progress_searching_indexing">Пошук і індуксування допоміжного словнику…</string>
+    <string name="dict_sql_progress_searching_indexing">Пошук і індексування допоміжного словнику…</string>
     <string name="dict_sql_may_close_now">Ви можете залишити це вікно.</string>
 
 
@@ -208,6 +208,18 @@
         <item>Російська</item>
         <item>Шведська</item>
         <item>Українська</item>
+    </string-array>
+
+    <string-array name="add_words_language_hint">
+        <item>німецькою</item>
+        <item>англійською</item>
+        <item>іспанською</item>
+        <item>французською</item>
+        <item>італійською</item>
+        <item>польскою</item>
+        <item>россійською</item>
+        <item>шведською</item>
+        <item>українською</item>
     </string-array>
 
     <string-array name="entries_languages_to">

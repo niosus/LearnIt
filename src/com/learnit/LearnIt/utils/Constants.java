@@ -71,5 +71,6 @@ public class Constants {
 			R.id.btn_second,
 			R.id.btn_third };
 
+    public final static float TAB_SELECTOR_HEIGHT_DP = 7f;
 
 }

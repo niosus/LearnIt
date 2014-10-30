@@ -49,8 +49,8 @@
     <string name="edit_dialog_title">Изменяем слово…</string>
 
     <!-- add words fragment texts -->
-    <string name="add_word_hint">Введите слово</string>
-    <string name="add_translation_hint">Введите перевод</string>
+    <string name="add_word_hint">Введите слово по-%s</string>
+    <string name="add_translation_hint">Введите перевод по-%s</string>
     <string name="add_words_frag_help_text_words">Возможные слова</string>
     <string name="add_words_frag_help_text_trans">Возможные переводы</string>
 
@@ -208,6 +208,18 @@
         <item>Русский</item>
         <item>Шведский</item>
         <item>Украинский</item>
+    </string-array>
+
+    <string-array name="add_words_language_hint">
+        <item>немецки</item>
+        <item>английски</item>
+        <item>испански</item>
+        <item>французски</item>
+        <item>италиански</item>
+        <item>польски</item>
+        <item>русски</item>
+        <item>шведски</item>
+        <item>украински</item>
     </string-array>
 
     <string-array name="entries_languages_to">

@@ -124,6 +124,27 @@ public class Utils {
         return new Pair<>(selectedLanguageFrom, currentLanguage);
     }
 
+    public static Pair<String,String> getCurrentLanguagesFullNames(Context context) {
+        Pair<String,String> langs = Utils.getCurrentLanguages(context);
+        String[] langsLearnValues =
+                context.getResources()
+                        .getStringArray(R.array.values_languages_from);
+        String[] langsHintEntries =
+                context.getResources()
+                        .getStringArray(R.array.add_words_language_hint);
+        String langLearn = null;
+        String langKnow = null;
+        for (int i = 0; i < langsLearnValues.length; ++i) {
+            if (langsLearnValues[i].equals(langs.first)) {
+                langLearn = langsHintEntries[i];
+            }
+            if (langsLearnValues[i].equals(langs.second)) {
+                langKnow = langsHintEntries[i];
+            }
+        }
+        return new Pair<>(langLearn, langKnow);
+    }
+
     public static long getFreqFromId(String id) {
         int idInt = Integer.parseInt(id);
         switch (idInt) {

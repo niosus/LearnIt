@@ -21,6 +21,7 @@ package com.learnit.LearnIt.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +39,7 @@ import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.Utils;
 
 import java.util.List;
 
@@ -77,7 +79,21 @@ public class AddWordFragment extends MySmartFragment
         setHasOptionsMenu(true);
     }
 
-	@Override
+    @Override
+    public void onResume() {
+        super.onResume();
+        Pair<String, String> langs = Utils.getCurrentLanguagesFullNames(this.getActivity());
+        Log.d(LOG_TAG, "Current languages are: "
+                + langs.first + " " + langs.second);
+        if (_word != null) {
+            _word.setHint(getString(R.string.add_word_hint, langs.first));
+        }
+        if (_translation != null) {
+            _translation.setHint(getString(R.string.add_translation_hint, langs.second));
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actions_add_words, menu);
@@ -105,6 +121,7 @@ public class AddWordFragment extends MySmartFragment
 
 	    _word = (EditText) _view.findViewById(R.id.edv_add_word);
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
+
 	    _word.setOnFocusChangeListener(_listener);
 	    _translation.setOnFocusChangeListener(_listener);
 	    _word.addTextChangedListener(_listener);
