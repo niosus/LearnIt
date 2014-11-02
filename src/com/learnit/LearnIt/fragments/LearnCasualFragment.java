@@ -18,10 +18,13 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +53,7 @@ public class LearnCasualFragment extends LearnFragment {
 	}
 
     public static LearnCasualFragment newInstance(IWorkerJobInput worker) {
+        Log.d(Constants.LOG_TAG, "LearnCasualFragment, asking for instance");
         LearnCasualFragment learnCasualFragment = new LearnCasualFragment();
         learnCasualFragment.attachWorker(worker);
         return learnCasualFragment;
@@ -58,14 +62,6 @@ public class LearnCasualFragment extends LearnFragment {
 
     public void attachWorker(IWorkerJobInput worker) {
 		_listener = new LearnOnTheGoController(this, worker, btnIds());
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (!restoreFromPreferences()) {
-			_listener.showNext();
-		}
 	}
 
 	@Override

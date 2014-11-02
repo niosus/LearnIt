@@ -140,13 +140,13 @@ public class LearnHomeworkTranslationController extends LearnController {
 		}
 		editor.putString(ALIVE_IDS_TAG, idsNew);
 		Log.d(LOG_TAG, idsNew);
-		editor.commit();
+		editor.apply();
 	}
 
 	@Override
 	public void onSuccessRandomWords(ArrayList<ArticleWordId> articleWordIds) {
 		_worker.onTaskFinished();
-		_fragmentUpdate.updateDirectionOfTranslation();
+		if (!_fragmentUpdate.updateDirectionOfTranslation()) { return; }
 		Random rand = new Random();
 		_correctAnswerId = rand.nextInt(articleWordIds.size() + 1);
 		articleWordIds.add(_correctAnswerId, _correctEntry);
@@ -186,9 +186,13 @@ public class LearnHomeworkTranslationController extends LearnController {
 
 	@Override
 	public void showNext() {
+        fetchRandomWords(_btnIds.length - 1, _correctEntry);
 		if (findNextId()) {
 			if (checkNextFragmentType()) {
-				fetchRandomWords(_btnIds.length - 1, _correctEntry);
+                _fragmentUpdate.setQueryWordText(_correctEntry, Constants.FROM_FOREIGN_TO_MY);
+                _fragmentUpdate.openWord();
+                _fragmentUpdate.openButtons();
+                _fragmentUpdate.setAll(View.VISIBLE);
 			}
 		} else {
 			if (_fragmentUpdate instanceof LearnHomeworkTranslationFragment) {

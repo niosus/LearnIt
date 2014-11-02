@@ -138,7 +138,7 @@ public class LearnHomeworkArticlesController extends LearnController {
 		}
 		editor.putString(ALIVE_IDS_TAG, idsNew);
 		Log.d(LOG_TAG, idsNew);
-		editor.commit();
+		editor.apply();
 	}
 
 	@Override
