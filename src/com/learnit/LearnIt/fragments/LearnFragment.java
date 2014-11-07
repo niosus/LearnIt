@@ -19,8 +19,6 @@
 package com.learnit.LearnIt.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,13 +29,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
-import com.learnit.LearnIt.controllers.LearnOnTheGoController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.data_types.FactoryDbHelper;
 import com.learnit.LearnIt.interfaces.ILearnFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerLearn;
-import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.Utils;
@@ -75,16 +71,6 @@ public abstract class LearnFragment
 	    v.findViewById(R.id.word_to_ask).setVisibility(visibilityState);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!restoreFromPreferences()) {
-            Log.d(LOG_TAG, "LearnFragment: showing next word");
-            _listener.showNext();
-        }
-    }
-
     @SuppressLint("NewApi")
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -108,8 +94,7 @@ public abstract class LearnFragment
                              Bundle savedInstanceState);
 
 	@Override
-	public boolean updateDirectionOfTranslation() {
-        if (this.getActivity() == null) { return false; }
+	public void updateDirectionOfTranslation() {
 		Random random = new Random();
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
@@ -119,7 +104,6 @@ public abstract class LearnFragment
 				_direction = random.nextInt(2) + 1;
 			}
 		}
-        return true;
 	}
 
 	@Override
@@ -190,7 +174,7 @@ public abstract class LearnFragment
 		}
 
 		// commit the transaction
-		editor.apply();
+		editor.commit();
 		if (problemOccured) {
 			Utils.removeOldSavedValues(sp, Constants.btnIdsTranslations);
 		}
@@ -198,7 +182,6 @@ public abstract class LearnFragment
 
 
 	protected boolean restoreFromPreferences() {
-        Log.d(LOG_TAG, "LearnFragment: restore from preferences");
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		String word = sp.getString(WORD_TAG, null);
 		if (word == null) { return false; }

@@ -60,7 +60,7 @@ public class ListOfFragments extends ListFragment {
         // Create an array adapter for the list view, using the Ipsum headlines array
 
         String[] Headlines = getResources().getStringArray(R.array.fragments_titles);
-        setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, Headlines));
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Headlines));
     }
 
     @Override

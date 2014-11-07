@@ -37,5 +37,5 @@ public interface ILearnFragmentUpdate {
 	public void closeWord();
 	public void shakeView(View v);
 	public void updateWordWeight(int numOfWrongAnswers);
-	public boolean updateDirectionOfTranslation();
+	public void updateDirectionOfTranslation();
 }

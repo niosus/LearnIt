@@ -18,14 +18,11 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
 import com.learnit.LearnIt.controllers.LearnHomeworkArticlesController;
-import com.learnit.LearnIt.controllers.LearnOnTheGoController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -56,7 +52,6 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 	}
 
     public static LearnHomeworkArticlesFragment newInstance(IWorkerJobInput worker) {
-        Log.d(Constants.LOG_TAG, "LearnHomeworkArticlesFragment, asking for instance");
         LearnHomeworkArticlesFragment learnHomeworkArticlesFragment =
                 new LearnHomeworkArticlesFragment();
         learnHomeworkArticlesFragment.attachWorker(worker);
@@ -64,9 +59,14 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
     }
 
     public void attachWorker(IWorkerJobInput worker) {
-        Log.d(Constants.LOG_TAG, "LearnHomeworkArticlesFragment, attaching worker");
         _listener = new LearnHomeworkArticlesController(this, worker, btnIds());
     }
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,7 +83,6 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "LearnHomeworkArticlesFragment.onViewCreated(): saved instance is: " + savedInstanceState);
 		super.onViewCreated(view, savedInstanceState);
 		Bundle extras = getArguments();
 		if (_listener instanceof LearnHomeworkArticlesController) {
@@ -115,9 +114,7 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 
 	@Override
 	public void setButtonTexts(ArrayList<ArticleWordId> words, int direction) {
-        Pair<String, String> langs = Utils.getCurrentLanguages(this.getActivity());
-        String currentArticlesString = Constants.mArticlesMap.get(langs.first);
-		String[] articles = currentArticlesString.split("\\s");
+		String[] articles = getString(R.string.articles).split("\\s");
 		for (int i = 0; i < _btnIds.length; ++i) {
 			((TextView) v.findViewById(_btnIds[i])).setText(articles[i]);
 		}

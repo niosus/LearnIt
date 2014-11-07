@@ -18,13 +18,10 @@
 
 package com.learnit.LearnIt.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +30,6 @@ import android.widget.TextView;
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
 import com.learnit.LearnIt.controllers.LearnHomeworkTranslationController;
-import com.learnit.LearnIt.controllers.LearnOnTheGoController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
@@ -46,7 +42,7 @@ import java.util.ArrayList;
 
 
 public class LearnHomeworkTranslationFragment extends LearnFragment {
-	public static final String TAG = "learn_translations_tag";
+	public static final String TAG = "homework_frag";
 
 	private int[] _btnIds = Constants.btnIdsTranslations;
 
@@ -56,7 +52,6 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 	}
 
     public static LearnHomeworkTranslationFragment newInstance(IWorkerJobInput worker) {
-        Log.d(Constants.LOG_TAG, "LearnHomeworkTranslationFragment, asking for instance");
         LearnHomeworkTranslationFragment learnHomeworkTranslationFragment =
                 new LearnHomeworkTranslationFragment();
         learnHomeworkTranslationFragment.attachWorker(worker);
@@ -64,9 +59,16 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
     }
 
     public void attachWorker(IWorkerJobInput worker) {
-        Log.d(Constants.LOG_TAG, "LearnHomeworkTranslationFragment, attaching worker");
         _listener = new LearnHomeworkTranslationController(this, worker, btnIds());
     }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!restoreFromPreferences()) {
+			_listener.showNext();
+		}
+	}
 
 	@Override
 	public void onPause() {

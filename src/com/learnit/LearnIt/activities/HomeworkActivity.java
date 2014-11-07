@@ -54,21 +54,31 @@ public class HomeworkActivity extends Activity {
 					.commit();
 		}
 
+		// add a ui fragment to stack
+		_uiTranslationsFragment = fragmentManager
+				.findFragmentByTag(LearnHomeworkTranslationFragment.TAG);
+		if (_uiTranslationsFragment == null) {
+			if (worker instanceof IWorkerJobInput) {
+				_uiTranslationsFragment = LearnHomeworkTranslationFragment
+                        .newInstance((IWorkerJobInput) worker);
+				// extras contain words, translations and so on that we need to show
+				// the data in the homework fragment. We pass them on to the fragment.
+				_uiTranslationsFragment.setArguments(getIntent().getExtras());
+			}
+		}
 
-        if (worker instanceof IWorkerJobInput) {
-            _uiTranslationsFragment = LearnHomeworkTranslationFragment
-                    .newInstance((IWorkerJobInput) worker);
-            // extras contain words, translations and so on that we need to show
-            // the data in the homework fragment. We pass them on to the fragment.
-            _uiTranslationsFragment.setArguments(getIntent().getExtras());
-
-            _uiArticlesFragment = LearnHomeworkArticlesFragment
-                    .newInstance((IWorkerJobInput) worker);
-            // extras contain words, translations and so on that we need to show
-            // the data in the homework fragment. We pass them on to the fragment.
-            _uiArticlesFragment.setArguments(getIntent().getExtras());
-        }
-
+		// add a ui fragment to stack
+		_uiArticlesFragment = fragmentManager
+				.findFragmentByTag(LearnHomeworkArticlesFragment.TAG);
+		if (_uiArticlesFragment == null) {
+			if (worker instanceof IWorkerJobInput) {
+				_uiArticlesFragment = LearnHomeworkArticlesFragment
+                        .newInstance((IWorkerJobInput) worker);
+				// extras contain words, translations and so on that we need to show
+				// the data in the homework fragment. We pass them on to the fragment.
+				_uiArticlesFragment.setArguments(getIntent().getExtras());
+			}
+		}
 
 		ArrayList<Integer> types = getIntent().getIntegerArrayListExtra(NotificationBuilder.HOMEWORK_TYPE_TAG);
 		if (types == null || types.isEmpty()) return;

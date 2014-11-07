@@ -43,7 +43,7 @@ public class LearnOnTheGoController extends LearnController {
 	public void onSuccessRandomWords(ArrayList<ArticleWordId> articleWordIds) {
 		_worker.onTaskFinished();
 		_failCounter = 0;
-		Log.d("my_logs", "LearnOnTheGoController.onSuccessRandomWords: words size " + articleWordIds.size());
+		Log.d("my_logs", "success random words LearnOnTheGo size " + articleWordIds.size());
 		if (articleWordIds.size() < 1) return;
 		Random rand = new Random();
 		_fragmentUpdate.updateDirectionOfTranslation();
