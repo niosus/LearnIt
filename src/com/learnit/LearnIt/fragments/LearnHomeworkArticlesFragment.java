@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +115,8 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 
 	@Override
 	public void setButtonTexts(ArrayList<ArticleWordId> words, int direction) {
-		String[] articles = getString(R.string.articles).split("\\s");
+        Pair<String, String> langs = Utils.getCurrentLanguages(this.getActivity());
+		String[] articles = Constants.mArticlesMap.get(langs.first).split("\\s");
 		for (int i = 0; i < _btnIds.length; ++i) {
 			((TextView) v.findViewById(_btnIds[i])).setText(articles[i]);
 		}
