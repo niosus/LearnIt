@@ -75,10 +75,9 @@ public abstract class LearnFragment
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (null!=v)
-        {
-            if (isVisibleToUser)
-            {
+        if (!this.isAdded()) { return; }
+        if (null!=v) {
+            if (isVisibleToUser) {
                 Utils.hideSoftKeyboard(this.getActivity());
             }
         }
@@ -96,6 +95,7 @@ public abstract class LearnFragment
 	@Override
 	public void updateDirectionOfTranslation() {
 		Random random = new Random();
+        if (!this.isAdded()) { return; }
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		String strDirection = sp.getString(getString(R.string.key_direction_of_trans), null);
 		if (null != strDirection) {
@@ -108,13 +108,15 @@ public abstract class LearnFragment
 
 	@Override
     public void closeWord() {
-	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+        if (!this.isAdded()) { return; }
+        MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
 	    animationHelper.invokeForView(queryWordTextView, R.anim.close_word, _listener);
     }
 
 	@Override
     public void openWord() {
+        if (!this.isAdded()) { return; }
 	    MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 	    TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
 	    animationHelper.invokeForView(queryWordTextView, R.anim.open_word, _listener);
@@ -122,7 +124,8 @@ public abstract class LearnFragment
 
 	@Override
 	public void shakeView(View v) {
-		MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
+        if (!this.isAdded()) { return; }
+        MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 		animationHelper.invokeForView(v, R.anim.shake, _listener);
 	}
 
@@ -153,7 +156,8 @@ public abstract class LearnFragment
     }
 
 	protected void saveToPreferences() {
-		boolean problemOccured = false;
+        if (!this.isAdded()) { return; }
+        boolean problemOccured = false;
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		SharedPreferences.Editor editor = sp.edit();
 		// add word text to shared preferences
@@ -182,7 +186,8 @@ public abstract class LearnFragment
 
 
 	protected boolean restoreFromPreferences() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        if (!this.isAdded()) { return false; }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		String word = sp.getString(WORD_TAG, null);
 		if (word == null) { return false; }
 		((TextView) v.findViewById(R.id.word_to_ask)).setText(word);

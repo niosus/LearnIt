@@ -91,6 +91,7 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		Bundle extras = getArguments();
+        if (!this.isAdded()) { return; }
 		if (_listener instanceof LearnHomeworkTranslationController) {
 			((LearnHomeworkTranslationController) _listener).getEverythingFromExtras(extras, this.getActivity());
 		}
@@ -98,6 +99,7 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 
 	@Override
 	public void openButtons() {
+        if (!this.isAdded()) { return; }
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 		View[] viewsBottom = {
 				v.findViewById(R.id.second_button_layout),
@@ -113,6 +115,7 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 
 	@Override
 	public void closeButtons() {
+        if (!this.isAdded()) { return; }
 		MyAnimationHelper animationHelper = new MyAnimationHelper(this.getActivity());
 		View[] viewsBottom = {
 				v.findViewById(R.id.second_button_layout),
@@ -156,6 +159,7 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 
 	@Override
 	public void setQueryWordText(ArticleWordId struct, int direction) {
+        if (!this.isAdded()) { return; }
 		TextView queryWordTextView = (TextView) v.findViewById(R.id.word_to_ask);
 		queryWord = struct.word;
 		if (direction > 0) { _direction = direction; }
@@ -183,7 +187,8 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 	}
 
 	public void stopActivity() {
-		this.getActivity().finish();
+        if (!this.isAdded()) { return; }
+        this.getActivity().finish();
 	}
 
 	public void askActivityToSwitchFragments(int homeworkType) {
