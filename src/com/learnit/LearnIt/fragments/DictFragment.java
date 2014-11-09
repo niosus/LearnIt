@@ -146,6 +146,9 @@ public class DictFragment extends MySmartFragment
 
 	@Override
 	public void setListEntries(List<Map<String, String>> words) {
+        if (this.getView() == null) {
+            return;
+        }
 		SimpleAdapter adapter;
 		if (words==null)
 		{

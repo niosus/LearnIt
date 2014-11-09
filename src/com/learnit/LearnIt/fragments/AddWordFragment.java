@@ -176,7 +176,10 @@ public class AddWordFragment extends MySmartFragment
 
 	@Override
 	public void setListEntries(List<String> words) {
-		if (words == null)
+        if (this.getView() == null) {
+            return;
+        }
+		if (words == null || !this.isAdded())
 		{
 			((ListView) this.getView().findViewById(R.id.list_of_add_words))
 					.setAdapter(null);
