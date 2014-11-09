@@ -73,7 +73,6 @@ public class LearnHomeworkTranslationController extends LearnController {
 		_prefixes = extras.getStringArrayList(NotificationBuilder.PREFIXES_TAG);
 		_typesOfHomework = extras.getIntegerArrayList(NotificationBuilder.HOMEWORK_TYPE_TAG);
 		_currentNotificationIndex = extras.getInt(NotificationBuilder.CURRENT_NOTIFICATION_INDEX, -1);
-		showNext();
 	}
 
 	@Override
@@ -173,21 +172,21 @@ public class LearnHomeworkTranslationController extends LearnController {
 		}
 	}
 
-	private boolean checkNextFragmentType() {
+	private boolean isFragmentTypeChangeNeeded() {
 		if (_currentTypeOfHomework == Constants.LEARN_ARTICLES) {
 			if (_fragmentUpdate instanceof LearnHomeworkTranslationFragment) {
 				((LearnHomeworkTranslationFragment) _fragmentUpdate)
 						.askActivityToSwitchFragments(_currentTypeOfHomework);
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public void showNext() {
 		if (findNextId()) {
-			if (checkNextFragmentType()) {
+			if (!isFragmentTypeChangeNeeded()) {
 				fetchRandomWords(_btnIds.length - 1, _correctEntry);
 			}
 		} else {

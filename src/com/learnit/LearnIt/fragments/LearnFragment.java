@@ -155,7 +155,25 @@ public abstract class LearnFragment
         }
     }
 
-	protected void saveToPreferences() {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (_wordToAsk != null && _wordToAsk.getText() != null) {
+            outState.putString(WORD_TAG, _wordToAsk.getText().toString());
+        }
+        outState.putInt(CORRECT_INDEX_TAG, _listener.getCorrectWordId());
+        // add all the button texts to shared preferences
+        TextView currentButtonText;
+        for (int i = 0; i < btnIds().length; ++i) {
+            currentButtonText = ((TextView) v.findViewById(btnIds()[i]));
+            if (currentButtonText == null
+                    || currentButtonText.getText() == null
+                    || currentButtonText.getText().toString().isEmpty()) { continue; }
+            outState.putString(BUTTON_PREFIX_TAG + i, currentButtonText.getText().toString());
+        }
+    }
+
+    protected void saveToPreferences() {
         if (!this.isAdded()) { return; }
         boolean problemOccured = false;
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());

@@ -158,21 +158,21 @@ public class LearnHomeworkArticlesController extends LearnController {
 		}
 	}
 
-	private boolean checkNextFragmentType() {
+	private boolean isFragmentTypeChangeNeeded() {
 		if (_currentTypeOfHomework == Constants.LEARN_TRANSLATIONS) {
 			if (_fragmentUpdate instanceof LearnHomeworkArticlesFragment) {
 				((LearnHomeworkArticlesFragment) _fragmentUpdate)
 						.askActivityToSwitchFragments(_currentTypeOfHomework);
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public void showNext() {
 		if (findNextId()) {
-			if (checkNextFragmentType()) {
+			if (!isFragmentTypeChangeNeeded()) {
 				_fragmentUpdate.setQueryWordText(correctEntry, _direction);
 				_fragmentUpdate.openWord();
 				_fragmentUpdate.openButtons();

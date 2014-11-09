@@ -70,7 +70,19 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 		for (int id: _btnIds) {
 			(v.findViewById(id)).setOnClickListener(_listener);
 		}
-		setAll(View.INVISIBLE);
+        if (savedInstanceState == null || _listener == null) {
+            setAll(View.INVISIBLE);
+        } else {
+            String word = savedInstanceState.getString(WORD_TAG, "");
+            if (!word.isEmpty()) {
+                _wordToAsk.setText(word);
+            }
+            int idx = savedInstanceState.getInt(CORRECT_INDEX_TAG, -1);
+            if (idx != -1) {
+                _listener.setCorrectWordIdFromPrefs(idx);
+            }
+            setAll(View.VISIBLE);
+        }
 		return v;
 	}
 

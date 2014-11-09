@@ -26,6 +26,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
@@ -57,21 +58,11 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
         super.onAttach(activity);
         IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
         _listener = new LearnHomeworkTranslationController(this, worker, btnIds());
+        Bundle extras = getArguments();
+        if (_listener instanceof LearnHomeworkTranslationController) {
+            ((LearnHomeworkTranslationController) _listener).getEverythingFromExtras(extras, this.getActivity());
+        }
     }
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (!restoreFromPreferences()) {
-			_listener.showNext();
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		saveToPreferences();
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,21 +71,40 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 		updateDirectionOfTranslation();
 		_wordToAsk = (TextView) v.findViewById(R.id.word_to_ask);
 		_wordToAsk.setMovementMethod(new ScrollingMovementMethod());
-		for (int id: _btnIds) {
-			(v.findViewById(id)).setOnClickListener(_listener);
-		}
-		setAll(View.INVISIBLE);
+        if (savedInstanceState == null || _listener == null) {
+            setAll(View.INVISIBLE);
+            if (_listener != null) {
+                _listener.showNext();
+                TextView btn;
+                for (int id: _btnIds) {
+                    btn = (TextView) v.findViewById(id);
+                    btn.setOnClickListener(_listener);
+                }
+            }
+        } else {
+            String word = savedInstanceState.getString(WORD_TAG, "");
+            if (!word.isEmpty()) {
+                _wordToAsk.setText(word);
+            }
+            int idx = savedInstanceState.getInt(CORRECT_INDEX_TAG, -1);
+            if (idx != -1) {
+                _listener.setCorrectWordIdFromPrefs(idx);
+            }
+            TextView btn;
+            int btnCounter = 0;
+            for (int id: _btnIds) {
+                btn = (TextView) v.findViewById(id);
+                btn.setOnClickListener(_listener);
+                String btnText = savedInstanceState.getString(BUTTON_PREFIX_TAG + btnCounter++, "");
+                if (btnText.isEmpty()) {
+                    btn.setEnabled(false);
+                } else {
+                    btn.setText(btnText);
+                }
+            }
+            setAll(View.VISIBLE);
+        }
 		return v;
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		Bundle extras = getArguments();
-        if (!this.isAdded()) { return; }
-		if (_listener instanceof LearnHomeworkTranslationController) {
-			((LearnHomeworkTranslationController) _listener).getEverythingFromExtras(extras, this.getActivity());
-		}
 	}
 
 	@Override
