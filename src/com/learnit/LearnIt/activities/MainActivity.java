@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements
     public static final String LAYOUT_NORMAL = "normal";
     public static final String LAYOUT_XLARGE = "xlarge";
     public static final String LAYOUT_LARGE_LAND = "large_landscape";
+    public static final String LAYOUT_LAND = "landscape";
 
     final static String YES = "yes";
     final static String NO = "no";

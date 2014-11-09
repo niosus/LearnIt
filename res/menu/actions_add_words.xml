@@ -22,6 +22,7 @@
             android:id="@+id/save_item"
             android:icon="@drawable/ic_action_content_save"
             android:showAsAction="always|withText"
+            android:visible="false"
             android:title="@string/dialog_button_save">
     </item>
 </menu>

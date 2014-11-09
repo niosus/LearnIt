@@ -67,8 +67,8 @@ public class ListOfFragments extends ListFragment {
     public void onStart() {
         super.onStart();
         if (getFragmentManager().findFragmentById(R.id.headlines_fragment) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-	        getListView().setSelector(R.drawable.list_selector);
+//            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//	        getListView().setSelector(R.drawable.list_selector);
         }
     }
 
