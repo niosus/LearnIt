@@ -39,6 +39,7 @@ import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
 import com.learnit.LearnIt.interfaces.IListenerAddWords;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
+import com.learnit.LearnIt.utils.StringUtils;
 import com.learnit.LearnIt.utils.Utils;
 
 import java.util.List;
@@ -56,6 +57,9 @@ public class AddWordFragment extends MySmartFragment
 	private ImageButton _clearButtonWord, _clearButtonTrans;
 	private MenuItem _saveMenuItem;
 	protected IListenerAddWords _listener;
+
+    private static final String WORD_TAG = "input_word";
+    private static final String TRANS_TAG = "input_trans";
 
     public static AddWordFragment newInstance(IWorkerJobInput worker) {
         AddWordFragment addWordFragment = new AddWordFragment();
@@ -132,8 +136,8 @@ public class AddWordFragment extends MySmartFragment
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
 
         if (savedInstanceState != null) {
-            _word.setText(savedInstanceState.getString("input_word", ""));
-            _translation.setText(savedInstanceState.getString("input_trans", ""));
+            _word.setText(savedInstanceState.getString(WORD_TAG, ""));
+            _translation.setText(savedInstanceState.getString(TRANS_TAG, ""));
             if (!_word.getText().toString().isEmpty()) {
                 _clearButtonWord.setVisibility(View.VISIBLE);
             }
@@ -154,8 +158,8 @@ public class AddWordFragment extends MySmartFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("input_word", _word.getText().toString());
-        outState.putString("input_trans", _translation.getText().toString());
+        outState.putString(WORD_TAG, _word.getText().toString());
+        outState.putString(TRANS_TAG, _translation.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -270,9 +274,10 @@ public class AddWordFragment extends MySmartFragment
 	{
 		try
 		{
-			if (_word.getText().toString().contains(article))
-				return;
-			_word.setText(article + " " + _word.getText());
+            String[] words = _word.getText().toString().split("\\s");
+            if (words.length == 0) { return; }
+            if (StringUtils.isArticle(this.getActivity(), words[0])) { return; }
+			_word.setText(article + " " + StringUtils.capitalize(_word.getText().toString()));
 		}
 		catch (NullPointerException ex)
 		{

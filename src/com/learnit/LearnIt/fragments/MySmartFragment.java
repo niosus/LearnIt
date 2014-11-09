@@ -33,11 +33,6 @@ public abstract class MySmartFragment
 	protected View _v;
 	public int identifier;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState);
 }
