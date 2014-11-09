@@ -102,7 +102,16 @@ public class AddWordFragment extends MySmartFragment
 			_saveMenuItem.setOnMenuItemClickListener(_listener);
 		}
 		if (_saveMenuItem != null) {
-			_saveMenuItem.setVisible(false);
+            _saveMenuItem.setVisible(false);
+            if (_word!=null && _translation!=null
+                    && _word.getText()!=null
+                    && _translation.getText()!=null) {
+                if (!_word.getText().toString().isEmpty() &&
+                        !_translation.getText().toString().isEmpty()) {
+                    _saveMenuItem.setVisible(true);
+                }
+            }
+
 		}
     }
 
@@ -122,18 +131,35 @@ public class AddWordFragment extends MySmartFragment
 	    _word = (EditText) _view.findViewById(R.id.edv_add_word);
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
 
+        if (savedInstanceState != null) {
+            _word.setText(savedInstanceState.getString("input_word", ""));
+            _translation.setText(savedInstanceState.getString("input_trans", ""));
+            if (!_word.getText().toString().isEmpty()) {
+                _clearButtonWord.setVisibility(View.VISIBLE);
+            }
+            if (!_translation.getText().toString().isEmpty()) {
+                _clearButtonTrans.setVisibility(View.VISIBLE);
+            }
+        }
 	    _word.setOnFocusChangeListener(_listener);
 	    _translation.setOnFocusChangeListener(_listener);
 	    _word.addTextChangedListener(_listener);
 	    _translation.addTextChangedListener(_listener);
-//
+
 	    ListView _list = (ListView) _view.findViewById(R.id.list_of_add_words);
 	    _list.setOnItemClickListener(_listener);
 
         return _view;
     }
 
-	/*
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("input_word", _word.getText().toString());
+        outState.putString("input_trans", _translation.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    /*
 	*
 	*   Implementing IAddWordsFragmentUpdate interface
 	*
