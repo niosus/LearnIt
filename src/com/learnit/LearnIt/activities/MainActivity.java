@@ -21,6 +21,7 @@ package com.learnit.LearnIt.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -88,43 +89,17 @@ public class MainActivity extends Activity implements
 	    FragmentManager fragmentManager = getFragmentManager();
 	    _taskScheduler = Utils.getCurrentTaskScheduler(this);
 	    switch (currentLayout) {
-		    case LAYOUT_XLARGE:
-			    MySmartFragment dictFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(DictFragment.TAG);
-			    if (dictFragment == null) {
-				    dictFragment = DictFragment.newInstance(_taskScheduler);
-				    dictFragment.identifier = DICTIONARY_FRAGMENT;
-				    fragmentManager.beginTransaction()
-						    .add(R.id.dict_frame, dictFragment, DictFragment.TAG)
-						    .commit();
-			    }
-			    MySmartFragment addWordFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(AddWordFragment.TAG);
-			    if (addWordFragment == null) {
-				    addWordFragment = AddWordFragment.newInstance(_taskScheduler);
-				    addWordFragment.identifier = ADD_WORDS_FRAGMENT;
-				    fragmentManager.beginTransaction()
-						    .add(R.id.add_words_frame, addWordFragment, AddWordFragment.TAG)
-						    .commit();
-			    }
-			    MySmartFragment learnFragment = (MySmartFragment) getFragmentManager().findFragmentByTag(LearnCasualFragment.TAG);
-			    if (learnFragment == null) {
-				    learnFragment = LearnCasualFragment.newInstance(_taskScheduler);
-				    learnFragment.identifier = LEARN_WORDS_FRAGMENT;
-				    fragmentManager.beginTransaction()
-						    .add(R.id.learn_frame, learnFragment, LearnCasualFragment.TAG)
-						    .commit();
-			    }
-			    break;
 		    case LAYOUT_LARGE_LAND:
-			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _taskScheduler);
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(fragmentManager, this, _taskScheduler);
 			    //Do some special processing for large screen
 			    ListOfFragments fragment = (ListOfFragments) getFragmentManager().findFragmentById(R.id.headlines_fragment);
 			    fragment.getListView().setSelection(0);
 			    break;
-		    case LAYOUT_NORMAL:
+		    default:
 			    // Initialize the view pager
 			    // Create the adapter that will return a listOfFragments for each of the three primary sections
 			    // of the app.
-			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(getFragmentManager(), this, _taskScheduler);
+			    _appSectionsPagerAdapter = new AppSectionsPagerAdapter(fragmentManager, this, _taskScheduler);
 
 			    final PagerSlidingTabStrip strip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
@@ -171,6 +146,7 @@ public class MainActivity extends Activity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putInt("position", _currentItemShown);
     }
 
@@ -241,17 +217,17 @@ public class MainActivity extends Activity implements
         switch(position)
         {
 	        case ADD_WORDS_FRAGMENT:
-		        fragment = AddWordFragment.newInstance(_taskScheduler);
+		        fragment = new AddWordFragment();
 		        fragment.identifier = ADD_WORDS_FRAGMENT;
 		        Log.d(LOG_TAG,"Created AddWordFragment with tag " + fragment.identifier);
 		        break;
             case DICTIONARY_FRAGMENT:
-                fragment = DictFragment.newInstance(_taskScheduler);
+                fragment = new DictFragment();
 	            fragment.identifier = DICTIONARY_FRAGMENT;
 	            Log.d(LOG_TAG,"Created Dictionary Fragment with tag " + fragment.identifier);
                 break;
             case LEARN_WORDS_FRAGMENT:
-                fragment = LearnCasualFragment.newInstance(_taskScheduler);
+                fragment = new LearnCasualFragment();
 	            fragment.identifier = LEARN_WORDS_FRAGMENT;
 	            Log.d(LOG_TAG,"Created LearnFragment with tag " + fragment.identifier);
 	            break;

@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,12 +29,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.controllers.LearnHomeworkArticlesController;
 import com.learnit.LearnIt.controllers.LearnOnTheGoController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
 import com.learnit.LearnIt.utils.Constants;
 import com.learnit.LearnIt.utils.MyAnimationHelper;
 import com.learnit.LearnIt.utils.StringUtils;
+import com.learnit.LearnIt.utils.Utils;
 import com.learnit.LearnIt.views.WordButton;
 
 import java.util.ArrayList;
@@ -49,16 +52,12 @@ public class LearnCasualFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-    public static LearnCasualFragment newInstance(IWorkerJobInput worker) {
-        LearnCasualFragment learnCasualFragment = new LearnCasualFragment();
-        learnCasualFragment.attachWorker(worker);
-        return learnCasualFragment;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
+        _listener = new LearnOnTheGoController(this, worker, btnIds());
     }
-
-
-    public void attachWorker(IWorkerJobInput worker) {
-		_listener = new LearnOnTheGoController(this, worker, btnIds());
-	}
 
 	@Override
 	public void onResume() {

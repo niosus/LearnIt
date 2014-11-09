@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -51,14 +52,10 @@ public class LearnHomeworkTranslationFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-    public static LearnHomeworkTranslationFragment newInstance(IWorkerJobInput worker) {
-        LearnHomeworkTranslationFragment learnHomeworkTranslationFragment =
-                new LearnHomeworkTranslationFragment();
-        learnHomeworkTranslationFragment.attachWorker(worker);
-        return learnHomeworkTranslationFragment;
-    }
-
-    public void attachWorker(IWorkerJobInput worker) {
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
         _listener = new LearnHomeworkTranslationController(this, worker, btnIds());
     }
 

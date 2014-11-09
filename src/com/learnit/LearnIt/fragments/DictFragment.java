@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -61,15 +62,28 @@ public class DictFragment extends MySmartFragment
 
         _edtWord = (EditText) _v.findViewById(R.id.edv_search_word);
         _edtWord.clearFocus();
-        _edtWord.addTextChangedListener(_listener);
-	    _edtWord.setOnFocusChangeListener(_listener);
+
         _btnClear = (ImageButton) _v.findViewById(R.id.btn_search_clear);
-        _btnClear.setOnClickListener(_listener);
+
         _btnClear.setVisibility(View.INVISIBLE);
         _listView = (ListView) _v.findViewById(R.id.list_of_words);
-        _listView.setOnItemLongClickListener(_listener);
+
 		_listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        if (_listener != null) {
+            _edtWord.addTextChangedListener(_listener);
+            _edtWord.setOnFocusChangeListener(_listener);
+            _btnClear.setOnClickListener(_listener);
+            _listView.setOnItemLongClickListener(_listener);
+        }
 	    return _v;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
+        _listener = new DictController(this, worker);
     }
 
 	@Override
@@ -79,16 +93,6 @@ public class DictFragment extends MySmartFragment
 			setWordText("");
 			setListEntries(null);
 		}
-	}
-
-    public static DictFragment newInstance(IWorkerJobInput worker) {
-        DictFragment dictFragment = new DictFragment();
-        dictFragment.attachWorker(worker);
-        return dictFragment;
-    }
-
-	public void attachWorker(IWorkerJobInput worker) {
-        _listener = new DictController(this, worker);
 	}
 
 	public void startActionMode(ActionMode.Callback callback) {

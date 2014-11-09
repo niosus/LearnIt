@@ -56,12 +56,12 @@ public class AddWordsController implements
 	IWorkerJobInput _worker;
 	View _focused;
 
-    Fragment _context = null;
+    Fragment _fragment = null;
 
 	public AddWordsController(IAddWordsFragmentUpdate target, IWorkerJobInput worker) {
         if (target instanceof Fragment) {
-            _context = (Fragment) target;
-        } else { _context = null; }
+            _fragment = (Fragment) target;
+        } else { _fragment = null; }
 		_fragmentUpdate = target;
 		_worker = worker;
 	}
@@ -99,12 +99,12 @@ public class AddWordsController implements
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (hasFocus) { _focused = v; }
 		if (v.getId() == R.id.edv_add_translation) {
-            if (_context != null) {
+            if (_fragment != null && _fragment.getActivity() != null) {
                 SharedPreferences sp
-                        = PreferenceManager.getDefaultSharedPreferences(_context.getActivity().getApplicationContext());
-                if (sp.getBoolean(_context.getString(R.string.key_pref_use_online_dict), false)
-                        && !Utils.dictIsOnDisk(_context.getActivity().getApplicationContext(),
-                        Utils.getCurrentLanguages(_context.getActivity().getApplicationContext()))) {
+                        = PreferenceManager.getDefaultSharedPreferences(_fragment.getActivity());
+                if (sp.getBoolean(_fragment.getString(R.string.key_pref_use_online_dict), false)
+                        && !Utils.dictIsOnDisk(_fragment.getActivity().getApplicationContext(),
+                        Utils.getCurrentLanguages(_fragment.getActivity().getApplicationContext()))) {
                     _worker.addTask(new GetTranslationsWebTask(_fragmentUpdate.getWord()), this);
                 } else {
                     _worker.addTask(new GetTranslationsTask(_fragmentUpdate.getWord()), this);
@@ -128,12 +128,12 @@ public class AddWordsController implements
 		switch (_focused.getId()) {
 			case R.id.edv_add_word:
 				if (_fragmentUpdate.getWord().length() > 0) {
-                    if (_context != null) {
+                    if (_fragment != null) {
                         SharedPreferences sp
-                                = PreferenceManager.getDefaultSharedPreferences(_context.getActivity().getApplicationContext());
-                        if (sp.getBoolean(_context.getString(R.string.key_pref_use_online_dict), false)
-                                && !Utils.dictIsOnDisk(_context.getActivity().getApplicationContext(),
-                                Utils.getCurrentLanguages(_context.getActivity().getApplicationContext()))) {
+                                = PreferenceManager.getDefaultSharedPreferences(_fragment.getActivity());
+                        if (sp.getBoolean(_fragment.getString(R.string.key_pref_use_online_dict), false)
+                                && !Utils.dictIsOnDisk(_fragment.getActivity().getApplicationContext(),
+                                Utils.getCurrentLanguages(_fragment.getActivity().getApplicationContext()))) {
                             _worker.addTask(new GetHelpWordsGoogleTask(s.toString()), this);
                         } else {
                             _worker.addTask(new GetHelpWordsTask(s.toString()), this);

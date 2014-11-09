@@ -19,6 +19,7 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -34,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.learnit.LearnIt.R;
+import com.learnit.LearnIt.activities.MainActivity;
 import com.learnit.LearnIt.controllers.AddWordsController;
 import com.learnit.LearnIt.data_types.DBHelper;
 import com.learnit.LearnIt.interfaces.IAddWordsFragmentUpdate;
@@ -61,17 +63,14 @@ public class AddWordFragment extends MySmartFragment
     private static final String WORD_TAG = "input_word";
     private static final String TRANS_TAG = "input_trans";
 
-    public static AddWordFragment newInstance(IWorkerJobInput worker) {
-        AddWordFragment addWordFragment = new AddWordFragment();
-        addWordFragment.attachWorker(worker);
-        return addWordFragment;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
+        _listener = new AddWordsController(this, worker);
     }
 
-	public void attachWorker(IWorkerJobInput worker) {
-		_listener = new AddWordsController(this, worker);
-	}
-
-	@Override
+    @Override
 	public void onPause() {
 		super.onPause();
 		Crouton.cancelAllCroutons();
@@ -127,13 +126,14 @@ public class AddWordFragment extends MySmartFragment
 		    return null;
 		_clearButtonWord = (ImageButton) _view.findViewById(R.id.btn_add_word_clear);
 	    _clearButtonTrans = (ImageButton) _view.findViewById(R.id.btn_add_trans_clear);
-		_clearButtonWord.setOnClickListener(_listener);
-		_clearButtonTrans.setOnClickListener(_listener);
+
 	    _clearButtonWord.setVisibility(View.INVISIBLE);
 	    _clearButtonTrans.setVisibility(View.INVISIBLE);
 
 	    _word = (EditText) _view.findViewById(R.id.edv_add_word);
 	    _translation = (EditText) _view.findViewById(R.id.edv_add_translation);
+
+        ListView list = (ListView) _view.findViewById(R.id.list_of_add_words);
 
         if (savedInstanceState != null) {
             _word.setText(savedInstanceState.getString(WORD_TAG, ""));
@@ -145,22 +145,30 @@ public class AddWordFragment extends MySmartFragment
                 _clearButtonTrans.setVisibility(View.VISIBLE);
             }
         }
-	    _word.setOnFocusChangeListener(_listener);
-	    _translation.setOnFocusChangeListener(_listener);
-	    _word.addTextChangedListener(_listener);
-	    _translation.addTextChangedListener(_listener);
 
-	    ListView _list = (ListView) _view.findViewById(R.id.list_of_add_words);
-	    _list.setOnItemClickListener(_listener);
+        if (_listener != null) {
+            _clearButtonWord.setOnClickListener(_listener);
+            _clearButtonTrans.setOnClickListener(_listener);
 
+            _word.setOnFocusChangeListener(_listener);
+            _translation.setOnFocusChangeListener(_listener);
+            _word.addTextChangedListener(_listener);
+            _translation.addTextChangedListener(_listener);
+
+            list.setOnItemClickListener(_listener);
+        }
         return _view;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(WORD_TAG, _word.getText().toString());
-        outState.putString(TRANS_TAG, _translation.getText().toString());
         super.onSaveInstanceState(outState);
+        if (_word != null && _translation != null
+                && _word.getText() != null
+                && _translation.getText() != null) {
+            outState.putString(WORD_TAG, _word.getText().toString());
+            outState.putString(TRANS_TAG, _translation.getText().toString());
+        }
     }
 
     /*

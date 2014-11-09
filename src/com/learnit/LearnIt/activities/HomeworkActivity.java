@@ -54,14 +54,12 @@ public class HomeworkActivity extends Activity {
 					.commit();
 		}
 
-        _uiTranslationsFragment = LearnHomeworkTranslationFragment
-                .newInstance((IWorkerJobInput) worker);
+        _uiTranslationsFragment = new LearnHomeworkTranslationFragment();
         // extras contain words, translations and so on that we need to show
         // the data in the homework fragment. We pass them on to the fragment.
         _uiTranslationsFragment.setArguments(getIntent().getExtras());
 
-        _uiArticlesFragment = LearnHomeworkArticlesFragment
-                .newInstance((IWorkerJobInput) worker);
+        _uiArticlesFragment = new LearnHomeworkArticlesFragment();
         // extras contain words, translations and so on that we need to show
         // the data in the homework fragment. We pass them on to the fragment.
         _uiArticlesFragment.setArguments(getIntent().getExtras());

@@ -27,8 +27,7 @@ import android.view.ViewGroup;
 import com.learnit.LearnIt.interfaces.IAttachWorkerToFragment;
 
 public abstract class MySmartFragment
-        extends Fragment
-        implements IAttachWorkerToFragment {
+        extends Fragment {
     protected static final String LOG_TAG = "my_logs";
 	protected View _v;
 	public int identifier;

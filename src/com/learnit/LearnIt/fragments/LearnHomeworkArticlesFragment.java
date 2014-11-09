@@ -18,6 +18,7 @@
 
 package com.learnit.LearnIt.fragments;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import com.learnit.LearnIt.R;
 import com.learnit.LearnIt.activities.HomeworkActivity;
+import com.learnit.LearnIt.controllers.DictController;
 import com.learnit.LearnIt.controllers.LearnHomeworkArticlesController;
 import com.learnit.LearnIt.data_types.ArticleWordId;
 import com.learnit.LearnIt.interfaces.IWorkerJobInput;
@@ -52,22 +54,12 @@ public class LearnHomeworkArticlesFragment extends LearnFragment {
 		return _btnIds;
 	}
 
-    public static LearnHomeworkArticlesFragment newInstance(IWorkerJobInput worker) {
-        LearnHomeworkArticlesFragment learnHomeworkArticlesFragment =
-                new LearnHomeworkArticlesFragment();
-        learnHomeworkArticlesFragment.attachWorker(worker);
-        return learnHomeworkArticlesFragment;
-    }
-
-    public void attachWorker(IWorkerJobInput worker) {
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        IWorkerJobInput worker = Utils.getCurrentTaskScheduler(activity);
         _listener = new LearnHomeworkArticlesController(this, worker, btnIds());
     }
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
