@@ -22,7 +22,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -74,8 +74,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            jniDebugBuild true
-            runProguard false
+            minifyEnabled false
             signingConfig signingConfigs.debug
         }
     }
